@@ -53,3 +53,19 @@ describe('checkNumbersWithoutSource', () => {
     expect(hasSourceMarker('просто текст')).toBe(false);
   });
 });
+
+describe('focus і caveat кейсу', () => {
+  it('не вимагає джерела в переказі досьє: воно вказане через cases[].ref', () => {
+    const course = file('content/course.yaml', [
+      'cases:',
+      '  - id: zara-inditex',
+      "    caveat: 'Обсяг інвестицій компанія подає двояко — 700 млн дол. і 1 млрд дол.'",
+      'topics:',
+      '  - id: t02',
+      '    cases:',
+      '      - case: zara-inditex',
+      "        focus: Половина виробників поруч зі штаб-квартирою і 900 млн євро на рік у логістику.",
+    ]);
+    expect(checkNumbersWithoutSource([course])).toEqual([]);
+  });
+});

@@ -15,6 +15,8 @@ const DANGLING_HINT = 'Додайте запис із таким id до спи�
 const TOPIC_FOLDER = /(?:^|\/)modules\/(m\d+)\/(t\d{2})\//;
 const SRC_ANCHOR = /#src-([a-z0-9-]+)/g;
 const SOURCE_LIST_IDS = /<SourceList[^>]*ids=\{\[([^\]]*)\]\}/g;
+/** Мапа посилання на базу впізнається за сусіднім полем `locator:`. */
+const BASELINE_REF = /(^|[\s{,])locator:/;
 
 function topicOf(file) {
   return TOPIC_FOLDER.exec(file.file)?.[2] ?? null;
@@ -55,10 +57,14 @@ export function usageText(file) {
 /**
  * Посилання на джерела: `source:`, `alsoSources:` і список ID `sources: [id, …]` слайдів у YAML,
  * `#src-id` і `<SourceList ids={[…]}>` у MDX. Записи самого списку джерел — мапи, тож як посилання не рахуються.
+ * `source:` всередині посилання на базу (`refs[]`, `ref:` слайда `standard`) — це назва джерела за
+ * docs/research/*-baseline.md, а не id у sources.yaml: такі поля звіряє правило ref-codes, не це.
  */
 export function references(file) {
   const fromFields = file.units
-    .filter((unit) => unit.key === 'source' || unit.path.at(-1) === 'alsoSources' || (unit.key === null && unit.path.at(-1) === 'sources'))
+    .filter((unit) => (unit.key === 'source' && !BASELINE_REF.test(unit.container))
+      || unit.path.at(-1) === 'alsoSources'
+      || (unit.key === null && unit.path.at(-1) === 'sources'))
     .map((unit) => ({ id: unit.text.trim(), line: unit.line }));
   const fromText = file.kind !== 'mdx' ? [] : file.lines.flatMap((line, index) => [
     ...[...line.matchAll(SRC_ANCHOR)].map(([, id]) => ({ id, line: index + 1 })),
