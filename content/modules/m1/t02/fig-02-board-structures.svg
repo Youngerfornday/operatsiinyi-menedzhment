@@ -52,6 +52,7 @@
 
   <rect class="box box-owner" x="92" y="324" width="340" height="42" rx="6"/>
   <text class="t" x="262" y="350" text-anchor="middle">Загальні збори акціонерів</text>
+  <circle class="refc" cx="74" cy="345" r="11"/><text class="refn" x="74" y="349">1</text>
 
   <path class="arrow" d="M232 366 V 394"/>
   <path class="arrow-head" d="M232 402 l-5 -9 h10 z"/>

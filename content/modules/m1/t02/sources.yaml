@@ -90,9 +90,9 @@ sources:
     publisher: OECD Publishing
     year: 2023
     language: en
-    url: https://www.oecd.org/en/publications/g20-oecd-principles-of-corporate-governance-2023_ed750b30-en.html
-    checkedAt: '2026-09-14'
-    note: 'Дата перевірки — за docs/research/legal-baseline.md, MS-01. Опубліковано 11.09.2023; шість розділів; редакція 2015 р. — попередня, перше видання — 1999 р.'
+    url: https://www.oecd.org/content/dam/oecd/en/publications/reports/2023/09/g20-oecd-principles-of-corporate-governance-2023_60836fcb/ed750b30-en.pdf
+    checkedAt: '2026-09-18'
+    note: 'Повний текст у PDF (сторінка-картка на oecd.org на автоматизований запит віддає 403). Прийнято Радою ОЕСР 08.06.2023 (Рекомендація OECD/LEGAL/0413), схвалено лідерами G20 у вересні 2023 р.; опубліковано 11.09.2023; шість розділів; перше видання — 1999 р., попередня редакція — 2015 р. (legal-baseline MS-01).'
 
   - id: oecd-soe-guidelines-2024
     type: standard
@@ -103,7 +103,7 @@ sources:
     language: en
     url: https://www.oecd.org/en/publications/oecd-guidelines-on-corporate-governance-of-state-owned-enterprises-2024_18a24f43-en.html
     checkedAt: '2026-09-15'
-    note: 'Дата перевірки — за docs/research/legal-baseline.md, MS-02. Опубліковано 28.10.2024; сім розділів; уперше розроблені 2005 р., переглянуті 2015 р.'
+    note: 'Дата перевірки — за docs/research/legal-baseline.md, MS-02. Опубліковано 28.10.2024; сім розділів; уперше розроблені 2005 р., переглянуті 2015 р. Сторінка-картка на oecd.org на автоматизований запит віддає 403; текст доступний посторінково в розділі full-report.'
 
   - id: srd-ii-2017
     type: law
@@ -121,9 +121,9 @@ sources:
     authors: [Financial Reporting Council]
     year: 2024
     language: en
-    url: https://www.frc.org.uk/library/standards-codes-policy/corporate-governance/uk-corporate-governance-code/
-    checkedAt: '2026-09-14'
-    note: 'Дата перевірки — за docs/research/legal-baseline.md, MS-04. Опубліковано 22.01.2024, застосовується з 01.01.2025, положення 29 — з 01.01.2026; п’ять розділів; режим «дотримуйся або пояснюй».'
+    url: https://www.frc.org.uk/documents/6709/UK_Corporate_Governance_Code_2024_a2hmQmY.pdf
+    checkedAt: '2026-09-18'
+    note: 'Повний текст кодексу (адреса перенаправляє на media.frc.org.uk). Опубліковано 22.01.2024, застосовується до звітних періодів, що починаються з 01.01.2025, положення 29 — з 01.01.2026; п’ять розділів; режим «дотримуйся або пояснюй» (legal-baseline MS-04). Provision 11: «at least half the board, excluding the chair» — щонайменше половина ради без урахування голови; Provision 9: розведення посад голови ради і головного виконавчого директора (legal-baseline FL-01). Сторінка кодексу в бібліотеці FRC: https://www.frc.org.uk/library/standards-codes-policy/corporate-governance/uk-corporate-governance-code/'
 
   - id: cadbury-report-1992
     type: report
@@ -145,7 +145,7 @@ sources:
     language: en
     url: https://www.dcgk.de/en/code.html
     checkedAt: '2026-09-16'
-    note: 'Правління (Vorstand) і наглядова рада (Aufsichtsrat) як окремі органи з різними повноваженнями, процедурами й винагородою; декларація відповідності за § 161 Закону про АТ («дотримуйся або пояснюй»).'
+    note: 'Кодекс описує дуалістичну (дворівневу) систему: правління (Vorstand) керує підприємством, наглядова рада (Aufsichtsrat) здійснює нагляд; рекомендації позначено словом «shall», відступ дозволений з щорічним розкриттям і поясненням (legal-baseline FL-02).'
 
   - id: mitbestg-1976
     type: law
@@ -155,7 +155,7 @@ sources:
     language: de
     url: https://www.gesetze-im-internet.de/mitbestg/BJNR011530976.html
     checkedAt: '2026-09-16'
-    note: '§ 1: компанії, що зазвичай мають понад 2 000 працівників; § 7: наглядова рада з рівної кількості представників акціонерів і працівників.'
+    note: '§ 1 (1): товариства, що зазвичай мають понад 2 000 працівників; § 7 (1): паритет представників акціонерів і працівників — по 6, 8 або 10 місць кожній стороні залежно від чисельності; § 7 (2): серед представників працівників обов’язково є представники профспілок; § 29 (2): при повторній рівності голосів голова наглядової ради має два голоси (legal-baseline FL-03).'
 
   - id: drittelbg-2004
     type: law
@@ -165,7 +165,7 @@ sources:
     language: de
     url: https://www.gesetze-im-internet.de/drittelbg/BJNR097410004.html
     checkedAt: '2026-09-16'
-    note: 'Третина місць у наглядовій раді — представникам працівників у компаніях, що зазвичай мають понад 500 працівників.'
+    note: '§ 1 (1): право на співучасть діє в товариствах, що зазвичай мають понад 500 працівників; § 4 (1): наглядова рада на одну третину складається з представників працівників (legal-baseline FL-04).'
 
   - id: aktg-135
     type: law
@@ -175,7 +175,27 @@ sources:
     language: de
     url: https://www.gesetze-im-internet.de/aktg/__135.html
     checkedAt: '2026-09-17'
-    note: 'Посередник (зокрема банк-депозитарій) голосує акціями, які йому не належать, лише за дорученням акціонера і за його вказівками або за заздалегідь розкритими пропозиціями. Спростовує тезу про автоматичне голосування банку акціями клієнтів.'
+    note: 'Посередник голосує акціями, які йому не належать, лише за довіреністю, виданою саме йому; без прямих вказівок — тільки за власними завчасно наданими пропозиціями або за пропозиціями правління чи наглядової ради; на власних зборах і в товаристві, де йому належить понад 20 % капіталу, — лише за прямими вказівками з кожного питання (legal-baseline FL-05). Спростовує тезу про автоматичне голосування банку акціями клієнтів.'
+
+  - id: aktg-161
+    type: law
+    title: Aktiengesetz, § 161 Erklärung zum Corporate Governance Kodex
+    authors: [Bundesministerium der Justiz]
+    year: 1965
+    language: de
+    url: https://www.gesetze-im-internet.de/aktg/__161.html
+    checkedAt: '2026-09-18'
+    note: 'Правління і наглядова рада лістингового товариства щороку декларують, що виконували й виконують рекомендації Кодексу, оприлюднені в офіційній частині Bundesanzeiger, або вказують, які рекомендації не застосовувалися і чому; декларація має бути постійно публічно доступною на сайті товариства (legal-baseline FL-02).'
+
+  - id: vwgmbhueg-1960
+    type: law
+    title: Gesetz über die Überführung der Anteilsrechte an der Volkswagenwerk Gesellschaft mit beschränkter Haftung in private Hand (VWGmbHÜG) від 21.07.1960
+    authors: [Bundesministerium der Justiz]
+    year: 1960
+    language: de
+    url: https://www.gesetze-im-internet.de/vwgmbh_g/__4.html
+    checkedAt: '2026-09-18'
+    note: '§ 4 (2): створення і перенесення виробничих майданчиків потребує згоди двох третин членів наглядової ради. § 4 (3): рішення загальних зборів, для яких Закон про акціонерні товариства вимагає щонайменше трьох чвертей представленого капіталу, ухвалюються більшістю понад чотири п’ятих (legal-baseline FL-08).'
 
   # Японська модель
   - id: jcgc-code-2026
@@ -186,7 +206,7 @@ sources:
     language: en
     url: https://www.jpx.co.jp/english/corporate/news/news-releases/1020/vk0khi000001xys3-att/vk0khi000001xyv1.pdf
     checkedAt: '2026-09-17'
-    note: 'Чинна редакція; звіти за нею компанії подають до липня 2027 р. Принцип 4.10: для ринку Prime — щонайменше третина незалежних директорів, а за наявності контролюючого акціонера — більшість незалежних від нього або спеціальний комітет; принцип 4.7 — більшість незалежних у комітетах з номінацій і винагород для Prime; принцип 1.4 (1)–(4) — перехресне володіння. Режим «дотримуйся або пояснюй» з різним обсягом для сегментів ринку.'
+    note: 'Чинна редакція; звіти за нею компанії подають до липня 2027 р. Принцип 4.10 — незалежні директори, принцип 4.7 — комітети з номінацій і винагород (legal-baseline FL-06); принцип 1.4 — перехресне володіння (legal-baseline FL-07). Режим «дотримуйся або пояснюй» з різним обсягом для сегментів ринку. Сторінка кодексу на JPX: https://www.jpx.co.jp/english/equities/listing/cg/index.html'
 
   - id: jcgc-code-2015
     type: regulation
@@ -257,7 +277,7 @@ sources:
     language: en
     url: https://www.hsbc.com/who-we-are/leadership-and-governance/board-of-directors
     checkedAt: '2026-09-16'
-    note: 'Станом на 06.05.2026: 14 директорів, з них 11 незалежних невиконавчих; голова ради і головний виконавчий директор — різні особи.'
+    note: 'За станом сторінки ради на дату перевірки: 14 директорів, з них 11 незалежних невиконавчих; голова ради і головний виконавчий директор — різні особи. Дати складу на самій сторінці не наведено.'
 
   # Кейс Volkswagen
   - id: vw-shareholders-2025
@@ -278,30 +298,8 @@ sources:
     language: en
     url: https://www.volkswagen-group.com/en/press-releases/volkswagen-shareholders-formally-approve-board-of-management-and-supervisory-board-actions-and-adopt-dividend-resolution-hans-dieter-poetsch-confirmed-as-chairman-of-the-supervisory-board-following-his-re-election-20486
     checkedAt: '2026-09-17'
-    note: 'Нове врегулювання зі страховиками D&O схвалено 97,46 % поданих голосів, підтверджувальне рішення щодо угоди з колишнім головою правління — 99,99 %; дивіденди 5,20 євро на звичайну і 5,26 євро на привілейовану акцію; Ганса Дітера Пьоча переобрано до наглядової ради й підтверджено її головою.'
+    note: 'У темі використано лише один факт: Ганса Дітера Пьоча переобрано до наглядової ради, після чого рада підтвердила його своїм головою. Рішення зборів про врегулювання зі страховиками D&O і про дивіденди належать до тем 6 і 7.'
 
-  - id: vw-law-reuters-2024
-    type: web
-    title: 'Explainer: The Volkswagen law and its role in the German carmaker’s labour dispute (04.09.2024)'
-    authors: [Reuters]
-    publisher: Malay Mail (передрук матеріалу Reuters)
-    year: 2024
-    language: en
-    url: https://www.malaymail.com/news/money/2024/09/04/explainer-the-volkswagen-law-and-its-role-in-the-german-carmakers-labour-dispute/149271
-    checkedAt: '2026-09-17'
-    note: 'Додаткове джерело (не першоджерело акта): спеціальний закон про Volkswagen підвищує поріг для рішень, які зазвичай потребують трьох чвертей голосів зборів, до понад чотирьох п’ятих; наглядова рада з 20 членів, 10 з яких — представники працівників; рішення про будівництво або перенесення виробництва потребує двох третин голосів ради.'
-
-  - id: vw-bgh-2025
-    type: web
-    title: 'VW must learn its lesson: Federal Court of Justice declares approval resolutions on coverage settlement to be null and void'
-    authors: [Oppenhoff]
-    year: 2025
-    language: en
-    url: https://www.oppenhoff.eu/en/news/detail/vw-must-learn-its-lesson-federal-court-of-justice-declares-approval-resolutions-on-coverage-settlement-to-be-null-and-void/
-    checkedAt: '2026-09-17'
-    note: 'Додаткове джерело: рішення Федерального верховного суду Німеччини від 30.09.2025 (справа II ZR 154/23) про нікчемність рішень загальних зборів 2021 р. через невідповідність порядку денного і недостатню інформацію; самі угоди з посадовими особами нікчемними не визнано.'
-
-  # Українське право і реформа державного сектору
   - id: law-2465-ix
     type: law
     title: Закон України «Про акціонерні товариства» від 27.07.2022 № 2465-IX
@@ -310,6 +308,24 @@ sources:
     url: https://zakon.rada.gov.ua/laws/show/2465-20
     checkedAt: '2026-09-15'
     note: 'Ст. 4 (однорівнева і дворівнева структура, legal-baseline AT-03), ст. 6 (типи товариств, AT-01), ст. 72 ч. 4 (незалежні директори, AT-49).'
+
+  - id: law-1576-xii
+    type: law
+    title: Закон України «Про господарські товариства» від 19.09.1991 № 1576-XII
+    authors: [Верховна Рада України]
+    year: 1991
+    url: https://zakon.rada.gov.ua/laws/show/1576-12
+    checkedAt: '2026-09-14'
+    note: 'Перший перелік форм господарських товариств. Щодо акціонерних товариств і товариств з обмеженою та додатковою відповідальністю не застосовується (legal-baseline GK-08).'
+
+  - id: law-514-vi
+    type: law
+    title: Закон України «Про акціонерні товариства» від 17.09.2008 № 514-VI (втратив чинність)
+    authors: [Верховна Рада України]
+    year: 2008
+    url: https://zakon.rada.gov.ua/laws/card/514-17
+    checkedAt: '2026-09-14'
+    note: 'Замінив відкриті й закриті акціонерні товариства на публічні й приватні; втратив чинність 01.01.2023 на підставі Закону № 2465-IX (legal-baseline, розд. 1).'
 
   - id: law-3480-iv
     type: law
@@ -365,33 +381,6 @@ sources:
     checkedAt: '2026-09-17'
     note: 'Повідомлення від 06.03.2024: закон ухвалено 22.02.2024 і розроблявся у координації з Кабінетом Міністрів, посольством США, представництвом ЄС, ЄБРР, МВФ і ОЕСР; мета — впровадження кращих практик корпоративного управління і гармонізація з правом ЄС.'
 
-  - id: nabu-midas-2025
-    type: web
-    title: 'Операція «Мідас»: НАБУ повідомило про викриття корупції в енергетиці'
-    authors: [Детектор медіа]
-    year: 2025
-    url: https://detector.media/infospace/article/245494/2025-11-10-operatsiya-midas-nabu-povidomylo-pro-vykryttya-koruptsii-v-energetytsi/
-    checkedAt: '2026-09-14'
-    note: 'Повідомлення НАБУ і САП від 10.11.2025 про схему впливу на НАЕК «Енергоатом» з відкатами 10–15 % вартості контрактів. Позиція сторони обвинувачення, а не встановлений судом факт.'
-
-  - id: lb-energoatom-board-2025
-    type: web
-    title: Уряд достроково припинив повноваження Наглядової ради Енергоатому
-    authors: [LB.ua]
-    year: 2025
-    url: https://lb.ua/society/2025/11/11/706387_uryad_dostrokovo_pripiniv.html
-    checkedAt: '2026-09-17'
-    note: 'Повідомлення від 11.11.2025: уряд достроково припинив повноваження наглядової ради «Енергоатому», Міністерству економіки доручено протягом тижня подати новий склад, Держаудитслужбі — терміновий аудит, зокрема закупівель.'
-
-  - id: lb-energy-boards-plan-2025
-    type: web
-    title: Кабмін затвердив план оновлення наглядових рад і виконавчих органів енергетичних компаній
-    authors: [LB.ua]
-    year: 2025
-    url: https://lb.ua/economics/2025/11/17/707261_kabmin_zatverdiv_plan_onovlennya.html
-    checkedAt: '2026-09-14'
-    note: 'Повідомлення від 17.11.2025 про план оновлення наглядових рад і виконавчих органів державних енергокомпаній: «Енергоатом», Нафтогаз, Укргідроенерго, Оператор ГТС, Укренерго, Гарантований покупець, Центренерго та інші.'
-
   - id: lb-nomination-committee-2025
     type: web
     title: 'Свириденко: номінаційний комітет затвердив чотирьох незалежних членів НР «Енергоатому»'
@@ -410,11 +399,3 @@ sources:
     checkedAt: '2026-09-17'
     note: 'Повідомлення від 28.01.2026: наглядова рада з семи осіб — чотири незалежні члени і три представники держави; перші завдання — нове керівництво та аудит договорів, закупівель і аукціонів.'
 
-  - id: kmu-energoatom-gts-2026
-    type: web
-    title: Уряд завершив формування наглядових рад «Енергоатому» та «Оператора ГТС України»
-    authors: [Кабінет Міністрів України]
-    year: 2026
-    url: https://www.kmu.gov.ua/news/uriad-zavershyv-formuvannia-nahliadovykh-rad-enerhoatomu-ta-operatora-hts-ukrainy
-    checkedAt: '2026-09-17'
-    note: 'Повідомлення від 03.07.2026: 01.07.2026 уряд призначив двох незалежних членів наглядової ради «Енергоатому» замість тих, хто склав повноваження у травні 2026 р. (номінаційний комітет обрав їх з одинадцяти кандидатів), і завершив формування наглядової ради Оператора ГТС; добір орієнтований на стандарти ОЕСР щодо державних підприємств.'

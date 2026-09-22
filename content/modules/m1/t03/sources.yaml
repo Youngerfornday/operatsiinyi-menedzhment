@@ -39,6 +39,24 @@ sources:
     checkedAt: '2026-09-15'
     note: 'Чинний, редакція від 01.01.2026. Використано ст. 2, 3, 4, 7, 12–14, 20, 24, 26, 27, 28, 31, 32, 34, 38, 39, 44 — коди TOV-01…TOV-15 legal-baseline.'
 
+  - id: civil-code-435-iv
+    type: law
+    title: Цивільний кодекс України від 16.01.2003 № 435-IV
+    authors: [Верховна Рада України]
+    year: 2003
+    url: https://zakon.rada.gov.ua/laws/show/435-15
+    checkedAt: '2026-09-17'
+    note: 'Чинний, редакція від 05.08.2026. Ст. 96-1: чинне загальне визначення корпоративних прав, перелік правомочностей і поняття корпоративних відносин (legal-baseline GK-09). Замінило дефініцію з Господарського кодексу.'
+
+  - id: tax-code-2755-vi
+    type: law
+    title: Податковий кодекс України від 02.12.2010 № 2755-VI
+    authors: [Верховна Рада України]
+    year: 2010
+    url: https://zakon.rada.gov.ua/laws/show/2755-17
+    checkedAt: '2026-09-17'
+    note: 'Чинний, редакція від 17.09.2026. П. 14.1.90 ст. 14 дає визначення корпоративних прав лише для цілей оподаткування і не замінює загальноцивільного (legal-baseline GK-10).'
+
   - id: law-4695-ix
     type: law
     title: Закон України «Про Державний бюджет України на 2026 рік» від 03.12.2025 № 4695-IX
@@ -101,9 +119,9 @@ sources:
     authors: [Державна служба статистики України]
     publisher: 'банк даних stat.gov.ua, SDMX API 2.1'
     year: 2026
-    url: https://stat.gov.ua/uk/datasets/reyestr-respondentiv-statystychnykh-sposterezhen-kvartalna-misyachna
+    url: https://stat.gov.ua/sdmx/workspaces/default:integration/registry/sdmx/2.1/data/SSSU,DF_STATISTICAL_BUSINESS_REGISTER_Q_M,/REG_LEG_ENT.UA00000000000000000..230+231+232+235+240+250.Q?startPeriod=2025-Q4
+    note: 'Пряме посилання відтворює числа: показник REG_LEG_ENT, регіон UA00000000000000000, коди КОПФГ 230 АТ, 231 відкрите АТ, 232 закрите АТ, 235 державна акціонерна компанія, 240 ТОВ, 250 ТДВ; запит виконують із заголовком Accept: application/vnd.sdmx.data+csv;version=1.0.0. Період 2025-Q4 відповідає даті 01.01.2026, 2026-Q2 — 01.07.2026. Загальну кількість юридичних осіб дає той самий потік з розрізом _T._T (docs/research/data-sources.md, розд. 1.1). Звідси: 13 451 і 13 501 АТ, 836 712 і 851 636 ТОВ, 1 485 і 1 480 ТДВ, 1 572 225 юридичних осіб на 01.07.2026.'
     checkedAt: '2026-09-15'
-    note: 'Джерело даних на 01.01.2026 і 01.07.2026: 13 451 і 13 501 АТ, 836 712 і 851 636 ТОВ, 1 485 і 1 480 ТДВ; усього юридичних осіб 1 572 225 на 01.07.2026. Період 2025-Q4 відповідає даті 01.01.2026 (docs/research/data-sources.md, розд. 1.1).'
 
   - id: oecd-ukraine-2025
     type: report
@@ -120,7 +138,7 @@ sources:
   - id: harvard-tornetta-2024
     type: article
     title: 'Tornetta v. Musk: Post-Trial Opinion'
-    authors: [Harvard Law School Forum on Corporate Governance]
+    publisher: Harvard Law School Forum on Corporate Governance
     year: 2024
     language: en
     url: https://corpgov.law.harvard.edu/2024/02/01/tesla-musk-case-post-trial-opinion/
@@ -135,7 +153,7 @@ sources:
     language: en
     url: https://www.sec.gov/Archives/edgar/data/1318605/000110465924071439/tm2413800d31_8k.htm
     checkedAt: '2026-09-17'
-    note: 'Офіційні результати голосувань: ратифікація пакета 2018 р. — 1 760 780 650 «за» і 528 908 419 «проти»; перереєстрація з Делаверу до Техасу — 2 000 873 803 «за» і 293 910 071 «проти».'
+    note: 'Офіційні результати голосувань: перереєстрація з Делаверу до Техасу — 2 000 873 803 «за» і 293 910 071 «проти»; ратифікація пакета 2018 р. — 1 760 780 650 «за» і 528 908 419 «проти». Сервер EDGAR віддає 403 на автоматизовані запити; перевірено дослідником 2026-09-17.'
 
   - id: gibson-dunn-tesla-2025
     type: article
@@ -155,7 +173,7 @@ sources:
     language: en
     url: https://www.sec.gov/Archives/edgar/data/1318605/000110465926053166/tm2611837d1_10ka.htm
     checkedAt: '2026-09-17'
-    note: 'Джерело факту про схвалення радою 21.04.2026 угоди щодо виконання опціону 2018 р. і про втрату проміжної винагороди 2025 р.'
+    note: 'Форма підтверджує статус компанії після перереєстрації до Техасу і хронологію рішень ради за 2026 р. Сервер EDGAR віддає 403 на автоматизовані запити; перевірено дослідником 2026-09-17.'
 
   # Кейс OpenAI (docs/research/cases.md, розд. 10)
   - id: abc-openai-timeline-2023

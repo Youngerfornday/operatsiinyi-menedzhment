@@ -630,6 +630,11 @@ questions:
     distractors:
       - Обов’язковий розподіл прибутку між усіма працівниками наприкінці року
       - Заборона обирати до ради осіб, які не є акціонерами товариства
+    lawRef:
+      - act: UK Corporate Governance Code 2024 (Financial Reporting Council)
+        article: Provisions 9 і 11 (FL-01)
+        checkedAt: '2026-09-18'
+        url: https://www.frc.org.uk/documents/6709/UK_Corporate_Governance_Code_2024_a2hmQmY.pdf
 
   - id: t02-q004
     type: ddwtos
@@ -789,6 +794,11 @@ questions:
     feedbackFalse: >-
       Так. Посередник голосує лише за дорученням і вказівками акціонера, тому теза про «банк голосує за вас»
       сьогодні хибна.
+    lawRef:
+      - act: Aktiengesetz (Німеччина)
+        article: § 135 AktG (FL-05)
+        checkedAt: '2026-09-18'
+        url: https://www.gesetze-im-internet.de/aktg/__135.html
 
   - id: t02-q009
     type: matching
@@ -958,6 +968,11 @@ questions:
         feedback: >-
           Перехресне володіння означає взаємні пакети компаній однієї групи, а не угоду родини зі спорідненими
           холдингами.
+    lawRef:
+      - act: UK Corporate Governance Code 2024 (Financial Reporting Council)
+        article: Provisions 9 і 11 (FL-01)
+        checkedAt: '2026-09-18'
+        url: https://www.frc.org.uk/documents/6709/UK_Corporate_Governance_Code_2024_a2hmQmY.pdf
 
   - id: t02-q013
     type: multianswer
@@ -1021,6 +1036,10 @@ questions:
         article: ст. 11-2 ч. 2 (DP-03)
         checkedAt: '2026-09-15'
         url: https://zakon.rada.gov.ua/laws/show/185-16#n397
+      - act: Закон України «Про управління об’єктами державної власності» № 185-V
+        article: ст. 11-2 ч. 1 (DP-02)
+        checkedAt: '2026-09-14'
+        url: https://zakon.rada.gov.ua/laws/show/185-16
 
   - id: t02-q014
     type: multichoice

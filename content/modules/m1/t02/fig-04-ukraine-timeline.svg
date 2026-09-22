@@ -57,10 +57,11 @@
   <text class="yr" x="88" y="467">2024</text>
   <text class="t" x="120" y="458">Закон № 3587-IX: реформа державного сектору</text>
   <text class="s" x="120" y="478">більшість незалежних у радах компаній з державою</text>
-  <circle class="refc" cx="22" cy="496" r="11"/><text class="refn" x="22" y="500">5</text>
+  <circle class="refc" cx="22" cy="462" r="11"/><text class="refn" x="22" y="466">5</text>
 
   <circle class="dot" cx="100" cy="530" r="7"/>
   <text class="yr" x="88" y="535">2025</text>
   <text class="t" x="120" y="526">Закон № 4196-IX</text>
   <text class="s" x="120" y="546">Господарський кодекс втратив чинність 28.08.2025</text>
+  <circle class="refc" cx="22" cy="530" r="11"/><text class="refn" x="22" y="534">6</text>
 </svg>
