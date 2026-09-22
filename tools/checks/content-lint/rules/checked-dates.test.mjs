@@ -2,10 +2,10 @@ import { describe, expect, it } from 'vitest';
 import { baseline, file } from '../__fixtures__/baseline.mjs';
 import { checkCheckedDates, todayIso } from './checked-dates.mjs';
 
-const lawRef = (code, date) => [
-  'lawRef:',
-  '  - act: Закон України № 2465-IX',
-  `    article: ст. 40 ч. 1 (${code})`,
+const ref = (code, date) => [
+  'refs:',
+  '  - source: Старченко Г.В. та ін., 2020',
+  `    locator: розділ «Запаси» (${code})`,
   `    checkedAt: '${date}'`,
 ];
 
@@ -14,41 +14,46 @@ describe('checkCheckedDates', () => {
   const today = '2026-09-17';
 
   it('reports a date that contradicts the rule of the baseline document', () => {
-    const findings = checkCheckedDates([file('content/banks/training/m1.yaml', lawRef('AT-26', '2026-09-14'))], base, today);
+    const findings = checkCheckedDates([file('content/banks/training/m1.yaml', ref('EOQ-01', '2026-09-14'))], base, today);
     expect(findings).toMatchObject([{ level: 'error', rule: 'checked-date', line: 4 }]);
     expect(findings[0].message).toContain('2026-09-15');
-    expect(findings[0].hint).toContain('Ключові числа');
+    expect(findings[0].message).toContain('formula-baseline.md');
   });
 
-  it('accepts the date from the key-numbers table and from a section', () => {
-    expect(checkCheckedDates([file('content/banks/training/m1.yaml', lawRef('AT-26', '2026-09-15'))], base, today)).toEqual([]);
-    expect(checkCheckedDates([file('content/banks/training/m1.yaml', lawRef('UBO-03', '2026-09-16'))], base, today)).toEqual([]);
-    expect(checkCheckedDates([file('content/banks/training/m1.yaml', lawRef('MS-01', '2026-09-14'))], base, today)).toEqual([]);
+  it('accepts the date recorded on the code row, and the section fallback date', () => {
+    expect(checkCheckedDates([file('content/banks/training/m1.yaml', ref('EOQ-01', '2026-09-15'))], base, today)).toEqual([]);
+    expect(checkCheckedDates([file('content/banks/training/m1.yaml', ref('CAP-03', '2026-09-16'))], base, today)).toEqual([]);
+    expect(checkCheckedDates([file('content/banks/training/m1.yaml', ref('EOQ-04', '2026-09-14'))], base, today)).toEqual([]);
+    expect(checkCheckedDates([file('content/banks/training/m1.yaml', ref('ISO-9001-11', '2026-09-15'))], base, today)).toEqual([]);
   });
 
-  it('reports a future check date of a norm and of a source', () => {
-    const future = checkCheckedDates([file('content/banks/training/m1.yaml', lawRef('AT-26', '2026-10-01'))], base, today);
+  it('reports a future check date of a code reference and of a source', () => {
+    const future = checkCheckedDates([file('content/banks/training/m1.yaml', ref('EOQ-01', '2026-10-01'))], base, today);
     expect(future.map((finding) => finding.message)).toEqual([
       expect.stringContaining('у майбутньому'),
-      expect.stringContaining('legal-baseline.md фіксує'),
+      expect.stringContaining('formula-baseline.md фіксує'),
     ]);
     const sources = file('content/modules/m1/t01/sources.yaml', [
       'topic: t01',
       'sources:',
-      '  - id: berle-means-1932',
+      '  - id: starchenko-2020',
       '    url: https://example.org/b',
       "    checkedAt: '2026-12-31'",
     ]);
     expect(checkCheckedDates([sources], base, today)).toMatchObject([{ level: 'error', line: 3 }]);
   });
 
-  it('checks the date of a <LawNorm> tag and accepts the 2026-09-16 check of beneficial ownership codes', () => {
+  it('checks the date of a <StandardRef> tag and accepts the section-level 2026-09-16 check of CAP-03', () => {
     const lecture = file('content/modules/m1/t01/lecture.mdx', [
-      '<LawNorm act="Закон № 361-IX" article="ст. 5-1 ч. 1 (legal-baseline UBO-03)" checkedAt="2026-09-16">Норма.</LawNorm>',
+      '<StandardRef source="Гевко І., 2017" locator="розділ «Продуктивність» (CAP-03)" checkedAt="2026-09-16">Норма.</StandardRef>',
       '',
-      '<LawNorm act="Закон № 2465-IX" article="ст. 40 ч. 1 (legal-baseline AT-26)" checkedAt="2026-09-16">Норма.</LawNorm>',
+      '<StandardRef source="Старченко Г.В. та ін., 2020" locator="розділ «Запаси» (EOQ-01)" checkedAt="2026-09-16">Норма.</StandardRef>',
     ]);
-    expect(checkCheckedDates([lecture], base, today)).toMatchObject([{ level: 'error', line: 3, message: expect.stringContaining('AT-26') }]);
+    expect(checkCheckedDates([lecture], base, today)).toMatchObject([{ level: 'error', line: 3, message: expect.stringContaining('EOQ-01') }]);
+  });
+
+  it('ignores a code that is not in either baseline (left to ref-code)', () => {
+    expect(checkCheckedDates([file('content/banks/training/m1.yaml', ref('EOQ-99', '2026-09-15'))], base, today)).toEqual([]);
   });
 
   it('defaults to the current day', () => {

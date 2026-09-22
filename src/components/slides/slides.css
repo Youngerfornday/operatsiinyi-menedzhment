@@ -38,7 +38,7 @@
 .slide-title { font-size: 3.2cqi; font-weight: 700; font-variation-settings: "wdth" 90; line-height: 1.12; letter-spacing: var(--tracking-title); text-wrap: balance; }
 .slide-title.is-prompt { max-width: 82cqi; font-size: 2.7cqi; font-weight: 650; font-variation-settings: "wdth" 92; line-height: 1.22; }
 .slide-body { min-width: 0; display: grid; align-content: start; padding-top: 0.6cqi; }
-.is-norm .slide-body, .is-figure .slide-body, .is-question .slide-body, .is-quote .slide-body, .is-formula .slide-body { align-content: center; padding-top: 0; }
+.is-standard .slide-body, .is-figure .slide-body, .is-question .slide-body, .is-quote .slide-body, .is-formula .slide-body { align-content: center; padding-top: 0; }
 
 .slide-src { font-size: 1cqi; line-height: 1.35; color: var(--ink-3); text-wrap: pretty; }
 .slide-foot { display: flex; align-items: center; gap: 1.6cqi; padding-top: 0.9cqi; border-top: 1px solid var(--line); font-size: 1.05cqi; color: var(--ink-3); }
@@ -78,14 +78,14 @@
 .slide-figure-art svg { width: 100%; height: auto; max-height: 32cqi; font-family: var(--font); }
 .slide-figure figcaption { padding-top: 1.2cqi; border-top: 1px solid var(--rule); font-size: 1.75cqi; line-height: 1.45; color: var(--ink-2); text-wrap: pretty; }
 
-/* Норма права */
-.slide-norm { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2.4cqi; padding: 2.8cqi 3.4cqi; background: var(--surface-tint); color: var(--ink-on-tint); border-radius: var(--r-2); }
-.slide-norm > .icon { width: 3.4cqi; height: 3.4cqi; color: var(--accent); }
-.slide-norm-text { padding-left: 2cqi; border-left: 1px solid var(--line-strong); font-size: 2.2cqi; font-style: italic; line-height: 1.45; text-wrap: pretty; }
-.slide-norm-src { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3em 1.2em; margin-top: 1.8cqi; font-size: 1.2cqi; color: var(--ink-2); }
-.slide-norm-src a, .slide-norm-src .verified { display: inline-flex; align-items: center; gap: 0.3em; }
-.slide-norm-src .verified { color: var(--ok-ink); }
-.slide-norm-src .icon { width: 1em; height: 1em; }
+/* Стандарт/джерело */
+.slide-standard { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2.4cqi; padding: 2.8cqi 3.4cqi; background: var(--surface-tint); color: var(--ink-on-tint); border-radius: var(--r-2); }
+.slide-standard > .icon { width: 3.4cqi; height: 3.4cqi; color: var(--accent); }
+.slide-standard-text { padding-left: 2cqi; border-left: 1px solid var(--line-strong); font-size: 2.2cqi; font-style: italic; line-height: 1.45; text-wrap: pretty; }
+.slide-standard-src { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3em 1.2em; margin-top: 1.8cqi; font-size: 1.2cqi; color: var(--ink-2); }
+.slide-standard-src a, .slide-standard-src .verified { display: inline-flex; align-items: center; gap: 0.3em; }
+.slide-standard-src .verified { color: var(--ok-ink); }
+.slide-standard-src .icon { width: 1em; height: 1em; }
 
 /* Формула */
 .slide-formula-wrap { display: grid; gap: 2.4cqi; }
@@ -166,10 +166,10 @@
   .slide-column .slide-list { font-size: max(0.875rem, 1.8cqi); }
   .slide-figure { gap: max(1rem, 4cqi); }
   .slide-figure figcaption { padding-top: max(0.5rem, 1.2cqi); font-size: max(0.875rem, 1.75cqi); }
-  .slide-norm { gap: max(0.75rem, 2.4cqi); padding: max(1rem, 2.8cqi) max(1rem, 3.4cqi); }
-  .slide-norm > .icon { width: max(1.5rem, 3.4cqi); height: max(1.5rem, 3.4cqi); }
-  .slide-norm-text { padding-left: max(0.75rem, 2cqi); font-size: max(1rem, 2.2cqi); }
-  .slide-norm-src { margin-top: max(0.75rem, 1.8cqi); font-size: max(0.75rem, 1.2cqi); }
+  .slide-standard { gap: max(0.75rem, 2.4cqi); padding: max(1rem, 2.8cqi) max(1rem, 3.4cqi); }
+  .slide-standard > .icon { width: max(1.5rem, 3.4cqi); height: max(1.5rem, 3.4cqi); }
+  .slide-standard-text { padding-left: max(0.75rem, 2cqi); font-size: max(1rem, 2.2cqi); }
+  .slide-standard-src { margin-top: max(0.75rem, 1.8cqi); font-size: max(0.75rem, 1.2cqi); }
   .slide-formula-wrap { gap: max(1rem, 2.4cqi); }
   .slide-formula { gap: max(0.25rem, 0.7cqi); padding: max(0.75rem, 1.8cqi) max(1rem, 2.8cqi); }
   .slide-formula-label { font-size: max(0.6875rem, 1.1cqi); }
@@ -201,8 +201,8 @@
   .slide-columns, .slide-figure, .slide-list.is-summary, .slide-outcomes li { grid-template-columns: minmax(0, 1fr); }
   .slide-facts { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; grid-auto-flow: row; }
   .slide-figure-art svg { max-height: none; }
-  .slide-norm { grid-template-columns: minmax(0, 1fr); }
-  .slide-norm > .icon { display: none; }
+  .slide-standard { grid-template-columns: minmax(0, 1fr); }
+  .slide-standard > .icon { display: none; }
   .slide-band-main, .slide-band-sub { max-width: none; }
 }
 

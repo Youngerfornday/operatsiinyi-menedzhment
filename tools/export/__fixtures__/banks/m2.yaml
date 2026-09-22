@@ -10,9 +10,9 @@ questions:
     single: true
     stem: Який орган є вищим органом акціонерного товариства?
     generalFeedback: Вищий орган АТ — загальні збори акціонерів.
-    lawRef:
-      - act: Закон України «Про акціонерні товариства» № 2465-IX
-        article: ст. 39
+    refs:
+      - source: Закон України «Про акціонерні товариства» № 2465-IX
+        locator: ст. 39
         checkedAt: 2026-09-01
     answers:
       - text: Загальні збори акціонерів
@@ -31,9 +31,9 @@ questions:
     bloom: remember
     stem: Загальні збори акціонерів скликає наглядова рада.
     generalFeedback: Скликання зборів — повноваження наглядової ради.
-    lawRef:
-      - act: Закону України «Про акціонерні товариства» № 2465-IX
-        article: ст. 48 ч. 1
+    refs:
+      - source: Закону України «Про акціонерні товариства» № 2465-IX
+        locator: ст. 48 ч. 1
         checkedAt: 2026-09-01
         url: https://zakon.rada.gov.ua/laws/show/2465-20
     correct: true

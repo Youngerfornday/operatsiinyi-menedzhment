@@ -6,12 +6,12 @@ import { expectNoHorizontalScroll, expectNoSeriousAxeViolations } from './helper
 import { BASE_PATH } from './playwright.config';
 
 /**
- * Кабінет викладача на фікстурному маніфесті (KU_E2E_DOWNLOADS=1, src/components/cabinet/__fixtures__/manifest.ts).
+ * Кабінет викладача на фікстурному маніфесті (OM_E2E_DOWNLOADS=1, src/components/cabinet/__fixtures__/manifest.ts).
  * Самі файли матеріалів віддає page.route: так ZIP збирається з реально завантажених байтів, а помилку мережі
  * можна відтворити для одного файлу.
  */
 
-const LECTURE_TITLE = 'Лекція 1. Корпорація і корпоративне управління';
+const LECTURE_TITLE = 'Лекція 1. Корпорація і операційний менеджмент';
 
 function fixtureBody(path: string): string {
   return `Фікстурний файл кабінету: ${path}\n`.repeat(40);
@@ -51,7 +51,7 @@ test.describe('кабінет викладача', () => {
     await expect(row(page, 'bank-t01').getByRole('link', { name: /Питання й відповіді/ })).toHaveCount(0);
     await expect(page.locator('[data-package]')).toHaveCount(0);
     await expect(page.locator('[data-ready-packages]')).toContainText('призначені викладачам');
-    expect(await page.evaluate(() => localStorage.getItem('ku:v1:view'))).toBe('student');
+    expect(await page.evaluate(() => localStorage.getItem('om:v1:view'))).toBe('student');
 
     await page.reload();
     await expect(page.locator('[data-cabinet]')).toHaveAttribute('data-hydrated', 'true');
@@ -183,7 +183,7 @@ test.describe('кабінет викладача', () => {
     const downloadPromise = page.waitForEvent('download');
     await page.locator('[data-build-zip]').click();
     const download = await downloadPromise;
-    expect(download.suggestedFilename()).toMatch(/^korporatyvne-upravlinnia-materialy-\d{4}-\d{2}-\d{2}\.zip$/);
+    expect(download.suggestedFilename()).toMatch(/^operatsiinyi-menedzhment-materialy-\d{4}-\d{2}-\d{2}\.zip$/);
     const archive = new Uint8Array(await readFile(await download.path()));
     expect(archive.byteLength).toBeGreaterThan(0);
 
@@ -192,7 +192,7 @@ test.describe('кабінет викладача', () => {
     expect(names).toEqual(
       [
         'README.txt',
-        `Модуль 1/Практична 01/Практична 1. Матриця моделей корпоративного управління.pdf`,
+        `Модуль 1/Практична 01/Практична 1. Матриця моделей операційного менеджменту.pdf`,
         `Модуль 1/Тема 01/${LECTURE_TITLE}.pdf`,
         'Модуль 1/Тема 01/Тренувальний тест 1 — питання Moodle XML.xml',
       ].sort(),

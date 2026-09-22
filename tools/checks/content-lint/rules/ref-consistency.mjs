@@ -1,9 +1,9 @@
-/** Звіряє коди норм у тілі/слайдах із кодами frontmatter lawRef тієї самої теми. */
+/** Звіряє коди бази в тілі/слайдах із кодами frontmatter `refs` тієї самої теми. */
 import { codesIn } from '../refs.mjs';
 import { ERROR, makeFinding } from '../finding.mjs';
 
-export const RULE = 'lawref-consistency';
-const HINT = 'Синхронізуйте коди: додайте відсутні коди до frontmatter `lawRef` або приберіть/виправте зайві посилання в тексті чи слайдах.';
+export const RULE = 'ref-consistency';
+const HINT = 'Синхронізуйте коди: додайте відсутні коди до frontmatter `refs` або приберіть/виправте зайві посилання в тексті чи слайдах.';
 const FRONTMATTER = /^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/;
 
 function topicOf(file) {
@@ -11,12 +11,12 @@ function topicOf(file) {
 }
 
 function frontCodes(lecture) {
-  const refs = Array.isArray(lecture.data?.lawRef) ? lecture.data.lawRef : lecture.data?.lawRef ? [lecture.data.lawRef] : [];
-  return new Set(refs.flatMap((ref) => codesIn(String(ref?.article ?? ''))));
+  const refs = Array.isArray(lecture.data?.refs) ? lecture.data.refs : lecture.data?.refs ? [lecture.data.refs] : [];
+  return new Set(refs.flatMap((ref) => codesIn(String(ref?.locator ?? ''))));
 }
 
 function frontLine(lecture) {
-  return lecture.maps.find((node) => node.path.at(-1) === 'lawRef')?.line ?? 1;
+  return lecture.maps.find((node) => node.path.at(-1) === 'refs')?.line ?? 1;
 }
 
 function lineOfCode(file, code) {
@@ -28,7 +28,7 @@ function lineOfCode(file, code) {
  * Один finding на тему містить обидва типи розбіжностей, щоб звіт не розсипався на
  * десятки однакових повідомлень.
  */
-export function checkLawrefConsistency(files) {
+export function checkRefConsistency(files) {
   const topics = new Map();
   for (const file of files) {
     const topic = topicOf(file);
@@ -52,8 +52,8 @@ export function checkLawrefConsistency(files) {
       ? lineOfCode(lecture, missingInFrontmatter[0]) || slides.map((slide) => lineOfCode(slide, missingInFrontmatter[0])).find((value) => value > 1) || 1
       : frontLine(lecture);
     const parts = [];
-    if (missingInFrontmatter.length > 0) parts.push(`згадані в тексті/слайдах, але відсутні у lawRef: ${missingInFrontmatter.join(', ')}`);
-    if (missingInText.length > 0) parts.push(`є у lawRef, але не згадані в тексті/слайдах: ${missingInText.join(', ')}`);
+    if (missingInFrontmatter.length > 0) parts.push(`згадані в тексті/слайдах, але відсутні у refs: ${missingInFrontmatter.join(', ')}`);
+    if (missingInText.length > 0) parts.push(`є у refs, але не згадані в тексті/слайдах: ${missingInText.join(', ')}`);
     return [makeFinding({
       file: lecture.file,
       line,

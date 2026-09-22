@@ -36,12 +36,12 @@ const views = questions.map(bankQuestionView);
 const bloom = BLOOM_LEVELS.map((level) => ({ level, count: questions.filter((q) => q.bloom === level).length }));
 const typeLabels = questions.map(questionTypeLabel);
 const typeCounts = [...new Set(typeLabels)].map((label) => [label, typeLabels.filter((l) => l === label).length] as const);
-const withLaw = questions.filter((q) => q.lawRef.length > 0).length;
+const withRefs = questions.filter((q) => q.refs.length > 0).length;
 ---
 
 <BaseLayout
   title={`Тренувальний банк теми ${topic.number} — ${course.title}`}
-  description={`Питання тренувального тесту теми «${topic.title}» з типом, рівнем Блума, нормою і правильною відповіддю — для викладача.`}
+  description={`Питання тренувального тесту теми «${topic.title}» з типом, рівнем Блума, джерелом і правильною відповіддю — для викладача.`}
   current="teacher"
   noindex
 >
@@ -51,7 +51,7 @@ const withLaw = questions.filter((q) => q.lawRef.length > 0).length;
       <p class="kicker">Оглядач тренувального банку</p>
       <h1 class="h1">Тренувальний тест {topic.number}. {typo(topic.title)}</h1>
       <p class="lede">
-        {pluralUk(questions.length, QUESTION_FORMS)} з правильними відповідями, поясненнями й нормами. Ті самі питання студент проходить у тренувальному тесті теми.
+        {pluralUk(questions.length, QUESTION_FORMS)} з правильними відповідями, поясненнями й джерелами. Ті самі питання студент проходить у тренувальному тесті теми.
       </p>
       <div class="bank-actions">
         <a class="btn btn-secondary" href={url(quizPath(topic.slug))}><Icon name="play" />Відкрити тест</a>
@@ -93,15 +93,15 @@ const withLaw = questions.filter((q) => q.lawRef.length > 0).length;
           </tbody>
         </table>
         <table class="bank-table">
-          <caption>Норми права</caption>
+          <caption>Джерела</caption>
           <tbody>
             <tr>
-              <th scope="row">Питань з нормою</th>
-              <td class="num">{withLaw}</td>
+              <th scope="row">Питань із джерелом</th>
+              <td class="num">{withRefs}</td>
             </tr>
             <tr>
-              <th scope="row">Без норми</th>
-              <td class="num">{questions.length - withLaw}</td>
+              <th scope="row">Без джерела</th>
+              <td class="num">{questions.length - withRefs}</td>
             </tr>
           </tbody>
         </table>

@@ -10,12 +10,12 @@ import {
   normalizeBase,
 } from './dist-rules.mjs';
 
-const BASE = '/korporatyvne-upravlinnia/';
+const BASE = '/operatsiinyi-menedzhment/';
 
 describe('normalizeBase', () => {
   it('adds leading and trailing slashes', () => {
-    expect(normalizeBase('/korporatyvne-upravlinnia')).toBe(BASE);
-    expect(normalizeBase('korporatyvne-upravlinnia/')).toBe(BASE);
+    expect(normalizeBase('/operatsiinyi-menedzhment')).toBe(BASE);
+    expect(normalizeBase('operatsiinyi-menedzhment/')).toBe(BASE);
     expect(normalizeBase(undefined)).toBe('/');
   });
 });
@@ -67,7 +67,7 @@ describe('findUnbasedReferences', () => {
 
 describe('containsCanary', () => {
   it('detects the control canary marker in text and binary buffers', () => {
-    expect(CANARY_MARKER.split('-')).toEqual(['KU', 'CONTROL', 'CANARY']);
+    expect(CANARY_MARKER.split('-')).toEqual(['OM', 'CONTROL', 'CANARY']);
     expect(containsCanary(Buffer.from(`canary: ${CANARY_MARKER}-m1-2026`))).toBe(true);
     expect(containsCanary(Buffer.from([0, 255, ...Buffer.from(CANARY_MARKER), 0]))).toBe(true);
     expect(containsCanary(Buffer.from('KU-CONTROL canary'))).toBe(false);

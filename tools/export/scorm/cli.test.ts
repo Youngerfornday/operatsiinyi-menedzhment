@@ -12,15 +12,15 @@ const INDEX: ScormPackagesIndex = {
   generator: 'test',
   packages: [
     {
-      id: 'p03-kvorum',
-      file: 'p03-kvorum.zip',
-      kind: 'quorum',
-      title: 'П3. Тренажер «Кворум і голосування»',
-      registryId: 'quorum',
-      practical: 'p03',
-      module: 'm2',
-      activityId: 'quorum-calculator',
-      masteryPercent: 100,
+      id: 'p01-matrytsia-modelei',
+      file: 'p01-matrytsia-modelei.zip',
+      kind: 'matrix',
+      title: 'П1. Матриця моделей операційного менеджменту',
+      registryId: 'model-matrix',
+      practical: 'p01',
+      module: 'm1',
+      activityId: 'p01-model-matrix',
+      masteryPercent: 90,
       bytes: 2048,
       sha256: '0'.repeat(64),
       files: ['imsmanifest.xml', 'index.html'],
@@ -62,8 +62,8 @@ describe('runScormCli', () => {
     expect(code).toBe(0);
     expect(options?.outDir).toBe(target);
     expect(existsSync(join(target, 'stale.zip'))).toBe(false);
-    expect(out.join('\n')).toContain('p03-kvorum.zip');
-    expect(out.join('\n')).toContain('прохідний 100');
+    expect(out.join('\n')).toContain('p01-matrytsia-modelei.zip');
+    expect(out.join('\n')).toContain('прохідний 90');
   });
 
   test('reports a failed build with code 1', async () => {

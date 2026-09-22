@@ -49,22 +49,22 @@ raise_memory_limit(MEMORY_HUGE);
 /**
  * Створює порожній курс, попередньо видаливши курс із тим самим shortname.
  */
-function ku_delete_course(string $shortname): void {
+function om_delete_course(string $shortname): void {
     global $DB;
     if ($existing = $DB->get_record('course', ['shortname' => $shortname])) {
         spike_capture_output(fn() => delete_course($existing, false));
     }
 }
 
-function ku_fresh_course(testing_data_generator $gen, string $shortname): stdClass {
-    ku_delete_course($shortname);
+function om_fresh_course(testing_data_generator $gen, string $shortname): stdClass {
+    om_delete_course($shortname);
     return $gen->create_course(['shortname' => $shortname, 'fullname' => $shortname, 'lang' => 'uk']);
 }
 
 /**
  * Шлях категорії від top у форматі Moodle XML (буквальна «/» у назві подвоюється).
  */
-function ku_category_path(stdClass $category): string {
+function om_category_path(stdClass $category): string {
     global $DB;
     $names = [];
     for ($current = $category; $current; $current = $current->parent ? $DB->get_record('question_categories', ['id' => $current->parent]) : null) {
@@ -76,7 +76,7 @@ function ku_category_path(stdClass $category): string {
 /**
  * Проходить питання з правильною відповіддю в тимчасовій спробі (без збереження) і повертає отриману частку.
  */
-function ku_fraction_for_correct_response(int $questionid, context $context): ?float {
+function om_fraction_for_correct_response(int $questionid, context $context): ?float {
     $quba = question_engine::make_questions_usage_by_activity('core_question_preview', $context);
     $quba->set_preferred_behaviour('deferredfeedback');
     $slot = $quba->add_question(question_bank::load_question($questionid), 1);
@@ -87,12 +87,12 @@ function ku_fraction_for_correct_response(int $questionid, context $context): ?f
     return $fraction === null ? null : (float)$fraction;
 }
 
-function ku_sorted(array $values): array {
+function om_sorted(array $values): array {
     sort($values);
     return array_values($values);
 }
 
-function ku_check_categories(stdClass $bank, array $expected): array {
+function om_check_categories(stdClass $bank, array $expected): array {
     global $DB;
     $errors = [];
     $top = question_get_top_category($bank->contextid, true);
@@ -104,7 +104,7 @@ function ku_check_categories(stdClass $bank, array $expected): array {
             continue;
         }
         $found[$category['idnumber']] = $record;
-        $path = ku_category_path($record);
+        $path = om_category_path($record);
         if ($path !== $category['path']) {
             $errors[] = "category {$category['idnumber']}: path '{$path}' != '{$category['path']}'";
         }
@@ -126,12 +126,12 @@ function ku_check_categories(stdClass $bank, array $expected): array {
     return [$errors, count($found)];
 }
 
-function ku_check_question_file(testing_data_generator $gen, string $dir, array $expected, string $prefix): array {
+function om_check_question_file(testing_data_generator $gen, string $dir, array $expected, string $prefix): array {
     global $DB;
     $shortname = strtoupper("{$prefix}-Q-{$expected['kind']}-{$expected['scope']}");
     $result = ['file' => $expected['file'], 'course' => $shortname, 'expected' => ['total' => $expected['total'],
         'bytype' => $expected['byType'], 'categories' => count($expected['categories'])], 'errors' => []];
-    $course = ku_fresh_course($gen, $shortname);
+    $course = om_fresh_course($gen, $shortname);
     $bank = spike_create_question_bank($course);
     try {
         $import = spike_import_questions($course, $bank, $dir . '/' . $expected['file']);
@@ -145,7 +145,7 @@ function ku_check_question_file(testing_data_generator $gen, string $dir, array 
         $bytype[$question->qtype] = ($bytype[$question->qtype] ?? 0) + 1;
     }
     ksort($bytype);
-    [$categoryerrors, $categoriesfound] = ku_check_categories($bank, $expected['categories']);
+    [$categoryerrors, $categoriesfound] = om_check_categories($bank, $expected['categories']);
     $result['imported'] = ['total' => count($questions), 'bytype' => $bytype, 'categories' => $categoriesfound];
     $result['errors'] = array_merge($result['errors'], $categoryerrors);
     if (count($questions) !== $expected['total']) {
@@ -175,8 +175,8 @@ function ku_check_question_file(testing_data_generator $gen, string $dir, array 
         if ($got->categoryidnumber !== $want['category']) {
             $result['errors'][] = "{$id}: category {$got->categoryidnumber} != {$want['category']}";
         }
-        $tags = ku_sorted(array_values(core_tag_tag::get_item_tags_array('core_question', 'question', $got->id)));
-        if ($tags === ku_sorted($want['tags'])) {
+        $tags = om_sorted(array_values(core_tag_tag::get_item_tags_array('core_question', 'question', $got->id)));
+        if ($tags === om_sorted($want['tags'])) {
             $tagged++;
         } else {
             $result['errors'][] = "{$id}: tags " . json_encode($tags) . ' != ' . json_encode($want['tags']);
@@ -186,7 +186,7 @@ function ku_check_question_file(testing_data_generator $gen, string $dir, array 
             $result['errors'][] = "{$id}: defaultmark {$defaultmark} != {$want['defaultMark']}";
         }
         try {
-            $fraction = ku_fraction_for_correct_response((int)$got->id, $context);
+            $fraction = om_fraction_for_correct_response((int)$got->id, $context);
             if ($fraction !== null && abs($fraction - 1.0) < 1e-6) {
                 $fullmarks++;
             } else {
@@ -206,7 +206,7 @@ function ku_check_question_file(testing_data_generator $gen, string $dir, array 
  * Ідентифікатори питань пулу, який дасть фільтр випадкового слота (той самий random_question_loader,
  * що використовує mod_quiz під час спроби).
  */
-function ku_pool_idnumbers(array $filter, int $limit = 200): array {
+function om_pool_idnumbers(array $filter, int $limit = 200): array {
     global $DB;
     $loader = new \core_question\local\bank\random_question_loader(new qubaid_list([]));
     $questions = $loader->get_filtered_questions($filter, $limit, 0, ['q.id']);
@@ -219,13 +219,13 @@ function ku_pool_idnumbers(array $filter, int $limit = 200): array {
               JOIN {question_versions} qv ON qv.questionid = q.id
               JOIN {question_bank_entries} qbe ON qbe.id = qv.questionbankentryid
              WHERE q.id $insql";
-    return ku_sorted(array_map(fn($r) => (string)$r->idnumber, $DB->get_records_sql($sql, $params)));
+    return om_sorted(array_map(fn($r) => (string)$r->idnumber, $DB->get_records_sql($sql, $params)));
 }
 
 /**
  * Кілька послідовних жеребкувань тим самим фільтром: так само добирає питання спроба тесту.
  */
-function ku_draw_idnumbers(array $filter, int $draws): array {
+function om_draw_idnumbers(array $filter, int $draws): array {
     global $DB;
     $loader = new \core_question\local\bank\random_question_loader(new qubaid_list([]));
     $result = [];
@@ -247,7 +247,7 @@ function ku_draw_idnumbers(array $filter, int $draws): array {
  * в одному банку одного курсу. Доводить, що випадковий слот із фільтром «категорія теми + тег Блума»
  * бере лише питання свого виду й свого пулу: модульний тест не тягне питань підсумкового пулу і навпаки.
  */
-function ku_check_mixed_bank(testing_data_generator $gen, string $dir, array $manifest, string $prefix): ?array {
+function om_check_mixed_bank(testing_data_generator $gen, string $dir, array $manifest, string $prefix): ?array {
     $files = array_values(array_filter($manifest['questions'],
         fn($file) => in_array($file['scope'], ['course', 'final'], true)));
     if (count($files) < 2) {
@@ -255,7 +255,7 @@ function ku_check_mixed_bank(testing_data_generator $gen, string $dir, array $ma
     }
     $shortname = strtoupper("{$prefix}-MIX");
     $result = ['course' => $shortname, 'files' => array_map(fn($file) => $file['file'], $files), 'errors' => []];
-    $course = ku_fresh_course($gen, $shortname);
+    $course = om_fresh_course($gen, $shortname);
     $bank = spike_create_question_bank($course);
 
     $expected = [];
@@ -274,13 +274,13 @@ function ku_check_mixed_bank(testing_data_generator $gen, string $dir, array $ma
     }
     // Після другого імпорту в банку мають лежати питання обох видів.
     $total = array_sum(array_map(fn($file) => $file['total'], $files));
-    $result['questionsinbank'] = ku_count_bank_questions($bank);
+    $result['questionsinbank'] = om_count_bank_questions($bank);
     if ($result['questionsinbank'] !== $total) {
         $result['errors'][] = "questions in shared bank {$result['questionsinbank']} != {$total}";
     }
 
     foreach ($expected as $group => $file) {
-        [$categoryidnumber, $tag, $wanted] = ku_pick_probe($file);
+        [$categoryidnumber, $tag, $wanted] = om_pick_probe($file);
         if ($tag === null) {
             $result['errors'][] = "{$group}: у маніфесті немає питань з тегом bloom-*";
             continue;
@@ -298,14 +298,14 @@ function ku_check_mixed_bank(testing_data_generator $gen, string $dir, array $ma
                 }
             }
         }
-        $sameTopicOthers = ku_sorted($sameTopicOthers);
+        $sameTopicOthers = om_sorted($sameTopicOthers);
 
         $category = spike_category_by_idnumber($bank, $categoryidnumber);
         $quiz = spike_create_quiz($gen, $course, 0, "Тест ({$group})", 6);
         spike_add_random_slots($quiz, $category, [$tag]);
         $filter = spike_random_slot_filters($quiz->cmid)[0] ?? [];
-        $pool = ku_pool_idnumbers($filter);
-        $draws = ku_draw_idnumbers($filter, 10);
+        $pool = om_pool_idnumbers($filter);
+        $draws = om_draw_idnumbers($filter, 10);
         $foreign = array_values(array_unique(array_filter(array_merge($pool, $draws),
             fn($idnumber) => !in_array($idnumber, $wanted, true))));
         $result['filters'][$group] = ['category' => $categoryidnumber, 'tag' => $tag, 'expected' => $wanted,
@@ -331,7 +331,7 @@ function ku_check_mixed_bank(testing_data_generator $gen, string $dir, array $ma
  *
  * @return array [idnumber категорії, назва тега або null, відсортовані idnumber питань]
  */
-function ku_pick_probe(array $file): array {
+function om_pick_probe(array $file): array {
     $groups = [];
     foreach ($file['questions'] as $question) {
         foreach ($question['tags'] as $tag) {
@@ -346,11 +346,11 @@ function ku_pick_probe(array $file): array {
     uasort($groups, fn($a, $b) => count($b) <=> count($a));
     $key = array_key_first($groups);
     [$category, $tag] = explode('|', $key, 2);
-    return [$category, $tag, ku_sorted($groups[$key])];
+    return [$category, $tag, om_sorted($groups[$key])];
 }
 
 /** Кількість питань (без підпитань Cloze) у банку курсу. */
-function ku_count_bank_questions(stdClass $bank): int {
+function om_count_bank_questions(stdClass $bank): int {
     global $DB;
     return (int)$DB->count_records_sql(
         "SELECT COUNT(1) FROM {question} q
@@ -364,7 +364,7 @@ function ku_count_bank_questions(stdClass $bank): int {
  * Імпорт записів у поточний глосарій з категоріями: той самий цикл, що в mod/glossary/import.php (Moodle 5.2.2),
  * без форми завантаження. Повертає [імпортовано, відхилено, створено категорій].
  */
-function ku_import_glossary_entries(stdClass $glossary, context $context, string $content): array {
+function om_import_glossary_entries(stdClass $glossary, context $context, string $content): array {
     global $DB, $USER;
     $xml = glossary_read_imported_file($content);
     if (!$xml) {
@@ -422,17 +422,17 @@ function ku_import_glossary_entries(stdClass $glossary, context $context, string
     return [$imported, $rejected, $categories];
 }
 
-function ku_check_glossary_file(testing_data_generator $gen, string $dir, array $expected, string $prefix): array {
+function om_check_glossary_file(testing_data_generator $gen, string $dir, array $expected, string $prefix): array {
     global $DB;
     $shortname = strtoupper("{$prefix}-G-{$expected['scope']}");
     $result = ['file' => $expected['file'], 'course' => $shortname,
         'expected' => ['total' => $expected['total'], 'categories' => count($expected['categories'])], 'errors' => []];
-    $course = ku_fresh_course($gen, $shortname);
+    $course = om_fresh_course($gen, $shortname);
     $module = $gen->create_module('glossary', ['course' => $course->id, 'name' => 'Глосарій (перевірка імпорту)',
         'allowduplicatedentries' => 0, 'displayformat' => 'dictionary']);
     $glossary = $DB->get_record('glossary', ['id' => $module->id], '*', MUST_EXIST);
     try {
-        [$imported, $rejected, $categories] = ku_import_glossary_entries($glossary, context_module::instance($module->cmid),
+        [$imported, $rejected, $categories] = om_import_glossary_entries($glossary, context_module::instance($module->cmid),
             file_get_contents($dir . '/' . $expected['file']));
     } catch (Throwable $e) {
         $result['errors'][] = 'import failed: ' . $e->getMessage();
@@ -452,15 +452,15 @@ function ku_check_glossary_file(testing_data_generator $gen, string $dir, array 
             $result['errors'][] = "entry '{$want['concept']}': not found";
             continue;
         }
-        $aliases = ku_sorted($DB->get_fieldset('glossary_alias', 'alias', ['entryid' => $entry->id]));
-        if ($aliases === ku_sorted($want['aliases'])) {
+        $aliases = om_sorted($DB->get_fieldset('glossary_alias', 'alias', ['entryid' => $entry->id]));
+        if ($aliases === om_sorted($want['aliases'])) {
             $aliasesmatched++;
         } else {
             $result['errors'][] = "entry '{$want['concept']}': aliases " . json_encode($aliases, JSON_UNESCAPED_UNICODE);
         }
-        $cats = ku_sorted($DB->get_fieldset_sql('SELECT c.name FROM {glossary_categories} c
+        $cats = om_sorted($DB->get_fieldset_sql('SELECT c.name FROM {glossary_categories} c
             JOIN {glossary_entries_categories} ec ON ec.categoryid = c.id WHERE ec.entryid = ?', [$entry->id]));
-        if ($cats !== ku_sorted($want['categories'])) {
+        if ($cats !== om_sorted($want['categories'])) {
             $result['errors'][] = "entry '{$want['concept']}': categories " . json_encode($cats, JSON_UNESCAPED_UNICODE);
         }
     }
@@ -476,17 +476,17 @@ $gen = \core\test\phpunit\phpunit_util::get_data_generator();
 
 $report = ['moodle' => $CFG->release, 'manifest' => basename($manifestpath), 'questionfiles' => [], 'glossaryfiles' => []];
 foreach ($manifest['questions'] as $expected) {
-    $report['questionfiles'][] = ku_check_question_file($gen, $dir, $expected, $options['prefix']);
+    $report['questionfiles'][] = om_check_question_file($gen, $dir, $expected, $options['prefix']);
 }
 foreach ($manifest['glossaries'] as $expected) {
-    $report['glossaryfiles'][] = ku_check_glossary_file($gen, $dir, $expected, $options['prefix']);
+    $report['glossaryfiles'][] = om_check_glossary_file($gen, $dir, $expected, $options['prefix']);
 }
-$report['mixedbank'] = ku_check_mixed_bank($gen, $dir, $manifest, $options['prefix']);
+$report['mixedbank'] = om_check_mixed_bank($gen, $dir, $manifest, $options['prefix']);
 
 $files = array_merge($report['questionfiles'], $report['glossaryfiles'], $report['mixedbank'] ? [$report['mixedbank']] : []);
 if ($options['cleanup']) {
     foreach ($files as $file) {
-        ku_delete_course($file['course']);
+        om_delete_course($file['course']);
     }
 }
 $report['coursesdeleted'] = (bool)$options['cleanup'];

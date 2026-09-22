@@ -1,6 +1,6 @@
 /**
  * Єдиний клієнтський шар прогресу: одне сховище на сторінку, події геймифікації, розсилка оновлень.
- * Стан — незмінний знімок із рушія; кожна зміна проходить через `store.save` і подію `ku:progress`.
+ * Стан — незмінний знімок із рушія; кожна зміна проходить через `store.save` і подію `om:progress`.
  */
 import { applyLearningEvent, type EventOutcome, type LearningEvent } from '../../engines/gamification';
 import {
@@ -12,7 +12,7 @@ import {
 } from '../../engines/progress';
 import type { Result } from '../../engines/shared/result';
 
-export const PROGRESS_EVENT = 'ku:progress';
+export const PROGRESS_EVENT = 'om:progress';
 
 export interface ProgressChangeDetail {
   readonly state: ProgressState;
@@ -107,7 +107,7 @@ export function createProgressClient(store: ProgressStore, now: () => Date = () 
     // Пошкоджений запис: рушій уже поклав копію в резервний ключ, користувачу — коротке пояснення.
     queueMicrotask(() =>
       document.dispatchEvent(
-        new CustomEvent('ku:toast', { detail: { text: 'Збережений прогрес не вдалося прочитати — розпочато з нуля. Копію збережено в браузері.' } }),
+        new CustomEvent('om:toast', { detail: { text: 'Збережений прогрес не вдалося прочитати — розпочато з нуля. Копію збережено в браузері.' } }),
       ),
     );
   }

@@ -144,8 +144,8 @@ export function readmeText(entries: readonly ArchiveEntry[], context: ReadmeCont
   return [...header, ...lines, ...footer].join('\r\n');
 }
 
-/** «korporatyvne-upravlinnia-materialy-2026-09-17.zip» (латиницею: назву збережуть усі браузери й пошта). */
+/** «operatsiinyi-menedzhment-materialy-2026-09-17.zip» (латиницею: назву збережуть усі браузери й пошта). */
 export function archiveFileName(collectedAt: Date): string {
   const parts = new Intl.DateTimeFormat('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'Europe/Kyiv' }).format(collectedAt);
-  return `korporatyvne-upravlinnia-materialy-${parts}.zip`;
+  return `operatsiinyi-menedzhment-materialy-${parts}.zip`;
 }

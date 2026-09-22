@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { at, byId, issuesOf, loadCourse, mutated } from './__fixtures__/course';
 import { CourseSchema, type Course } from './course';
 
-const RESEARCH_DOCS = ['education-standard', 'legal-baseline', 'data-sources', 'cases'] as const;
+const RESEARCH_DOCS = ['education-standard', 'formula-baseline', 'standards-baseline', 'data-sources', 'cases'] as const;
 type ResearchDoc = (typeof RESEARCH_DOCS)[number];
 
 function researchDoc(doc: ResearchDoc): string {
@@ -54,8 +54,10 @@ describe('course.yaml: decisions that need the client’s confirmation', () => {
   it('flags discipline status, final control, semester, specialty record, volume, AI model and non-formal education', () => {
     const { program, policies } = CourseSchema.parse(loadCourse());
     expect(program.disciplineStatus).toMatchObject({ value: 'вибіркова', needsConfirmation: true });
-    expect(program.finalControl).toMatchObject({ value: 'диференційований залік', needsConfirmation: true });
-    for (const item of [program.semester, program.specialtyRecord, program.volume, policies.aiModel, policies.nonFormalEducation]) {
+    // Силабус прямо називає форму контролю й семестр, тому звіряти їх не потрібно.
+    expect(program.finalControl).toMatchObject({ value: 'екзамен у формі тестування', needsConfirmation: false });
+    expect(program.semester).toMatchObject({ value: '3 курс, 5 семестр', needsConfirmation: false });
+    for (const item of [program.specialtyRecord, program.volume, policies.aiModel, policies.nonFormalEducation]) {
       expect(item.needsConfirmation).toBe(true);
     }
     expect(program.specialtyCode).toBe('073');
@@ -64,7 +66,7 @@ describe('course.yaml: decisions that need the client’s confirmation', () => {
 
   it('requires a note explaining what to confirm', () => {
     const silent = mutated((c) => {
-      delete c.program.semester.note;
+      delete c.program.volume.note;
     });
     expect(issuesOf(silent)).toContainEqual(expect.stringMatching(/звірити/));
   });

@@ -331,16 +331,20 @@ export function buildPlan({ course, exportManifest, booksManifest, scormIndex = 
             practicalActivity({ practical, site, points: practicalPoints, warnings }),
             ...scormPackages.filter((pkg) => pkg.practical === practical.id).map(scormActivity),
           ]),
-          moduleQuizActivity({
-            module,
-            topics,
-            grading: course.grading,
-            kind,
-            pools,
-            start,
-            calendar: course.calendar,
-            warnings,
-          }),
+          ...(course.grading.moduleTests
+            ? [
+                moduleQuizActivity({
+                  module,
+                  topics,
+                  grading: course.grading,
+                  kind,
+                  pools,
+                  start,
+                  calendar: course.calendar,
+                  warnings,
+                }),
+              ]
+            : []),
         ],
       };
     }),

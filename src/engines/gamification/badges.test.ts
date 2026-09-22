@@ -12,9 +12,9 @@ function withActivity(id: string, bestScore: number, solvedVariants?: string[]):
 }
 
 describe('BADGES', () => {
-  it('defines nine badges with unique IDs and both texts in Ukrainian', () => {
-    expect(BADGES).toHaveLength(9);
-    expect(new Set(BADGES.map((badge) => badge.id)).size).toBe(9);
+  it('defines thirteen badges with unique IDs and both texts in Ukrainian', () => {
+    expect(BADGES).toHaveLength(13);
+    expect(new Set(BADGES.map((badge) => badge.id)).size).toBe(13);
     for (const badge of BADGES) {
       expect(badge.id).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
       expect(badge.condition).toMatch(/[а-яіїєґ]/i);
@@ -22,9 +22,9 @@ describe('BADGES', () => {
     }
   });
 
-  it('keeps the badges named in DESIGN.md and PRODUCT.md', () => {
+  it('covers the operations-management activities from the trainer roadmap', () => {
     const titles = BADGES.map((badge) => badge.title);
-    for (const title of ['Кворум зібрано', 'Кумулятивний голос', 'Уважний читач', 'Прозорість', 'Три лінії', 'Дивідендна дисципліна']) {
+    for (const title of ['Оптимальна партія', 'Потреба спланована', 'Критичний шлях', 'Процес під контролем', 'Уважний читач']) {
       expect(titles).toContain(title);
     }
   });
@@ -35,19 +35,23 @@ describe('BADGES', () => {
 });
 
 describe('badge predicates', () => {
-  it('«Кворум зібрано» needs three different solved quorum scenarios', () => {
-    expect(earnedBadgeIds(withActivity(BADGE_ACTIVITY_IDS.quorumCalculator, 1, ['a', 'b']))).toEqual([]);
-    expect(earnedBadgeIds(withActivity(BADGE_ACTIVITY_IDS.quorumCalculator, 1, ['a', 'b', 'c']))).toEqual(['kvorum-zibrano']);
+  it('«Прогноз справдився» needs three different solved forecasting scenarios', () => {
+    expect(earnedBadgeIds(withActivity(BADGE_ACTIVITY_IDS.forecasting, 1, ['a', 'b']))).toEqual([]);
+    expect(earnedBadgeIds(withActivity(BADGE_ACTIVITY_IDS.forecasting, 1, ['a', 'b', 'c']))).toEqual(['prohnoz-spravdyvsia']);
   });
 
   it.each([
-    [BADGE_ACTIVITY_IDS.cumulativeVoting, 'kumuliatyvnyi-holos'],
-    [BADGE_ACTIVITY_IDS.disclosureChecklist, 'prozorist'],
-    [BADGE_ACTIVITY_IDS.threeLines, 'try-linii'],
-    [BADGE_ACTIVITY_IDS.dividendDistribution, 'dyvidendna-dystsyplina'],
-    [BADGE_ACTIVITY_IDS.orderAuction, 'tsina-vidsikannia'],
-    [BADGE_ACTIVITY_IDS.generalMeeting, 'protokol-pidpysano'],
-    [BADGE_ACTIVITY_IDS.boardDecision, 'sumlinnyi-dyrektor'],
+    [BADGE_ACTIVITY_IDS.productivity, 'produktyvnist-dilianky'],
+    [BADGE_ACTIVITY_IDS.littleLaw, 'zakon-littla'],
+    [BADGE_ACTIVITY_IDS.productionCycle, 'tsykl-vyrobnytstva'],
+    [BADGE_ACTIVITY_IDS.lineBalancing, 'liniia-zbalansovana'],
+    [BADGE_ACTIVITY_IDS.eoq, 'optymalna-partiia'],
+    [BADGE_ACTIVITY_IDS.mrp, 'potreba-splanovana'],
+    [BADGE_ACTIVITY_IDS.aggregatePlanning, 'ahrehatnyi-plan'],
+    [BADGE_ACTIVITY_IDS.sequencing, 'cherha-bez-prostoiv'],
+    [BADGE_ACTIVITY_IDS.cpmPert, 'krytychnyi-shliakh'],
+    [BADGE_ACTIVITY_IDS.controlCharts, 'protses-pid-kontrolem'],
+    [BADGE_ACTIVITY_IDS.processCapability, 'zdatnist-protsesu'],
   ])('a flawless result in %s earns %s, a partial one does not', (activityId, badgeId) => {
     expect(earnedBadgeIds(withActivity(activityId, 1))).toEqual([badgeId]);
     expect(earnedBadgeIds(withActivity(activityId, 0.99))).toEqual([]);

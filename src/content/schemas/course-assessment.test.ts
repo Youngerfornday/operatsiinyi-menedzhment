@@ -1,11 +1,15 @@
 import { describe, expect, it } from 'vitest';
-import { at, byId, issuesOf, loadCourse, mutated } from './__fixtures__/course';
+import { at, byId, issuesOf, loadCourse, mutated, type CourseInput } from './__fixtures__/course';
 import { CourseSchema } from './course';
 import { BloomLevelSchema } from './questions';
+
+/** moduleTests тепер необов'язковий у схемі: ця фікстура курсу все ще його має, тому ловимо відсутність явно. */
+const REQUIRES_MODULE_TESTS = 'Ця фікстура курсу має включати grading.moduleTests';
 
 describe('course.yaml: assessment data', () => {
   it('balances module tests 5/5/4/1 out of 15 questions in 30 minutes with one attempt', () => {
     const { moduleTests } = CourseSchema.parse(loadCourse()).grading;
+    if (!moduleTests) throw new Error(REQUIRES_MODULE_TESTS);
     expect(moduleTests).toMatchObject({ questions: 15, timeLimitMinutes: 30, attempts: 1 });
     expect(moduleTests.bloom).toEqual({ remember: 5, understand: 5, apply: 4, analyze: 1 });
   });
@@ -32,7 +36,9 @@ describe('course.yaml: assessment data', () => {
 describe('CourseSchema: module and final tests', () => {
   it('rejects a module test whose Bloom balance does not add up to its question count', () => {
     const wrong = mutated((c) => {
-      c.grading.moduleTests.bloom.analyze = 2;
+      const { moduleTests } = c.grading;
+      if (!moduleTests) throw new Error(REQUIRES_MODULE_TESTS);
+      moduleTests.bloom.analyze = 2;
     });
     expect(issuesOf(wrong)).toContainEqual(expect.stringMatching(/Блум.*16.*15/));
   });
@@ -95,7 +101,9 @@ describe('CourseSchema: grading categories and targets', () => {
 
   it('rejects a module bank smaller than the test, target shares that miss 100% and a scale without grade E', () => {
     const smallBank = mutated((c) => {
-      c.grading.moduleTests.bankPerModule = 10;
+      const { moduleTests } = c.grading;
+      if (!moduleTests) throw new Error(REQUIRES_MODULE_TESTS);
+      moduleTests.bankPerModule = 10;
     });
     const shares = mutated((c) => {
       c.grading.finalTest.targetShare.analyze = 20;
@@ -188,5 +196,37 @@ describe('CourseSchema: rubrics, case project, admission and bonus', () => {
       at(c.grading.admission.basis, 0).regulation = 'ghost-regulation';
     });
     expect(issuesOf(wrong)).toContainEqual(expect.stringMatching(/ghost-regulation/));
+  });
+});
+
+describe('CourseSchema: courses without module tests (e.g. syllabuses like «Операційний менеджмент»)', () => {
+  /**
+   * Знімає модульні тести з реєстру так, як це робить силабус без них: без тесту, без категорії
+   * журналу «module-tests» і без активностей «module-test» у календарі. Категорію журналу
+   * перейменовує лише за наявності — фікстура course.yaml може вже бути без неї.
+   */
+  function stripModuleTests(c: CourseInput): void {
+    c.grading.moduleTests = undefined;
+    const category = c.grading.categories.find((candidate) => candidate.id === 'module-tests');
+    if (category) {
+      category.id = 'coursework';
+      category.title = 'Самостійна робота';
+    }
+    for (const week of c.calendar.schedule) {
+      week.activities = week.activities.filter((activity) => activity.type !== 'module-test');
+    }
+  }
+
+  it('validates a course whose syllabus has no module tests', () => {
+    const course = mutated(stripModuleTests);
+    expect(issuesOf(course)).toEqual([]);
+  });
+
+  it('rejects a leftover gradebook category «module-tests» when the course has no module tests', () => {
+    const course = mutated((c) => {
+      stripModuleTests(c);
+      c.grading.categories = [...c.grading.categories, { id: 'module-tests', stage: 'current', title: 'Модульні тести', items: 1, pointsPerItem: 1 }];
+    });
+    expect(issuesOf(course)).toContainEqual(expect.stringMatching(/module-tests/));
   });
 });

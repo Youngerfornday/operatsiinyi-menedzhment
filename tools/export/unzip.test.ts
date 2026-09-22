@@ -5,7 +5,7 @@ import { createZip } from './zip.ts';
 describe('readZip', () => {
   test('читає записи createZip у тому ж порядку: стиснені й збережені без стиснення', () => {
     const entries = [
-      { path: 'README.txt', data: Buffer.from('Корпоративне управління '.repeat(20), 'utf8') },
+      { path: 'README.txt', data: Buffer.from('Операційний менеджмент '.repeat(20), 'utf8') },
       { path: 'm1/tiny.bin', data: Uint8Array.from([1, 2, 3]) },
     ];
     const zip = createZip(entries);
@@ -13,7 +13,7 @@ describe('readZip', () => {
     expect(read.map((entry) => entry.path)).toEqual(['README.txt', 'm1/tiny.bin']);
     expect(Buffer.from(read[0]?.data ?? []).toString('utf8')).toBe(Buffer.from(entries[0]?.data ?? []).toString('utf8'));
     expect([...(read[1]?.data ?? [])]).toEqual([1, 2, 3]);
-    expect(readZipText(zip, 'README.txt')).toContain('Корпоративне управління');
+    expect(readZipText(zip, 'README.txt')).toContain('Операційний менеджмент');
   });
 
   test('пропускає записи каталогів', () => {

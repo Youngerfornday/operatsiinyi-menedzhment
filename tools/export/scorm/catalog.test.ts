@@ -1,66 +1,118 @@
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { beforeAll, describe, expect, test } from 'vitest';
-import { CALCULATOR_TRAINERS, MATRIX_TRAINER } from '../../../src/components/trainers/catalog.ts';
+import { MATRIX_TRAINER } from '../../../src/components/trainers/catalog.ts';
 import { CourseSchema, type Course } from '../../../src/content/schemas/course.ts';
-import { matrixTrainerOf, type PracticalFile } from '../../../src/content/schemas/practical.ts';
-import { loadPracticals, parseDataFile } from '../downloads-sources.ts';
-import { CALCULATOR_MASTERY_PERCENT, matrixCriterion, scormPackageSpecs } from './catalog.ts';
+import type { PracticalFile } from '../../../src/content/schemas/practical.ts';
+import { parseDataFile } from '../downloads-sources.ts';
+import { DEFAULT_MASTERY_PERCENT, matrixCriterion, scormPackageSpecs } from './catalog.ts';
 
 const ROOT = fileURLToPath(new URL('../../../', import.meta.url));
 let course: Course;
-let practicals: PracticalFile[];
 
 beforeAll(async () => {
   course = await parseDataFile(join(ROOT, 'content/course.yaml'), CourseSchema);
-  practicals = await loadPracticals(join(ROOT, 'content/practicals'), course);
 });
 
-describe('scormPackageSpecs on the real course', () => {
-  test('packages the P1 matrix and the three calculator trainers in practical order', () => {
+/**
+ * Файл тренажера п01 (`content/practicals/p01.yaml`) — синтетична заготовка, а не реальний контент:
+ * реєстр практичних (course.yaml) уже описує «п01. Матриця моделей», а сам файл тренажера ще не
+ * написаний в цьому лейні. Мінімальна форма, що задовольняє `PracticalFile`, аби перевірити логіку
+ * складання специфікації пакета незалежно від того, чи вже опубліковано реальний вміст.
+ */
+const SOURCE_ID = 'osnovy-om';
+const matrixFile: PracticalFile = {
+  id: 'p01',
+  title: 'Матриця моделей операційного менеджменту',
+  intro: 'Зіставте формулювання ознак з моделями операційного менеджменту.',
+  status: 'draft',
+  updatedAt: '2026-09-01',
+  sources: [{ id: SOURCE_ID, type: 'book', title: 'Операційний менеджмент', authors: [], language: 'uk', url: 'https://example.com/', checkedAt: '2026-09-01' }],
+  trainer: {
+    kind: 'model-matrix',
+    models: [
+      {
+        id: 'model-a',
+        title: 'Модель А',
+        short: 'А',
+        countries: ['Україна'],
+        summary: 'Опис моделі А.',
+        examples: [{ company: 'Компанія А', country: 'Україна', note: 'Приклад.', url: 'https://example.com/a', checkedAt: '2026-09-01' }],
+      },
+      {
+        id: 'model-b',
+        title: 'Модель Б',
+        short: 'Б',
+        countries: ['Україна'],
+        summary: 'Опис моделі Б.',
+        examples: [{ company: 'Компанія Б', country: 'Україна', note: 'Приклад.', url: 'https://example.com/b', checkedAt: '2026-09-01' }],
+      },
+    ],
+    features: [
+      {
+        id: 'feature-1',
+        title: 'Ознака 1',
+        cells: [
+          { model: 'model-a', statement: 'Формулювання А1', explanation: 'Пояснення А1.', source: SOURCE_ID, alsoSources: [] },
+          { model: 'model-b', statement: 'Формулювання Б1', explanation: 'Пояснення Б1.', source: SOURCE_ID, alsoSources: [] },
+        ],
+      },
+      {
+        id: 'feature-2',
+        title: 'Ознака 2',
+        cells: [
+          { model: 'model-a', statement: 'Формулювання А2', explanation: 'Пояснення А2.', source: SOURCE_ID, alsoSources: [] },
+          { model: 'model-b', statement: 'Формулювання Б2', explanation: 'Пояснення Б2.', source: SOURCE_ID, alsoSources: [] },
+        ],
+      },
+    ],
+    companyTasks: [
+      { id: 'task-1', company: 'Компанія X', description: 'Опис компанії X.', answer: 'model-a', keyFeatures: ['feature-1', 'feature-2'], explanation: 'Пояснення.', source: SOURCE_ID },
+    ],
+    essay: {
+      prompt: 'Опишіть модель, найближчу до практики українських компаній.',
+      maxWords: 300,
+      expectations: ['Чітка теза', 'Щонайменше один аргумент'],
+      hints: [],
+    },
+  },
+};
+
+describe('scormPackageSpecs', () => {
+  test('packages the matrix trainer for every practical that has a trainer file', () => {
     // Act
-    const specs = scormPackageSpecs(course, practicals);
+    const specs = scormPackageSpecs(course, [matrixFile]);
 
     // Assert
-    expect(specs.map((spec) => [spec.id, spec.kind, spec.practicalId])).toEqual([
-      ['p01-matrytsia-modelei', 'matrix', 'p01'],
-      ['p03-kvorum', 'quorum', 'p03'],
-      ['p03-kumuliatyvne-holosuvannia', 'cumulative', 'p03'],
-      ['p05-dyvidendy', 'dividends', 'p05'],
-    ]);
+    expect(specs.map((spec) => [spec.id, spec.kind, spec.practicalId])).toEqual([['p01-matrytsia-modelei', 'matrix', 'p01']]);
   });
 
-  test('uses the same activity IDs as the site, so progress events match', () => {
-    // Act
-    const specs = scormPackageSpecs(course, practicals);
-
-    // Assert
-    expect(specs[0]?.data.activityId).toBe(MATRIX_TRAINER.activityId);
-    expect(specs.slice(1).map((spec) => spec.data.activityId)).toEqual(CALCULATOR_TRAINERS.map((trainer) => trainer.activityId));
+  test('skips practicals without a trainer file', () => {
+    expect(scormPackageSpecs(course, [])).toEqual([]);
   });
 
-  test('takes the matrix pass mark from the top rubric band and 100 for calculators', () => {
-    // Act
-    const [matrix, ...calculators] = scormPackageSpecs(course, practicals);
+  test('uses the same activity ID as the site, so progress events match', () => {
+    const [matrix] = scormPackageSpecs(course, [matrixFile]);
+    expect(matrix?.data.activityId).toBe(MATRIX_TRAINER.activityId);
+  });
 
-    // Assert
+  test('takes the mastery percent from the top rubric band', () => {
+    const [matrix] = scormPackageSpecs(course, [matrixFile]);
     expect(matrix?.masteryPercent).toBe(90);
     expect(matrix?.data.masteryPercent).toBe(90);
-    for (const spec of calculators) expect(spec.masteryPercent).toBe(CALCULATOR_MASTERY_PERCENT);
   });
 
   test('ships the matrix with typography, all cells, sources and company tasks', () => {
     // Act
-    const [matrix] = scormPackageSpecs(course, practicals);
-    const file = practicals.find((candidate) => candidate.id === 'p01');
+    const [matrix] = scormPackageSpecs(course, [matrixFile]);
 
     // Assert
     expect(matrix?.data.kind).toBe('matrix');
-    if (matrix?.data.kind !== 'matrix' || !file) return;
-    expect(matrix.data.matrix.features).toHaveLength(matrixTrainerOf(file).features.length);
-    expect(Object.keys(matrix.data.sources)).toEqual(file.sources.map((source) => source.id));
-    expect(matrix.data.companyTasks).toHaveLength(matrixTrainerOf(file).companyTasks.length);
-    expect(matrix.title.replace(/\s/g, ' ')).toBe('П1. Матриця моделей корпоративного управління');
+    if (matrix?.data.kind !== 'matrix') return;
+    expect(matrix.data.matrix.features).toHaveLength(matrixFile.trainer.kind === 'model-matrix' ? matrixFile.trainer.features.length : 0);
+    expect(Object.keys(matrix.data.sources)).toEqual(matrixFile.sources.map((source) => source.id));
+    expect(matrix.data.companyTasks).toHaveLength(1);
+    expect(matrix.title.replace(/\s/g, ' ')).toBe('П1. Матриця моделей операційного менеджменту');
     expect(matrix.module).toBe('m1');
   });
 });
@@ -73,5 +125,11 @@ describe('matrixCriterion', () => {
 
     // Act and Assert
     expect(() => matrixCriterion(practical)).toThrow(/немає критерію з порогами/);
+  });
+});
+
+describe('DEFAULT_MASTERY_PERCENT', () => {
+  test('is a full score, used when a rubric band has no explicit percent', () => {
+    expect(DEFAULT_MASTERY_PERCENT).toBe(100);
   });
 });

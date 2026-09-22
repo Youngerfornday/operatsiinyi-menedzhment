@@ -264,7 +264,7 @@ export async function bundlesStep(ctx: StepContext, items: readonly DownloadItem
   const modules = course.modules.filter((module) => bundleMembers(ordered, module.id).length > 0);
   const moduleBundles = await Promise.all(
     modules.map(async (module) => {
-      const file = `${module.id}/korporatyvne-upravlinnia-${module.id}.zip`;
+      const file = `${module.id}/operatsiinyi-menedzhment-${module.id}.zip`;
       const staged = await writeBundle(ctx, file, moduleBundleTitle(course, module.id), bundleMembers(ordered, module.id), backupEntry);
       return moduleBundleItem(course, module.id, staged);
     }),
@@ -273,6 +273,6 @@ export async function bundlesStep(ctx: StepContext, items: readonly DownloadItem
   const courseBundle =
     courseMembers.length === 0
       ? []
-      : [courseBundleItem(await writeBundle(ctx, 'course/korporatyvne-upravlinnia.zip', COURSE_BUNDLE_TITLE, courseMembers, backupEntry))];
+      : [courseBundleItem(await writeBundle(ctx, 'course/operatsiinyi-menedzhment.zip', COURSE_BUNDLE_TITLE, courseMembers, backupEntry))];
   return [...moduleBundles, ...courseBundle, backupEntry];
 }

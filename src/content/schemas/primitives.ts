@@ -28,9 +28,15 @@ export const CheckedAtSchema = IsoDateSchema.refine((date) => Date.parse(date) <
 
 export const HttpUrlSchema = z.url({ protocol: /^https?$/, error: 'Потрібна адреса http(s)' });
 
-export const LawRefSchema = z.object({
-  act: NonEmptyTextSchema,
-  article: NonEmptyTextSchema,
+/**
+ * Посилання на перевірене джерело: підручник, стандарт або нормативний акт.
+ * `source` — назва джерела («ДСТУ ISO 9001:2015», «Старченко та ін., 2020»),
+ * `locator` — де саме дивитися, з кодом рядка бази, якщо він є
+ * («с. 142, форм. 5.3 (EOQ-01)», «п. 8.5.1 (ISO-9001-04)»).
+ */
+export const RefSchema = z.object({
+  source: NonEmptyTextSchema,
+  locator: NonEmptyTextSchema,
   checkedAt: CheckedAtSchema,
   url: HttpUrlSchema.optional(),
 });

@@ -110,7 +110,7 @@ describe('runSlidesPdfCli', () => {
 
     const text = execFileSync('pdftotext', ['-enc', 'UTF-8', file, '-'], { encoding: 'utf8' });
     expect(text.split('\f').filter((page) => page.trim() !== '')).toHaveLength(deck.slides.length);
-    expect(text).toContain('Корпорація і корпоративне управління');
+    expect(text).toContain('Корпорація і операційний менеджмент');
     expect(text).toContain('Агентські витрати');
     expect(text).not.toContain('Нотатки доповідача');
   }, PRINT_TIMEOUT_MS);

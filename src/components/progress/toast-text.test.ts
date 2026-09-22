@@ -14,7 +14,7 @@ describe('outcomeToastHtml', () => {
   test('XP латунним, рівень і бейдж через роздільник', () => {
     const html = outcomeToastHtml({ duplicate: false, xpGained: 150, leveledUp: true, levelAfter: minority, newBadges: ['uvazhnyi-chytach'] });
     expect(html).toContain('<span class="xp">+150 XP</span>');
-    expect(html).toContain('Новий рівень: «Міноритарій»');
+    expect(html).toContain('Новий рівень: «Майстер зміни»');
     expect(html).toContain('Бейдж: «Уважний читач»');
     expect(html?.split(' · ')).toHaveLength(3);
   });

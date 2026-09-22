@@ -5,13 +5,13 @@ import { join } from 'node:path';
  * Маркер canary контрольних банків. Склеюється під час виконання, щоб цей файл сам не містив рядок цілком.
  * Має збігатися з CONTROL_CANARY_PREFIX у src/content/schemas/questions.ts (без кінцевого дефіса).
  */
-export const CANARY_MARKER = ['KU', 'CONTROL', 'CANARY'].join('-');
+export const CANARY_MARKER = ['OM', 'CONTROL', 'CANARY'].join('-');
 
 const URL_ATTRIBUTE = /\s(href|src|srcset|action|formaction|poster|xlink:href)\s*=\s*(["'])(.*?)\2/gis;
 const UNQUOTED_URL_ATTRIBUTE = /\s(href|src|action|formaction|poster|xlink:href)\s*=\s*([^\s"'`=<>]+)/gi;
 const CSS_URL = /url\(\s*(["']?)(\/[^"')\s]*)\1\s*\)/gi;
 
-/** '/korporatyvne-upravlinnia' → '/korporatyvne-upravlinnia/'; відсутній base → '/'. */
+/** '/operatsiinyi-menedzhment' → '/operatsiinyi-menedzhment/'; відсутній base → '/'. */
 export function normalizeBase(base) {
   const trimmed = (base ?? '').replace(/^\/+|\/+$/g, '');
   return trimmed === '' ? '/' : `/${trimmed}/`;

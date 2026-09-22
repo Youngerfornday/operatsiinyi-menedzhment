@@ -3,14 +3,10 @@
  * ID активностей прогресу (збігаються з BADGE_ACTIVITY_IDS рушія геймифікації) і зв’язок з реєстром
  * course.yaml → practicals[].trainers.
  */
-import { BADGE_ACTIVITY_IDS } from '../../engines/gamification';
-import { legalFormActivityId } from '../../engines/legal-form';
 import { matrixActivityId } from '../../engines/matrix';
 
-export type CalculatorKey = 'quorum' | 'cumulative' | 'dividends';
-
 export interface CalculatorTrainer {
-  readonly key: CalculatorKey;
+  readonly key: string;
   readonly slug: string;
   readonly path: string;
   readonly activityId: string;
@@ -25,50 +21,14 @@ export interface CalculatorTrainer {
   readonly formula: string;
 }
 
-export const CALCULATOR_TRAINERS: readonly CalculatorTrainer[] = [
-  {
-    key: 'quorum',
-    slug: 'kvorum',
-    path: 'trenazhery/kvorum/',
-    activityId: BADGE_ACTIVITY_IDS.quorumCalculator,
-    practicalId: 'p03',
-    registryId: 'quorum',
-    badgeId: 'kvorum-zibrano',
-    icon: 'scale',
-    title: 'Кворум і голосування',
-    text: 'Чи відбудуться збори, якщо зареєструвалося 48,7\u00A0% голосуючих акцій, і скільки треба для рішення про зміну статуту.',
-    formula: 'Кворум: понад 50\u00A0% голосуючих акцій',
-  },
-  {
-    key: 'cumulative',
-    slug: 'kumuliatyvne-holosuvannia',
-    path: 'trenazhery/kumuliatyvne-holosuvannia/',
-    activityId: BADGE_ACTIVITY_IDS.cumulativeVoting,
-    practicalId: 'p03',
-    registryId: 'cumulative-voting',
-    badgeId: 'kumuliatyvnyi-holos',
-    icon: 'target',
-    title: 'Кумулятивне голосування',
-    text: 'Мінімальний пакет, щоб гарантовано провести k своїх кандидатів у раду з N місць, і чи пройдуть кандидати з вашим пакетом.',
-    formula: 'S·k / (N + 1) + 1 акція',
-  },
-  {
-    key: 'dividends',
-    slug: 'dyvidendy',
-    path: 'trenazhery/dyvidendy/',
-    activityId: BADGE_ACTIVITY_IDS.dividendDistribution,
-    practicalId: 'p05',
-    registryId: 'profit-distribution',
-    badgeId: 'dyvidendna-dystsyplina',
-    icon: 'calc',
-    title: 'Дивіденди й чисті активи',
-    text: 'Розподіл прибутку між привілейованими і простими акціями та перевірка, чи дозволяє виплату розмір власного капіталу.',
-    formula: 'ВК після виплати ≥ СК + РК + ΔЛВ',
-  },
-];
+/**
+ * Тренажери-калькулятори з власною сторінкою `trenazhery/<slug>/`. Порожньо, доки не додано перший
+ * калькулятор дисципліни (прогнозування, EOQ, MRP тощо) — див. src/engines/README.md.
+ */
+export const CALCULATOR_TRAINERS: readonly CalculatorTrainer[] = [];
 
-/** Практичні, сторінки яких уже опубліковано (`praktychni/pNN/`). */
-export const PUBLISHED_PRACTICALS: readonly string[] = ['p01', 'p02'];
+/** Практичні, сторінки яких уже опубліковано (`praktychni/pNN/`). Порожньо, доки контент не готовий. */
+export const PUBLISHED_PRACTICALS: readonly string[] = [];
 
 export interface PracticalTrainer {
   readonly practicalId: string;
@@ -88,40 +48,17 @@ export const MATRIX_TRAINER = {
   activityId: matrixActivityId('p01'),
   path: 'praktychni/p01/#trenazher',
   icon: 'layers',
-  title: 'Матриця моделей корпоративного управління',
+  title: 'Матриця моделей операційного менеджменту',
   text: 'Зіставте формулювання ознак з чотирма моделями: перша спроба навчальна з розбором кожної клітинки, друга оцінюється за рубрикою.',
-  formula: 'Не менше 90\u00A0% зіставлень — 1 бал',
-} as const satisfies PracticalTrainer;
-
-export const LEGAL_FORM_TRAINER = {
-  practicalId: 'p02',
-  registryId: 'legal-form-choice',
-  activityId: legalFormActivityId('p02'),
-  path: 'praktychni/p02/#trenazher',
-  icon: 'scale',
-  title: 'Вибір форми бізнесу',
-  text: 'Параметри стартапу — і конструктор показує, які організаційно-правові форми лишаються, а яка норма закриває решту; задача рахує динаміку ЄДРПОУ.',
-  formula: 'Абсолютна зміна, темп приросту, порівнянність таблиць',
+  formula: 'Не менше 90 % зіставлень — 1 бал',
 } as const satisfies PracticalTrainer;
 
 /** Тренажери, що живуть на сторінці практичної (а не на власній сторінці `trenazhery/<slug>/`). */
-export const PRACTICAL_TRAINERS: readonly PracticalTrainer[] = [MATRIX_TRAINER, LEGAL_FORM_TRAINER];
+export const PRACTICAL_TRAINERS: readonly PracticalTrainer[] = [MATRIX_TRAINER];
 
 /** Людські назви тренажерів з реєстру course.yaml. */
 export const TRAINER_KIND_LABELS: Readonly<Record<string, string>> = {
   'model-matrix': 'матриця моделей (зіставлення)',
-  'legal-form-choice': 'вибір форми бізнесу',
-  quorum: 'калькулятор кворуму',
-  'cumulative-voting': 'кумулятивне голосування',
-  'board-matrix': 'матриця компетенцій ради',
-  'transaction-approval': 'погодження правочинів',
-  'profit-distribution': 'розподіл прибутку',
-  auction: 'аукціон заявок',
-  bonds: 'облігації і доходність',
-  'risk-map': 'карта ризиків',
-  'disclosure-checklist': 'чекліст розкриття',
-  dupont: 'модель DuPont',
-  'governance-scorecard': 'скоринг-картка',
 };
 
 export function trainerKindLabel(registryId: string): string {

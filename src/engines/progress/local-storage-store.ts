@@ -5,7 +5,7 @@ import { createEmptyProgress, type ProgressState } from './state';
 import type { ProgressLoadResult, ProgressStore, ProgressStoreOptions } from './store';
 
 /** Origin youngerfornday.github.io спільний з іншими сайтами, тому всі ключі курсу мають префікс. */
-export const PROGRESS_STORAGE_PREFIX = 'ku:v1:';
+export const PROGRESS_STORAGE_PREFIX = 'om:v1:';
 export const PROGRESS_STORAGE_KEY = `${PROGRESS_STORAGE_PREFIX}progress`;
 export const PROGRESS_BACKUP_KEY = `${PROGRESS_STORAGE_PREFIX}progress-backup`;
 const PROBE_KEY = `${PROGRESS_STORAGE_PREFIX}probe`;

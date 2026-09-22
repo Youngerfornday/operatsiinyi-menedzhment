@@ -23,7 +23,7 @@ interface Props {
 type Pending = { readonly kind: 'import'; readonly state: ProgressState } | { readonly kind: 'reset' } | null;
 
 function toast(text: string): void {
-  document.dispatchEvent(new CustomEvent('ku:toast', { detail: { text } }));
+  document.dispatchEvent(new CustomEvent('om:toast', { detail: { text } }));
 }
 
 async function copyText(text: string, fallback: HTMLTextAreaElement | null): Promise<boolean> {

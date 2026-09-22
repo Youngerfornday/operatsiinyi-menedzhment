@@ -60,14 +60,14 @@ dc verify cp "$MOODLE_DIR/scorm-helper.php" "moodle:$CONTAINER_DIR/scorm-helper.
 dc verify cp "$MOODLE_DIR/lib" "moodle:$CONTAINER_DIR/lib"
 moodle_php verify "$CONTAINER_DIR/course-helper.php" setup --password="$USER_PASS" --shortname="$SHORTNAME" > "$WORK/setup.json"
 moodle_php verify "$CONTAINER_DIR/scorm-helper.php" add --shortname="$SHORTNAME" \
-  --zip=/work/out/scorm-check/package.zip --name="П1. Матриця моделей корпоративного управління (SCORM)" --mastery="$mastery" \
+  --zip=/work/out/scorm-check/package.zip --name="П1. Матриця моделей операційного менеджменту (SCORM)" --mastery="$mastery" \
   > "$WORK/add.json"
 cat "$WORK/add.json"
 
 stamp "4. Playwright: спроба студента, журнал оцінок, повторний вхід"
 (cd "$MOODLE_DIR/e2e" && npm ci --no-audit --no-fund >/dev/null && npx playwright install chromium >/dev/null)
 set +e
-(cd "$MOODLE_DIR/e2e" && KU_SCORM_SHORTNAME="$SHORTNAME" npx playwright test --config playwright.scorm.config.mjs)
+(cd "$MOODLE_DIR/e2e" && OM_SCORM_SHORTNAME="$SHORTNAME" npx playwright test --config playwright.scorm.config.mjs)
 playwright_rc=$?
 set -e
 

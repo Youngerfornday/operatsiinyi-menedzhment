@@ -64,7 +64,7 @@ export function initTopicReading(client: ProgressClient): void {
 const TOPIC_ID = /^t\d{2}$/;
 
 export function initSelfCheckAwards(client: ProgressClient): void {
-  document.addEventListener('ku:selfcheck', (event) => {
+  document.addEventListener('om:selfcheck', (event) => {
     const detail = (event as CustomEvent<SelfCheckDetail>).detail;
     const topicId = detail?.topic ?? query('[data-topic-page]')?.dataset['topic'];
     if (!topicId || !TOPIC_ID.test(topicId) || detail.total === 0 || detail.answered < detail.total) return;

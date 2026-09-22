@@ -13,7 +13,7 @@ require_once($CFG->dirroot . '/mod/scorm/locallib.php');
  */
 function spike_create_course(testing_data_generator $gen, string $shortname, array $sectionnames): stdClass {
     $course = $gen->create_course([
-        'fullname' => 'Корпоративне управління (SPIKE)',
+        'fullname' => 'Операційний менеджмент (SPIKE)',
         'shortname' => $shortname,
         'format' => 'topics',
         'numsections' => count($sectionnames),
@@ -82,7 +82,7 @@ function spike_create_url(testing_data_generator $gen, stdClass $course, int $se
         'course' => $course->id,
         'section' => $section,
         'name' => 'Сайт курсу (SPIKE)',
-        'externalurl' => 'https://youngerfornday.github.io/korporatyvne-upravlinnia/',
+        'externalurl' => 'https://youngerfornday.github.io/operatsiinyi-menedzhment/',
         'display' => 0,
     ]);
     return (object)['cmid' => $url->cmid, 'id' => $url->id];

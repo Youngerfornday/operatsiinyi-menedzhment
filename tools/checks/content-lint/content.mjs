@@ -52,7 +52,7 @@ export function yamlModel(text, lineOffset = 0) {
       const ancestors = path.filter((item) => isMap(item) && records.has(item)).map((item) => records.get(item));
       const innermost = ancestors.at(-1);
       // «Запис» — найближчий до кореня елемент верхньої послідовності (питання, кейс, тема):
-      // саме в ньому живуть lawRef і source, тож маркери джерела шукаються в його межах.
+      // саме в ньому живуть refs і source, тож маркери джерела шукаються в його межах.
       const outer = ancestors.find((item) => item.path.length > 0) ?? innermost;
       units.push({
         line: lineAt(node.range[0]),

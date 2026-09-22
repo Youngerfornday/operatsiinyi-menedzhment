@@ -1,9 +1,16 @@
 /**
- * Розбір полів форми тренажера і перевірка відповіді студента на задачу. Числа читає рушій калькуляторів
- * (`parseCalculatorInput`: «1,5», «1 250,5»), помилки повертаються з полем — острів показує їх біля поля.
+ * Розбір полів форми тренажера і перевірка відповіді студента на задачу. Числа читає `parseDecimalInput`
+ * рушія («1,5», «1 250,5»), помилки повертаються з полем — острів показує їх біля поля.
  */
-import { parseCalculatorInput, type CalcError, type FieldSpec } from '../../../engines/calculators';
+import { parseDecimalInput } from '../../../engines/shared/decimal-input';
 import { err, ok, type Result } from '../../../engines/shared/result';
+
+export interface FieldSpec {
+  /** Технічна назва поля (ключ вхідного об’єкта). */
+  readonly field: string;
+  /** Назва поля для людини. */
+  readonly label: string;
+}
 
 export interface FieldIssue {
   readonly field: string;
@@ -12,15 +19,18 @@ export interface FieldIssue {
 
 export type FieldIssues = readonly FieldIssue[];
 
-export function issueFromCalc(error: CalcError): FieldIssue {
-  return { field: error.field, message: error.message };
+/** Розбір тексту поля тренажера: число або помилка з полем, за яким острів підсвітить проблему. */
+export function parseFieldInput(text: string, spec: FieldSpec): Result<number, FieldIssue> {
+  const value = parseDecimalInput(text);
+  if (value === null) return err({ field: spec.field, message: `Поле «${spec.label}» має бути числом, наприклад 1,5.` });
+  return ok(value);
 }
 
 /** Усі поля розбираються разом, щоб показати всі помилки формату одразу. */
 export function parseFields<K extends string>(values: Readonly<Record<K, string>>, specs: Readonly<Record<K, FieldSpec>>): Result<Record<K, number>, FieldIssues> {
   const keys = Object.keys(specs) as K[];
-  const parsed = keys.map((key) => [key, parseCalculatorInput(values[key] ?? '', specs[key])] as const);
-  const issues = parsed.flatMap(([, result]) => (result.ok ? [] : [issueFromCalc(result.error)]));
+  const parsed = keys.map((key) => [key, parseFieldInput(values[key] ?? '', specs[key])] as const);
+  const issues = parsed.flatMap(([, result]) => (result.ok ? [] : [result.error]));
   if (issues.length > 0) return err(issues);
   return ok(Object.fromEntries(parsed.map(([key, result]) => [key, result.ok ? result.value : 0])) as Record<K, number>);
 }
@@ -56,8 +66,8 @@ export interface NumberPartSpec {
 const FLOAT_SLACK = 1e-9;
 
 export function checkNumberPart(spec: NumberPartSpec): Result<TaskPart, FieldIssue> {
-  const parsed = parseCalculatorInput(spec.text, { field: spec.id, label: spec.label });
-  if (!parsed.ok) return err(issueFromCalc(parsed.error));
+  const parsed = parseFieldInput(spec.text, { field: spec.id, label: spec.label });
+  if (!parsed.ok) return err(parsed.error);
   const correct = Math.abs(parsed.value - spec.expected) <= spec.tolerance + FLOAT_SLACK;
   return ok({ id: spec.id, label: spec.label, given: spec.format(parsed.value), expected: spec.format(spec.expected), correct });
 }

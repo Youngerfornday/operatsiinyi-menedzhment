@@ -87,7 +87,7 @@ describe('buildPresentation', () => {
     const deck = await buildPresentation(file, course, sources, { rootDir: ROOT, topicDir: join(ROOT, 'content/modules/m1/t01'), date: '2026-09-17', figureRenderer: renderStub });
     const entries = readZip(deck);
     expect(entries.filter((entry) => /^ppt\/slides\/slide\d+\.xml$/u.test(entry.path))).toHaveLength(28);
-    expect(readZipText(deck, 'ppt/slides/slide1.xml')).toMatch(/Корпорація і[\s\u00a0]корпоративне управління/u);
+    expect(readZipText(deck, 'ppt/slides/slide1.xml')).toMatch(/Корпорація і[\s\u00a0]операційний менеджмент/u);
     expect(readZipText(deck, 'ppt/slides/slide1.xml')).not.toContain('Джерела');
     expect(readZipText(deck, 'ppt/slides/slide3.xml')).not.toContain('Джерела');
     expect(readZipText(deck, 'ppt/slides/slide8.xml')).toContain('Контролюючий власник');
@@ -128,7 +128,7 @@ describe('buildPresentation', () => {
     for (let index = 1; index <= 28; index += 1) expectShapesWithinSlide(readZipText(deck, `ppt/slides/slide${index}.xml`));
     const core = readZipText(deck, 'docProps/core.xml');
     expect(core).toContain('<dcterms:created xsi:type="dcterms:W3CDTF">2026-09-17T00:00:00Z</dcterms:created>');
-    expect(core).toContain('<dc:creator>Курс «Корпоративне управління»</dc:creator>');
+    expect(core).toContain('<dc:creator>Курс «Операційний менеджмент»</dc:creator>');
     expect(readZipText(deck, 'docProps/app.xml')).toContain('Національний університет «Чернігівська політехніка»');
   });
 });

@@ -1,7 +1,6 @@
 import { z } from 'zod';
 import { PracticalIdSchema } from './course-shared';
 import { EssayTaskSchema } from './practical-essay';
-import { LegalFormChoiceSchema, legalFormIssues, legalFormSourceIssues } from './practical-legal-form';
 import {
   CheckedAtSchema,
   HttpUrlSchema,
@@ -17,8 +16,8 @@ import { SourceSchema } from './sources';
 /**
  * Файл `content/practicals/pNN.yaml` — дані тренажера практичної роботи.
  * Реєстр практичних (мета, результати, рубрика, ПРН) живе в course.yaml; тут — лише зміст тренажера.
- * Вид тренажера обирає поле `kind`: матриця моделей (`model-matrix`, П1) або вибір форми бізнесу
- * (`legal-form-choice`, П2, схема в `practical-legal-form.ts`).
+ * Вид тренажера обирає поле `kind`: наразі лише матриця моделей (`model-matrix`, П1); дискримінований
+ * union лишається на одному члені, щоб додавати нові види тренажерів без зміни форми PracticalFileSchema.
  */
 
 const MIN_MODELS = 2;
@@ -33,7 +32,7 @@ export const CompanyExampleSchema = z.object({
   checkedAt: CheckedAtSchema,
 });
 
-/** Стовпець матриці — модель корпоративного управління. */
+/** Стовпець матриці — модель операційного менеджменту. */
 export const MatrixModelSchema = z.object({
   id: KebabIdSchema,
   title: NonEmptyTextSchema,
@@ -151,17 +150,14 @@ export const PracticalFileSchema = z
     status: z.enum(['draft', 'review', 'verified']).default('draft'),
     updatedAt: IsoDateSchema,
     sources: z.array(SourceSchema).min(1),
-    trainer: z.discriminatedUnion('kind', [ModelMatrixSchema, LegalFormChoiceSchema]),
+    trainer: z.discriminatedUnion('kind', [ModelMatrixSchema]),
   })
   .superRefine((file, ctx) => {
     for (const id of findDuplicates(file.sources.map((source) => source.id))) {
       ctx.addIssue({ code: 'custom', message: `Дублікат ID джерела «${id}»`, path: ['sources'] });
     }
     const sourceIds = new Set(file.sources.map((source) => source.id));
-    const issues =
-      file.trainer.kind === 'model-matrix'
-        ? [...matrixIssues(file.trainer), ...sourceRefIssues(file.trainer, sourceIds)]
-        : [...legalFormIssues(file.trainer), ...legalFormSourceIssues(file.trainer, sourceIds)];
+    const issues = [...matrixIssues(file.trainer), ...sourceRefIssues(file.trainer, sourceIds)];
     for (const issue of issues) {
       ctx.addIssue({ code: 'custom', message: issue.message, path: ['trainer', ...issue.path] });
     }
@@ -169,8 +165,6 @@ export const PracticalFileSchema = z
 
 export { EssayTaskSchema } from './practical-essay';
 export type { EssayTask } from './practical-essay';
-export { LegalFormChoiceSchema, legalFormIssues, legalFormSourceIssues } from './practical-legal-form';
-export type { AgreementLimit, AgreementRisk, FormCriterion, FormRule, LegalFormEntry, LegalFormTrainer, PracticalNorm, RegistrySeries, StartupCase } from './practical-legal-form';
 
 export type PracticalFile = z.infer<typeof PracticalFileSchema>;
 export type ModelMatrixTrainer = Extract<PracticalFile['trainer'], { kind: 'model-matrix' }>;

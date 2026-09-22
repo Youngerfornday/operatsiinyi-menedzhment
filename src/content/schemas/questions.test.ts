@@ -30,7 +30,7 @@ describe('QuestionSchema: valid examples', () => {
 
     // Assert
     expect(parsed.defaultMark).toBe(1);
-    expect(parsed.lawRef).toEqual([]);
+    expect(parsed.refs).toEqual([]);
     if (parsed.type !== 'calculated') throw new Error('unexpected type');
     expect(parsed.answers[0]).toMatchObject({ tolerance: 0.01, toleranceType: 'relative', correctAnswerLength: 2 });
     expect(parsed.itemCount).toBe(10);
@@ -43,13 +43,13 @@ describe('QuestionSchema: shared fields', () => {
     expect(issuesOf({ ...multichoiceSingle(), id: 't05-q001' })).toContainEqual(expect.stringMatching(/t04-/));
   });
 
-  it('rejects a law reference checked in the future', () => {
-    const question = { ...multichoiceSingle(), lawRef: [{ act: 'Закон', article: 'ст. 1', checkedAt: '2999-01-01' }] };
+  it('rejects a reference checked in the future', () => {
+    const question = { ...multichoiceSingle(), refs: [{ source: 'ДСТУ', locator: 'п. 1', checkedAt: '2999-01-01' }] };
     expect(issuesOf(question)).toContainEqual(expect.stringMatching(/майбутн/));
   });
 
-  it('accepts a law reference date parsed by YAML as a Date object', () => {
-    const question = { ...multichoiceSingle(), lawRef: [{ act: 'Закон', article: 'ст. 1', checkedAt: new Date('2026-09-01') }] };
+  it('accepts a reference date parsed by YAML as a Date object', () => {
+    const question = { ...multichoiceSingle(), refs: [{ source: 'ДСТУ', locator: 'п. 1', checkedAt: new Date('2026-09-01') }] };
     expect(issuesOf(question)).toEqual([]);
   });
 
@@ -244,7 +244,7 @@ describe('BankFileSchema', () => {
   });
 
   it('builds the canary prefix without spelling it out, so source files never trip the leak check', () => {
-    expect(CONTROL_CANARY_PREFIX.split('-')).toEqual(['KU', 'CONTROL', 'CANARY', '']);
+    expect(CONTROL_CANARY_PREFIX.split('-')).toEqual(['OM', 'CONTROL', 'CANARY', '']);
   });
 
   it('rejects duplicate question ids inside one bank', () => {

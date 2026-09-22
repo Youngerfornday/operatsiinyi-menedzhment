@@ -223,7 +223,7 @@ function addHeader(slide: PptxSlide, slideData: Slide, heading: string, kicker: 
 
 function addBandFooter(slide: PptxSlide, course: Course): void {
   addLine(slide, 0.62, 6.72, 12.1, '557EA5');
-  addText(slide, `Корпоративне управління · ${course.institutionShort}`, { x: 0.62, y: 6.87, w: 12.1, h: 0.27, fontSize: 10, color: 'C9DCF0', valign: 'mid' });
+  addText(slide, `Операційний менеджмент · ${course.institutionShort}`, { x: 0.62, y: 6.87, w: 12.1, h: 0.27, fontSize: 10, color: 'C9DCF0', valign: 'mid' });
 }
 
 function addTitleSlide(slide: PptxSlide, slideData: Extract<Slide, { type: 'title' }>, course: Course, topic: { title: string }, moduleNumber: number, moduleTitle: string, logoWhitePath: string): void {
@@ -291,12 +291,12 @@ function addContent(slide: PptxSlide, slideData: Slide, course: Course, topic: C
       addText(slide, slideData.caption, { x: 1.35, y: Math.min(bodyY + h + 0.18, 5.9), w: 10.65, h: 0.52, fontSize: 12, color: COLORS.ink2, align: 'center', valign: 'mid' });
       break;
     }
-    case 'norm':
+    case 'standard':
       slide.addShape('roundRect', { x: 0.8, y: bodyY + 0.44, w: 11.72, h: 3.35, rectRadius: 0.06, fill: { color: COLORS.tint }, line: { color: COLORS.tint, transparency: 100 } });
       slide.addShape('hexagon', { x: 1.15, y: bodyY + 0.87, w: 0.46, h: 0.52, fill: { color: COLORS.lavender }, line: { color: COLORS.lavender, transparency: 100 } });
       addText(slide, slideData.text, { x: 1.95, y: bodyY + 0.78, w: 9.9, h: 1.9, fontSize: 21, italic: true, color: '1D3557', valign: 'mid' });
-      addText(slide, `${slideData.lawRef.act}, ${slideData.lawRef.article}`, { x: 1.95, y: bodyY + 2.78, w: 9.75, h: 0.32, fontSize: 10, color: COLORS.ink2, valign: 'mid' });
-      addText(slide, `перевірено ${formatCheckedAt(slideData.lawRef.checkedAt)}`, { x: 10.0, y: bodyY + 2.78, w: 2.15, h: 0.32, fontSize: 10, color: COLORS.teal, align: 'right', valign: 'mid' });
+      addText(slide, `${slideData.ref.source}, ${slideData.ref.locator}`, { x: 1.95, y: bodyY + 2.78, w: 9.75, h: 0.32, fontSize: 10, color: COLORS.ink2, valign: 'mid' });
+      addText(slide, `перевірено ${formatCheckedAt(slideData.ref.checkedAt)}`, { x: 10.0, y: bodyY + 2.78, w: 2.15, h: 0.32, fontSize: 10, color: COLORS.teal, align: 'right', valign: 'mid' });
       break;
     case 'formula':
       slide.addShape('roundRect', { x: 0.82, y: bodyY + 0.3, w: 11.7, h: 1.38, rectRadius: 0.04, fill: { color: COLORS.surface }, line: { color: COLORS.lineStrong, width: 1 } });

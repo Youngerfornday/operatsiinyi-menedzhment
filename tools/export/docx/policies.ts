@@ -42,8 +42,10 @@ export function activityLabel(course: Course, activity: CalendarActivity): strin
     }
     case 'module-test':
       return `Модульний тест: модуль ${moduleNumber(course, activity.module)}`;
-    case 'case-project':
-      return `Кейс-проєкт: ${course.grading.caseProject.stages.find((stage) => stage.id === activity.stage)?.title ?? activity.stage}`;
+    case 'case-project': {
+      const { caseProject } = course.grading;
+      return `${caseProject.title}: ${caseProject.stages.find((stage) => stage.id === activity.stage)?.title ?? activity.stage}`;
+    }
     case 'final-test':
       return 'Підсумковий тест';
   }

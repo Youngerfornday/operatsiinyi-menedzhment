@@ -64,7 +64,7 @@ describe('тексти', () => {
     expect(coursePositionText(1, 12, 2, 1)).toBe('Модуль 1 · середина');
     expect(coursePositionText(3, 12, 1, 2)).toBe('Модуль 2 · початок');
     expect(coursePositionText(5, 12, 3, 2)).toBe('Модуль 2 · кінець');
-    expect(coursePositionText(12, 12, null, null)).toBe('Кворум зібрано');
+    expect(coursePositionText(12, 12, null, null)).toBe('Маршрут завершено');
   });
 
   test('результат тесту теми у відсотках без дробової частини', () => {

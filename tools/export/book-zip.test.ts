@@ -12,8 +12,8 @@ import { parseHtml, serializeHtml } from './html-tree.ts';
  * `dist/temy/<slug>/index.html`, тому тест на ній позначається як пропущений, якщо сайт ще не зібрано.
  */
 
-const SITE_URL = 'https://youngerfornday.github.io/korporatyvne-upravlinnia/';
-const BUILT_PAGE = new URL('../../dist/temy/korporatsiia-i-korporatyvne-upravlinnia/index.html', import.meta.url);
+const SITE_URL = 'https://youngerfornday.github.io/operatsiinyi-menedzhment/';
+const BUILT_PAGE = new URL('../../dist/temy/sutnist-operatsiinoho-menedzhmentu/index.html', import.meta.url);
 
 function page(body: string): string {
   return `<!DOCTYPE html><html lang="uk"><head><title>Тема</title></head><body><header>шапка</header>
@@ -60,8 +60,8 @@ describe('розбиття на глави', () => {
   });
 
   test('номер із заголовка прибирається: нумерацію додає сама Книга', () => {
-    const heading = parseHtml('<h2>2.1. Моделі корпоративного управління</h2>')[0];
-    expect(heading?.type === 'element' ? chapterTitle(heading) : '').toBe('Моделі корпоративного управління');
+    const heading = parseHtml('<h2>2.1. Моделі операційного менеджменту</h2>')[0];
+    expect(heading?.type === 'element' ? chapterTitle(heading) : '').toBe('Моделі операційного менеджменту');
   });
 
   test('секції верхнього рівня розгортаються, щоб їхні h2 теж ділили главу', () => {
@@ -96,10 +96,10 @@ describe('прибирання інтерактиву', () => {
       page(
         '<h2>Розділ</h2><p>Текст<button class="term" type="button" popovertarget="pop-a" data-term="a">корпорацію</button>' +
           '<span id="pop-a" class="pop" popover="auto" data-term-pop><span class="pop-title">Корпорація</span>' +
-          '<span>Окрема юридична особа.</span><span class="pop-src"><a href="/korporatyvne-upravlinnia/temy/x/#terminy">Усі</a></span></span>.</p>' +
+          '<span>Окрема юридична особа.</span><span class="pop-src"><a href="/operatsiinyi-menedzhment/temy/x/#terminy">Усі</a></span></span>.</p>' +
           '<section data-selfcheck><h2>Самоперевірка</h2><div class="sc-q"><button class="opt">А</button></div>' +
           '<script type="module">console.log(1)</script></section>' +
-          '<div class="cta-test" data-topic-quiz-cta><a href="/korporatyvne-upravlinnia/testy/x/">Тест</a></div>',
+          '<div class="cta-test" data-topic-quiz-cta><a href="/operatsiinyi-menedzhment/testy/x/">Тест</a></div>',
         ),
       { siteUrl: SITE_URL, selfCheckNote: 'Пройдіть тренувальний тест на сайті.' },
     );
@@ -150,7 +150,7 @@ describe('прибирання інтерактиву', () => {
 
 describe('посилання', () => {
   test('внутрішнє посилання сайту стає абсолютним на живий сайт', () => {
-    const plan = planBook(page('<h2>Р</h2><p><a href="/korporatyvne-upravlinnia/temy/x/">Тема</a></p>'), { siteUrl: SITE_URL });
+    const plan = planBook(page('<h2>Р</h2><p><a href="/operatsiinyi-menedzhment/temy/x/">Тема</a></p>'), { siteUrl: SITE_URL });
     expect((plan.chapters[0] as { html: string }).html).toContain(`href="${SITE_URL}temy/x/"`);
   });
 

@@ -8,7 +8,7 @@ defined('MOODLE_INTERNAL') || die();
  * Накопичувач попереджень: усе, чого ще немає в контенті або що Moodle зробив не так,
  * як просив план, потрапляє сюди і у звіт, а не зупиняє збірку.
  */
-class ku_report {
+class om_report {
     /** @var array<string, float> */
     public array $timings = [];
     /** @var string[] */
@@ -53,7 +53,7 @@ class ku_report {
  *
  * @return array{0: int, 1: stored_file}
  */
-function ku_file_to_draft(string $path): array {
+function om_file_to_draft(string $path): array {
     global $USER;
 
     if (!is_readable($path)) {
@@ -76,7 +76,7 @@ function ku_file_to_draft(string $path): array {
  *
  * @return array{0: mixed, 1: string}
  */
-function ku_capture_output(callable $fn): array {
+function om_capture_output(callable $fn): array {
     ob_start();
     try {
         $result = $fn();
@@ -87,12 +87,12 @@ function ku_capture_output(callable $fn): array {
 }
 
 /** HTML-вивід Moodle → короткий текст для звіту. */
-function ku_html_to_text(string $html): string {
+function om_html_to_text(string $html): string {
     $text = html_entity_decode(strip_tags(str_replace(['<br', '</p>', '</div>', '<hr'], ["\n<br", "</p>\n", "</div>\n", "\n<hr"], $html)));
     return trim(preg_replace("/\n\s*\n+/", "\n", $text));
 }
 
 /** Значення з масиву плану або значення за замовчуванням: план може не мати необов'язкових полів. */
-function ku_value(array $data, string $key, $default = null) {
+function om_value(array $data, string $key, $default = null) {
     return array_key_exists($key, $data) ? $data[$key] : $default;
 }

@@ -85,11 +85,11 @@ test.describe('тренувальний тест теми 1 (фікстурни�
   });
 
   test('тема без банку: сторінка «Тест готується» з посиланням на тему', async ({ page }) => {
-    await page.goto('testy/aktsionery-ta-zahalni-zbory/');
+    await page.goto('testy/operatsiina-diialnist-resursy-protsesy/');
     await expect(page.locator('[data-quiz-pending]')).toContainText('Тест готується');
     await expect(page.locator('[data-quiz-page]')).toHaveAttribute('data-quiz-ready', 'false');
     await page.locator('[data-quiz-pending] a.btn-primary').click();
-    await expect(page).toHaveURL(/temy\/aktsionery-ta-zahalni-zbory\/$/);
+    await expect(page).toHaveURL(/temy\/operatsiina-diialnist-resursy-protsesy\/$/);
     await expect(page.locator('[data-topic-quiz-cta] a')).toContainText('Тест готується');
   });
 });

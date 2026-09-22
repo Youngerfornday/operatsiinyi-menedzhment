@@ -1,10 +1,8 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
-import LegalFormReference from '../../components/practicals/LegalFormReference.astro';
-import LegalFormSections from '../../components/practicals/LegalFormSections.astro';
 import MatrixReference from '../../components/practicals/MatrixReference.astro';
 import MatrixSections from '../../components/practicals/MatrixSections.astro';
-import { legalFormConditionNote, matrixConditionNote, practicalSections, practicalXpChip } from '../../components/practicals/view';
+import { matrixConditionNote, practicalSections, practicalXpChip } from '../../components/practicals/view';
 import { practicalLabel } from '../../components/trainers/catalog';
 import Crumbs from '../../components/site/Crumbs.astro';
 import Icon from '../../components/site/Icon.astro';
@@ -87,14 +85,7 @@ const toc = practicalSections(trainer.kind);
 const conditionNote =
   matrixData !== null && trainer.kind === 'model-matrix'
     ? matrixConditionNote({ features: trainer.features.length, models: trainer.models.length, cells: matrixData.cellCount, rubricTitle: matrixData.rubric.title })
-    : trainer.kind === 'legal-form-choice'
-      ? legalFormConditionNote({
-          criteria: trainer.criteria.length,
-          forms: trainer.forms.length,
-          points: trainer.statistics.points.length,
-          registryForms: trainer.statistics.forms.length,
-        })
-      : '';
+    : '';
 
 const bandLines =
   matrixData === null
@@ -174,8 +165,6 @@ const essayNote =
               companyTasks={matrixData.companyTasks}
               models={trainer.models}
             />
-          ) : trainer.kind === 'legal-form-choice' ? (
-            <LegalFormSections practicalId={practical.id} trainer={trainer} />
           ) : null
         }
 
@@ -238,8 +227,6 @@ const essayNote =
           {
             matrixData !== null && trainer.kind === 'model-matrix' ? (
               <MatrixReference models={trainer.models} />
-            ) : trainer.kind === 'legal-form-choice' ? (
-              <LegalFormReference trainer={trainer} />
             ) : null
           }
           <h3 class="h4">Дані для практичної</h3>

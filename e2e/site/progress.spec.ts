@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-const STORAGE_KEY = 'ku:v1:progress';
+const STORAGE_KEY = 'om:v1:progress';
 const NOW = '2026-09-10T10:00:00.000Z';
 
 const STATE = {
@@ -26,14 +26,14 @@ test.describe('гідрація прогресу на головній, у мо�
     );
   });
 
-  test('головна: кворум, позиція, наступна тема, CTA «Продовжити», сходинки рівня', async ({ page }) => {
+  test('головна: маршрут, позиція, наступна тема, CTA «Продовжити», сходинки рівня', async ({ page }) => {
     await page.goto('');
-    await expect(page.locator('[data-quorum-label]')).toHaveText('1 із 12 тем');
-    await expect(page.locator('[data-quorum-cells] i[data-topic="t01"]')).toHaveAttribute('data-state', 'done');
-    await expect(page.locator('[data-quorum-cells] i[data-topic="t02"]')).toHaveAttribute('data-state', 'doing');
-    await expect(page.locator('[data-quorum-position]')).toHaveText('Модуль 1 · середина');
-    await expect(page.locator('[data-quorum-next-title]')).toContainText('2.');
-    await expect(page.locator('[data-quorum-next-link]')).toHaveAttribute('href', /modeli-ku-ta-mizhnarodni-standarty\/$/);
+    await expect(page.locator('[data-route-label]')).toHaveText('1 із 12 тем');
+    await expect(page.locator('[data-route-cells] i[data-topic="t01"]')).toHaveAttribute('data-state', 'done');
+    await expect(page.locator('[data-route-cells] i[data-topic="t02"]')).toHaveAttribute('data-state', 'doing');
+    await expect(page.locator('[data-route-position]')).toHaveText('Модуль 1 · середина');
+    await expect(page.locator('[data-route-next-title]')).toContainText('2.');
+    await expect(page.locator('[data-route-next-link]')).toHaveAttribute('href', /modeli-ku-ta-mizhnarodni-standarty\/$/);
     await expect(page.locator('[data-continue-label]')).toHaveText('Продовжити: Тема 2');
     await expect(page.locator('[data-continue]')).toHaveAttribute('href', /modeli-ku-ta-mizhnarodni-standarty\/$/);
     await expect(page.locator('[data-agenda] a.topic[data-topic="t01"]')).toHaveAttribute('data-state', 'done');
@@ -51,11 +51,11 @@ test.describe('гідрація прогресу на головній, у мо�
     await expect(page.locator('a.topic[data-topic="t02"]')).toHaveAttribute('data-state', 'doing');
   });
 
-  test('самоперевірка: подія ku:selfcheck з усіма відповідями дає 20 XP і тост; повтор — ні', async ({ page }) => {
+  test('самоперевірка: подія om:selfcheck з усіма відповідями дає 20 XP і тост; повтор — ні', async ({ page }) => {
     await page.goto('');
     const fire = () =>
       page.evaluate(() =>
-        document.dispatchEvent(new CustomEvent('ku:selfcheck', { detail: { topic: 't03', question: 1, correct: true, answered: 2, total: 2 } })),
+        document.dispatchEvent(new CustomEvent('om:selfcheck', { detail: { topic: 't03', question: 1, correct: true, answered: 2, total: 2 } })),
       );
     await fire();
     await expect(page.locator('[data-player-chip]')).toHaveAttribute('data-xp', '270');
@@ -73,12 +73,12 @@ test('пошкоджений запис прогресу: сайт старту�
   await page.goto('');
   await expect(page.locator('[data-player-chip]')).toHaveAttribute('data-xp', '0');
   await expect(page.locator('#toast')).toContainText('не вдалося прочитати');
-  expect(await page.evaluate(() => localStorage.getItem('ku:v1:progress-backup'))).toContain('broken');
+  expect(await page.evaluate(() => localStorage.getItem('om:v1:progress-backup'))).toContain('broken');
 });
 
 test.describe('сторінка теми 1: читання й самоперевірка дають XP', () => {
   test('дочитування до кінця → 100 XP один раз; самоперевірка → ще 20; стан теми «пройдено» на головній', async ({ page }) => {
-    await page.goto('temy/korporatsiia-i-korporatyvne-upravlinnia/');
+    await page.goto('temy/operatsiinyi-menedzhment-yak-funktsiia/');
     await expect(page.locator('[data-player-chip]')).toHaveAttribute('data-xp', '0');
     await expect(page.locator('[data-topic-xp-note]')).toHaveText('XP нараховуються після самоперевірки');
 
@@ -99,7 +99,7 @@ test.describe('сторінка теми 1: читання й самоперев
 
     await page.goto('');
     await expect(page.locator('[data-agenda] a.topic[data-topic="t01"]')).toHaveAttribute('data-state', 'done');
-    await expect(page.locator('[data-quorum-label]')).toHaveText('1 із 12 тем');
+    await expect(page.locator('[data-route-label]')).toHaveText('1 із 12 тем');
     await expect(page.locator('[data-continue-label]')).toHaveText('Продовжити: Тема 2');
   });
 });

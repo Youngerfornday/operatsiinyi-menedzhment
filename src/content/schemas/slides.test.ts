@@ -5,7 +5,7 @@ const deck = (slides: unknown[]) => ({ topic: 't01', slides });
 
 const title = { id: 'title', type: 'title' };
 const bullets = { id: 'agency', type: 'bullets', title: 'Агентська проблема', bullets: ['Принципал доручає агентові діяти від свого імені.'] };
-const summary = { id: 'summary', type: 'summary', title: 'Підсумок', bullets: ['Корпоративне управління знижує агентські витрати.'] };
+const summary = { id: 'summary', type: 'summary', title: 'Підсумок', bullets: ['Операційний менеджмент знижує агентські витрати.'] };
 
 describe('SlidesFileSchema', () => {
   it('приймає стислу презентацію з титулом, змістом і підсумком', () => {

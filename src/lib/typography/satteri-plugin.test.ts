@@ -13,8 +13,8 @@ describe('typographyPlugin (Sätteri hast)', () => {
   });
 
   it('leaves inline code, fenced code and link hrefs untouched', () => {
-    const html = render('Ключ `ku:v1:theme` і "код" `a - b`\n\n```\nx - "y"\n```\n\n[з сайту](https://zakon.rada.gov.ua/laws/show/2465-20 "Закон")');
-    expect(html).toContain('<code>ku:v1:theme</code>');
+    const html = render('Ключ `om:v1:theme` і "код" `a - b`\n\n```\nx - "y"\n```\n\n[з сайту](https://zakon.rada.gov.ua/laws/show/2465-20 "Закон")');
+    expect(html).toContain('<code>om:v1:theme</code>');
     expect(html).toContain('<code>a - b</code>');
     expect(html).toContain('<pre><code>x - "y"\n</code></pre>');
     expect(html).toContain('href="https://zakon.rada.gov.ua/laws/show/2465-20"');

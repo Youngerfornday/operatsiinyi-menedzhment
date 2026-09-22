@@ -19,7 +19,7 @@ describe('sourceLabel', () => {
 
   it('shortens a long author list and falls back to the title', () => {
     expect(sourceLabel({ authors: ['A', 'B', 'C'], title: 'Звіт', year: 2002 })).toBe('A та ін., 2002');
-    expect(sourceLabel({ authors: [], title: 'Кодекс корпоративного управління', year: undefined })).toBe('Кодекс корпоративного управління');
+    expect(sourceLabel({ authors: [], title: 'Кодекс операційного менеджменту', year: undefined })).toBe('Кодекс операційного менеджменту');
   });
 });
 

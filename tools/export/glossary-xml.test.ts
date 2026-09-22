@@ -10,7 +10,7 @@ import {
 import { ExportError } from './registry.ts';
 import { child, childrenNamed, parseXml, textAt, type XmlNode } from './test-support/xml-tree.ts';
 
-const NAME = 'Глосарій курсу «Корпоративне управління»';
+const NAME = 'Глосарій курсу «Операційний менеджмент»';
 
 function file(raw: unknown): GlossaryFile {
   return GlossaryFileSchema.parse(raw);

@@ -1,6 +1,6 @@
 /**
  * Кар’єрні рівні курсу (DESIGN.md, макет профілю): поріг XP і що відкриває рівень.
- * ID збігаються з `src/lib/player-levels.ts` (статичні заготовки гідруються за `data-level-id`).
+ * Єдине джерело правди для рівнів: src/lib/player-levels.ts будує статичні заготовки з цього списку.
  */
 export interface Level {
   readonly id: string;
@@ -10,16 +10,11 @@ export interface Level {
 }
 
 export const LEVELS: readonly Level[] = Object.freeze([
-  { id: 'shareholder', title: 'Акціонер', minXp: 0, unlocks: 'Читання тем, флеш-картки, самоперевірка' },
-  { id: 'minority', title: 'Міноритарій', minXp: 500, unlocks: 'Тренувальні тести з розбором, калькулятори' },
-  {
-    id: 'board-member',
-    title: 'Член наглядової ради',
-    minXp: 1200,
-    unlocks: 'Симуляція загальних зборів, кейс-гра «Рішення ради»',
-  },
-  { id: 'independent-director', title: 'Незалежний директор', minXp: 2200, unlocks: 'Аукціон заявок, карта ризиків, аудит розкриття' },
-  { id: 'chair', title: 'Голова ради', minXp: 3400, unlocks: 'Підсумковий аудит КУ компанії на вибір' },
+  { id: 'floor-intern', title: 'Стажист дільниці', minXp: 0, unlocks: 'Читання тем, флеш-картки, самоперевірка' },
+  { id: 'shift-foreman', title: 'Майстер зміни', minXp: 500, unlocks: 'Тренувальні тести з розбором, калькулятори' },
+  { id: 'section-chief', title: 'Начальник дільниці', minXp: 1200, unlocks: 'Кейс-гра з виробничими рішеннями' },
+  { id: 'production-manager', title: 'Начальник виробництва', minXp: 2200, unlocks: 'Аукціон розподілу потужностей, поглиблені кейси' },
+  { id: 'operations-director', title: 'Директор з операцій', minXp: 3400, unlocks: 'Підсумковий аудит операційної системи компанії на вибір' },
 ]);
 
 export interface LevelProgress {

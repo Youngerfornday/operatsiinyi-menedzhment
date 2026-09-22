@@ -12,27 +12,27 @@ require_once($CFG->dirroot . '/grade/grading/lib.php');
 /**
  * Створює курс за планом, видаливши попередній курс із тим самим коротким іменем.
  */
-function ku_create_course(testing_data_generator $gen, array $plan): stdClass {
+function om_create_course(testing_data_generator $gen, array $plan): stdClass {
     global $DB;
 
     if ($existing = $DB->get_record('course', ['shortname' => $plan['shortname']])) {
-        ku_capture_output(fn() => delete_course($existing, false));
+        om_capture_output(fn() => delete_course($existing, false));
     }
     return $gen->create_course([
         'fullname' => $plan['fullname'],
         'shortname' => $plan['shortname'],
-        'format' => ku_value($plan, 'format', 'topics'),
+        'format' => om_value($plan, 'format', 'topics'),
         'numsections' => (int)$plan['numsections'],
-        'summary' => ku_value($plan, 'summary', ''),
+        'summary' => om_value($plan, 'summary', ''),
         'summaryformat' => FORMAT_HTML,
-        'lang' => ku_value($plan, 'lang', 'uk'),
+        'lang' => om_value($plan, 'lang', 'uk'),
         'showgrades' => 1,
         'enablecompletion' => 0,
     ]);
 }
 
 /** Назва й опис розділу курсу. Розділ 0 («Загальне») теж має назву. */
-function ku_update_section(stdClass $course, int $number, string $name, string $summary): void {
+function om_update_section(stdClass $course, int $number, string $name, string $summary): void {
     $section = get_fast_modinfo($course)->get_section_info($number);
     course_update_section($course, $section, [
         'name' => $name,
@@ -45,29 +45,29 @@ function ku_update_section(stdClass $course, int $number, string $name, string $
  * Книга з главами, імпортованими з ZIP: тип 2 — кожен HTML у корені архіву є главою.
  * Функція імпорту друкує HTML-звіт, тому вивід перехоплюється.
  */
-function ku_create_book(testing_data_generator $gen, stdClass $course, int $section, array $activity, string $zippath, ku_report $report): stdClass {
+function om_create_book(testing_data_generator $gen, stdClass $course, int $section, array $activity, string $zippath, om_report $report): stdClass {
     global $DB;
 
     $book = $gen->create_module('book', [
         'course' => $course->id,
         'section' => $section,
         'name' => $activity['name'],
-        'intro' => ku_value($activity, 'intro', ''),
+        'intro' => om_value($activity, 'intro', ''),
         'introformat' => FORMAT_HTML,
         'numbering' => 1,
     ]);
     $context = context_module::instance($book->cmid);
-    [, $package] = ku_file_to_draft($zippath);
+    [, $package] = om_file_to_draft($zippath);
     $record = $DB->get_record('book', ['id' => $book->id], '*', MUST_EXIST);
 
-    [, $output] = ku_capture_output(fn() => toolbook_importhtml_import_chapters($package, 2, $record, $context, false));
+    [, $output] = om_capture_output(fn() => toolbook_importhtml_import_chapters($package, 2, $record, $context, false));
     $package->delete();
 
     $chapters = $DB->get_fieldset_select('book_chapters', 'title', 'bookid = ? ORDER BY pagenum', [$book->id]);
     if (count($chapters) === 0) {
-        $report->warn("Книга «{$activity['name']}»: жодної глави не імпортовано — " . ku_html_to_text($output));
+        $report->warn("Книга «{$activity['name']}»: жодної глави не імпортовано — " . om_html_to_text($output));
     }
-    $expected = ku_value($activity, 'expectedChapters', []);
+    $expected = om_value($activity, 'expectedChapters', []);
     if ($expected && count($expected) !== count($chapters)) {
         $report->warn(sprintf('Книга «%s»: глав у Moodle %d, у плані %d', $activity['name'], count($chapters), count($expected)));
     }
@@ -83,14 +83,14 @@ function ku_create_book(testing_data_generator $gen, stdClass $course, int $sect
         'chapters' => array_values($chapters), 'images' => $images];
 }
 
-function ku_create_page(testing_data_generator $gen, stdClass $course, int $section, array $activity): stdClass {
+function om_create_page(testing_data_generator $gen, stdClass $course, int $section, array $activity): stdClass {
     $page = $gen->create_module('page', [
         'course' => $course->id,
         'section' => $section,
         'name' => $activity['name'],
-        'intro' => ku_value($activity, 'intro', ''),
+        'intro' => om_value($activity, 'intro', ''),
         'introformat' => FORMAT_HTML,
-        'content' => ku_value($activity, 'content', ''),
+        'content' => om_value($activity, 'content', ''),
         'contentformat' => FORMAT_HTML,
         'printheading' => 0,
         'printintro' => 0,
@@ -99,12 +99,12 @@ function ku_create_page(testing_data_generator $gen, stdClass $course, int $sect
 }
 
 /** Посилання (URL): display = 0 — Moodle сам обирає спосіб показу, для зовнішнього сайту це нове вікно. */
-function ku_create_url(testing_data_generator $gen, stdClass $course, int $section, array $activity): stdClass {
+function om_create_url(testing_data_generator $gen, stdClass $course, int $section, array $activity): stdClass {
     $url = $gen->create_module('url', [
         'course' => $course->id,
         'section' => $section,
         'name' => $activity['name'],
-        'intro' => ku_value($activity, 'description', ''),
+        'intro' => om_value($activity, 'description', ''),
         'introformat' => FORMAT_HTML,
         'externalurl' => $activity['url'],
         'display' => 0,
@@ -116,12 +116,12 @@ function ku_create_url(testing_data_generator $gen, stdClass $course, int $secti
  * Глосарій без записів: записи Moodle вважає даними користувачів і не переносить резервною копією
  * без userinfo, тому вони їдуть окремим XML, який викладач імпортує вручну.
  */
-function ku_create_glossary(testing_data_generator $gen, stdClass $course, int $section, array $activity): stdClass {
+function om_create_glossary(testing_data_generator $gen, stdClass $course, int $section, array $activity): stdClass {
     $glossary = $gen->create_module('glossary', [
         'course' => $course->id,
         'section' => $section,
         'name' => $activity['name'],
-        'intro' => ku_value($activity, 'intro', ''),
+        'intro' => om_value($activity, 'intro', ''),
         'introformat' => FORMAT_HTML,
         'displayformat' => 'dictionary',
         'mainglossary' => 1,
@@ -141,12 +141,12 @@ function ku_create_glossary(testing_data_generator $gen, stdClass $course, int $
  * Завдання з рубрикою. Строків здачі не задаємо: календар курсу залежить від розкладу,
  * тому дати виставляє викладач після відновлення.
  */
-function ku_create_assign(testing_data_generator $gen, stdClass $course, int $section, array $activity, ku_report $report): stdClass {
+function om_create_assign(testing_data_generator $gen, stdClass $course, int $section, array $activity, om_report $report): stdClass {
     $assign = $gen->create_module('assign', [
         'course' => $course->id,
         'section' => $section,
         'name' => $activity['name'],
-        'intro' => ku_value($activity, 'intro', ''),
+        'intro' => om_value($activity, 'intro', ''),
         'introformat' => FORMAT_HTML,
         'alwaysshowdescription' => 1,
         'grade' => (float)$activity['grade'],
@@ -160,11 +160,11 @@ function ku_create_assign(testing_data_generator $gen, stdClass $course, int $se
         'cutoffdate' => 0,
         'gradingduedate' => 0,
     ]);
-    $rubric = ku_value($activity, 'rubric');
+    $rubric = om_value($activity, 'rubric');
     if ($rubric === null) {
         return (object)['cmid' => (int)$assign->cmid, 'id' => (int)$assign->id, 'criteria' => [], 'rubricstatus' => null];
     }
-    return ku_add_rubric($gen, $assign, $activity['name'], $rubric, $report);
+    return om_add_rubric($gen, $assign, $activity['name'], $rubric, $report);
 }
 
 /**
@@ -172,19 +172,19 @@ function ku_create_assign(testing_data_generator $gen, stdClass $course, int $se
  * через чернетку. Найвищий бал спроби з максимумом 100, плеєр одразу (skipview = 2) без змісту (hidetoc = 3);
  * нова спроба не примушується, тож при повторному вході тренажер відновлює прогрес із cmi.suspend_data.
  */
-function ku_create_scorm(testing_data_generator $gen, stdClass $course, int $section, array $activity, string $zippath, ku_report $report): stdClass {
+function om_create_scorm(testing_data_generator $gen, stdClass $course, int $section, array $activity, string $zippath, om_report $report): stdClass {
     global $DB;
 
-    [$draftitemid] = ku_file_to_draft($zippath);
+    [$draftitemid] = om_file_to_draft($zippath);
     $scorm = $gen->create_module('scorm', [
         'course' => $course->id,
         'section' => $section,
         'name' => $activity['name'],
-        'intro' => ku_value($activity, 'intro', ''),
+        'intro' => om_value($activity, 'intro', ''),
         'introformat' => FORMAT_HTML,
         'packagefile' => $draftitemid,
         'grademethod' => GRADEHIGHEST,
-        'maxgrade' => (float)ku_value($activity, 'maxgrade', 100),
+        'maxgrade' => (float)om_value($activity, 'maxgrade', 100),
         'maxattempt' => 0,
         'whatgrade' => 0,
         'forcenewattempt' => 0,
@@ -200,7 +200,7 @@ function ku_create_scorm(testing_data_generator $gen, stdClass $course, int $sec
     $mastery = $DB->get_field_sql(
         "SELECT d.value FROM {scorm_scoes_data} d JOIN {scorm_scoes} s ON s.id = d.scoid
           WHERE s.scorm = ? AND d.name = 'masteryscore'", [$scorm->id], IGNORE_MULTIPLE);
-    $expected = ku_value($activity, 'masteryPercent');
+    $expected = om_value($activity, 'masteryPercent');
     if ($expected !== null && ($mastery === false || (float)$mastery !== (float)$expected)) {
         $report->warn(sprintf('SCORM «%s»: прохідний бал у Moodle %s, у плані %s', $activity['name'], var_export($mastery, true), $expected));
     }
@@ -216,7 +216,7 @@ function ku_create_scorm(testing_data_generator $gen, stdClass $course, int $sec
  * тому рівні на 0,5 бала мовчки стали б нулем, а в рубриках курсу такі рівні є.
  * `update_definition()` — саме те, що викликає форма рубрики, і воно приймає дробові бали.
  */
-function ku_add_rubric(testing_data_generator $gen, stdClass $assign, string $name, array $rubric, ku_report $report): stdClass {
+function om_add_rubric(testing_data_generator $gen, stdClass $assign, string $name, array $rubric, om_report $report): stdClass {
     $criteria = [];
     $seen = [];
     $order = 0;
@@ -241,7 +241,7 @@ function ku_add_rubric(testing_data_generator $gen, stdClass $assign, string $na
     $controller = $manager->get_controller('rubric');
     $controller->update_definition((object)[
         'name' => $rubric['name'],
-        'description_editor' => ['text' => ku_value($rubric, 'description', ''), 'format' => FORMAT_HTML, 'itemid' => 1],
+        'description_editor' => ['text' => om_value($rubric, 'description', ''), 'format' => FORMAT_HTML, 'itemid' => 1],
         'rubric' => [
             'criteria' => $criteria,
             'options' => [

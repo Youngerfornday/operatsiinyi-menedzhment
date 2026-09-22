@@ -9,7 +9,7 @@ import { WORK_PROGRAM_SECTION_TITLES, buildWorkProgram } from './work-program.ts
 /** Робоча програма з реального course.yaml: структура розділів, повнота ПРН і тем, суми годин і балів. */
 
 const DATE = new Date('2026-09-17T00:00:00.000Z');
-const SITE_URL = 'https://youngerfornday.github.io/korporatyvne-upravlinnia/';
+const SITE_URL = 'https://youngerfornday.github.io/operatsiinyi-menedzhment/';
 
 let course: Course;
 let docx: Buffer;
@@ -29,7 +29,7 @@ describe('структура робочої програми', () => {
   test('титульна сторінка й розділи йдуть у порядку РПНД з наскрізною нумерацією', () => {
     const texts = view.paragraphs.map((p) => p.text);
     expect(texts).toContain('Робоча програма навчальної дисципліни');
-    expect(texts).toContain('«Корпоративне управління»');
+    expect(texts).toContain('«Операційний менеджмент»');
     const headings = view.paragraphs.filter((p) => p.style === 'Heading1').map((p) => p.text);
     expect(headings).toEqual(WORK_PROGRAM_SECTION_TITLES.map((title, index) => `${index + 1}. ${title}`));
   });

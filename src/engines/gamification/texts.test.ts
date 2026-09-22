@@ -21,8 +21,8 @@ describe('gamification texts', () => {
   });
 
   it('describes the way to the next level like the profile mockup', () => {
-    expect(nextLevelText(levelProgress(640))).toBe(`Ще 560${NBSP}XP до рівня «Член наглядової ради»`);
-    expect(nextLevelText(levelProgress(5000))).toBe('Ви досягли найвищого рівня — «Голова ради»');
+    expect(nextLevelText(levelProgress(640))).toBe(`Ще 560${NBSP}XP до рівня «Начальник дільниці»`);
+    expect(nextLevelText(levelProgress(5000))).toBe('Ви досягли найвищого рівня — «Директор з операцій»');
     expect(levelPositionText(levelProgress(640))).toBe('Ваш рівень — 2 із 5');
   });
 
@@ -40,9 +40,9 @@ describe('gamification texts', () => {
       duplicate: false,
       leveledUp: true,
       levelAfter: LEVELS[1]!,
-      newBadges: ['kvorum-zibrano', 'prozorist'],
+      newBadges: ['optymalna-partiia', 'protses-pid-kontrolem'],
     });
-    expect(text).toBe(`+130${NBSP}XP. Новий рівень: «Міноритарій». Отримано 2 нові бейджі: «Кворум зібрано», «Прозорість».`);
+    expect(text).toBe(`+130${NBSP}XP. Новий рівень: «Майстер зміни». Отримано 2 нові бейджі: «Оптимальна партія», «Процес під контролем».`);
   });
 
   it('says that a repeat gives no new XP', () => {

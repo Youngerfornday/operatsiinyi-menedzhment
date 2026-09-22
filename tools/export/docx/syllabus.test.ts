@@ -12,7 +12,7 @@ import { activityLabel } from './policies.ts';
 /** Силабус, відтворюваність DOCX і примітки для погодження. */
 
 const DATE = new Date('2026-09-17T00:00:00.000Z');
-const SITE_URL = 'https://youngerfornday.github.io/korporatyvne-upravlinnia/';
+const SITE_URL = 'https://youngerfornday.github.io/operatsiinyi-menedzhment/';
 
 let course: Course;
 let docx: Buffer;
@@ -116,7 +116,7 @@ describe('примітки й допоміжні записи', () => {
     expect(activityLabel(course, { type: 'lecture', topic: 't01' })).toBe(`Лекція (2 год): Тема 1. ${course.topics[0]?.title}`);
     expect(activityLabel(course, { type: 'practical', practical: 'p01' })).toContain('Практична робота 1 (2 год)');
     expect(activityLabel(course, { type: 'module-test', module: 'm2' })).toBe('Модульний тест: модуль 2');
-    expect(activityLabel(course, { type: 'case-project', stage: 'cp-select' })).toBe('Кейс-проєкт: Вибір компанії');
+    expect(activityLabel(course, { type: 'case-project', stage: 'cp-select' })).toBe(`${course.grading.caseProject.title}: Вибір компанії`);
     expect(activityLabel(course, { type: 'final-test' })).toBe('Підсумковий тест');
   });
 });

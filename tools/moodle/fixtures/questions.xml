@@ -109,7 +109,7 @@
   <!-- 4. Відповідність (understand) -->
   <question type="matching">
     <name><text>Т01 matching: моделі КУ</text></name>
-    <questiontext format="html"><text><![CDATA[<p>Встановіть відповідність між моделлю корпоративного управління та її ознакою.</p>]]></text></questiontext>
+    <questiontext format="html"><text><![CDATA[<p>Встановіть відповідність між моделлю операційного менеджменту та її ознакою.</p>]]></text></questiontext>
     <generalfeedback format="html"><text></text></generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0</penalty>

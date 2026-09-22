@@ -82,4 +82,12 @@ describe('CourseSchema: calendar consistency', () => {
     const issues = issuesOf(unknown).join('\n');
     for (const id of ['t42', 'p42', 'm9', 'cp-ghost']) expect(issues).toMatch(new RegExp(id));
   });
+
+  it('rejects a module-test activity in the calendar of a course without module tests (e.g. «Операційний менеджмент»)', () => {
+    const withStrayTest = mutated((c) => {
+      c.grading.moduleTests = undefined;
+      at(c.calendar.schedule, 0).activities.push({ type: 'module-test', module: 'm1' });
+    });
+    expect(issuesOf(withStrayTest)).toContainEqual(expect.stringMatching(/[Мм]одульний тест.*moduleTests/));
+  });
 });

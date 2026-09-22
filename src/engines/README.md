@@ -66,24 +66,36 @@ if (result.ok) { store.save(result.value.state); announce(eventOutcomeText(resul
 - Типи подій: `topic-read`, `self-check-passed`, `quiz-finished`, `flashcards-reviewed`, `case-completed`, `trainer-completed` (з необов'язковим `variantId`).
 - XP за подію (`XP_RULES`): тема — 100, самоперевірка — 20, тест — 150 × найкращий результат, колода карток — 30 × частка засвоєних, кейс — 80 × результат, тренажер — 60 × результат.
 - Повтор дає лише приріст понад попередній найкращий результат. Подію з уже обробленим `id` просто ігнорують.
-- Рівні `LEVELS` (0 / 500 / 1200 / 2200 / 3400). ID збігаються з `src/lib/player-levels.ts`. `levelProgress(xp)` повертає дані для метра.
-- `BADGES` — 9 бейджів із предикатами над станом. Тренажери мають надсилати події з ID із `BADGE_ACTIVITY_IDS`.
+- Рівні `LEVELS` — кар'єрні сходинки операційного менеджменту (0 / 500 / 1200 / 2200 / 3400 XP): стажист дільниці →
+  майстер зміни → начальник дільниці → начальник виробництва → директор з операцій. ID мають збігатися з
+  `src/lib/player-levels.ts` (статичні заготовки гідруються за `data-level-id`) — цей файл лежить поза `src/engines`
+  і оновлюється окремо. `levelProgress(xp)` повертає дані для метра.
+- `BADGES` — 13 бейджів із предикатами над станом: по одному на кожен ID з `BADGE_ACTIVITY_IDS` (тренажери цієї
+  дисципліни, див. нижче) плюс «Уважний читач» (п'ять прочитаних тем, не прив'язаний до тренажера). Тренажери
+  мають надсилати події `trainer-completed` з `activityId` із `BADGE_ACTIVITY_IDS`.
 - Тексти: `formatXp`, `xpGainText`, `nextLevelText`, `levelPositionText`, `badgesEarnedText`, `newBadgesText`, `eventOutcomeText`.
 
-## `calculators/` — калькулятори практичних
+## Як додати тренажер
 
-Кожна функція повертає `CalcResult<T>`. Помилка має вигляд `{ code, field, message }`, тож NaN чи Infinity назовні не потрапляють. Текст із поля вводу розбирає `parseCalculatorInput(text, { field, label })`.
+Контракт для нового тренажера не залежить від дисципліни:
 
-| Модуль | API |
-|---|---|
-| `meeting-rules.ts` | `calculateQuorum`, `decideResolution`, `minimumAbove`, `DEFAULT_MEETING_RULES` (ст. 40 ч. 1, ст. 53 ч. 4, ст. 106 ч. 3 Закону № 2465-IX). Норми передаються аргументом `rules` |
-| `cumulative-voting.ts` | `cumulativeVotes`, `minimumStakeForSeats` (floor(S·k/(N+1)) + 1), `guaranteedSeats` |
-| `profit-distribution.ts` | `distributeProfit`: резерв → привілейовані → прості; виплати акціонерам; перевірка чистих активів (`netAssetsRule`) |
-| `dupont.ts` | `dupontAnalysis`, `growthRates`, `compareGrowth` |
-| `securities.ts` | `earningsPerShare`, `priceToEarnings`, `dividendYield`, `bondPrice`, `currentYield`, `yieldToMaturity` (бісекція з межею ітерацій), `discountYield` |
-| `generators.ts` | `generateQuorumTask`, `generateCumulativeTask`, `generateDividendTask`, `generateDupontTask`, `generateBondTask`: seeded-генератори з «красивими» числами, кожен повертає `variantId` |
+1. Чистий модуль рушія (без DOM і React) у `src/engines/<name>/`: типи, `Result`-функції для перевірки
+   відповіді, за потреби — генератор варіантів на `RandomSource` (`shared/random.ts`) і функція ID активності
+   за зразком `matrixActivityId` (`matrix/events.ts`).
+2. React-острів у `src/components/trainers/`: каркас режиму «Задача» — `ui/TaskShell.tsx` +
+   `ui/use-trainer-task.ts`, поля — `ui/fields.tsx`, спільні блоки — `ui/parts.tsx` (`SourceNotes` /
+   `SourceRefLink` для джерел і формул із перевіреною датою, `CheckParts` для розбору за частинами).
+3. Активність — запис у `BADGE_ACTIVITY_IDS` і бейдж з предикатом у `src/engines/gamification/badges.ts`.
+4. Реєстрація — запис у `CALCULATOR_TRAINERS` (власна сторінка `trenazhery/<slug>/`) або `PRACTICAL_TRAINERS`
+   (сторінка практичної) в `src/components/trainers/catalog.ts`, плюс підпис у `TRAINER_KIND_LABELS`.
+5. `practicals[].trainers` у `content/course.yaml` — ID реєстру тренажера при потрібній практичній.
+6. За потреби — пакет SCORM: новий literal `ScormPackageKind` і `*PackageData extends PackageBase` у
+   `tools/export/scorm/app/data.ts`, функція специфікації в `tools/export/scorm/catalog.ts`, острів-точка входу
+   `tools/export/scorm/app/<kind>-entry.tsx` (за зразком `matrix-entry.tsx`).
 
-Еталонні приклади з розписаним розрахунком: `calculators/__fixtures__/reference-cases.ts`.
+Активності цієї дисципліни вже зарезервовано в `BADGE_ACTIVITY_IDS`, тренажерів під них ще не написано:
+`productivity`, `little-law`, `production-cycle`, `line-balancing`, `forecasting`, `eoq`, `mrp`,
+`aggregate-planning`, `sequencing`, `cpm-pert`, `control-charts`, `process-capability`.
 
 ## `matrix/` — тренажер-матриця практичних
 
@@ -92,7 +104,7 @@ if (result.ok) { store.save(result.value.state); announce(eventOutcomeText(resul
 ```ts
 let session = startMatrixSession({ matrix, seed: `p01:${Date.now()}:0`, now });   // спроба 1 — навчальна
 let attempt = currentAttempt(session);
-attempt = unwrap(selectModel(attempt, matrix, itemId, 'german'));                   // null — зняти вибір
+attempt = unwrap(selectModel(attempt, matrix, itemId, 'model-a'));                  // null — зняти вибір
 attempt = unwrap(checkFeature(attempt, matrix, featureId));                          // лише навчальна: фіксує ознаку, відкриває розбір
 session = replaceCurrentAttempt(session, unwrap(finishMatrixAttempt(attempt, matrix, now)));
 session = unwrap(startGradedAttempt(session, matrix, now));                          // спроба 2 — оцінювана, інше перемішування
@@ -107,26 +119,12 @@ const event = matrixCompletedEvent(finished, summary, 'p01');                   
 - `gradeCompanyTask(task, matrix, { model, features })`: рівно дві ознаки; `right` / `partial` (модель правильна, ознаки не ключові) / `wrong`, з формулюваннями ключових ознак для правильної моделі.
 - Тексти для `aria-live`: `featureCheckText`, `matrixSummaryText`, `recordedResultText`, `itemStateLabel`.
 
-## `legal-form/` — вибір форми бізнесу і динаміка ЄДРПОУ (практична 2)
-
-Дані — `content/practicals/p02.yaml` → `trainer` (`kind: legal-form-choice`): норми з кодом рядка legal-baseline, форми, критерії з варіантами, правила «форма × критерій × варіант», стартапи-кейси і ряд ЄДРПОУ.
-
-```ts
-const verdicts = unwrap(evaluateForms({ forms, criteria, rules }, profile));  // profile: { [criterionId]: optionId }
-const summary = summarizeChoice(verdicts);                                    // { fits, costly, blocked }
-const text = choiceSummaryText(summary, titleOf);                             // рядок для aria-live
-const change = unwrap(registryChange(series, 'tov', '2020-01-01', '2026-01-01'));
-const variant = createDynamicsVariant(createSeededRandom(seed), series);      // variantId для trainer-completed
-const activityId = legalFormActivityId('p02');                                // p02-legal-form
-```
-
-- Жодної норми в коді немає: усі посилання приходять з даних через поле `norm` правила, форми чи ризику.
-- Статус форми: `blocked`, якщо спрацювало хоч одне правило `blocks`; `costly` — якщо є `burden`; інакше `fits`. Причини сортуються «заборони → ускладнення → підтвердження».
-- `profileIssues` перевіряє повноту профілю; правило з невідомим критерієм або варіантом ігнорується (дані вже перевірила схема).
-- `registryChange` рахує темпи через `growthRates` рушія калькуляторів і додає `splitComparable`: поділ АТ на ПАТ і ПрАТ порівнюють лише в межах одного покоління таблиці ЄДРПОУ (`pre-2022` / `since-2022`).
-- Перевірку відповіді й покроковий розв’язок дає шар острова (`components/trainers/model/legal-form.ts`), як і для калькуляторів.
-
 ## `simulations/`
+
+Рушії симуляцій — механіка без прив'язки до дисципліни; конкретний сценарій (запитання, наслідки, тексти)
+приходить ззовні. Наразі без тренажера-споживача в цьому курсі — підключаються за контрактом вище, коли
+з'явиться сценарій операційного менеджменту (наприклад, аукціон виробничих потужностей чи кейс-гра з рішеннями
+диспетчера).
 
 ### `auction/` — аукціон заявок
 
@@ -134,14 +132,7 @@ const activityId = legalFormActivityId('p02');                                //
 - Раунди гри: `startAuctionGame`, `submitOrder` (резервує кошти й акції), `withdrawOrder`, `clearRound`, `nextRound`.
 - `roundSummaryText(record)` дає текст для `aria-live`.
 
-### `general-meeting/` — симуляція загальних зборів
-
-- `createMeetingSimulation(scenario, rules?)` → `{ scenes, state }`. Сцени: брифінг → реєстрація → кворум → питання порядку денного → протокол.
-- Переходи: `answerScene` фіксує відповідь один раз, `advanceScene` не пропускає далі без відповіді. Допоміжні функції: `currentScene`, `meetingScore` (частка 0..1 для `trainer-completed`).
-- Доступність: при зміні сцени фокус переходить на заголовок `scene.title`. Після відповіді `scene.explanation` зачитується через `aria-live`.
-- Окремо доступні: `registerShareholders`, `tallyResolution`, `electBoard`, `validateScenario`.
-
-### `board-game/` — кейс-гра «Рішення ради»
+### `board-game/` — кейс-гра з рішеннями
 
 - Граф: вузли-рішення з наслідками для `trust`, `value`, `risk` і умовними переходами, плюс фінали `best`, `good`, `poor`.
 - `validateBoardGame(game)` перевіряє старт, цілі переходів, досяжність, тупики й цикли без виходу.

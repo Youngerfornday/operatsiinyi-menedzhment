@@ -5,7 +5,7 @@ import { LAUNCH_FILE, scormManifestXml, type ScormManifestInput } from './manife
 const INPUT: ScormManifestInput = {
   id: 'p01-matrytsia-modelei',
   title: 'П1. Матриця моделей & «рубрика» <90%>',
-  organizationTitle: 'Корпоративне управління',
+  organizationTitle: 'Операційний менеджмент',
   masteryPercent: 90,
   files: ['assets/app.js', 'index.html', 'fonts/OFL.txt', 'assets/app.css'],
 };
@@ -33,7 +33,7 @@ describe('scormManifestXml', () => {
     const organizations = child(root, 'organizations');
     const organization = child(organizations, 'organization');
     expect(organizations.attributes['default']).toBe(organization.attributes['identifier']);
-    expect(child(organization, 'title').text).toBe('Корпоративне управління');
+    expect(child(organization, 'title').text).toBe('Операційний менеджмент');
     const item = child(organization, 'item');
     expect(child(item, 'title').text).toBe(INPUT.title);
     expect(child(item, 'adlcp:masteryscore').text).toBe('90');

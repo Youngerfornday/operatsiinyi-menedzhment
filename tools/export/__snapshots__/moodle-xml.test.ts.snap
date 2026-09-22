@@ -226,12 +226,12 @@ exports[`bankToMoodleXml: снапшоти кожного типу > ddwtos: с�
     <idnumber>tr</idnumber>
   </question>
   <question type="category">
-    <category><text><![CDATA[top/Тренувальний банк/Модуль 2. Органи корпоративного управління]]></text></category>
-    <info format="html"><text><![CDATA[<p>Органи корпоративного управління</p>]]></text></info>
+    <category><text><![CDATA[top/Тренувальний банк/Модуль 2. Органи операційного менеджменту]]></text></category>
+    <info format="html"><text><![CDATA[<p>Органи операційного менеджменту</p>]]></text></info>
     <idnumber>tr-m2</idnumber>
   </question>
   <question type="category">
-    <category><text><![CDATA[top/Тренувальний банк/Модуль 2. Органи корпоративного управління/Тема 04. Акціонери та загальні збори]]></text></category>
+    <category><text><![CDATA[top/Тренувальний банк/Модуль 2. Органи операційного менеджменту/Тема 04. Акціонери та загальні збори]]></text></category>
     <info format="html"><text><![CDATA[<p>Кворум і голосування.</p>]]></text></info>
     <idnumber>tr-t04</idnumber>
   </question>
@@ -279,18 +279,18 @@ exports[`bankToMoodleXml: снапшоти кожного типу > matching: �
     <idnumber>tr</idnumber>
   </question>
   <question type="category">
-    <category><text><![CDATA[top/Тренувальний банк/Модуль 1. Основи корпоративного управління]]></text></category>
-    <info format="html"><text><![CDATA[<p>Основи корпоративного управління</p>]]></text></info>
+    <category><text><![CDATA[top/Тренувальний банк/Модуль 1. Основи операційного менеджменту]]></text></category>
+    <info format="html"><text><![CDATA[<p>Основи операційного менеджменту</p>]]></text></info>
     <idnumber>tr-m1</idnumber>
   </question>
   <question type="category">
-    <category><text><![CDATA[top/Тренувальний банк/Модуль 1. Основи корпоративного управління/Тема 02. Моделі КУ]]></text></category>
+    <category><text><![CDATA[top/Тренувальний банк/Модуль 1. Основи операційного менеджменту/Тема 02. Моделі КУ]]></text></category>
     <info format="html"><text><![CDATA[<p>Моделі й стандарти.</p>]]></text></info>
     <idnumber>tr-t02</idnumber>
   </question>
   <question type="matching">
-    <name><text><![CDATA[Установіть відповідність між моделлю корпоративного управління та її ознакою.]]></text></name>
-    <questiontext format="html"><text><![CDATA[<p>Установіть відповідність між моделлю корпоративного управління та її ознакою.</p>]]></text></questiontext>
+    <name><text><![CDATA[Установіть відповідність між моделлю операційного менеджменту та її ознакою.]]></text></name>
+    <questiontext format="html"><text><![CDATA[<p>Установіть відповідність між моделлю операційного менеджменту та її ознакою.</p>]]></text></questiontext>
     <generalfeedback format="html"><text><![CDATA[<p>Моделі різняться структурою власності й роллю банків.</p><ul><li>Англо-американська → Розпорошена власність — Акції розподілені між багатьма інвесторами.</li><li>Німецька → Дворівнева рада — Наглядова рада відокремлена від правління.</li></ul>]]></text></generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0</penalty>
@@ -332,12 +332,12 @@ exports[`bankToMoodleXml: снапшоти кожного типу > multianswer
     <idnumber>tr</idnumber>
   </question>
   <question type="category">
-    <category><text><![CDATA[top/Тренувальний банк/Модуль 2. Органи корпоративного управління]]></text></category>
-    <info format="html"><text><![CDATA[<p>Органи корпоративного управління</p>]]></text></info>
+    <category><text><![CDATA[top/Тренувальний банк/Модуль 2. Органи операційного менеджменту]]></text></category>
+    <info format="html"><text><![CDATA[<p>Органи операційного менеджменту</p>]]></text></info>
     <idnumber>tr-m2</idnumber>
   </question>
   <question type="category">
-    <category><text><![CDATA[top/Тренувальний банк/Модуль 2. Органи корпоративного управління/Тема 04. Акціонери та загальні збори]]></text></category>
+    <category><text><![CDATA[top/Тренувальний банк/Модуль 2. Органи операційного менеджменту/Тема 04. Акціонери та загальні збори]]></text></category>
     <info format="html"><text><![CDATA[<p>Кворум і голосування.</p>]]></text></info>
     <idnumber>tr-t04</idnumber>
   </question>
@@ -367,12 +367,12 @@ exports[`bankToMoodleXml: снапшоти кожного типу > multichoice
     <idnumber>tr</idnumber>
   </question>
   <question type="category">
-    <category><text><![CDATA[top/Тренувальний банк/Модуль 2. Органи корпоративного управління]]></text></category>
-    <info format="html"><text><![CDATA[<p>Органи корпоративного управління</p>]]></text></info>
+    <category><text><![CDATA[top/Тренувальний банк/Модуль 2. Органи операційного менеджменту]]></text></category>
+    <info format="html"><text><![CDATA[<p>Органи операційного менеджменту</p>]]></text></info>
     <idnumber>tr-m2</idnumber>
   </question>
   <question type="category">
-    <category><text><![CDATA[top/Тренувальний банк/Модуль 2. Органи корпоративного управління/Тема 05. Наглядова рада]]></text></category>
+    <category><text><![CDATA[top/Тренувальний банк/Модуль 2. Органи операційного менеджменту/Тема 05. Наглядова рада]]></text></category>
     <info format="html"><text><![CDATA[<p>Комітети ради.</p>]]></text></info>
     <idnumber>tr-t05</idnumber>
   </question>
@@ -423,19 +423,19 @@ exports[`bankToMoodleXml: снапшоти кожного типу > multichoice
     <idnumber>tr</idnumber>
   </question>
   <question type="category">
-    <category><text><![CDATA[top/Тренувальний банк/Модуль 2. Органи корпоративного управління]]></text></category>
-    <info format="html"><text><![CDATA[<p>Органи корпоративного управління</p>]]></text></info>
+    <category><text><![CDATA[top/Тренувальний банк/Модуль 2. Органи операційного менеджменту]]></text></category>
+    <info format="html"><text><![CDATA[<p>Органи операційного менеджменту</p>]]></text></info>
     <idnumber>tr-m2</idnumber>
   </question>
   <question type="category">
-    <category><text><![CDATA[top/Тренувальний банк/Модуль 2. Органи корпоративного управління/Тема 04. Акціонери та загальні збори]]></text></category>
+    <category><text><![CDATA[top/Тренувальний банк/Модуль 2. Органи операційного менеджменту/Тема 04. Акціонери та загальні збори]]></text></category>
     <info format="html"><text><![CDATA[<p>Кворум і голосування.</p>]]></text></info>
     <idnumber>tr-t04</idnumber>
   </question>
   <question type="multichoice">
     <name><text><![CDATA[Який орган є вищим органом акціонерного товариства?]]></text></name>
     <questiontext format="html"><text><![CDATA[<p>Який орган є вищим органом акціонерного товариства?</p>]]></text></questiontext>
-    <generalfeedback format="html"><text><![CDATA[<p>Вищий орган АТ — загальні збори акціонерів.</p><p>Норма: ст. 39 Закон України «Про акціонерні товариства» № 2465-IX (перевірено 01.09.2026)</p>]]></text></generalfeedback>
+    <generalfeedback format="html"><text><![CDATA[<p>Вищий орган АТ — загальні збори акціонерів.</p><p>Джерело: п. 8.5.1 ДСТУ ISO 9001:2015 (перевірено 01.09.2026)</p>]]></text></generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0</penalty>
     <hidden>0</hidden>
@@ -523,12 +523,12 @@ exports[`bankToMoodleXml: снапшоти кожного типу > truefalse: 
     <idnumber>tr</idnumber>
   </question>
   <question type="category">
-    <category><text><![CDATA[top/Тренувальний банк/Модуль 1. Основи корпоративного управління]]></text></category>
-    <info format="html"><text><![CDATA[<p>Основи корпоративного управління</p>]]></text></info>
+    <category><text><![CDATA[top/Тренувальний банк/Модуль 1. Основи операційного менеджменту]]></text></category>
+    <info format="html"><text><![CDATA[<p>Основи операційного менеджменту</p>]]></text></info>
     <idnumber>tr-m1</idnumber>
   </question>
   <question type="category">
-    <category><text><![CDATA[top/Тренувальний банк/Модуль 1. Основи корпоративного управління/Тема 01. Корпорація]]></text></category>
+    <category><text><![CDATA[top/Тренувальний банк/Модуль 1. Основи операційного менеджменту/Тема 01. Корпорація]]></text></category>
     <info format="html"><text><![CDATA[<p>Власність і контроль.</p>]]></text></info>
     <idnumber>tr-t01</idnumber>
   </question>

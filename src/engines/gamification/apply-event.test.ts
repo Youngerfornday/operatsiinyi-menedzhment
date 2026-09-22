@@ -70,12 +70,12 @@ describe('applyLearningEvent: XP', () => {
 
   it('records trainer attempts, best score and flawless variants', () => {
     const outcome = applyAll([
-      { id: 'a', type: 'trainer-completed', activityId: 'quorum-calculator', score: 0.5, variantId: 'v1' },
-      { id: 'b', type: 'trainer-completed', activityId: 'quorum-calculator', score: 1, variantId: 'v2' },
-      { id: 'c', type: 'trainer-completed', activityId: 'quorum-calculator', score: 1, variantId: 'v2' },
-      { id: 'd', type: 'trainer-completed', activityId: 'quorum-calculator', score: 0.2 },
+      { id: 'a', type: 'trainer-completed', activityId: 'production-cycle', score: 0.5, variantId: 'v1' },
+      { id: 'b', type: 'trainer-completed', activityId: 'production-cycle', score: 1, variantId: 'v2' },
+      { id: 'c', type: 'trainer-completed', activityId: 'production-cycle', score: 1, variantId: 'v2' },
+      { id: 'd', type: 'trainer-completed', activityId: 'production-cycle', score: 0.2 },
     ]);
-    expect(outcome.state.activities['quorum-calculator']).toEqual({
+    expect(outcome.state.activities['production-cycle']).toEqual({
       attempts: 4,
       bestScore: 1,
       completedAt: LATER_NOW.toISOString(),
@@ -115,21 +115,21 @@ describe('applyLearningEvent: levels and badges', () => {
     const state = { ...createEmptyProgress(FIXED_NOW), xp: 480 };
 
     // Act
-    const outcome = apply(state, { id: 'cum', type: 'trainer-completed', activityId: 'cumulative-voting-calculator', score: 1 });
+    const outcome = apply(state, { id: 'eoq', type: 'trainer-completed', activityId: 'eoq', score: 1 });
 
     // Assert
-    expect(outcome.levelBefore.title).toBe('Акціонер');
-    expect(outcome.levelAfter.title).toBe('Міноритарій');
+    expect(outcome.levelBefore.title).toBe('Стажист дільниці');
+    expect(outcome.levelAfter.title).toBe('Майстер зміни');
     expect(outcome.leveledUp).toBe(true);
-    expect(outcome.newBadges).toEqual(['kumuliatyvnyi-holos']);
-    expect(outcome.state.badges).toEqual({ 'kumuliatyvnyi-holos': { awardedAt: LATER_NOW.toISOString() } });
+    expect(outcome.newBadges).toEqual(['optymalna-partiia']);
+    expect(outcome.state.badges).toEqual({ 'optymalna-partiia': { awardedAt: LATER_NOW.toISOString() } });
   });
 
   it('never re-awards or re-dates a badge that is already held', () => {
-    const first = apply(createEmptyProgress(FIXED_NOW), { id: 'a', type: 'trainer-completed', activityId: 'three-lines', score: 1 }, FIXED_NOW);
-    const second = apply(first.state, { id: 'b', type: 'trainer-completed', activityId: 'three-lines', score: 1 });
+    const first = apply(createEmptyProgress(FIXED_NOW), { id: 'a', type: 'trainer-completed', activityId: 'control-charts', score: 1 }, FIXED_NOW);
+    const second = apply(first.state, { id: 'b', type: 'trainer-completed', activityId: 'control-charts', score: 1 });
     expect(second.newBadges).toEqual([]);
-    expect(second.state.badges['try-linii']).toEqual({ awardedAt: FIXED_NOW.toISOString() });
+    expect(second.state.badges['protses-pid-kontrolem']).toEqual({ awardedAt: FIXED_NOW.toISOString() });
     expect(second.leveledUp).toBe(false);
   });
 });

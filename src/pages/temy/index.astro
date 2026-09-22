@@ -24,7 +24,7 @@ const published = topics.filter((topic) => topic.lecture).length;
         {typo(`${topics.length} тем у ${modules.length} модулях. Опубліковано лекцій: ${published} із ${topics.length}; решта тем показують анотацію й з’являться поступово.`)}
       </p>
     </header>
-    <section class="section" aria-label="Порядок денний">
+    <section class="section" aria-label="Маршрутна карта">
       <Agenda modules={modules} />
     </section>
   </div>

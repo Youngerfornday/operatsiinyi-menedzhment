@@ -35,16 +35,16 @@ describe('lintYaml', () => {
   });
 });
 
-describe('lintYaml: назви актів', () => {
-  it('does not flag spaced hyphens in title and act fields (official wording), but flags them in other fields', () => {
+describe('lintYaml: назви джерел', () => {
+  it('does not flag spaced hyphens in title and source fields (official wording), but flags them in other fields', () => {
     const yaml = [
       'sources:',
-      '  - id: law-755-iv',
-      '    title: Закон України «Про державну реєстрацію юридичних осіб, фізичних осіб - підприємців та громадських формувань» від 15.05.2003 № 755-IV',
+      '  - id: iso-9001-2015',
+      '    title: ISO 9001:2015 Quality management systems - Requirements',
       '    note: коментар - пояснення',
-      'lawRef:',
-      '  - act: Про порядок - процедуру',
-      '    article: ст. 3',
+      'refs:',
+      '  - source: Старченко Г.В. та ін. - Операційний менеджмент',
+      '    locator: розділ 3',
     ].join('\n');
     expect(lintYaml(yaml)).toEqual([{ line: 4, actual: 'коментар - пояснення', expected: 'коментар — пояснення' }]);
   });

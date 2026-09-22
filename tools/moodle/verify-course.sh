@@ -62,7 +62,7 @@ moodle_php verify "$CONTAINER_DIR/course-helper.php" setup \
 stamp "3. Playwright: відновлення викладачем і перевірки курсу"
 (cd "$MOODLE_DIR/e2e" && npm ci --no-audit --no-fund >/dev/null && npx playwright install chromium >/dev/null)
 set +e
-(cd "$MOODLE_DIR/e2e" && KU_MBZ="$mbz" KU_TARGET_SHORTNAME="$TARGET_SHORTNAME" \
+(cd "$MOODLE_DIR/e2e" && OM_MBZ="$mbz" OM_TARGET_SHORTNAME="$TARGET_SHORTNAME" \
   npx playwright test --config playwright.course.config.mjs)
 playwright_rc=$?
 set -e

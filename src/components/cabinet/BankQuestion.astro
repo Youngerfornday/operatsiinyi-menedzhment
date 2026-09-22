@@ -1,5 +1,5 @@
 ---
-/** Одне питання тренувального банку для викладача: стовбур з відповідями, варіанти з позначкою правильних, норма. */
+/** Одне питання тренувального банку для викладача: стовбур з відповідями, варіанти з позначкою правильних, джерело. */
 import Icon from '../site/Icon.astro';
 import { typo } from '../../lib/typography';
 import type { BankQuestionView } from './bank-view';
@@ -90,13 +90,13 @@ const { question } = Astro.props;
   </details>
 
   {
-    question.lawRefs.length > 0 && (
+    question.refs.length > 0 && (
       <ul class="bq-law small">
-        {question.lawRefs.map((ref) => (
+        {question.refs.map((ref) => (
           <li>
-            <Icon name="scale" size="sm" />
+            <Icon name="book" size="sm" />
             <span>
-              {ref.url ? <a href={ref.url} rel="noopener">{`${ref.article} — ${ref.act}`}</a> : `${ref.article} — ${ref.act}`}
+              {ref.url ? <a href={ref.url} rel="noopener">{`${ref.locator} — ${ref.source}`}</a> : `${ref.locator} — ${ref.source}`}
               <span class="ok-date"> · перевірено {ref.checked}</span>
             </span>
           </li>

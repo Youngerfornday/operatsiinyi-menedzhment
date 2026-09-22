@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 /**
- * npm run lint:content — перевірка фактів у content/ проти docs/research/legal-baseline.md:
- * номери законів, коди норм і статті, узгодженість lawRef, заборонена зона «Не підтверджено», дати перевірки,
- * застереження кейсів, джерела, терміни, числа без джерела; для презентацій (slides.yaml) — джерела чисел,
- * коди норм, кейси й схеми теми; для самоперевірок і банків — баланс позицій та довжин відповідей.
+ * npm run lint:content — перевірка фактів у content/ проти docs/research/formula-baseline.md і
+ * docs/research/standards-baseline.md: коди довідника, узгодженість refs, заборонена зона
+ * «Не підтверджено», дати перевірки, застереження кейсів, джерела, терміни, числа без джерела;
+ * для презентацій (slides.yaml) — джерела чисел, коди стандартів, кейси й схеми теми; для
+ * самоперевірок і банків — баланс позицій та довжин відповідей.
  *
  * Аргументи: шляхи до файлів або каталогів (типово — content/).
  * Прапорці: --fix-hints (підказка до кожної знахідки), --strict (попередження = помилки),
@@ -20,9 +21,27 @@ import { exitCode, formatReport } from './content-lint/report.mjs';
 import { listFilesRecursively } from './dist-rules.mjs';
 
 const ROOT = resolve(fileURLToPath(new URL('../../', import.meta.url)));
-const BASELINE = 'docs/research/legal-baseline.md';
+const BASELINES = ['docs/research/formula-baseline.md', 'docs/research/standards-baseline.md'];
 const COURSE = 'content/course.yaml';
 const CHECKED_EXTENSIONS = new Set(['.yaml', '.yml', '.mdx', '.md']);
+
+/**
+ * Читає бази кодів; відсутній файл — не збій, лише попередження. Без жодної бази правила
+ * ref-code/ref-consistency/unconfirmed-zone/checked-date просто нічого не знаходять для кодів —
+ * решта правил, що не залежать від бази, усе одно виконується.
+ */
+function readBaselines() {
+  const warnings = [];
+  const docs = BASELINES.flatMap((path) => {
+    try {
+      return [{ name: path.split('/').at(-1), text: readFileSync(resolve(ROOT, path), 'utf8') }];
+    } catch {
+      warnings.push(`lint:content: базу не знайдено — ${path}. Коди довідника цього файлу лінт не перевірить.`);
+      return [];
+    }
+  });
+  return { baseline: parseBaseline(docs), warnings };
+}
 
 const USAGE = [
   'Використання: node tools/checks/content-lint.mjs [шляхи…] [--fix-hints] [--strict] [--warn-only]',
@@ -57,11 +76,12 @@ function main() {
   const targets = argv.filter((argument) => !argument.startsWith('--'));
   const paths = collectFiles(targets.length > 0 ? targets : ['content']).filter((path) => CHECKED_EXTENSIONS.has(extname(path)));
   const files = paths.map((path) => contentFile(relative(ROOT, path), readFileSync(path, 'utf8')));
-  const baseline = parseBaseline(readFileSync(resolve(ROOT, BASELINE), 'utf8'));
+  const { baseline, warnings } = readBaselines();
   const course = files.find((file) => file.file === COURSE)?.data ?? contentFile(COURSE, readFileSync(resolve(ROOT, COURSE), 'utf8')).data;
 
   const findings = lintContent({ files, baseline, course });
   const report = [
+    ...warnings,
     ...formatReport(findings, { fileCount: files.length, fixHints: options.fixHints, strict: options.strict }),
     ...(targets.length > 0 ? ['', 'Часткова перевірка: правило source-unused бачить лише передані файли — для повної картини запустіть без аргументів.'] : []),
   ];

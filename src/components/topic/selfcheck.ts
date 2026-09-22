@@ -26,7 +26,7 @@ function answer(section: HTMLElement, questionEl: HTMLElement, chosen: HTMLButto
     answered,
     total: Number(section.dataset['total'] ?? 0),
   };
-  document.dispatchEvent(new CustomEvent<SelfCheckDetail>('ku:selfcheck', { detail }));
+  document.dispatchEvent(new CustomEvent<SelfCheckDetail>('om:selfcheck', { detail }));
 }
 
 export function initSelfChecks(): void {

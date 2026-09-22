@@ -31,7 +31,7 @@ export function bankBrowserPath(slug: string): string {
 export const MOODLE_GUIDE_PATH = 'moodle/';
 
 /** Ключ localStorage для виду кабінету (Студент / Викладач). */
-export const VIEW_STORAGE_KEY = 'ku:v1:view';
+export const VIEW_STORAGE_KEY = 'om:v1:view';
 
 /** Профіль гравця: рівень, XP, бейджі, карта проходження, код прогресу. */
 export const PROFILE_PATH = 'profil/';
@@ -41,5 +41,5 @@ export function quizPath(slug: string): string {
   return `testy/${slug}/`;
 }
 
-/** Ключ localStorage для теми (спільний префікс сховища прогресу ku:v1:). */
-export const THEME_STORAGE_KEY = 'ku:v1:theme';
+/** Ключ localStorage для теми (спільний префікс сховища прогресу om:v1:). */
+export const THEME_STORAGE_KEY = 'om:v1:theme';

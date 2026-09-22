@@ -8,7 +8,7 @@ export const CompetenceIdSchema = z.string().regex(/^(?:zk|sk)\d{2}$/, 'ID ко�
 
 /** Документи docs/research/*.md, на розділи яких посилається course.yaml; існування розділів перевіряє тест. */
 export const ResearchRefSchema = z.object({
-  doc: z.enum(['education-standard', 'legal-baseline', 'data-sources', 'cases']),
+  doc: z.enum(['education-standard', 'formula-baseline', 'standards-baseline', 'data-sources', 'cases']),
   section: z.string().regex(/^\d+(?:\.\d+)?$/, 'Номер розділу документа, наприклад 2.4'),
 });
 

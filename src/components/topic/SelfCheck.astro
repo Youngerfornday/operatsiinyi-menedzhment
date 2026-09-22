@@ -5,7 +5,7 @@ import Icon from '../site/Icon.astro';
  * Самоперевірка: 2–3 питання без балів. Вибір варіанта відкриває пояснення до всіх варіантів.
  * Progressive enhancement: без JavaScript пояснення показані одразу (noscript-стиль).
  * Для рушія прогресу: контейнер [data-selfcheck][data-topic]; після кожної відповіді на document
- * надсилається CustomEvent 'ku:selfcheck' з detail { topic, question, correct, answered, total }.
+ * надсилається CustomEvent 'om:selfcheck' з detail { topic, question, correct, answered, total }.
  */
 interface Option {
   text: string;

@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { expectNoHorizontalScroll, expectNoSeriousAxeViolations } from './helpers';
 
-const STORAGE_KEY = 'ku:v1:progress';
+const STORAGE_KEY = 'om:v1:progress';
 const NOW = '2026-09-10T10:00:00.000Z';
 
 /** Валідний стан схеми v2 (src/engines/progress/state.ts): 640 XP, тема 1 прочитана, тест теми 1 на 100 %. */

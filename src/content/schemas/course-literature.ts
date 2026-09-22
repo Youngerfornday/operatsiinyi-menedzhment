@@ -43,7 +43,7 @@ export const LiteratureSchema = z.object({
   verification: NonEmptyTextSchema,
   main: z.array(BookSchema).min(3).max(5),
   additional: z.array(BookSchema).min(5).max(8),
-  /** Нормативні акти й міжнародні стандарти — розділи legal-baseline.md. */
+  /** Стандарти й нормативні документи — розділи standards-baseline.md. */
   normative: z.array(z.object({ title: NonEmptyTextSchema, ref: ResearchRefSchema, url: HttpUrlSchema })).min(1),
   resources: z.array(z.object({ title: NonEmptyTextSchema, url: HttpUrlSchema })).min(1),
 });
