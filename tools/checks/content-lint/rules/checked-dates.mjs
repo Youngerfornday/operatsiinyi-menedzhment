@@ -12,8 +12,15 @@ export const RULE = 'checked-date';
 const FUTURE_HINT = 'Поставте дату, коли формулу, стандарт або джерело справді відкривали; майбутня дата означає неперевірене джерело.';
 const MISMATCH_HINT = 'Візьміть дату з бази (колонка «Перевірено» рядка коду, інакше дата розділу, інакше базова дата документа) — або звірте код заново і оновіть саму базу.';
 
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+/**
+ * Межа «не в майбутньому» — завтрашній день за UTC. Автор пише дату за своїм місцевим часом,
+ * і ввечері за UTC ще вчора: без цього запасу дата, поставлена сьогодні, читалася б як майбутня.
+ * Той самий запас закладено в CheckedAtSchema (src/content/schemas/primitives.ts).
+ */
 export function todayIso(now = new Date()) {
-  return now.toISOString().slice(0, 10);
+  return new Date(now.getTime() + DAY_MS).toISOString().slice(0, 10);
 }
 
 function futureIssue(file, line, date, today, what) {

@@ -56,8 +56,16 @@ describe('checkCheckedDates', () => {
     expect(checkCheckedDates([file('content/banks/training/m1.yaml', ref('EOQ-99', '2026-09-15'))], base, today)).toEqual([]);
   });
 
-  it('defaults to the current day', () => {
-    expect(todayIso(new Date('2026-09-17T10:00:00Z'))).toBe('2026-09-17');
+  it('allows one day of slack for time zones, as the schema does', () => {
+    expect(todayIso(new Date('2026-09-17T10:00:00Z'))).toBe('2026-09-18');
+    expect(todayIso(new Date('2026-09-17T23:30:00Z'))).toBe('2026-09-18');
     expect(todayIso()).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+  });
+
+  it('still rejects a date beyond that slack', () => {
+    // Дата поза запасом порушує одразу обидві умови правила: вона в майбутньому і не збігається з базою.
+    const findings = checkCheckedDates([file('content/banks/training/m1.yaml', ref('EOQ-01', '2026-09-25'))], base, today);
+    expect(findings.map((finding) => finding.rule)).toEqual(['checked-date', 'checked-date']);
+    expect(findings[0].message).toContain('майбутньому');
   });
 });
