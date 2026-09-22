@@ -104,10 +104,19 @@ const ABBREVIATION_BEFORE = new RegExp(
   'iu',
 );
 
+/**
+ * Позначення стандарту («ISO 22400-1:2014», «ДСТУ ISO 9001-1:2015») — не числовий діапазон:
+ * дефіс там частина офіційного номера, і заміна його на тире спотворює посилання. Ознака —
+ * двокрапка з роком одразу після другого числа.
+ */
+const STANDARD_DESIGNATION_AFTER = /^:\d{4}(?!\d)/u;
+
 function fixNumericRanges(text: string): string {
-  return text.replace(NUMERIC_RANGE, (match, from: string, to: string, offset: number) =>
-    ABBREVIATION_BEFORE.test(text.slice(0, offset)) ? match : `${from}${EN_DASH}${to}`,
-  );
+  return text.replace(NUMERIC_RANGE, (match, from: string, to: string, offset: number) => {
+    if (ABBREVIATION_BEFORE.test(text.slice(0, offset))) return match;
+    if (STANDARD_DESIGNATION_AFTER.test(text.slice(offset + match.length))) return match;
+    return `${from}${EN_DASH}${to}`;
+  });
 }
 
 const SPACED_DASH = new RegExp(`[ ${NBSP}]+(?:--|[-${EN_DASH}${EM_DASH}])[ ${NBSP}]+`, 'g');

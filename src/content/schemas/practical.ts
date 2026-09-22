@@ -7,6 +7,7 @@ import {
   IsoDateSchema,
   KebabIdSchema,
   NonEmptyTextSchema,
+  RefSchema,
   findDuplicates,
   normalizeText,
   uniqueArray,
@@ -16,8 +17,8 @@ import { SourceSchema } from './sources';
 /**
  * Файл `content/practicals/pNN.yaml` — дані тренажера практичної роботи.
  * Реєстр практичних (мета, результати, рубрика, ПРН) живе в course.yaml; тут — лише зміст тренажера.
- * Вид тренажера обирає поле `kind`: наразі лише матриця зіставлення (`matching-matrix`); дискримінований
- * union лишається на одному члені, щоб додавати нові види тренажерів без зміни форми PracticalFileSchema.
+ * Вид тренажера обирає поле `kind`: матриця зіставлення (`matching-matrix`) або розрахункові задачі
+ * (`calculation-tasks`) — калькулятор, що показує формулу й розбір, а не зіставлення карток.
  */
 
 const MIN_MODELS = 2;
@@ -94,6 +95,37 @@ export const MatchingMatrixSchema = z.object({
   essay: EssayTaskSchema,
 });
 
+/**
+ * Одна розрахункова задача калькулятора: формулу й дані генерує рушій (`src/engines/<name>/`) за
+ * `method` — вільним ID, який трактує лише конкретний тренажер (наприклад, `src/engines/productivity`
+ * і `partial-productivity` для цієї практичної). Схема свідомо не фіксує список методів, щоб її могли
+ * перевикористати калькулятори інших практичних із власним набором формул.
+ * `ref` — перевірена формула бази (`docs/research/formula-baseline.md`): код рядка бази в `locator`
+ * («… (PROD-01)»), `source` дослівно як у колонці «Джерело» цього коду.
+ */
+export const CalculationTaskSchema = z.object({
+  id: KebabIdSchema,
+  method: KebabIdSchema,
+  title: NonEmptyTextSchema,
+  formula: NonEmptyTextSchema,
+  /** Для методів із кількома різновидами ресурсу (наприклад, часткова продуктивність за працею/матеріалами/енергією). */
+  resource: NonEmptyTextSchema.optional(),
+  ref: RefSchema,
+});
+
+export const CalculationTasksSchema = z.object({
+  kind: z.literal('calculation-tasks'),
+  tasks: z.array(CalculationTaskSchema).min(1),
+  essay: EssayTaskSchema,
+});
+
+export type CalculationTask = z.infer<typeof CalculationTaskSchema>;
+
+/** Дублікати ID задач — єдина структурна перевірка калькулятора: решту (метод, дані) звіряють тести рушія. */
+export function calculationTaskIssues(trainer: z.infer<typeof CalculationTasksSchema>): Issue[] {
+  return findDuplicates(trainer.tasks.map((task) => task.id)).map((id) => ({ message: `Дублікат ID задачі «${id}»`, path: ['tasks'] }));
+}
+
 type MatchingMatrix = z.infer<typeof MatchingMatrixSchema>;
 type Issue = { message: string; path: PropertyKey[] };
 
@@ -150,14 +182,17 @@ export const PracticalFileSchema = z
     status: z.enum(['draft', 'review', 'verified']).default('draft'),
     updatedAt: IsoDateSchema,
     sources: z.array(SourceSchema).min(1),
-    trainer: z.discriminatedUnion('kind', [MatchingMatrixSchema]),
+    trainer: z.discriminatedUnion('kind', [MatchingMatrixSchema, CalculationTasksSchema]),
   })
   .superRefine((file, ctx) => {
     for (const id of findDuplicates(file.sources.map((source) => source.id))) {
       ctx.addIssue({ code: 'custom', message: `Дублікат ID джерела «${id}»`, path: ['sources'] });
     }
     const sourceIds = new Set(file.sources.map((source) => source.id));
-    const issues = [...matrixIssues(file.trainer), ...sourceRefIssues(file.trainer, sourceIds)];
+    const issues =
+      file.trainer.kind === 'matching-matrix'
+        ? [...matrixIssues(file.trainer), ...sourceRefIssues(file.trainer, sourceIds)]
+        : calculationTaskIssues(file.trainer);
     for (const issue of issues) {
       ctx.addIssue({ code: 'custom', message: issue.message, path: ['trainer', ...issue.path] });
     }
@@ -168,10 +203,17 @@ export type { EssayTask } from './practical-essay';
 
 export type PracticalFile = z.infer<typeof PracticalFileSchema>;
 export type MatchingMatrixTrainer = Extract<PracticalFile['trainer'], { kind: 'matching-matrix' }>;
+export type CalculationTasksTrainer = Extract<PracticalFile['trainer'], { kind: 'calculation-tasks' }>;
 
 /** Звуження до матриці для сторінок і експорту: інший вид тренажера тут — помилка даних. */
 export function matrixTrainerOf(file: PracticalFile): MatchingMatrixTrainer {
   if (file.trainer.kind !== 'matching-matrix') throw new Error(`Практична ${file.id}: тренажер «${file.trainer.kind}» не є матрицею зіставлення`);
+  return file.trainer;
+}
+
+/** Звуження до розрахункових задач для сторінок і острова тренажера: інший вид тут — помилка даних. */
+export function calculationTasksOf(file: PracticalFile): CalculationTasksTrainer {
+  if (file.trainer.kind !== 'calculation-tasks') throw new Error(`Практична ${file.id}: тренажер «${file.trainer.kind}» не є розрахунковими задачами`);
   return file.trainer;
 }
 export type MatrixModel = z.infer<typeof MatrixModelSchema>;

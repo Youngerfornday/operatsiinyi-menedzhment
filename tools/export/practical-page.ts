@@ -43,10 +43,14 @@ function rubricHtml(practical: Practical): string {
   );
 }
 
-/** Вихідні дані завдань тренажера; відповіді в умови не потрапляють. */
+/** Вихідні дані завдань тренажера; відповіді в умови не потрапляють. Числа й розв’язки калькулятора генеруються в браузері. */
 function trainerDataHtml(trainer: PracticalFile['trainer']): string {
-  const companies = trainer.companyTasks.map((task) => `<li><b>${t(task.company)}.</b> ${t(task.description)}</li>`).join('');
-  return `<h3>Компанії для визначення моделі</h3><ol>${companies}</ol>`;
+  if (trainer.kind === 'matching-matrix') {
+    const companies = trainer.companyTasks.map((task) => `<li><b>${t(task.company)}.</b> ${t(task.description)}</li>`).join('');
+    return `<h3>Компанії для визначення моделі</h3><ol>${companies}</ol>`;
+  }
+  const formulas = trainer.tasks.map((task) => `<li><b>${t(task.title)}.</b> ${t(task.formula)}</li>`).join('');
+  return `<h3>Формули тренажера</h3><ul>${formulas}</ul>`;
 }
 
 function trainerHtml(file: PracticalFile): string {

@@ -51,8 +51,7 @@ describe('slidesPdfName і siteFileFor', () => {
 });
 
 describe('planSlidesPdf', () => {
-  // Розблокується після теми 1: content/modules/m1/t01/slides.yaml.
-  test.skip('бере лише теми з презентацією і рахує слайди з slides.yaml', async () => {
+  test('бере лише теми з презентацією і рахує слайди з slides.yaml', async () => {
     const jobs = await planSlidesPdf(course, ROOT, workspace);
     const t01 = course.topics.find((topic) => topic.id === 't01');
     const deck = parse(await readFile(join(ROOT, 'content/modules/m1/t01/slides.yaml'), 'utf8')) as { slides: unknown[] };
@@ -87,9 +86,7 @@ describe('runSlidesPdfCli', () => {
     expect(await runSlidesPdfCli(['--pages', '3'], wrong.io)).toBe(2);
   });
 
-  // Розблокується після теми 1: без content/modules/m1/t01/slides.yaml planSlidesPdf падає на
-  // відсутності презентації раніше, ніж встигає перевірити зібраний сайт.
-  test.skip('без зібраної сторінки просить зібрати сайт', async () => {
+  test('без зібраної сторінки просить зібрати сайт', async () => {
     const run = io();
     expect(await runSlidesPdfCli(['--dist', join(workspace, 'empty-dist'), '--out', join(workspace, 'none'), '--topic', 't01'], run.io)).toBe(1);
     expect(run.lines.stderr.join('\n')).toContain('npm run build');
@@ -113,8 +110,10 @@ describe('runSlidesPdfCli', () => {
 
     const text = execFileSync('pdftotext', ['-enc', 'UTF-8', file, '-'], { encoding: 'utf8' });
     expect(text.split('\f').filter((page) => page.trim() !== '')).toHaveLength(deck.slides.length);
-    expect(text).toContain('Корпорація і операційний менеджмент');
-    expect(text).toContain('Агентські витрати');
-    expect(text).not.toContain('Нотатки доповідача');
+    // Довгі заголовки друк переносить по рядках, тому звіряємо текст без урахування переносів.
+    const flat = text.replace(/\s+/gu, ' ');
+    expect(flat).toContain('Операційний менеджмент як різновид функціонального менеджменту');
+    expect(flat).toContain('Сутність і місце операційного менеджменту в системі менеджменту');
+    expect(flat).not.toContain('Нотатки доповідача');
   }, PRINT_TIMEOUT_MS);
 });
