@@ -52,7 +52,7 @@ slides:
   - id: case-fixture
     type: case
     title: Кейс фікстури
-    case: privatbank
+    case: nova-poshta
     facts: [Перший факт кейсу, Другий факт кейсу]
     question: Який механізм слід перевірити першим?
   - id: quote-fixture

@@ -154,7 +154,7 @@ test.describe('каталоги й інтеграція: тренажери і �
     await page.goto('trenazhery/');
     const cards = page.locator('[data-trainer-card]');
     await expect(cards).toHaveCount(1);
-    await expect(page.locator('[data-trainer-card="model-matrix"]')).toBeVisible();
+    await expect(page.locator('[data-trainer-card="priorities-matrix"]')).toBeVisible();
     await expectNoHorizontalScroll(page);
     await expectNoSeriousAxeViolations(page);
   });

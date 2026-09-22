@@ -51,7 +51,7 @@ function matrixCriterion(): { title: string; bands: readonly RubricBand[] } {
   throw new Error(`Практична ${file.id}: у рубриці немає критерію з порогами у відсотках для матриці`);
 }
 
-const isMatrix = trainer.kind === 'model-matrix';
+const isMatrix = trainer.kind === 'matching-matrix';
 const matrixData = isMatrix
   ? {
       rubric: matrixCriterion(),
@@ -83,7 +83,7 @@ const maxCriterionPoints = Math.max(...practical.rubric.map((criterion) => crite
 const outcomes = practical.prn.map((id) => ({ id, code: outcomeLabel(course, id), statement: course.learningOutcomes.find((outcome) => outcome.id === id)?.statement ?? '' }));
 const toc = practicalSections(trainer.kind);
 const conditionNote =
-  matrixData !== null && trainer.kind === 'model-matrix'
+  matrixData !== null && trainer.kind === 'matching-matrix'
     ? matrixConditionNote({ features: trainer.features.length, models: trainer.models.length, cells: matrixData.cellCount, rubricTitle: matrixData.rubric.title })
     : '';
 
@@ -156,7 +156,7 @@ const essayNote =
         </section>
 
         {
-          matrixData !== null && trainer.kind === 'model-matrix' ? (
+          matrixData !== null && trainer.kind === 'matching-matrix' ? (
             <MatrixSections
               practicalId={practical.id}
               matrix={matrixData.matrix}
@@ -225,7 +225,7 @@ const essayNote =
         <section class="prac-section" id="dani" aria-labelledby="dani-title">
           <h2 id="dani-title">{toc.at(-1)?.label}</h2>
           {
-            matrixData !== null && trainer.kind === 'model-matrix' ? (
+            matrixData !== null && trainer.kind === 'matching-matrix' ? (
               <MatrixReference models={trainer.models} />
             ) : null
           }

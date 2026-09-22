@@ -57,17 +57,15 @@ describe('runCli: успішний експорт', () => {
     const outDir = await temporaryDir();
     const { code, out } = await runOnFixtures(outDir);
     expect(code).toBe(0);
-    expect(out[0]).toMatch(/^Moodle XML: 9 файлів/);
+    expect(out[0]).toMatch(/^Moodle XML: 7 файлів/);
     expect((await readdir(outDir)).sort()).toEqual([
       'glossary-course.xml',
       'glossary-m1.xml',
       'glossary-m2.xml',
-      'glossary-m3.xml',
       'manifest.json',
       'questions-training-course.xml',
       'questions-training-m1.xml',
       'questions-training-m2.xml',
-      'questions-training-m3.xml',
     ]);
     for (const name of await readdir(outDir)) {
       const contents = await readFile(join(outDir, name), 'utf8');
@@ -82,9 +80,9 @@ describe('runCli: успішний експорт', () => {
     const course = manifest.questions.find((entry) => entry.scope === 'course');
     expect(course?.total).toBe(13);
     expect(course?.byType).toEqual({ calculated: 2, ddwtos: 1, match: 1, multianswer: 2, multichoice: 3, numerical: 1, truefalse: 3 });
-    expect(manifest.questions.map((entry) => entry.scope)).toEqual(['m1', 'm2', 'm3', 'course']);
+    expect(manifest.questions.map((entry) => entry.scope)).toEqual(['m1', 'm2', 'course']);
     expect(manifest.questions.every((entry) => entry.kind === 'training')).toBe(true);
-    expect(manifest.glossaries.map((entry) => entry.total)).toEqual([3, 2, 1, 6]);
+    expect(manifest.glossaries.map((entry) => entry.total)).toEqual([5, 1, 6]);
     expect(manifest.glossaries.at(-1)?.categories).toHaveLength(3);
   });
 
@@ -99,25 +97,36 @@ describe('runCli: успішний експорт', () => {
   });
 
   it('контрольні банки: модульний пул на модуль і на курс, підсумковий — одним файлом, без canary', async () => {
-    const canary = `${CONTROL_CANARY_PREFIX}m2-cli`;
-    const control = { schemaVersion: 1, kind: 'control', module: 'm2', canary };
-    const banks = await bankDir({ ...control, questions: [asControl(examples.multichoiceSingle())] }, 'm2.yaml');
+    const canary = `${CONTROL_CANARY_PREFIX}m1-cli`;
+    // Питання module-пулу належить темі t04 (реальний модуль m1); підсумковий пул бере тему t05
+    // (реальний модуль m2) — модуль кожного банку має збігатися з реальним модулем його теми.
+    const banks = await bankDir(
+      { schemaVersion: 1, kind: 'control', module: 'm1', canary, questions: [asControl(examples.multichoiceSingle())] },
+      'm1.yaml',
+    );
     await writeFile(
       join(banks, 'final.yaml'),
-      stringify({ ...control, pool: 'final', questions: [{ ...asControl(examples.multichoiceMulti()), id: 't05-k501' }] }),
+      stringify({
+        schemaVersion: 1,
+        kind: 'control',
+        pool: 'final',
+        module: 'm2',
+        canary,
+        questions: [{ ...asControl(examples.multichoiceMulti()), id: 't05-k501' }],
+      }),
       'utf8',
     );
     const outDir = await temporaryDir();
     const { code } = await run(['--banks', banks, '--modules', `${FIXTURES}/modules`, '--out', outDir]);
     expect(code).toBe(0);
     const names = await readdir(outDir);
-    expect(names).toContain('questions-control-m2.xml');
+    expect(names).toContain('questions-control-m1.xml');
     expect(names).toContain('questions-control-course.xml');
     expect(names).toContain('questions-control-final.xml');
     expect(await readFile(join(outDir, 'questions-control-final.xml'), 'utf8')).toContain('top/Контрольний банк. Підсумковий');
     const manifest = JSON.parse(await readFile(join(outDir, 'manifest.json'), 'utf8')) as ExportManifest;
     expect(manifest.questions.map((entry) => [entry.scope, entry.pool])).toEqual([
-      ['m2', 'module'],
+      ['m1', 'module'],
       ['course', 'module'],
       ['final', 'final'],
     ]);
@@ -157,7 +166,7 @@ describe('runCli: звіт про помилки', () => {
   });
 
   it('питання з теми чужого модуля', async () => {
-    const banks = await bankDir({ schemaVersion: 1, kind: 'training', module: 'm1', questions: [examples.multichoiceSingle()] });
+    const banks = await bankDir({ schemaVersion: 1, kind: 'training', module: 'm1', questions: [examples.multichoiceMulti()] });
     const { code, err } = await run(['--banks', banks, '--modules', `${FIXTURES}/modules`, '--out', await temporaryDir()]);
     expect(code).toBe(1);
     expect(err.join('\n')).toContain('належить модулю m2, а банк — модулю m1');
@@ -183,11 +192,11 @@ describe('runCli: звіт про помилки', () => {
   });
 
   it('помилка генерації (canary в тексті контрольного питання) потрапляє у звіт', async () => {
-    const canary = `${CONTROL_CANARY_PREFIX}m2-leak`;
+    const canary = `${CONTROL_CANARY_PREFIX}m1-leak`;
     const question = asControl(examples.multichoiceSingle());
     const banks = await bankDir(
-      { schemaVersion: 1, kind: 'control', module: 'm2', canary, questions: [{ ...question, stem: `${question.stem} ${canary}` }] },
-      'm2.yaml',
+      { schemaVersion: 1, kind: 'control', module: 'm1', canary, questions: [{ ...question, stem: `${question.stem} ${canary}` }] },
+      'm1.yaml',
     );
     const { code, err } = await run(['--banks', banks, '--modules', `${FIXTURES}/modules`, '--out', await temporaryDir()]);
     expect(code).toBe(1);

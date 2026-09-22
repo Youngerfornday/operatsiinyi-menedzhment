@@ -82,26 +82,25 @@ describe('CourseSchema: cases', () => {
 
   it('rejects a case whose primary topic does not tell its story', () => {
     const wrong = mutated((c) => {
-      byId(c.cases, 'enron').primaryTopic = 't02';
+      byId(c.cases, 'boeing-787').primaryTopic = 't02';
     });
-    expect(issuesOf(wrong)).toContainEqual(expect.stringMatching(/enron.*t02/));
+    expect(issuesOf(wrong)).toContainEqual(expect.stringMatching(/boeing-787.*t02/));
   });
 
   it('rejects the same case focus repeated in two topics', () => {
     const repeated = mutated((c) => {
-      const source = at(c.topics, 0).cases.find((item) => item.case === 'enron');
-      const target = at(c.topics, 8).cases.find((item) => item.case === 'enron');
-      if (!source || !target) throw new Error('Кейс Enron має бути в темах t01 і t09');
+      const source = at(c.topics, 1).cases.find((item) => item.case === 'kernel');
+      const target = at(c.topics, 2).cases.find((item) => item.case === 'kernel');
+      if (!source || !target) throw new Error('Кейс kernel має бути в темах t02 і t03');
       target.focus = source.focus;
     });
-    expect(issuesOf(repeated)).toContainEqual(expect.stringMatching(/enron.*фабул/));
+    expect(issuesOf(repeated)).toContainEqual(expect.stringMatching(/kernel.*фабул/));
   });
 
   it('requires a Ukrainian and an international case in every topic', () => {
     const noUkrainian = mutated((c) => {
       const topic = at(c.topics, 0);
-      topic.cases = topic.cases.filter((item) => item.case !== 'privatbank');
-      byId(c.cases, 'privatbank').primaryTopic = 't03';
+      topic.cases = topic.cases.filter((item) => item.case !== 'ukrposhta' && item.case !== 'ajax-systems');
     });
     expect(issuesOf(noUkrainian)).toContainEqual(expect.stringMatching(/t01.*україн/));
   });
@@ -110,7 +109,7 @@ describe('CourseSchema: cases', () => {
 describe('CourseSchema: competences and practicals registry', () => {
   it('rejects duplicate competence codes, unknown topics and an id that does not match the kind', () => {
     const wrong = mutated((c) => {
-      const special = at(c.competences, 0);
+      const special = at(c.competences, 2);
       c.competences.push({ ...special, id: 'zk01', topics: ['t77'] });
     });
     const issues = issuesOf(wrong).join('\n');

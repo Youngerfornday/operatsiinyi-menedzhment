@@ -37,12 +37,10 @@ jobs:
       - name: Встановити залежності
         run: npm ci
 
-      # Знахідки лінту контенту виправляє автор теми; поки їх не прибрано, крок не блокує конвеєр.
-      # Коли `npm run lint:content` стане зеленим — прибрати continue-on-error, а зі `scripts.build`
-      # прибрати прапорець --warn-only, щоб збірка падала на помилках фактів.
-      - name: Лінт контенту (факти проти legal-baseline.md)
+      # Лінт блокує конвеєр: формули звіряються з docs/research/formula-baseline.md,
+      # стандарти — зі standards-baseline.md. Знахідки виправляє автор теми.
+      - name: Лінт контенту (формули й стандарти проти баз)
         run: npm run lint:content
-        continue-on-error: true
 
       # Chromium друкує PDF лекцій і практичних; poppler-utils (pdftotext) перевіряє в тестах кирилицю в PDF.
       - name: Встановити Chromium для PDF і poppler-utils

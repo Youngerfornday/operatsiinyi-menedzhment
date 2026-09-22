@@ -77,16 +77,16 @@ function matrixSpec(course: Course, file: PracticalFile): ScormPackageSpec {
     companyTasks: trainer.companyTasks.map((task) => ({ ...task, company: typo(task.company), description: typo(task.description), explanation: typo(task.explanation) })),
   };
   return {
-    id: `${practical.id}-matrytsia-modelei`,
+    id: `${practical.id}-matrytsia-zistavlennia`,
     kind: 'matrix',
-    registryId: 'model-matrix',
+    registryId: 'priorities-matrix',
     practicalId: practical.id,
     module: practical.module,
     title: typo(`${practicalLabel(practical.id)}. ${practical.title}`),
     kicker: kickerOf(course, practical),
     lede: typo(practical.goal),
     facts: [
-      typo(`${trainer.features.length} ознак × ${trainer.models.length} моделі = ${cells} формулювань`),
+      typo(`${trainer.features.length} ознак × ${trainer.models.length} стовпців = ${cells} формулювань`),
       typo(`Перша спроба навчальна, оцінюється друга: бал за критерієм «${rubric.title}»`),
       typo(`Зараховано з ${masteryPercent} балів зі 100`),
     ],
@@ -98,6 +98,6 @@ function matrixSpec(course: Course, file: PracticalFile): ScormPackageSpec {
 /** Пакети в порядку практичних; наразі лише матриці для практичних із файлом тренажера. */
 export function scormPackageSpecs(course: Course, practicals: readonly PracticalFile[]): ScormPackageSpec[] {
   const order = (spec: ScormPackageSpec): number => course.practicals.findIndex((practical) => practical.id === spec.practicalId);
-  const specs = practicals.filter((file) => file.trainer.kind === 'model-matrix').map((file) => matrixSpec(course, file));
+  const specs = practicals.filter((file) => file.trainer.kind === 'matching-matrix').map((file) => matrixSpec(course, file));
   return specs.sort((a, b) => order(a) - order(b));
 }

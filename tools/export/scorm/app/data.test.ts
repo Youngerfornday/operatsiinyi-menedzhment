@@ -3,7 +3,7 @@ import { packageDataScript, parsePackageData, type ScormPackageData } from './da
 
 const MATRIX: ScormPackageData = {
   kind: 'matrix',
-  activityId: 'p01-model-matrix',
+  activityId: 'p01-matching-matrix',
   masteryPercent: 90,
   practicalId: 'p01',
   matrix: { models: [], features: [] },
@@ -42,7 +42,7 @@ describe('parsePackageData', () => {
 
   test('requires matrix, rubric, sources and company tasks for the matrix package', () => {
     // Arrange
-    const incomplete = JSON.stringify({ kind: 'matrix', activityId: 'p01-model-matrix', masteryPercent: 90, matrix: {} });
+    const incomplete = JSON.stringify({ kind: 'matrix', activityId: 'p01-matching-matrix', masteryPercent: 90, matrix: {} });
 
     // Act and Assert
     expect(() => parsePackageData(incomplete, 'matrix')).toThrow(/матриці, рубрики чи джерел/);

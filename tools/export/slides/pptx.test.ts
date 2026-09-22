@@ -81,7 +81,8 @@ describe('buildPresentation', () => {
     expect(media.some((entry) => Buffer.compare(Buffer.from(entry.data), PNG) === 0)).toBe(true);
   });
 
-  test('збирає реальну t01 і зберігає кирилицю, нотатки, логотипи, схеми та межі координат', async () => {
+  // Розблокується після теми 1: content/modules/m1/t01/slides.yaml і sources.yaml.
+  test.skip('збирає реальну t01 і зберігає кирилицю, нотатки, логотипи, схеми та межі координат', async () => {
     const file = SlidesFileSchema.parse(parse(await readFile(join(ROOT, 'content/modules/m1/t01/slides.yaml'), 'utf8')));
     const sources = SourcesFileSchema.parse(parse(await readFile(join(ROOT, 'content/modules/m1/t01/sources.yaml'), 'utf8')));
     const deck = await buildPresentation(file, course, sources, { rootDir: ROOT, topicDir: join(ROOT, 'content/modules/m1/t01'), date: '2026-09-17', figureRenderer: renderStub });

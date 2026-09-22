@@ -5,14 +5,14 @@ import { attachScormLifecycle, createScormProgressStore, scormNoticeText, type S
 import { COMPRESSED_PREFIX } from './suspend-data';
 import { createEmptyProgress, type ProgressState } from './state';
 
-const ACTIVITY = 'p01-model-matrix';
+const ACTIVITY = 'p01-matching-matrix';
 
 function withActivity(bestScore: number, base: ProgressState = createEmptyProgress(FIXED_NOW)): ProgressState {
   return {
     ...base,
     xp: 54,
     xpLedger: { [`trainer:${ACTIVITY}`]: 54 },
-    recentEventIds: ['trainer:p01-model-matrix:1757844000000'],
+    recentEventIds: ['trainer:p01-matching-matrix:1757844000000'],
     activities: { [ACTIVITY]: { attempts: 1, bestScore, completedAt: FIXED_NOW.toISOString() } },
   };
 }

@@ -43,14 +43,14 @@ export interface PracticalTrainer {
 }
 
 export const MATRIX_TRAINER = {
-  practicalId: 'p01',
-  registryId: 'model-matrix',
-  activityId: matrixActivityId('p01'),
-  path: 'praktychni/p01/#trenazher',
+  practicalId: 'p02',
+  registryId: 'priorities-matrix',
+  activityId: matrixActivityId('p02'),
+  path: 'praktychni/p02/#trenazher',
   icon: 'layers',
-  title: 'Матриця моделей операційного менеджменту',
-  text: 'Зіставте формулювання ознак з чотирма моделями: перша спроба навчальна з розбором кожної клітинки, друга оцінюється за рубрикою.',
-  formula: 'Не менше 90 % зіставлень — 1 бал',
+  title: 'Матриця операційних пріоритетів і рішень',
+  text: 'Зіставте операційні пріоритети з рішеннями операційного менеджменту: перша спроба навчальна з розбором кожної клітинки, друга оцінюється за рубрикою.',
+  formula: 'Не менше 90 % зіставлень — 2 бали',
 } as const satisfies PracticalTrainer;
 
 /** Тренажери, що живуть на сторінці практичної (а не на власній сторінці `trenazhery/<slug>/`). */
@@ -58,7 +58,7 @@ export const PRACTICAL_TRAINERS: readonly PracticalTrainer[] = [MATRIX_TRAINER];
 
 /** Людські назви тренажерів з реєстру course.yaml. */
 export const TRAINER_KIND_LABELS: Readonly<Record<string, string>> = {
-  'model-matrix': 'матриця моделей (зіставлення)',
+  'priorities-matrix': 'матриця зіставлення',
 };
 
 export function trainerKindLabel(registryId: string): string {

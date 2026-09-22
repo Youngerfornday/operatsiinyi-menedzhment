@@ -45,7 +45,7 @@ const file = () => ({
   updatedAt: '2026-09-16',
   sources: [source()],
   trainer: {
-    kind: 'model-matrix',
+    kind: 'matching-matrix',
     models: MODELS.map(model),
     features: FEATURES.map(feature),
     companyTasks: [

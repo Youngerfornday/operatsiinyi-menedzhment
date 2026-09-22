@@ -23,7 +23,7 @@ describe('matrixCompletedEvent', () => {
     const attempt = finishedGraded(9);
     const event = matrixCompletedEvent(attempt, summarizeMatrixAttempt(attempt, MATRIX), 'p01');
 
-    expect(event).toEqual({ id: `trainer:p01-model-matrix:${NOW.getTime()}`, type: 'trainer-completed', activityId: 'p01-model-matrix', score: 1 });
+    expect(event).toEqual({ id: `trainer:p01-matching-matrix:${NOW.getTime()}`, type: 'trainer-completed', activityId: 'p01-matching-matrix', score: 1 });
   });
 
   it('повертає null для навчальної чи незавершеної спроби', () => {
@@ -43,7 +43,7 @@ describe('matrixCompletedEvent', () => {
     const first = applyLearningEvent(createEmptyProgress(NOW), event, LATER);
     if (!first.ok) throw new Error(first.error.message);
     expect(first.value.xpGained).toBe(40);
-    expect(first.value.state.activities['p01-model-matrix']).toMatchObject({ attempts: 1 });
+    expect(first.value.state.activities['p01-matching-matrix']).toMatchObject({ attempts: 1 });
 
     const second = applyLearningEvent(first.value.state, event, LATER);
     expect(second.ok && second.value.duplicate).toBe(true);
@@ -51,7 +51,7 @@ describe('matrixCompletedEvent', () => {
   });
 
   it('ID активності практичної — стабільний і валідний', () => {
-    expect(matrixActivityId('p01')).toBe('p01-model-matrix');
+    expect(matrixActivityId('p01')).toBe('p01-matching-matrix');
     expect(() => matrixActivityId('P 01')).toThrow();
   });
 });

@@ -57,15 +57,15 @@ describe('viewMatrix', () => {
     for (const r of view.rows) expect(coveredTopics(r, view.topicIndexes)).toBeGreaterThan(0);
   });
 
-  it('пошук за кодом «ПРН 12» і за словом формулювання', () => {
-    expect(viewMatrix(matrix, '', 'прн 12').rows.map((r) => r.id)).toEqual(['prn12']);
-    expect(viewMatrix(matrix, '', 'соціально відповідально').rows.map((r) => r.id)).toEqual(['prn15']);
+  it('пошук за кодом «ПРН 20» і за словом формулювання', () => {
+    expect(viewMatrix(matrix, '', 'прн 20').rows.map((r) => r.id)).toEqual(['prn20']);
+    expect(viewMatrix(matrix, '', 'бізнес-процеси').rows.map((r) => r.id)).toEqual(['prn24']);
   });
 
   it('підсумки: теми на ПРН і ПРН на тему', () => {
     const view = viewMatrix(matrix, '', '');
-    const outcome = course.learningOutcomes.find((o) => o.id === 'prn11');
-    expect(coveredTopics(row('prn11'), view.topicIndexes)).toBeGreaterThanOrEqual(outcome?.topics.length ?? 0);
+    const outcome = course.learningOutcomes.find((o) => o.id === 'prn24');
+    expect(coveredTopics(row('prn24'), view.topicIndexes)).toBeGreaterThanOrEqual(outcome?.topics.length ?? 0);
     expect(outcomesPerTopic(matrix.rows, topicIndex('t01'))).toBe(
       course.learningOutcomes.filter((o) => row(o.id).cells[topicIndex('t01')] !== 'none').length,
     );

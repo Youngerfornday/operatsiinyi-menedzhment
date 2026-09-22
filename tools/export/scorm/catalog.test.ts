@@ -15,21 +15,21 @@ beforeAll(async () => {
 });
 
 /**
- * Файл тренажера п01 (`content/practicals/p01.yaml`) — синтетична заготовка, а не реальний контент:
- * реєстр практичних (course.yaml) уже описує «п01. Матриця моделей», а сам файл тренажера ще не
+ * Файл тренажера п02 (`content/practicals/p02.yaml`) — синтетична заготовка, а не реальний контент:
+ * реєстр практичних (course.yaml) уже описує «п02. Операційна стратегія», а сам файл тренажера ще не
  * написаний в цьому лейні. Мінімальна форма, що задовольняє `PracticalFile`, аби перевірити логіку
  * складання специфікації пакета незалежно від того, чи вже опубліковано реальний вміст.
  */
 const SOURCE_ID = 'osnovy-om';
 const matrixFile: PracticalFile = {
-  id: 'p01',
-  title: 'Матриця моделей операційного менеджменту',
-  intro: 'Зіставте формулювання ознак з моделями операційного менеджменту.',
+  id: 'p02',
+  title: 'Матриця операційних пріоритетів і рішень',
+  intro: 'Зіставте операційні пріоритети з рішеннями операційного менеджменту.',
   status: 'draft',
   updatedAt: '2026-09-01',
   sources: [{ id: SOURCE_ID, type: 'book', title: 'Операційний менеджмент', authors: [], language: 'uk', url: 'https://example.com/', checkedAt: '2026-09-01' }],
   trainer: {
-    kind: 'model-matrix',
+    kind: 'matching-matrix',
     models: [
       {
         id: 'model-a',
@@ -84,7 +84,7 @@ describe('scormPackageSpecs', () => {
     const specs = scormPackageSpecs(course, [matrixFile]);
 
     // Assert
-    expect(specs.map((spec) => [spec.id, spec.kind, spec.practicalId])).toEqual([['p01-matrytsia-modelei', 'matrix', 'p01']]);
+    expect(specs.map((spec) => [spec.id, spec.kind, spec.practicalId])).toEqual([['p02-matrytsia-zistavlennia', 'matrix', 'p02']]);
   });
 
   test('skips practicals without a trainer file', () => {
@@ -109,10 +109,10 @@ describe('scormPackageSpecs', () => {
     // Assert
     expect(matrix?.data.kind).toBe('matrix');
     if (matrix?.data.kind !== 'matrix') return;
-    expect(matrix.data.matrix.features).toHaveLength(matrixFile.trainer.kind === 'model-matrix' ? matrixFile.trainer.features.length : 0);
+    expect(matrix.data.matrix.features).toHaveLength(matrixFile.trainer.kind === 'matching-matrix' ? matrixFile.trainer.features.length : 0);
     expect(Object.keys(matrix.data.sources)).toEqual(matrixFile.sources.map((source) => source.id));
     expect(matrix.data.companyTasks).toHaveLength(1);
-    expect(matrix.title.replace(/\s/g, ' ')).toBe('П1. Матриця моделей операційного менеджменту');
+    expect(matrix.title.replace(/\s/g, ' ')).toBe('П2. Операційна стратегія та операційні пріоритети підприємства');
     expect(matrix.module).toBe('m1');
   });
 });

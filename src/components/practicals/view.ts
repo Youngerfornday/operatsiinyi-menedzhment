@@ -3,7 +3,7 @@
  * обсяг тренажера в умові. Чисті функції — сторінка лише підставляє числа зі свого файлу даних.
  */
 
-export type PracticalTrainerKind = 'model-matrix';
+export type PracticalTrainerKind = 'matching-matrix';
 
 export interface PracticalSection {
   readonly id: string;
@@ -21,14 +21,14 @@ const COMMON_TAIL: readonly PracticalSection[] = [
 ];
 
 const TRAINER_SECTIONS: Readonly<Record<PracticalTrainerKind, readonly PracticalSection[]>> = {
-  'model-matrix': [
+  'matching-matrix': [
     { id: 'trenazher', label: 'Тренажер-матриця' },
     { id: 'kompanii', label: 'Визначте модель компанії' },
   ],
 };
 
 const DATA_SECTION: Readonly<Record<PracticalTrainerKind, PracticalSection>> = {
-  'model-matrix': { id: 'dani', label: 'Моделі, дані й джерела' },
+  'matching-matrix': { id: 'dani', label: 'Дані, формули й джерела' },
 };
 
 export function practicalSections(kind: PracticalTrainerKind): readonly PracticalSection[] {
@@ -36,7 +36,7 @@ export function practicalSections(kind: PracticalTrainerKind): readonly Practica
 }
 
 export function practicalXpChip(kind: PracticalTrainerKind): string {
-  return kind === 'model-matrix' ? 'до 60 XP за матрицю' : 'до 60 XP за задачі тренажера';
+  return kind === 'matching-matrix' ? 'до 60 XP за матрицю' : 'до 60 XP за задачі тренажера';
 }
 
 export interface MatrixNoteInput {

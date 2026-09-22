@@ -16,7 +16,7 @@ import { SourceSchema } from './sources';
 /**
  * Файл `content/practicals/pNN.yaml` — дані тренажера практичної роботи.
  * Реєстр практичних (мета, результати, рубрика, ПРН) живе в course.yaml; тут — лише зміст тренажера.
- * Вид тренажера обирає поле `kind`: наразі лише матриця моделей (`model-matrix`, П1); дискримінований
+ * Вид тренажера обирає поле `kind`: наразі лише матриця зіставлення (`matching-matrix`); дискримінований
  * union лишається на одному члені, щоб додавати нові види тренажерів без зміни форми PracticalFileSchema.
  */
 
@@ -86,19 +86,19 @@ export const CompanyTaskSchema = z.object({
   source: KebabIdSchema,
 });
 
-export const ModelMatrixSchema = z.object({
-  kind: z.literal('model-matrix'),
+export const MatchingMatrixSchema = z.object({
+  kind: z.literal('matching-matrix'),
   models: z.array(MatrixModelSchema).min(MIN_MODELS),
   features: z.array(MatrixFeatureSchema).min(MIN_FEATURES),
   companyTasks: z.array(CompanyTaskSchema).min(1),
   essay: EssayTaskSchema,
 });
 
-type ModelMatrix = z.infer<typeof ModelMatrixSchema>;
+type MatchingMatrix = z.infer<typeof MatchingMatrixSchema>;
 type Issue = { message: string; path: PropertyKey[] };
 
 /** Повнота матриці: кожна ознака описана для кожної моделі, без зайвих і невідомих моделей. */
-export function matrixIssues(matrix: ModelMatrix): Issue[] {
+export function matrixIssues(matrix: MatchingMatrix): Issue[] {
   const modelIds = matrix.models.map((model) => model.id);
   const featureIds = new Set(matrix.features.map((feature) => feature.id));
   const modelSet = new Set(modelIds);
@@ -127,7 +127,7 @@ export function matrixIssues(matrix: ModelMatrix): Issue[] {
 }
 
 /** Усі посилання на джерела (клітинки, завдання) ведуть на розділ sources файлу. */
-export function sourceRefIssues(matrix: ModelMatrix, sourceIds: ReadonlySet<string>): Issue[] {
+export function sourceRefIssues(matrix: MatchingMatrix, sourceIds: ReadonlySet<string>): Issue[] {
   const cellRefs = matrix.features.flatMap((feature, f) =>
     feature.cells.flatMap((cell, c): Issue[] =>
       [cell.source, ...cell.alsoSources]
@@ -150,7 +150,7 @@ export const PracticalFileSchema = z
     status: z.enum(['draft', 'review', 'verified']).default('draft'),
     updatedAt: IsoDateSchema,
     sources: z.array(SourceSchema).min(1),
-    trainer: z.discriminatedUnion('kind', [ModelMatrixSchema]),
+    trainer: z.discriminatedUnion('kind', [MatchingMatrixSchema]),
   })
   .superRefine((file, ctx) => {
     for (const id of findDuplicates(file.sources.map((source) => source.id))) {
@@ -167,11 +167,11 @@ export { EssayTaskSchema } from './practical-essay';
 export type { EssayTask } from './practical-essay';
 
 export type PracticalFile = z.infer<typeof PracticalFileSchema>;
-export type ModelMatrixTrainer = Extract<PracticalFile['trainer'], { kind: 'model-matrix' }>;
+export type MatchingMatrixTrainer = Extract<PracticalFile['trainer'], { kind: 'matching-matrix' }>;
 
 /** Звуження до матриці для сторінок і експорту: інший вид тренажера тут — помилка даних. */
-export function matrixTrainerOf(file: PracticalFile): ModelMatrixTrainer {
-  if (file.trainer.kind !== 'model-matrix') throw new Error(`Практична ${file.id}: тренажер «${file.trainer.kind}» не є матрицею моделей`);
+export function matrixTrainerOf(file: PracticalFile): MatchingMatrixTrainer {
+  if (file.trainer.kind !== 'matching-matrix') throw new Error(`Практична ${file.id}: тренажер «${file.trainer.kind}» не є матрицею зіставлення`);
   return file.trainer;
 }
 export type MatrixModel = z.infer<typeof MatrixModelSchema>;
@@ -180,6 +180,6 @@ export type MatrixCell = z.infer<typeof MatrixCellSchema>;
 export type CompanyTask = z.infer<typeof CompanyTaskSchema>;
 
 /** Кількість клітинок матриці — число «зіставлень» для рубрики (90 % / 60 %). */
-export function matrixCellCount(matrix: ModelMatrix): number {
+export function matrixCellCount(matrix: MatchingMatrix): number {
   return matrix.features.reduce((total, feature) => total + feature.cells.length, 0);
 }

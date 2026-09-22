@@ -3,16 +3,16 @@ import { matrixConditionNote, practicalSections, practicalXpChip } from './view'
 
 describe('practicalSections', () => {
   it('keeps the shared sections around the trainer ones', () => {
-    const ids = practicalSections('model-matrix').map((section) => section.id);
+    const ids = practicalSections('matching-matrix').map((section) => section.id);
     expect(ids).toEqual(['meta', 'umova', 'trenazher', 'kompanii', 'ese', 'rubryka', 'dani']);
   });
 
   it('puts the data section last', () => {
-    expect(practicalSections('model-matrix').at(-1)?.label).toBe('Моделі, дані й джерела');
+    expect(practicalSections('matching-matrix').at(-1)?.label).toBe('Дані, формули й джерела');
   });
 
   it('never repeats an anchor', () => {
-    for (const kind of ['model-matrix'] as const) {
+    for (const kind of ['matching-matrix'] as const) {
       const ids = practicalSections(kind).map((section) => section.id);
       expect(new Set(ids).size).toBe(ids.length);
     }
@@ -21,7 +21,7 @@ describe('practicalSections', () => {
 
 describe('practicalXpChip', () => {
   it('names the matrix in the chip of the matrix practical', () => {
-    expect(practicalXpChip('model-matrix')).toContain('матрицю');
+    expect(practicalXpChip('matching-matrix')).toContain('матрицю');
   });
 });
 

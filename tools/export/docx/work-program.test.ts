@@ -60,7 +60,7 @@ describe('структура робочої програми', () => {
   });
 
   test('матриця ПРН × теми ставить «+» саме там, де тема формує результат', () => {
-    const matrix = tableWithHeaders(view, ['ПРН', 'Т1', 'Т12']);
+    const matrix = tableWithHeaders(view, ['ПРН', 'Т1', 'Т8']);
     for (const [index, outcome] of course.learningOutcomes.entries()) {
       const row = matrix[index + 1] ?? [];
       const marked = course.topics.filter((_, topicIndex) => row[topicIndex + 1] === '+').map((topic) => topic.id);
@@ -139,7 +139,7 @@ describe('примітки для погодження', () => {
   });
 
   test('дані викладача — плейсхолдер без персональних даних', () => {
-    expect(allText()).toContain('Викладач курсу (дані вносить кафедра)');
+    expect(allText()).toContain(`${course.teacher.name} (дані вносить кафедра)`);
     expect(view.xml.document).not.toMatch(/@[a-z0-9-]+\.[a-z]{2,}/i);
   });
 });
