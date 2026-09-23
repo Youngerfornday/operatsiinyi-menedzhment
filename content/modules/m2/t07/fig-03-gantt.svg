@@ -13,6 +13,7 @@
     #fig-t07-3 .lbl { fill: var(--ink-2, #445570); font-size: 11px; }
     #fig-t07-3 .refc { fill: var(--surface, #ffffff); stroke: var(--ink, #0f1c2e); stroke-width: 1.25; }
     #fig-t07-3 .refn { fill: var(--ink, #0f1c2e); font-size: 11px; font-weight: 700; text-anchor: middle; }
+    #fig-t07-3 .refc.exam { stroke: var(--err, #b42318); }
     #fig-t07-3 .refn-exam { fill: var(--err-ink, #8f1d14); }
   </style>
 
@@ -61,7 +62,7 @@
   <text class="lbl" x="580" y="8" text-anchor="end">строк — 18 тиж.</text>
 
   <circle class="refc" cx="40" cy="20" r="10"/><text class="refn" x="40" y="24">1</text>
-  <circle class="refc" cx="100" cy="88" r="10"/><text class="refn" x="100" y="92">2</text>
+  <circle class="refc exam" cx="100" cy="88" r="10"/><text class="refn refn-exam" x="100" y="92">2</text>
   <circle class="refc" cx="100" cy="54" r="10"/><text class="refn" x="100" y="58">3</text>
   <circle class="refc" cx="250" cy="122" r="10"/><text class="refn" x="250" y="126">4</text>
 </svg>

@@ -16,7 +16,7 @@
     #fig-t07-4 .refn-exam { fill: var(--err-ink, #8f1d14); }
   </style>
 
-  <!-- x-scale: week w -> x = 320 + (w-18)*36 (sigma ~ 1.45 wk -> ~52px) -->
+  <!-- x-scale: week w -> x = 284 + (w-18)*36 (sigma ~ 1.45 wk -> ~52px) -->
   <line class="axis" x1="60" y1="260" x2="600" y2="260"/>
   <g class="tick">
     <text x="140" y="276">14</text>
