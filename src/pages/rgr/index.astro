@@ -9,6 +9,7 @@ import { pluralUk } from '../../lib/plural';
 import { typo } from '../../lib/typography';
 import { url } from '../../lib/url';
 import '../../styles/topic.css';
+import '../../components/trainers/trainers.css';
 import '../../components/rgr/rgr.css';
 
 /**
@@ -27,24 +28,46 @@ const stageDeadlines = new Map(
   ),
 );
 
-const STAGE_FORMULAS: Readonly<Record<string, ReadonlyArray<{ code: string; label: string; body: string }>>> = {
+interface StageFormula {
+  readonly code: string;
+  readonly label: string;
+  readonly body: string;
+  readonly note?: string;
+}
+
+/** Формули етапів — дослівно з docs/research/formula-baseline.md (код, назва, запис); інших формул тут немає. */
+const STAGE_FORMULAS: Readonly<Record<string, readonly StageFormula[]>> = {
   'rgr-plan': [
     { code: 'FC-01', label: 'Проста ковзна середня', body: 'Ft = (Dt−1 + Dt−2 + … + Dt−n) / n' },
-    { code: 'FC-03', label: 'Експоненційне згладжування', body: 'Ft = Ft−1 + α · (Dt−1 − Ft−1)' },
+    { code: 'FC-02', label: 'Зважена ковзна середня', body: 'Ft = Σ (wi · Dt−i), Σwi = 1' },
+    { code: 'FC-03', label: 'Експоненційне згладжування', body: 'Ft = Ft−1 + α · (Dt−1 − Ft−1)', note: 'Початковий прогноз F1 = D1 — задано у варіанті.' },
+    { code: 'FC-04', label: 'Середнє абсолютне відхилення (MAD)', body: 'MAD = (1/n) · Σ |Dt − Ft|' },
+    { code: 'FC-05', label: 'Середньоквадратична похибка (MSE)', body: 'MSE = (1/n) · Σ (Dt − Ft)²' },
     { code: 'FC-06', label: 'Середня абсолютна похибка у % (MAPE)', body: 'MAPE = (100/n) · Σ (|Dt − Ft| / Dt)' },
     { code: 'CAP-01', label: 'Коефіцієнт використання потужності', body: 'Використання = Фактичний випуск / Проєктна потужність · 100%' },
+    { code: 'AGG-01', label: 'Стратегія погоні за попитом', body: 'Виробництво_t = Попит_t' },
+    { code: 'AGG-02', label: 'Стратегія рівномірного виробництва', body: 'Виробництво = Σ Попит_t / n' },
     { code: 'AGG-03', label: 'Сумарні витрати агрегатного плану', body: 'Витрати = Регулярний час + Понаднормовий час + Найм + Звільнення + Зберігання запасу + Дефіцит' },
   ],
   'rgr-operations': [
     { code: 'EOQ-01', label: 'Економічний розмір замовлення', body: 'Q* = √(2DS / H)' },
     { code: 'EOQ-03', label: 'Точка замовлення', body: 'ROP = d̄ · L' },
-    { code: 'EOQ-04', label: 'Страховий запас', body: 'SS = z · σ_dLT' },
+    { code: 'EOQ-04', label: 'Страховий запас', body: 'SS = z · σ_dLT', note: 'z — за таблицею нормального розподілу; у варіанті наведено стандартне значення, не звірене з підручником викладача.' },
+    { code: 'MRP-01', label: 'Брутто-потреба', body: 'визначається основним планом-графіком виробництва (MPS) і специфікацією виробу (BOM)' },
     { code: 'MRP-02', label: 'Нетто-потреба', body: 'Нетто = Брутто + Резервування − (Наявний запас + Заплановані надходження)' },
+    { code: 'MRP-03', label: 'Розмір партії «партія за партією»', body: 'Qзамовлення = Нетто-потреба періоду' },
+    { code: 'PRJ-01', label: 'Ранній старт/фініш операції (CPM)', body: 'ES = max(EF попередників); EF = ES + t' },
+    { code: 'PRJ-02', label: 'Пізній старт/фініш операції (CPM)', body: 'LF = min(LS наступників); LS = LF − t' },
     { code: 'PRJ-03', label: 'Резерв часу операції', body: 'Резерв = LS − ES = LF − EF' },
     { code: 'PRJ-04', label: 'Критичний шлях', body: 'найдовший за тривалістю шлях мережі; сума резервів його операцій = 0' },
   ],
   'rgr-quality': [
-    { code: 'QC-01', label: 'Контрольна карта X̄-R', body: 'UCLx̄ = X̿ + A2·R̄; LCLx̄ = X̿ − A2·R̄; UCLR = D4·R̄; LCLR = D3·R̄' },
+    {
+      code: 'QC-01',
+      label: 'Контрольна карта X̄-R',
+      body: 'UCLx̄ = X̿ + A2·R̄; LCLx̄ = X̿ − A2·R̄; UCLR = D4·R̄; LCLR = D3·R̄',
+      note: 'A2, D3, D4 у варіанті — за стандартною таблицею коефіцієнтів контрольних карт, не звірено з підручником викладача.',
+    },
     { code: 'QC-04', label: 'Індекс відтворюваності процесу Cp', body: 'Cp = (USL − LSL) / (6σ)' },
     { code: 'QC-05', label: 'Індекс придатності процесу Cpk', body: 'Cpk = min[(USL − μ)/(3σ); (μ − LSL)/(3σ)]' },
     { code: 'PROD-01', label: 'Часткова продуктивність', body: 'Продуктивність = Випуск / Витрати одного ресурсу' },
@@ -87,7 +110,7 @@ const description = typo(`${caseProject.title}: мета, чотири етап�
               {formulas.length > 0 && (
                 <div class="rgr-formula-grid">
                   {formulas.map((formula) => (
-                    <Formula code={formula.code} label={formula.label}>
+                    <Formula code={formula.code} label={formula.label} note={formula.note}>
                       {formula.body}
                     </Formula>
                   ))}
@@ -142,6 +165,7 @@ const description = typo(`${caseProject.title}: мета, чотири етап�
         )}
       </p>
       <RgrVariantExplorer client:only="react" stageTitles={stageTitles} />
+      <noscript><p class="faint small">Генератор варіанта працює лише з увімкненим JavaScript.</p></noscript>
     </section>
   </div>
 </BaseLayout>

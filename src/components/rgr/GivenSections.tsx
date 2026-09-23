@@ -11,7 +11,7 @@ export function GivenSections({ sections }: GivenSectionsProps) {
     <>
       {sections.map((section) => (
         <div className="card rgr-section" key={section.title}>
-          <h4 className="h5">{section.title}</h4>
+          <h5 className="h5">{section.title}</h5>
           <dl className="kv">
             {section.rows.map((row, index) => (
               <Fragment key={`${row.label}-${index}`}>
