@@ -104,7 +104,7 @@ export const BADGES: readonly BadgeDefinition[] = Object.freeze([
     title: 'Оптимальна партія',
     condition: 'Розрахуйте економічний розмір замовлення (EOQ) без помилок',
     achievement: 'Розрахували економічний розмір замовлення (EOQ) без помилок',
-    topic: null,
+    topic: 't06',
     isEarned: flawless(BADGE_ACTIVITY_IDS.eoq),
   },
   {
@@ -112,7 +112,7 @@ export const BADGES: readonly BadgeDefinition[] = Object.freeze([
     title: 'Потреба спланована',
     condition: 'Складіть план потреби в матеріалах (MRP) без помилок',
     achievement: 'Склали план потреби в матеріалах (MRP) без помилок',
-    topic: null,
+    topic: 't06',
     isEarned: flawless(BADGE_ACTIVITY_IDS.mrp),
   },
   {
@@ -128,7 +128,7 @@ export const BADGES: readonly BadgeDefinition[] = Object.freeze([
     title: 'Черга без простоїв',
     condition: 'Визначте оптимальну послідовність запуску завдань без помилок',
     achievement: 'Визначили оптимальну послідовність запуску завдань без помилок',
-    topic: null,
+    topic: 't06',
     isEarned: flawless(BADGE_ACTIVITY_IDS.sequencing),
   },
   {

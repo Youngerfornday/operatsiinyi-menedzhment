@@ -119,10 +119,12 @@ export interface SelectFieldProps<V extends string> {
   readonly options: readonly { readonly value: V; readonly label: string }[];
   readonly onChange: (value: V) => void;
   readonly hint?: string | undefined;
+  readonly error?: string | undefined;
 }
 
-export function SelectField<V extends string>({ id, name, label, value, options, onChange, hint }: SelectFieldProps<V>) {
+export function SelectField<V extends string>({ id, name, label, value, options, onChange, hint, error }: SelectFieldProps<V>) {
   const hintId = hint ? `${id}-hint` : undefined;
+  const errorId = `${id}-error`;
   return (
     <div className="field tfield" data-field={name}>
       <label htmlFor={id}>{label}</label>
@@ -131,7 +133,8 @@ export function SelectField<V extends string>({ id, name, label, value, options,
         name={name}
         className="select"
         value={value}
-        aria-describedby={hintId}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={describedBy(hintId, error && errorId)}
         onChange={(event) => {
           const next = options.find((option) => option.value === event.target.value);
           if (next) onChange(next.value);
@@ -148,6 +151,7 @@ export function SelectField<V extends string>({ id, name, label, value, options,
           {hint}
         </p>
       )}
+      <FieldError id={errorId} message={error} />
     </div>
   );
 }

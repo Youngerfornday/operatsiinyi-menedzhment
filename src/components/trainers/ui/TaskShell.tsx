@@ -44,7 +44,7 @@ export function TaskShell({ prefix, number, fabula, fields, check, solution, out
     const first = issues[0];
     if (first) {
       requestAnimationFrame(() => {
-        const field = document.querySelector<HTMLElement>(`#${prefix}-task [data-field="${first.field}"] input`);
+        const field = document.querySelector<HTMLElement>(`#${prefix}-task [data-field="${first.field}"] :is(input, select)`);
         field?.focus();
       });
     }

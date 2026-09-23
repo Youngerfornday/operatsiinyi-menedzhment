@@ -47,11 +47,11 @@ describe('matrixConditionNote', () => {
 });
 
 describe('calculationConditionNote', () => {
-  it('names the number of task types', () => {
-    expect(calculationConditionNote(7)).toContain('7 типів задач');
+  it('names the number of formulas the tasks use', () => {
+    expect(calculationConditionNote(7)).toContain('задачі за 7 формулами нижче');
   });
 
-  it('uses the correct Ukrainian plural form for a few task types', () => {
-    expect(calculationConditionNote(4)).toContain('4 типи задач');
+  it('uses the singular form for one formula', () => {
+    expect(calculationConditionNote(1)).toContain('задачі за 1 формулою нижче');
   });
 });

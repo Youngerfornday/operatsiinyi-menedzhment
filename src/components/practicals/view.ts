@@ -53,8 +53,8 @@ export function matrixConditionNote({ features, models, cells, rubricTitle }: Ma
   return `У тренажері — ${features} ознак × ${models} моделі = ${cells} формулювань. Перша спроба навчальна, оцінюється друга: бал за критерієм «${rubricTitle}» рубрики нижче.`;
 }
 
-const TASK_TYPE_FORMS = { one: 'тип задачі', few: 'типи задач', many: 'типів задач', other: 'типу задачі' } as const;
+const FORMULA_FORMS = { one: 'формулою', few: 'формулами', many: 'формулами', other: 'формулами' } as const;
 
-export function calculationConditionNote(taskCount: number): string {
-  return `У тренажері — ${pluralUk(taskCount, TASK_TYPE_FORMS)} за формулами нижче. Кожен варіант дає нові дані; перевірка одразу показує повний розв’язок. Спроб необмежено, бал за критерієм рубрики визначає викладач за поданим розв’язком.`;
+export function calculationConditionNote(formulaCount: number): string {
+  return `У тренажері — задачі за ${pluralUk(formulaCount, FORMULA_FORMS)} нижче. Кожен варіант дає нові дані; перевірка одразу показує повний розв’язок. Спроб необмежено, бал за критерієм рубрики визначає викладач за поданим розв’язком.`;
 }

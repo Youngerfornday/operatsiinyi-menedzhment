@@ -6,10 +6,13 @@
 import type { ComponentType } from 'react';
 import type { CalculationTask } from '../../content/schemas/practical';
 import { AggregatePlanningTrainer } from './AggregatePlanningTrainer';
+import { EoqTrainer } from './EoqTrainer';
 import { FacilityLocationTrainer } from './FacilityLocationTrainer';
 import { ForecastingTrainer } from './ForecastingTrainer';
 import { LineBalancingTrainer } from './LineBalancingTrainer';
+import { MrpTrainer } from './MrpTrainer';
 import { ProductivityTrainer } from './ProductivityTrainer';
+import { SequencingTrainer } from './SequencingTrainer';
 import { WorkMeasurementTrainer } from './WorkMeasurementTrainer';
 import { TaskHeadingLevelContext } from './ui/heading-level';
 
@@ -23,6 +26,9 @@ export const CALCULATION_TRAINER_COMPONENTS: Readonly<Record<string, TrainerComp
   'work-measurement': WorkMeasurementTrainer,
   forecasting: ForecastingTrainer,
   'aggregate-planning': AggregatePlanningTrainer,
+  eoq: EoqTrainer,
+  mrp: MrpTrainer,
+  sequencing: SequencingTrainer,
 };
 
 export interface PracticalTrainerHeading {
