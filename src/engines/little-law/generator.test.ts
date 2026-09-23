@@ -72,7 +72,9 @@ describe('createLittleLawVariant', () => {
   it('числівник узгоджено з одиницею у даних і розв’язку («162 замовлення», «81 пацієнт», «5 діб»)', () => {
     const wrong = [
       /(?:^|[^\d,])(?:\d*[02-9])?[1-4] (?:замовлень|пацієнтів)(?! за)/,
-      /(?:^|[^\d,])(?:\d*1)?[1-4] пацієнт(?:и|ів)? за/,
+      // «4 пацієнти за годину» (форма few) — правильно; «4 пацієнтів за годину» (форма many) — ні. Той самий
+      // виняток на 11–14, що й у першому патерні: без нього «14 пацієнтів» хибно вважався б помилкою.
+      /(?:^|[^\d,])(?:\d*[02-9])?[1-4] пацієнтів за/,
       /(?:^|[^\d,])\d*(?:[05-9]|1[0-4]) (?:доби|години)/,
       /(?:^|[^\d,])(?:\d*[02-9])?1 (?:доби|години|пацієнти|пацієнтів)/,
     ];
@@ -92,6 +94,35 @@ describe('createLittleLawVariant', () => {
       const variant = createLittleLawVariant(createSeededRandom(`place:${seed}`), ALL_TASKS);
       expect(variant.prompt).toMatch(/(?:У цеху|У приймальному відділенні лікарні) в середньому:$/);
     }
+  });
+
+  it('приймальне відділення лікарні — реалістичний масштаб: одиниці-десятки пацієнтів, потік до ~20/год', () => {
+    const HOSPITAL_MARK = 'приймальному відділенні лікарні';
+    let hospitalSeen = 0;
+    for (const unknown of ALL_UNKNOWNS) {
+      for (let seed = 0; seed < 1000; seed += 1) {
+        const variant = createLittleLawVariant(createSeededRandom(`scale:${unknown}:${seed}`), [{ method: 'little-law', unknown }]);
+        if (!variant.prompt.includes(HOSPITAL_MARK)) continue;
+        hospitalSeen += 1;
+        let wip: number;
+        let throughput: number;
+        if (unknown === 'time') {
+          wip = numberFrom(variant.given[0]!.value);
+          throughput = numberFrom(variant.given[1]!.value);
+        } else if (unknown === 'wip') {
+          throughput = numberFrom(variant.given[0]!.value);
+          wip = variant.answers[0]!.expected;
+        } else {
+          wip = numberFrom(variant.given[0]!.value);
+          throughput = variant.answers[0]!.expected;
+        }
+        expect(throughput).toBeGreaterThanOrEqual(1);
+        expect(throughput).toBeLessThanOrEqual(20);
+        expect(wip).toBeGreaterThanOrEqual(1);
+        expect(wip).toBeLessThan(100);
+      }
+    }
+    expect(hospitalSeen).toBeGreaterThan(0);
   });
 
   it('дані завжди невід’ємні й генератор не кидає винятків для жодного unknown', () => {
