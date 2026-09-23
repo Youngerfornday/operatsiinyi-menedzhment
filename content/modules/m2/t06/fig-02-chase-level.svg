@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="fig-t06-2" class="scheme" viewBox="0 0 640 380" role="img" aria-labelledby="fig-t06-2-title fig-t06-2-desc" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+  <title id="fig-t06-2-title">Рисунок 2. Стратегія погоні проти стратегії рівномірного виробництва</title>
+  <desc id="fig-t06-2-desc">Графік із двома лініями по горизонтальній осі шести періодів. Хвиляста лінія попиту йде вгору до середини горизонту й вниз до кінця. Друга лінія, позначена карміновими маркерами в кожній точці, точно повторює хвилю попиту — це стратегія погоні, підписана «погоня: маркер у кожній точці — випуск дорівнює попиту». Пряма горизонтальна пунктирна лінія на рівні середнього попиту — стратегія рівномірного виробництва зі сталим темпом. Ліворуч, де крива попиту нижча за середній рівень, заштрихована зона підписана «запас»: сталий випуск перевищує попит. У середині, де крива попиту вища за середній рівень, заштрихована зона підписана «витрата запасу»: попит перевищує сталий випуск, і різницю покриває раніше накопичений запас. Праворуч, де попит знову нижчий за середній, запас знову накопичується.</desc>
+  <style>
+    #fig-t06-2 .box { fill: var(--surface, #ffffff); stroke: var(--ink, #0f1c2e); stroke-width: 1.25; }
+    #fig-t06-2 .t { fill: var(--ink, #0f1c2e); font-size: 14px; font-weight: 650; }
+    #fig-t06-2 .s { fill: var(--ink-2, #445570); font-size: 12px; }
+    #fig-t06-2 .lbl { fill: var(--ink-2, #445570); font-size: 12px; }
+    #fig-t06-2 .axis { stroke: var(--ink-2, #445570); stroke-width: 1.25; fill: none; }
+    #fig-t06-2 .demand { stroke: var(--ink, #0f1c2e); stroke-width: 2; fill: none; }
+    #fig-t06-2 .level { stroke: var(--ink-2, #445570); stroke-width: 2; stroke-dasharray: 6 4; fill: none; }
+    #fig-t06-2 .pt { fill: var(--err, #b42318); }
+    #fig-t06-2 .zone-surplus { fill: var(--surface-tint, #eef4fa); opacity: 0.85; }
+    #fig-t06-2 .zone-deficit { fill: var(--err-bg, #fdecea); opacity: 0.85; }
+    #fig-t06-2 .exam-t { fill: var(--err-ink, #8f1d14); font-size: 12.5px; font-weight: 600; }
+    #fig-t06-2 .refc { fill: var(--surface, #ffffff); stroke: var(--ink, #0f1c2e); stroke-width: 1.25; }
+    #fig-t06-2 .refn { fill: var(--ink, #0f1c2e); font-size: 11.5px; font-weight: 700; text-anchor: middle; }
+    #fig-t06-2 .refc.exam { stroke: var(--err, #b42318); }
+    #fig-t06-2 .refn.exam-n { fill: var(--err-ink, #8f1d14); }
+  </style>
+
+  <path class="axis" d="M64 300 L600 300"/>
+  <text class="lbl" x="600" y="318" text-anchor="end">періоди горизонту, 1–6</text>
+
+  <polygon class="zone-surplus" points="80,230 176,190 224,170 80,170"/>
+  <polygon class="zone-deficit" points="224,170 272,150 368,110 464,150 512,170"/>
+  <polygon class="zone-surplus" points="512,170 560,190 560,170"/>
+
+  <path class="level" d="M80 170 L560 170"/>
+  <text class="s" x="66" y="174" text-anchor="end">рівн.</text>
+
+  <path class="demand" d="M80 230 L176 190 L272 150 L368 110 L464 150 L560 190"/>
+  <circle class="pt" cx="80" cy="230" r="4"/>
+  <circle class="pt" cx="176" cy="190" r="4"/>
+  <circle class="pt" cx="272" cy="150" r="4"/>
+  <circle class="pt" cx="368" cy="110" r="4"/>
+  <circle class="pt" cx="464" cy="150" r="4"/>
+  <circle class="pt" cx="560" cy="190" r="4"/>
+
+  <text class="t" x="320" y="40" text-anchor="middle">Крива попиту й дві стратегії агрегатного плану</text>
+
+  <text class="s" x="368" y="96" text-anchor="middle">попит</text>
+  <text class="exam-t" x="560" y="204" text-anchor="middle">погоня: маркер у кожній точці —</text>
+  <text class="exam-t" x="560" y="218" text-anchor="middle">випуск дорівнює попиту (AGG-01)</text>
+
+  <text class="s" x="120" y="252" text-anchor="middle">запас</text>
+  <text class="s" x="320" y="132" text-anchor="middle">витрата запасу</text>
+  <text class="s" x="520" y="252" text-anchor="middle">запас</text>
+
+  <rect class="box" x="360" y="330" width="240" height="36" rx="6"/>
+  <text class="s" x="480" y="352" text-anchor="middle">Пунктир — рівномірне виробництво: Σ Попит_t / n (AGG-02)</text>
+
+  <circle class="refc" cx="336" cy="92" r="11"/><text class="refn" x="336" y="96">1</text>
+  <circle class="refc exam" cx="272" cy="150" r="11"/><text class="refn exam-n" x="272" y="154">2</text>
+  <circle class="refc" cx="578" cy="170" r="11"/><text class="refn" x="578" y="174">3</text>
+  <circle class="refc" cx="120" cy="230" r="11"/><text class="refn" x="120" y="234">4</text>
+</svg>

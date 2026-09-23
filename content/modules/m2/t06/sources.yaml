@@ -1,0 +1,189 @@
+# Джерела теми 6. Кожне — з адресою, відкритою на дату checkedAt.
+# Формули — лише з docs/research/formula-baseline.md (коди FC-*, AGG-*, EOQ-*, MRP-*, SCH-*, CAP-01, CAP-04),
+# факти кейсів — з docs/research/cases.md.
+topic: t06
+sources:
+  # Основна література курсу
+  - id: starchenko-kalinko-kosach-2020
+    type: book
+    title: Операційний менеджмент
+    authors: [Старченко Г. В., Калінько І. В., Косач І. А.]
+    publisher: Кондор
+    year: 2020
+    language: uk
+    url: https://scholar.google.com/citations?user=9UX4QTYAAAAJ&hl=uk
+    checkedAt: '2026-09-22'
+    note: 'Основний український підручник курсу. Для теми 6 — джерело формули EOQ (EOQ-01) і розділу «MRP»: брутто-потреба (MRP-01), нетто-потреба (MRP-02), партія за партією (MRP-03).'
+
+  - id: kapinos-babiy-2013
+    type: book
+    title: Операційний менеджмент
+    authors: [Капінос Г. І., Бабій І. В.]
+    publisher: Центр учбової літератури
+    year: 2013
+    language: uk
+    url: https://scholar.google.com.ua/citations?user=wK61tZYAAAAJ&hl=ru
+    checkedAt: '2026-09-23'
+    note: 'Джерело розділів «Прогнозування» (похибка прогнозу FC-04–FC-07), «Управління запасами» (точка замовлення EOQ-03, страховий запас EOQ-04, система з фіксованим інтервалом EOQ-06) і «Оперативне управління виробництвом» (правила SPT, EDD, Джонсона, критичного відношення SCH-01–SCH-05, коефіцієнти оперативного планування SCH-04). Видання 2013 р. старше порогу 2016 р., застосованого при доборі основної літератури силабусу (course.yaml, розділ literature), тому в перелік літератури курсу не входить; тут використане окремо як першоджерело розрахункової бази формул, звірене для formula-baseline.md.'
+
+  - id: omelianenko-osokina-2016
+    type: book
+    title: 'Операційний менеджмент: презентаційний курс'
+    authors: [Омельяненко Т. В., Осокіна А. В.]
+    publisher: КНЕУ
+    year: 2016
+    language: uk
+    url: https://kneu.edu.ua/get_file/8945/.pdf
+    checkedAt: '2026-09-22'
+    note: 'Джерело розділу «Прогнозування» — проста й зважена ковзна середня, експоненційне згладжування (FC-01–FC-03) — і ABC-аналізу запасів (EOQ-05).'
+
+  - id: hevko-2017
+    type: book
+    title: 'Операційний (виробничий) менеджмент: конспект лекцій'
+    authors: [Гевко І. Б.]
+    publisher: ТНТУ імені Івана Пулюя
+    year: 2017
+    language: uk
+    url: https://elartu.tntu.edu.ua/handle/lib/21300
+    checkedAt: '2026-09-22'
+    note: 'Джерело закону Літтла (CAP-04, розділ «Продуктивність операційної системи»): середня кількість завдань у системі як добуток темпу надходження на середній час перебування — використано для порівняння правил пріоритетів.'
+
+  - id: heizer-render-munson-2016
+    type: book
+    title: 'Operations Management: Sustainability and Supply Chain Management'
+    authors: [Heizer J., Render B., Munson C.]
+    publisher: Pearson
+    year: 2016
+    language: en
+    url: https://openlibrary.org/isbn/9780134163512
+    checkedAt: '2026-09-22'
+    note: 'Джерело розділу «Sales and Operations Planning» — стратегія погоні, стратегія рівномірного виробництва й порівняння стратегій за сумарними витратами (AGG-01–AGG-03).'
+
+  # Кейси
+  - id: nova-poshta-results-2026
+    type: web
+    title: 'Дохід Nova зріс на 21% у 2025-му, мережа «Нової пошти» зросла до 50 000 точок'
+    publisher: Forbes.ua
+    year: 2026
+    language: uk
+    url: https://forbes.ua/news/dokhid-nova-zris-na-21-u-2025-rotsi-merezha-novoi-poshti-zrosla-do-50-000-tochok-21012026-35682
+    checkedAt: '2026-09-22'
+    note: 'Пресреліз групи Nova за 2025 р.: 522 млн посилок (+8,8%), 492 млн грн капітальних інвестицій саме в сортувальні лінії та хаби. Позиція компанії, без незалежного аудиту.'
+
+  - id: ukrposhta-2025-summary
+    type: report
+    title: Як працювала Укрпошта у 2025 році
+    publisher: Міністерство розвитку громад та територій України
+    year: 2025
+    language: uk
+    url: https://mininfra.gov.ua/news/yak-pratsiuvala-ukrposhta-u-2025-rotsi-dlia-liudei-biznesu-ta-veteraniv
+    checkedAt: '2026-09-22'
+    note: 'Державне джерело: завершення автоматизації сортування у 2025 р., заявлена потужність до 2 млн відправлень/добу, річний обсяг 42,7 млн посилок. Показники потужності ліній — позиція компанії, передрукована міністерством.'
+
+  - id: ukrzaliznytsia-repair-dispatch-2025
+    type: web
+    title: Укрзалізниця переходить на автоматизовану систему розподілу вагонів у ремонт
+    publisher: Rail.insider
+    year: 2025
+    language: uk
+    url: https://www.railinsider.com.ua/ukrzaliznyczya-perehodyt-na-avtomatyzovanu-systemu-rozpodilu-vagoniv-u-remont
+    checkedAt: '2026-09-22'
+    note: 'Галузеве видання з переказом офіційного повідомлення компанії: автоматизований розподіл вагонів у ремонт за завантаженістю депо й географією, тестова експлуатація з 01.01.2026.'
+
+  - id: ukrzaliznytsia-repair-volume-2025
+    type: web
+    title: Торік на потужностях Укрзалізниці відремонтовано понад 24 тис. вантажних вагонів
+    publisher: Rail.insider
+    year: 2025
+    language: uk
+    url: https://www.railinsider.com.ua/torik-na-potuzhnostyah-ukrzaliznyczi-vidremontovano-ponad-24-tys-vantazhnyh-vagoniv/
+    checkedAt: '2026-09-22'
+    note: 'Обсяг ремонту 24 233 вагони за 2024 р., +18,7% р/р — контекст до кейсу диспетчеризації черги на ремонт.'
+
+  - id: kernel-annual-report-fy2025
+    type: report
+    title: Annual Report and Accounts for the year ended 30 June 2025
+    publisher: Kernel Holding S.A.
+    year: 2025
+    language: en
+    url: https://www.kernel.ua/wp-content/uploads/2025/10/FY2025_Kernel_Annual_Report.pdf
+    checkedAt: '2026-09-22'
+    note: 'Аудований річний звіт: 29 елеваторів, сезонний оборот понад 1,0 ємності мережі, запаси 209 тис. т на кінець року. Найвищий рівень верифікації серед кейсів курсу.'
+
+  - id: kernel-modular-storage-2026
+    type: web
+    title: Kernel Adds 40,000 Tons of Modular Grain Storage as Attacks on Logistics Jeopardize Ukraine's Exports
+    publisher: Kyiv Post
+    year: 2026
+    language: en
+    url: https://www.kyivpost.com/post/85027
+    checkedAt: '2026-09-22'
+    note: 'Закупівля 40 000 т модульного зерносховища як аварійне розширення буфера під логістичний шок; перша одиниця 3400 т заповнена за два дні.'
+
+  - id: toyota-production-system
+    type: case
+    title: Toyota Production System
+    publisher: Toyota Motor Corporation
+    language: en
+    url: https://global.toyota/en/company/vision-and-philosophy/production-system/index.html
+    checkedAt: '2026-09-22'
+    note: 'Офіційна сторінка компанії: якісний опис just-in-time — «виробляти лише потрібне, тоді, коли потрібно, і в потрібній кількості». Кількісних виробничих метрик сторінка не наводить.'
+
+  - id: tesla-q1-2018-update
+    type: report
+    title: Tesla, Inc. Q1 2018 Update (лист акціонерам)
+    publisher: Tesla, Inc.
+    year: 2018
+    language: en
+    url: https://www.sec.gov/Archives/edgar/data/1318605/000156459018010306/tsla-ex991_7.htm
+    checkedAt: '2026-09-22'
+    note: 'Форма 8-K, Exhibit 99.1: визнання компанії «ми зробили помилку, додавши забагато автоматизації занадто швидко» і застереження про складність прогнозування темпу нарощування Model 3.'
+
+  - id: tesla-q4-2018-production
+    type: report
+    title: Tesla, Inc. Q4 2018 Vehicle Production and Deliveries
+    publisher: Tesla, Inc.
+    year: 2018
+    language: en
+    url: https://www.sec.gov/Archives/edgar/data/1318605/000156459019000013/tsla-ex991_6.htm
+    checkedAt: '2026-09-22'
+    note: 'Форма 8-K, Exhibit 99.1: квартальні обсяги виробництва Model 3, використані для кривої нарощування потужності 260 → 61 394.'
+
+  - id: southwest-10k-2025
+    type: report
+    title: Southwest Airlines Co. Form 10-K за 2025 фінансовий рік
+    publisher: Southwest Airlines Co. / SEC EDGAR
+    year: 2026
+    language: en
+    url: https://www.sec.gov/Archives/edgar/data/92380/000009238026000004/luv-20251231.htm
+    checkedAt: '2026-09-22'
+    note: 'Офіційне розкриття: уніфікований парк Boeing 737, мережа «точка-точка», висока утилізація активів через скорочення часу на землі.'
+
+  - id: southwest-dot-penalty-2023
+    type: web
+    title: DOT Penalizes Southwest Airlines $140 Million for 2022 Holiday Meltdown
+    publisher: U.S. Department of Transportation
+    year: 2023
+    language: en
+    url: https://www.transportation.gov/briefing-room/dot-penalizes-southwest-airlines-140-million-2022-holiday-meltdown
+    checkedAt: '2026-09-22'
+    note: 'Пресреліз регулятора: штраф 140 млн дол., скасовано 16 900 рейсів, понад два мільйони пасажирів без обслуговування під час колапсу планування екіпажів у грудні 2022 р.'
+
+  - id: zara-inditex-fy2025
+    type: report
+    title: FY2025 Results
+    publisher: Inditex
+    year: 2026
+    language: en
+    url: https://www.inditex.com/itxcomweb/gp/en/press/news-detail/b870d5ec-6b7e-491d-b38e-340cd69036df/fy2025-results
+    checkedAt: '2026-09-22'
+    note: 'Офіційний пресреліз: інвестиція 900 млн євро на рік у 2024 і 2025 фінансових роках саме в логістичну потужність.'
+
+  - id: zara-inditex-faq
+    type: web
+    title: Frequent Questions
+    publisher: Inditex
+    language: en
+    url: https://www.inditex.com/itxcomweb/es/en/press/frequent-questions
+    checkedAt: '2026-09-22'
+    note: 'Сторінка без дати актуальності: поповнення магазинів двічі на тиждень, 36–48 год від розподільчого центру до магазину.'
