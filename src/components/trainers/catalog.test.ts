@@ -1,6 +1,21 @@
 import { describe, expect, it } from 'vitest';
 import { createEmptyProgress } from '../../engines/progress';
-import { CALCULATOR_TRAINERS, homeTrainerCards, MATRIX_TRAINER, PRACTICAL_TRAINERS, PRODUCTIVITY_TRAINER, PUBLISHED_PRACTICALS, practicalLabel, practicalPath, publishedTrainer, topicTrainerActivityIds, trainerKindLabel } from './catalog';
+import {
+  CALCULATOR_TRAINERS,
+  FACILITY_LOCATION_TRAINER,
+  homeTrainerCards,
+  LINE_BALANCING_TRAINER,
+  MATRIX_TRAINER,
+  PRACTICAL_TRAINERS,
+  PRODUCTIVITY_TRAINER,
+  PUBLISHED_PRACTICALS,
+  WORK_MEASUREMENT_TRAINER,
+  practicalLabel,
+  practicalPath,
+  publishedTrainer,
+  topicTrainerActivityIds,
+  trainerKindLabel,
+} from './catalog';
 import { practicumNote, practicumProgress } from './practicum-progress';
 
 const PRACTICALS = [
@@ -16,17 +31,29 @@ describe('каталог тренажерів', () => {
   it('продуктивність і матриця моделей живуть на сторінці практичної, і в обох є ID активності', () => {
     expect(MATRIX_TRAINER.activityId).toBe('p02-matching-matrix');
     expect(PRODUCTIVITY_TRAINER.activityId).toBe('productivity');
-    expect(PRACTICAL_TRAINERS).toEqual([PRODUCTIVITY_TRAINER, MATRIX_TRAINER]);
+    expect(PRACTICAL_TRAINERS).toEqual([PRODUCTIVITY_TRAINER, MATRIX_TRAINER, FACILITY_LOCATION_TRAINER, LINE_BALANCING_TRAINER, WORK_MEASUREMENT_TRAINER]);
   });
 
-  it('практичні p01 і p02 опубліковані', () => {
+  it('усі три тренажери практичної 4 мають ID активності й ведуть на її сторінку', () => {
+    for (const trainer of [FACILITY_LOCATION_TRAINER, LINE_BALANCING_TRAINER, WORK_MEASUREMENT_TRAINER]) {
+      expect(trainer.practicalId).toBe('p04');
+      expect(trainer.path.startsWith('praktychni/p04/#trenazher-')).toBe(true);
+    }
+    expect(FACILITY_LOCATION_TRAINER.activityId).toBe('facility-location');
+    expect(LINE_BALANCING_TRAINER.activityId).toBe('line-balancing');
+    expect(WORK_MEASUREMENT_TRAINER.activityId).toBe('work-measurement');
+  });
+
+  it('практичні p01, p02 і p04 опубліковані', () => {
     expect(PUBLISHED_PRACTICALS).toContain('p01');
     expect(PUBLISHED_PRACTICALS).toContain('p02');
+    expect(PUBLISHED_PRACTICALS).toContain('p04');
   });
 
   it('опубліковані тренажери знаходяться за ID реєстру, неопубліковані — ні', () => {
     expect(publishedTrainer('priorities-matrix')).toMatchObject({ path: 'praktychni/p02/#trenazher', activityId: 'p02-matching-matrix' });
     expect(publishedTrainer('productivity')).toMatchObject({ path: 'praktychni/p01/#trenazher', activityId: 'productivity' });
+    expect(publishedTrainer('facility-location')).toMatchObject({ path: 'praktychni/p04/#trenazher-facility-location', activityId: 'facility-location' });
     expect(publishedTrainer('forecasting')).toBeNull();
   });
 
@@ -71,6 +98,9 @@ describe('homeTrainerCards', () => {
     expect(cards.length).toBeGreaterThan(0);
     expect(cards.map((card) => card.key)).toContain('productivity');
     expect(cards.map((card) => card.key)).toContain('priorities-matrix');
+    expect(cards.map((card) => card.key)).toContain('facility-location');
+    expect(cards.map((card) => card.key)).toContain('line-balancing');
+    expect(cards.map((card) => card.key)).toContain('work-measurement');
     expect(cards.every((card) => card.path !== '' && card.title !== '')).toBe(true);
   });
 });

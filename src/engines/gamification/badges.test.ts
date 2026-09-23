@@ -12,9 +12,9 @@ function withActivity(id: string, bestScore: number, solvedVariants?: string[]):
 }
 
 describe('BADGES', () => {
-  it('defines thirteen badges with unique IDs and both texts in Ukrainian', () => {
-    expect(BADGES).toHaveLength(13);
-    expect(new Set(BADGES.map((badge) => badge.id)).size).toBe(13);
+  it('defines fifteen badges with unique IDs and both texts in Ukrainian', () => {
+    expect(BADGES).toHaveLength(15);
+    expect(new Set(BADGES.map((badge) => badge.id)).size).toBe(15);
     for (const badge of BADGES) {
       expect(badge.id).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
       expect(badge.condition).toMatch(/[а-яіїєґ]/i);
@@ -44,7 +44,9 @@ describe('badge predicates', () => {
     [BADGE_ACTIVITY_IDS.productivity, 'produktyvnist-dilianky'],
     [BADGE_ACTIVITY_IDS.littleLaw, 'zakon-littla'],
     [BADGE_ACTIVITY_IDS.productionCycle, 'tsykl-vyrobnytstva'],
+    [BADGE_ACTIVITY_IDS.facilityLocation, 'maidanchyk-obranyi'],
     [BADGE_ACTIVITY_IDS.lineBalancing, 'liniia-zbalansovana'],
+    [BADGE_ACTIVITY_IDS.workMeasurement, 'norma-vstanovlena'],
     [BADGE_ACTIVITY_IDS.eoq, 'optymalna-partiia'],
     [BADGE_ACTIVITY_IDS.mrp, 'potreba-splanovana'],
     [BADGE_ACTIVITY_IDS.aggregatePlanning, 'ahrehatnyi-plan'],
