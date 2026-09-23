@@ -92,7 +92,29 @@ describe('lintMdx', () => {
     expect(prose.split('\n')).toHaveLength(source.split('\n').length);
     expect(prose).not.toContain('import');
     expect(prose).not.toContain('Formula');
-    expect(prose).toContain('Кворум - S');
+    // Значення атрибутів перевіряються окремо від прози (знахідка рядка 16 — у першому тесті).
+    expect(prose).not.toContain('Кворум');
+  });
+
+  it('does not flag a real single space before an em dash right after a closing JSX tag', () => {
+    // Регресія: тег раніше маскувався пробілами, які зливалися із сусіднім реальним пробілом перед тире
+    // («…</Term> — …»), і лінт бачив хибне «зайве» тире там, де в джерелі був рівно один пробіл.
+    const termSource = '<Term id="operations-system">Операційна система</Term> — повна система.';
+    expect(lintMdx(termSource)).toEqual([]);
+  });
+
+  it('still flags real faults right next to a JSX tag', () => {
+    const doubleSpace = lintMdx('<Term id="a">Система</Term>  — подвійний пробіл.');
+    expect(doubleSpace).toHaveLength(1);
+    const range = lintMdx('У <strong>2020-2026</strong> роках і <Term id="a">2020-2026</Term>.');
+    expect(range[0]?.expected).toBe('У 2020–2026 роках і 2020–2026.');
+    const quotes = lintMdx('Слово "<Term id="a">Система</Term>" у лапках.');
+    expect(quotes[0]?.expected).toBe('Слово «Система» у лапках.');
+  });
+
+  it('checks attribute values on their own line numbers', () => {
+    const findings = lintMdx(['Текст.', '<Callout title="Назва - з дефісом">Тіло</Callout>'].join('\n'));
+    expect(findings).toEqual([{ line: 2, actual: 'Назва - з дефісом', expected: 'Назва — з дефісом' }]);
   });
 });
 

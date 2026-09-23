@@ -1,0 +1,220 @@
+# Джерела теми 3. Кожне — з адресою, відкритою на дату checkedAt.
+# Формула закону Літтла — лише з docs/research/formula-baseline.md (код CAP-04); факти кейсів — лише з
+# docs/research/cases.md, разом з їхніми застереженнями («Чого кейс не доводить», caveat).
+topic: t03
+sources:
+  # Основна література курсу
+  - id: omelianenko-osokina-2016
+    type: book
+    title: 'Операційний менеджмент: презентаційний курс'
+    authors: [Омельяненко Т. В., Осокіна А. В.]
+    publisher: КНЕУ
+    year: 2016
+    language: uk
+    url: https://kneu.edu.ua/get_file/8945/.pdf
+    checkedAt: '2026-09-22'
+    note: 'Опорне українське видання для категорійного апарату теми: склад операційної системи, три
+      підсистеми (переробна, забезпечення, планування й контролю), критерії сформованості системи.'
+
+  - id: slack-brandon-jones-2021
+    type: book
+    title: Operations and Process Management
+    authors: [Slack N., Brandon-Jones A.]
+    publisher: Pearson Education
+    year: 2021
+    language: en
+    url: https://openlibrary.org/isbn/9781292350103
+    checkedAt: '2026-09-22'
+    note: Джерело моделі «вхід — перетворення — вихід» як універсального опису будь-якої операційної системи, зокрема сервісної.
+
+  - id: heizer-render-munson-2016
+    type: book
+    title: 'Operations Management: Sustainability and Supply Chain Management'
+    authors: [Heizer J., Render B., Munson C.]
+    publisher: Pearson
+    year: 2016
+    language: en
+    url: https://openlibrary.org/isbn/9780134163512
+    checkedAt: '2026-09-22'
+    note: Джерело класифікації операційних процесів за типом виробництва — проектний, одиничний, серійний, масовий, безперервний.
+
+  - id: stevenson-2020
+    type: book
+    title: Operations Management
+    authors: [Stevenson W. J.]
+    publisher: McGraw-Hill Education
+    year: 2020
+    language: en
+    url: https://openlibrary.org/isbn/9781260575712
+    checkedAt: '2026-09-22'
+    note: Джерело трактування ступеня повторюваності й обсягу випуску як класифікаційної ознаки операційної системи.
+
+  - id: hevko-2017
+    type: book
+    title: 'Операційний (виробничий) менеджмент: конспект лекцій'
+    authors: [Гевко І. Б.]
+    publisher: ТНТУ імені Івана Пулюя
+    year: 2017
+    language: uk
+    url: https://elartu.tntu.edu.ua/handle/lib/21300
+    checkedAt: '2026-09-22'
+    note: 'Джерело розділу «Продуктивність операційної системи»: закон Літтла (CAP-04) — зв’язок незавершеного виробництва, пропускної здатності й тривалості проходження.'
+
+  - id: kushniruk-2017
+    type: book
+    title: 'Операційний менеджмент: опорний конспект лекцій'
+    authors: [Кушнірук В. С.]
+    publisher: МНАУ
+    year: 2017
+    language: uk
+    url: https://dspace.mnau.edu.ua/jspui/handle/123456789/2078
+    checkedAt: '2026-09-22'
+    note: Українське видання із системним підходом до операційної діяльності підприємства як вихідною точкою курсу.
+
+  # Кейси
+  - id: interpipe-steel-about
+    type: web
+    title: 'ІНТЕРПАЙП СТАЛЬ: сторінки «Про завод», «Електродугова піч», «Двопозиційна установка піч-ківш», «Вакууматор», «Машини безперервного лиття заготовки»'
+    publisher: ІНТЕРПАЙП СТАЛЬ
+    language: uk
+    url: https://interpipesteel.biz/about/pro-zavod
+    checkedAt: '2026-09-22'
+    note: 'Паспортні параметри переділу (сторінки без дати публікації): електродугова піч, двопозиційна установка піч-ківш, вакууматор, дві МБЛЗ; позиція компанії, незалежного технічного підтвердження немає.'
+
+  - id: interpipe-steel-attack-2026
+    type: report
+    title: 'Підприємство «Інтерпайп» у Дніпрі зазнало балістичної атаки'
+    publisher: GMK Center
+    year: 2026
+    language: uk
+    url: https://gmk.center/ua/news/pidpriiemstvo-interpajp-v-dnipri-zaznalo-balistichnoi-ataki/
+    checkedAt: '2026-09-22'
+    note: 'Ніч 22.09.2026: балістичний удар по підприємству, четверо загиблих, виробництво зупинено; термінів відновлення на дату перевірки компанія не називала. Кейс через це написано в минулому часі.'
+
+  - id: kernel-annual-report-fy2025
+    type: report
+    title: 'Kernel Holding S.A. Annual Report and Accounts for the year ended 30 June 2025'
+    publisher: Kernel Holding S.A.
+    year: 2025
+    language: en
+    url: https://www.kernel.ua/wp-content/uploads/2025/10/FY2025_Kernel_Annual_Report.pdf
+    checkedAt: '2026-09-22'
+    note: 'Аудований річний звіт: потужність переробки 4,0 млн т/рік і факт 3,5 млн т (87% завантаження), 29 елеваторів із сезонним оборотом, перевалка 11 млн т/рік і факт 9,1 млн т. Сайт компанії подає інші цифри — у темі використано лише звіт.'
+
+  - id: ferrexpo-production-report-4q2025
+    type: report
+    title: 'Ferrexpo plc. Production Report for 4Q 2025'
+    publisher: Ferrexpo plc
+    year: 2026
+    language: en
+    url: https://www.ferrexpo.com/news-media/press-releases/2026/production-report-for-4q-2025/
+    checkedAt: '2026-09-22'
+    note: Виробництво окатишів за 2025 р. — 3,221 млн т (−47% р/р) на тлі зростання концентрату на 311%; зміна мікс-продукту, а не масштабу гірничої частини процесу.
+
+  - id: ferrexpo-full-year-2025
+    type: report
+    title: 'Ferrexpo plc. Full Year Financial Results for 2025'
+    publisher: Ferrexpo plc
+    year: 2026
+    language: en
+    url: https://ferrexpopstorage.blob.core.windows.net/media/yo2jxkc3/ferrexpo-full-year-financial-results-for-2025-combined-for-website.pdf
+    checkedAt: '2026-09-22'
+    note: 'Аудовані результати: потужність окомкування знижено з двох ліній до однієї, завантаження ≈25% довоєнного рівня; причина — логістична блокада портів і зупинка відшкодування ПДВ, а не стан самого процесу окомкування.'
+
+  - id: ferrexpo-halts-production-2026
+    type: web
+    title: 'Ferrexpo halts iron ore output over threat to Ukrainian ports'
+    publisher: Інтерфакс-Україна
+    year: 2026
+    language: en
+    url: https://en.interfax.com.ua/news/economic/1190828.html
+    checkedAt: '2026-09-22'
+    note: '05.08.2026: компанія зупинила видобуток і виробництво через загрозу атак на порти й потребу зберегти оборотний капітал; європейських клієнтів планувалося обслуговувати зі складських запасів.'
+
+  - id: ferrexpo-resumes-production-2026
+    type: web
+    title: 'Ferrexpo resumes production'
+    publisher: Інтерфакс-Україна
+    year: 2026
+    language: en
+    url: https://en.interfax.com.ua/news/economic/1199811.html
+    checkedAt: '2026-09-22'
+    note: '07.09.2026: видобуток і виробництво відновлено, але лише на одній з чотирьох ліній окомкування, після зупинки 05.08.2026 через загрозу атак на порти.'
+
+  - id: nova-poshta-terminal-2021
+    type: web
+    title: 'Термінал «Нової пошти» сортує до 50 000 посилок на годину'
+    publisher: Forbes.ua
+    year: 2021
+    language: uk
+    url: https://forbes.ua/company/nova-poshta-terminal-16042021-1387
+    checkedAt: '2026-09-22'
+    note: 'Заявлена (пікова, не виміряна середня) потужність київського сортувального терміналу — до 50 000 посилок/год, ≤2 хв перебування посилки в терміналі; позиція компанії без незалежного аудиту.'
+
+  - id: nova-poshta-2025-results
+    type: web
+    title: 'Дохід Nova зріс на 21% у 2025-му, мережа «Нової пошти» зросла до 50 000 точок'
+    publisher: Forbes.ua
+    year: 2026
+    language: uk
+    url: https://forbes.ua/news/dokhid-nova-zris-na-21-u-2025-rotsi-merezha-novoi-poshti-zrosla-do-50-000-tochok-21012026-35682
+    checkedAt: '2026-09-22'
+    note: 'За 2025 р. доставлено 522 млн посилок (+8,8%), мережа зросла на 32% до 50 003 точок; офіційне повідомлення пресслужби групи Nova.'
+
+  - id: ukrzaliznytsia-wagons-repaired-2024
+    type: web
+    title: 'Торік на потужностях Укрзалізниці відремонтовано понад 24 тис. вантажних вагонів'
+    publisher: Rail.insider
+    year: 2025
+    language: uk
+    url: https://www.railinsider.com.ua/torik-na-potuzhnostyah-ukrzaliznyczi-vidremontovano-ponad-24-tys-vantazhnyh-vagoniv/
+    checkedAt: '2026-09-22'
+    note: 'У 2024 р. відремонтовано 24 233 вантажні вагони (+18,7% р/р), 48% належали приватному парку; переказ офіційного джерела.'
+
+  - id: ukrzaliznytsia-automated-distribution-2025
+    type: web
+    title: 'Укрзалізниця переходить на автоматизовану систему розподілу вагонів у ремонт'
+    publisher: Rail.insider
+    year: 2025
+    language: uk
+    url: https://www.railinsider.com.ua/ukrzaliznyczya-perehodyt-na-avtomatyzovanu-systemu-rozpodilu-vagoniv-u-remont
+    checkedAt: '2026-09-22'
+    note: 'Система враховує завантаженість, виробничі можливості й територіальну близькість ремонтних підприємств; тестова експлуатація з 01.01.2026, заявлена мета — єдина прозора черга на ремонт.'
+
+  - id: amazon-bots-numbers-2025
+    type: web
+    title: 'Bots by the numbers: facts and figures about robotics at Amazon'
+    publisher: Amazon (aboutamazon.co.uk)
+    language: en
+    url: https://www.aboutamazon.co.uk/news/innovation/bots-by-the-numbers-facts-and-figures-about-robotics-at-amazon
+    checkedAt: '2026-09-22'
+    note: 'Позиція компанії: типи роботів (Hercules, Pegasus, Proteus, Vulcan), 75% замовлень у світі за участю роботів; показник є лише в британській версії сторінки.'
+
+  - id: amazon-million-robots-2025
+    type: web
+    title: 'Amazon deploys its one millionth robot…'
+    publisher: Amazon (aboutamazon.com)
+    year: 2025
+    language: en
+    url: https://www.aboutamazon.com/news/operations/amazon-million-robots-ai-foundation-model
+    checkedAt: '2026-09-22'
+    note: 'Мільйонний робот доставлено до центру виконання замовлень у Японії (червень 2025); мережа — понад 300 об’єктів по всьому світу.'
+
+  - id: amazon-injury-study-cnbc-2023
+    type: report
+    title: 'Amazon workers seriously injured at more than twice the rate of other warehouses, study finds'
+    publisher: CNBC
+    year: 2023
+    language: en
+    url: https://www.cnbc.com/2023/04/12/study-amazon-workers-seriously-hurt-at-twice-rate-of-other-warehouses.html
+    checkedAt: '2026-09-22'
+    note: 'Аналіз коаліції профспілок за даними, які сама Amazon подає до OSHA: 6,6 серйозної травми на 100 працівників проти 3,2 на інших складах. Компанія методику оспорює.'
+
+  - id: toyota-production-system
+    type: case
+    title: Toyota Production System
+    publisher: Toyota Motor Corporation
+    language: en
+    url: https://global.toyota/en/company/vision-and-philosophy/production-system/index.html
+    checkedAt: '2026-09-22'
+    note: 'Офіційна сторінка компанії: якісний опис jidoka та just-in-time, зв’язування всіх заводів і процесів у безперервний потік. Кількісних виробничих метрик сторінка не наводить.'
