@@ -95,8 +95,8 @@ if (result.ok) { store.save(result.value.state); announce(eventOutcomeText(resul
 
 Активності цієї дисципліни вже зарезервовано в `BADGE_ACTIVITY_IDS`, тренажерів під них ще не написано:
 `little-law`, `production-cycle`, `line-balancing`, `forecasting`, `eoq`, `mrp`,
-`aggregate-planning`, `sequencing`, `cpm-pert`, `control-charts`, `process-capability`.
-`productivity` (перший калькулятор дисципліни) описано нижче.
+`aggregate-planning`, `sequencing`.
+`productivity`, `cpm-pert`, `control-charts`, `process-capability` описано нижче.
 
 ## `productivity/` — калькулятор продуктивності операційної системи
 
@@ -123,6 +123,25 @@ const check = checkProductivityTask(variant, { p1: '2,5', p2: '3' });     // mod
 - React-острів `ProductivityTrainer.tsx` на каркасі `ui/TaskShell.tsx` + `ui/use-trainer-task.ts` — це і є
   контракт «Як додати тренажер» вище, застосований уперше; наступні 11 калькуляторів повторюють ту саму
   форму (свій `src/engines/<name>/`, свій `model/<name>.ts`, свій React-острів, свій варіант схеми).
+
+## `cpm-pert/`, `control-charts/`, `process-capability/` — сітьове планування і контроль якості (практична 7)
+
+Три тренажери практичної 7 ділять один контентний файл — `content/practicals/p07.yaml` →
+`trainer.tasks` (`kind: calculation-tasks`); кожен острів фільтрує собі лише відомі йому методи
+(`toCpmPertTaskChoices` / `toControlChartTaskChoices` / `toProcessCapabilityTaskChoices`,
+`src/components/trainers/model/*.ts`) і мовчки ігнорує чужі.
+
+- `cpm-pert/` — прямий і зворотний прохід (PRJ-01, PRJ-02, `computeNetwork`), повний і вільний резерв
+  (PRJ-03, PRJ-09), критичний шлях (PRJ-04); PERT: очікуваний час і дисперсія роботи (PRJ-05, PRJ-06),
+  Z = (D − TE) / σ, округлений до 0,01 як у лекції (PRJ-07), Φ(Z) — наближення Абрамовіца — Стігана
+  (похибка до 7,5·10⁻⁸, `standardNormalCdf`). Топологія мережі фіксована — та сама, що в прикладі
+  лекції теми 7. `computePertProject` сумує дисперсії всіх робіт з нульовим резервом, тож коректний
+  лише для мережі з одним критичним шляхом; генератор PERT-варіантів перетягує оцінки, доки гілки
+  за te не розійдуться.
+- `control-charts/` — x̄-R (QC-01, `xbarRLimits`) і p-карта (QC-02, `pChartLimits`, LCL обрізається
+  до 0). Константи A2, D3, D4 для n = 2..10 (`constants.ts`) — стандартна таблиця SPC; базою курсу вони
+  не підтверджені (formula-baseline.md, «Не підтверджено», п. 2).
+- `process-capability/` — Cp (QC-04) і Cpk (QC-05); середнє генератор тримає всередині поля допуску.
 
 ## `matrix/` — тренажер-матриця практичних
 
