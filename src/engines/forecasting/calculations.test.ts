@@ -154,3 +154,39 @@ describe('похибки прогнозу (FC-04, FC-05, FC-06)', () => {
     expect(result).toMatchObject({ ok: false, error: { code: 'zero-actual' } });
   });
 });
+
+describe('приклади лекції теми 6 (WorkedExample FC-01…FC-04)', () => {
+  const DEMAND = [120, 132, 126, 138, 132, 144, 138, 150];
+
+  it('ковзна середня 144,0 і зважена 145,2 на тиждень 9', () => {
+    // Arrange
+    const window = DEMAND.slice(-3);
+
+    // Act
+    const simple = movingAverageForecast(DEMAND, 3);
+    const weighted = weightedMovingAverageForecast(window, [0.2, 0.3, 0.5]);
+
+    // Assert
+    expect(simple).toEqual({ ok: true, value: 144 });
+    expect(weighted.ok && weighted.value).toBeCloseTo(145.2, 9);
+  });
+
+  it('експоненційне згладжування α = 0,3 від F1 = D1 дає F9 = 139,57, а MAD, MSE, MAPE за тижні 3–8 — 8,87, 109,25, 6,26 %', () => {
+    // Arrange
+    const series = exponentialSmoothingSeries([...DEMAND, 0], 0.3, DEMAND[0]!);
+    if (!series.ok) throw new Error('unexpected error result in test fixture');
+    const actuals = DEMAND.slice(2);
+    const forecasts = series.value.slice(2, 8);
+
+    // Act
+    const mad = meanAbsoluteDeviation(actuals, forecasts);
+    const mse = meanSquaredError(actuals, forecasts);
+    const mape = meanAbsolutePercentageError(actuals, forecasts);
+
+    // Assert
+    expect(series.value[8]).toBeCloseTo(139.57, 2);
+    expect(mad.ok && mad.value).toBeCloseTo(8.87, 2);
+    expect(mse.ok && mse.value).toBeCloseTo(109.25, 1);
+    expect(mape.ok && mape.value).toBeCloseTo(6.26, 2);
+  });
+});
