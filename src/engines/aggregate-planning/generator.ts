@@ -92,17 +92,19 @@ function planCostsVariant(random: RandomSource, variantId: string): AggregatePla
   ];
 
   const levelWorkforceValue = levelComputed[0]!;
+  const levelInventory = level.inventory.map((value) => formatNumber(value)).join('; ');
   const solution = [
     `Стратегія погоні (AGG-01): потрібний штат = попит / продуктивність = ${chaseComputed.map((value) => formatNumber(value)).join(', ')} робітників за періодами.`,
     `Регулярна оплата: ${formatMoney(chase.regularCost)}. Найм: ${formatMoney(chase.hiringCost)}. Звільнення: ${formatMoney(chase.firingCost)}. Зберігання: ${formatMoney(chase.holdingCost)}. Дефіцит: ${formatMoney(chase.shortageCost)}. Разом (AGG-03) = ${formatMoney(chase.totalCost)}.`,
     `Стратегія рівномірного виробництва (AGG-02): сталий штат = Σ попиту / (${HORIZON} · продуктивність) = ${formatNumber(levelWorkforceValue)} робітників на весь горизонт.`,
+    `Запас на кінець періодів (початковий + випуск − попит): ${levelInventory} од.; додатний залишок множать на ставку зберігання, від’ємний (дефіцит) — на ставку дефіциту.`,
     `Регулярна оплата: ${formatMoney(level.regularCost)}. Найм: ${formatMoney(level.hiringCost)}. Звільнення: ${formatMoney(level.firingCost)}. Зберігання: ${formatMoney(level.holdingCost)}. Дефіцит: ${formatMoney(level.shortageCost)}. Разом (AGG-03) = ${formatMoney(level.totalCost)}.`,
   ];
 
   return {
     variantId,
     method: 'aggregate-plan-costs',
-    prompt: `Складіть агрегатний план на ${HORIZON} періодів за стратегією погоні за попитом (AGG-01) і за стратегією рівномірного виробництва (AGG-02) та порівняйте сумарні витрати виконання обох (AGG-03).`,
+    prompt: `Складіть агрегатний план на ${HORIZON} періодів за стратегією погоні за попитом (AGG-01) і за стратегією рівномірного виробництва (AGG-02) та порівняйте сумарні витрати виконання обох (AGG-03). Запас рахується на кінець кожного періоду: незадоволений попит не втрачається, а переноситься на наступні періоди, тож від’ємний залишок — це дефіцит, за який щоперіоду платять ставку дефіциту за одиницю.`,
     given,
     answers,
     solution,

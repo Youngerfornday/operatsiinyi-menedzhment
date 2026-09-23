@@ -79,8 +79,8 @@ export function AggregatePlanningTrainer({ tasks }: AggregatePlanningTrainerProp
               value={state.answer[field.id] ?? ''}
               onChange={(value) => state.setAnswer({ [field.id]: value })}
               error={state.errors[field.id]}
-              hint="Кому й крапку приймає однаково: 2500 або 2500,5."
-              placeholder="наприклад, 2500"
+              hint="Кому й крапку приймає однаково, пробіли між розрядами теж: 1 250 000 або 1250000.5."
+              placeholder="наприклад, 1 250 000"
             />
           ))}
         </>

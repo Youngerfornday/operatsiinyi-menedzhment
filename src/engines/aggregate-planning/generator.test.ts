@@ -77,4 +77,12 @@ describe('createAggregatePlanningVariant', () => {
       expect(levelAnswer.expected).toBeCloseTo(level.value.totalCost, 6);
     }
   });
+
+  it('умова прямо називає правило дефіциту, а розв’язок показує запас рівномірної стратегії за періодами', () => {
+    for (let seed = 0; seed < 30; seed += 1) {
+      const variant = createAggregatePlanningVariant(createSeededRandom(`rule:${seed}`), TASKS);
+      expect(variant.prompt).toMatch(/від’ємний залишок/);
+      expect(variant.solution.some((step) => step.startsWith('Запас на кінець періодів'))).toBe(true);
+    }
+  });
 });
