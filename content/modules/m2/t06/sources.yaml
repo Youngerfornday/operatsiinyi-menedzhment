@@ -1,5 +1,5 @@
 # Джерела теми 6. Кожне — з адресою, відкритою на дату checkedAt.
-# Формули — лише з docs/research/formula-baseline.md (коди FC-*, AGG-*, EOQ-*, MRP-*, SCH-*, CAP-01),
+# Формули — лише з docs/research/formula-baseline.md (коди FC-*, AGG-*, EOQ-*, MRP-*, SCH-*, CAP-01, CAP-04),
 # факти кейсів — з docs/research/cases.md.
 topic: t06
 sources:
@@ -36,6 +36,17 @@ sources:
     url: https://kneu.edu.ua/get_file/8945/.pdf
     checkedAt: '2026-09-22'
     note: 'Джерело розділу «Прогнозування» — проста й зважена ковзна середня, експоненційне згладжування (FC-01–FC-03) — і ABC-аналізу запасів (EOQ-05).'
+
+  - id: hevko-2017
+    type: book
+    title: 'Операційний (виробничий) менеджмент: конспект лекцій'
+    authors: [Гевко І. Б.]
+    publisher: ТНТУ імені Івана Пулюя
+    year: 2017
+    language: uk
+    url: https://elartu.tntu.edu.ua/handle/lib/21300
+    checkedAt: '2026-09-22'
+    note: 'Джерело закону Літтла (CAP-04, розділ «Продуктивність операційної системи»): середня кількість завдань у системі як добуток темпу надходження на середній час перебування — використано для порівняння правил пріоритетів.'
 
   - id: heizer-render-munson-2016
     type: book
