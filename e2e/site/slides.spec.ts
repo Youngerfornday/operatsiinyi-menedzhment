@@ -26,7 +26,7 @@ async function openDeck(page: Page, hash = ''): Promise<void> {
 test('рендерить усі слайди теми 1, показує один, посилання з base, без горизонтального скролу, axe без serious', async ({ page }) => {
   await openDeck(page);
   await expect(page.locator('html')).toHaveAttribute('lang', 'uk');
-  await expect(page.getByRole('heading', { level: 1, name: /Корпорація і операційний менеджмент/ })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: /Операційний менеджмент як різновид функціонального менеджменту/ })).toBeVisible();
   await expect(page.locator('[data-slide]')).toHaveCount(COUNT);
   expect(COUNT).toBeGreaterThanOrEqual(22);
   expect(COUNT).toBeLessThanOrEqual(28);
@@ -40,7 +40,7 @@ test('рендерить усі слайди теми 1, показує один
   await expectNoSeriousAxeViolations(page);
 });
 
-for (const type of ['figure', 'norm', 'formula', 'two-columns', 'case', 'question', 'summary']) {
+for (const type of ['outcomes', 'section', 'figure', 'bullets', 'formula', 'two-columns', 'case', 'summary']) {
   test(`слайд «${type}» з нотатками: доступна назва, без горизонтального скролу, axe без serious`, async ({ page }) => {
     const number = numberOf(type);
     await openDeck(page, `#slide-${number}`);
@@ -148,14 +148,6 @@ test('кнопка «Презентація» на сторінці теми в�
   await expect(page).toHaveURL(/temy\/operatsiinyi-menedzhment-yak-funktsiia\/prezentatsiia\/$/);
   await page.locator('[data-slides-back]').click();
   await expect(page).toHaveURL(/temy\/operatsiinyi-menedzhment-yak-funktsiia\/$/);
-});
-
-test('тема без slides.yaml: ні кнопки, ні сторінки презентації', async ({ page }) => {
-  await page.goto('temy/operatsiina-diialnist-resursy-protsesy/');
-  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-  await expect(page.locator('[data-topic-slides-link]')).toHaveCount(0);
-  const response = await page.goto('temy/operatsiina-diialnist-resursy-protsesy/prezentatsiia/');
-  expect(response?.status()).toBe(404);
 });
 
 test('на десктопі кожен слайд уміщається в 16:9', async ({ page, isMobile }) => {

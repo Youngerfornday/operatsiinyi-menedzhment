@@ -11,7 +11,7 @@ import { BASE_PATH } from './playwright.config';
  * можна відтворити для одного файлу.
  */
 
-const LECTURE_TITLE = 'Лекція 1. Корпорація і операційний менеджмент';
+const LECTURE_TITLE = 'Лекція 1. Операційний менеджмент як різновид функціонального менеджменту';
 
 function fixtureBody(path: string): string {
   return `Фікстурний файл кабінету: ${path}\n`.repeat(40);
@@ -90,17 +90,17 @@ test.describe('кабінет викладача', () => {
     await openCabinet(page, '?vid=matrytsia');
     const prn3 = page.locator('[data-outcome="prn03"]');
     await expect(prn3.locator('[data-coverage]').first()).toHaveAttribute('aria-label', 'лекція і практична');
-    await expect(page.locator('[data-matrix] thead th[data-published]')).toHaveCount(12);
+    await expect(page.locator('[data-matrix] thead th[data-published]')).toHaveCount(8);
     const allRows = await page.locator('[data-matrix] tbody tr').count();
     expect(allRows).toBeGreaterThan(0);
 
     await page.getByLabel('Модуль').selectOption('m1');
-    await expect(page.locator('[data-matrix] thead th[data-published]')).toHaveCount(3);
+    await expect(page.locator('[data-matrix] thead th[data-published]')).toHaveCount(4);
     await expect(page.locator('[data-matrix-count]')).toContainText('фільтр за модулем');
 
-    await page.getByLabel('Пошук ПРН').fill('прн 15');
+    await page.getByLabel('Пошук ПРН').fill('прн 20');
     await expect(page.locator('[data-matrix] tbody tr')).toHaveCount(1);
-    await expect(page.locator('[data-outcome="prn15"]')).toBeVisible();
+    await expect(page.locator('[data-outcome="prn20"]')).toBeVisible();
   });
 
   test('фільтри за модулем, типом і Блумом, пошук за терміном, лічильники й скидання', async ({ page }) => {
@@ -114,29 +114,35 @@ test.describe('кабінет викладача', () => {
     const bankCount = Number(await page.locator('[data-type="bank"] .n').textContent());
     await expect(page.locator('[data-materials-table] tbody tr')).toHaveCount(bankCount);
     await expect(page.locator('[data-materials-table] tbody tr[data-material^="lecture-"]')).toHaveCount(0);
+    // Серед матеріалів типу «тест» — тренувальний тест кожної теми і зведений файл модуля (без Блума).
+    const topicBankCount = await page.locator('[data-materials-table] tbody tr[data-material^="bank-t"]').count();
 
+    await page.getByRole('button', { name: 'Скинути фільтри' }).first().click();
+    await expect(count).toHaveAttribute('data-results-count', String(total));
+
+    // Блум є лише в тренувальних тестах тем: зведений файл модуля без нього теж відсіюється.
     await page.getByLabel('Рівень Блума').selectOption('analyze');
-    await expect(page.locator('[data-materials-table] tbody tr')).toHaveCount(1);
+    await expect(page.locator('[data-materials-table] tbody tr')).toHaveCount(topicBankCount);
     await expect(row(page, 'bank-t01')).toBeVisible();
 
     await page.getByRole('button', { name: 'Скинути фільтри' }).first().click();
     await expect(count).toHaveAttribute('data-results-count', String(total));
 
-    // Опубліковані практичні мають посилання на сторінку, ще не опубліковані — ні.
+    // Усі 7 практичних опубліковані — рядок матеріалу лінкується на сторінку практичної.
     await expect(row(page, 'practical-p01').locator('a.mat-name')).toHaveAttribute('href', `${BASE_PATH}praktychni/p01/`);
     await expect(row(page, 'practical-p02').locator('a.mat-name')).toHaveAttribute('href', `${BASE_PATH}praktychni/p02/`);
-    await expect(row(page, 'practical-p03').locator('a.mat-name')).toHaveCount(0);
+    await expect(row(page, 'practical-p03').locator('a.mat-name')).toHaveAttribute('href', `${BASE_PATH}praktychni/p03/`);
 
-    await page.getByLabel('Пошук матеріалів').fill('агентські витрати');
+    await page.getByLabel('Пошук матеріалів').fill('багатофакторна продуктивність');
     await expect(row(page, 'lecture-t01')).toBeVisible();
     await expect(row(page, 'glossary-t01')).toBeVisible();
     await expect(row(page, 'lecture-t02')).toHaveCount(0);
 
     await page.getByLabel('Пошук матеріалів').fill('');
     await page.getByLabel('Модуль').selectOption('m2');
-    await expect(row(page, 'lecture-t04')).toBeVisible();
+    await expect(row(page, 'lecture-t05')).toBeVisible();
     await expect(row(page, 'lecture-t01')).toHaveCount(0);
-    await expect(row(page, 'lecture-t04')).toContainText('готується');
+    await expect(row(page, 'lecture-t05')).toHaveAttribute('data-status', 'published');
 
     await page.getByLabel('Пошук матеріалів').fill('немає такого матеріалу');
     await expect(page.getByText('Нічого не знайдено.')).toBeVisible();

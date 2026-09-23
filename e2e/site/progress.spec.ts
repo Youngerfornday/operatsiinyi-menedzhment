@@ -28,25 +28,25 @@ test.describe('гідрація прогресу на головній, у мо�
 
   test('головна: маршрут, позиція, наступна тема, CTA «Продовжити», сходинки рівня', async ({ page }) => {
     await page.goto('');
-    await expect(page.locator('[data-route-label]')).toHaveText('1 із 12 тем');
+    await expect(page.locator('[data-route-label]')).toHaveText('1 із 8 тем');
     await expect(page.locator('[data-route-cells] i[data-topic="t01"]')).toHaveAttribute('data-state', 'done');
     await expect(page.locator('[data-route-cells] i[data-topic="t02"]')).toHaveAttribute('data-state', 'doing');
     await expect(page.locator('[data-route-position]')).toHaveText('Модуль 1 · середина');
     await expect(page.locator('[data-route-next-title]')).toContainText('2.');
-    await expect(page.locator('[data-route-next-link]')).toHaveAttribute('href', /modeli-ku-ta-mizhnarodni-standarty\/$/);
+    await expect(page.locator('[data-route-next-link]')).toHaveAttribute('href', /operatsiina-stratehiia\/$/);
     await expect(page.locator('[data-continue-label]')).toHaveText('Продовжити: Тема 2');
-    await expect(page.locator('[data-continue]')).toHaveAttribute('href', /modeli-ku-ta-mizhnarodni-standarty\/$/);
+    await expect(page.locator('[data-continue]')).toHaveAttribute('href', /operatsiina-stratehiia\/$/);
     await expect(page.locator('[data-agenda] a.topic[data-topic="t01"]')).toHaveAttribute('data-state', 'done');
     await expect(page.locator('[data-agenda] a.topic[data-topic="t01"] [data-topic-mark]')).toHaveAttribute('aria-label', 'Пройдено');
     await expect(page.locator('[data-topic-progress="t01"]')).toHaveText(/тест 87\s%/);
-    await expect(page.locator('[data-module-progress="m1"]')).toHaveText('1 із 3');
-    await expect(page.locator('[data-ladder] .rung[data-now]')).toHaveAttribute('data-level-id', 'shareholder');
+    await expect(page.locator('[data-module-progress="m1"]')).toHaveText('1 із 4');
+    await expect(page.locator('[data-ladder] .rung[data-now]')).toHaveAttribute('data-level-id', 'floor-intern');
     await expect(page.locator('[data-player-chip]')).toHaveAttribute('data-xp', '250');
   });
 
   test('сторінка модуля: метр і підпис пройдених тем', async ({ page }) => {
     await page.goto('moduli/m1/');
-    await expect(page.locator('[data-module-progress-label]')).toHaveText('1 із 3');
+    await expect(page.locator('[data-module-progress-label]')).toHaveText('1 із 4');
     await expect(page.locator('[data-module-progress-meter]')).toHaveAttribute('aria-valuenow', '1');
     await expect(page.locator('a.topic[data-topic="t02"]')).toHaveAttribute('data-state', 'doing');
   });
@@ -99,7 +99,7 @@ test.describe('сторінка теми 1: читання й самоперев
 
     await page.goto('');
     await expect(page.locator('[data-agenda] a.topic[data-topic="t01"]')).toHaveAttribute('data-state', 'done');
-    await expect(page.locator('[data-route-label]')).toHaveText('1 із 12 тем');
+    await expect(page.locator('[data-route-label]')).toHaveText('1 із 8 тем');
     await expect(page.locator('[data-continue-label]')).toHaveText('Продовжити: Тема 2');
   });
 });

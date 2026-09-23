@@ -33,18 +33,18 @@ test.describe('профіль гравця', () => {
   test('рівень, XP, метр, бейджі й карта зі збереженого стану; чип у шапці збігається', async ({ page }) => {
     await seedProgress(page);
     await page.goto('profil/');
-    await expect(page.locator('[data-profile-level]')).toHaveText('Міноритарій');
+    await expect(page.locator('[data-profile-level]')).toHaveText('Майстер зміни');
     await expect(page.locator('[data-profile-xp]')).toHaveAttribute('data-profile-xp', '640');
     await expect(page.locator('.prof-head .lvl')).toHaveText('Ваш рівень — 2 із 5');
     await expect(page.locator('.xp-block .to')).toContainText('560');
-    await expect(page.locator('[data-levels] .level[data-now]')).toHaveAttribute('data-level-id', 'minority');
-    await expect(page.locator('[data-badges-earned]')).toContainText('Здобуто 0 із 9');
-    await expect(page.locator('[data-badge]')).toHaveCount(9);
+    await expect(page.locator('[data-levels] .level[data-now]')).toHaveAttribute('data-level-id', 'shift-foreman');
+    await expect(page.locator('[data-badges-earned]')).toContainText('Здобуто 0 із 15');
+    await expect(page.locator('[data-badge]')).toHaveCount(15);
     await expect(page.locator('[data-map-topic="t01"] .c').nth(0).locator('.mark')).toHaveAttribute('aria-label', 'виконано');
     await expect(page.locator('[data-map-topic="t02"] .c').nth(0).locator('.mark')).toHaveAttribute('aria-label', 'у процесі');
     await expect(page.locator('[data-map-topic="t03"] .c').nth(0).locator('.mark')).toHaveAttribute('aria-label', 'не виконано');
     await expect(page.locator('[data-player-chip]')).toHaveAttribute('data-xp', '640');
-    await expect(page.locator('[data-player-level]')).toHaveText('Міноритарій');
+    await expect(page.locator('[data-player-level]')).toHaveText('Майстер зміни');
     await expectNoHorizontalScroll(page);
     await expectNoSeriousAxeViolations(page);
   });
@@ -53,7 +53,7 @@ test.describe('профіль гравця', () => {
     await seedProgress(page);
     await page.goto('profil/');
     const code = await page.locator('[data-progress-code]').inputValue();
-    expect(code.startsWith('KUP1.')).toBe(true);
+    expect(code.startsWith('OM1.')).toBe(true);
 
     await page.locator('[data-progress-reset]').click();
     const dialog = page.locator('dialog.confirm');
@@ -61,26 +61,26 @@ test.describe('профіль гравця', () => {
     await expect(dialog).toContainText('Скинути прогрес?');
     await page.locator('[data-confirm-cancel]').click();
     await expect(dialog).toBeHidden();
-    await expect(page.locator('[data-profile-level]')).toHaveText('Міноритарій');
+    await expect(page.locator('[data-profile-level]')).toHaveText('Майстер зміни');
 
     await page.locator('[data-progress-reset]').click();
     await page.locator('[data-confirm-ok]').click();
-    await expect(page.locator('[data-profile-level]')).toHaveText('Акціонер');
+    await expect(page.locator('[data-profile-level]')).toHaveText('Стажист дільниці');
     await expect(page.locator('[data-profile-xp]')).toHaveAttribute('data-profile-xp', '0');
     await expect(page.locator('[data-player-chip]')).toHaveAttribute('data-xp', '0');
     expect(await page.evaluate((key) => localStorage.getItem(key), STORAGE_KEY)).toBeNull();
 
-    await page.locator('[data-progress-import]').fill('KUP1.zipsuty-kod');
+    await page.locator('[data-progress-import]').fill('OM1.zipsuty-kod');
     await page.locator('[data-progress-import-btn]').click();
     await expect(page.locator('#code-in-error')).toContainText('Код пошкоджений');
-    await expect(page.locator('[data-profile-level]')).toHaveText('Акціонер');
+    await expect(page.locator('[data-profile-level]')).toHaveText('Стажист дільниці');
 
     await page.locator('[data-progress-import]').fill(`  ${code}\n`);
     await page.locator('[data-progress-import-btn]').click();
     await expect(dialog).toContainText('Замінити прогрес?');
     await expect(dialog).toContainText('640');
     await page.locator('[data-confirm-ok]').click();
-    await expect(page.locator('[data-profile-level]')).toHaveText('Міноритарій');
+    await expect(page.locator('[data-profile-level]')).toHaveText('Майстер зміни');
     await expect(page.locator('[data-player-chip]')).toHaveAttribute('data-xp', '640');
 
     await page.reload();
@@ -94,7 +94,7 @@ test.describe('профіль гравця', () => {
       };
     });
     await page.goto('profil/');
-    await expect(page.locator('[data-profile-level]')).toHaveText('Акціонер');
+    await expect(page.locator('[data-profile-level]')).toHaveText('Стажист дільниці');
     await expect(page.locator('.prof-head .sub')).toContainText('Сховище браузера недоступне');
     await expect(page.locator('[data-player-summary]')).toContainText('недоступне');
   });
