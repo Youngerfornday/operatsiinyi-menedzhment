@@ -1,0 +1,121 @@
+# Джерела теми 2. Кожне — з адресою, відкритою на дату checkedAt.
+# Факти кейсів — з docs/research/cases.md (kernel, ferrexpo, zara-inditex, southwest-airlines); зберігайте
+# застереження цих кейсів. Тема не використовує кодів docs/research/formula-baseline.md чи
+# standards-baseline.md — зміст розділу концептуальний, без розрахункових формул чи пунктів стандартів.
+topic: t02
+sources:
+  # Основна література курсу
+  - id: stevenson-2020
+    type: book
+    title: Operations Management
+    authors: [Stevenson W. J.]
+    publisher: McGraw-Hill Education
+    year: 2020
+    language: en
+    url: https://openlibrary.org/isbn/9781260575712
+    checkedAt: '2026-09-22'
+    note: 'Джерело розділу «Competitiveness, Strategy, and Productivity»: операційна стратегія, операційні пріоритети (витрати, якість і надійність, час виконання, гнучкість), кваліфікаційні вимоги й виграшна характеристика замовлення (концепція Террі Хілла).'
+
+  - id: heizer-render-munson-2016
+    type: book
+    title: 'Operations Management: Sustainability and Supply Chain Management'
+    authors: [Heizer J., Render B., Munson C.]
+    publisher: Pearson
+    year: 2016
+    language: en
+    url: https://openlibrary.org/isbn/9780134163512
+    checkedAt: '2026-09-22'
+    note: Джерело поділу рішень операційної стратегії на структурні (процес, потужність, вертикальна інтеграція, робоча сила, технологія) та тактичні (інфраструктурні), використаного в темі 1 і поглибленого тут для рівня стратегії.
+
+  - id: slack-brandon-jones-2021
+    type: book
+    title: Operations and Process Management
+    authors: [Slack N., Brandon-Jones A.]
+    publisher: Pearson Education
+    year: 2021
+    language: en
+    url: https://openlibrary.org/isbn/9781292350103
+    checkedAt: '2026-09-22'
+    note: Джерело трактування стратегії процесу — вибору технології, автоматизації й стандартизації — та особливостей процесів у сфері послуг, де клієнт присутній усередині перетворення.
+
+  - id: starchenko-kalinko-kosach-2020
+    type: book
+    title: Операційний менеджмент
+    authors: [Старченко Г. В., Калінько І. В., Косач І. А.]
+    publisher: Кондор
+    year: 2020
+    language: uk
+    url: https://scholar.google.com/citations?user=9UX4QTYAAAAJ&hl=uk
+    checkedAt: '2026-09-22'
+    note: Основний український підручник курсу; опорне видання для загальної логіки розділу операційної стратегії й місця тактики в управлінні операційною системою.
+
+  # Кейси
+  - id: kernel-annual-report-fy2025
+    type: report
+    title: Kernel Holding S.A. Annual Report and Accounts for the year ended 30 June 2025
+    publisher: Kernel Holding S.A.
+    year: 2025
+    language: en
+    url: https://www.kernel.ua/wp-content/uploads/2025/10/FY2025_Kernel_Annual_Report.pdf
+    checkedAt: '2026-09-22'
+    note: 'Аудований річний звіт: потужності трьох стадій ланцюга (елеватори, олієекстракційні заводи, портові термінали) — джерело кейсу про вертикальну інтеграцію. Дані сайту компанії станом на 2026-09-22 розходяться зі звітом — використано лише цифри звіту.'
+
+  - id: ferrexpo-fy2025-results
+    type: report
+    title: 'Ferrexpo plc. Full Year Financial Results for 2025'
+    publisher: Ferrexpo plc
+    year: 2026
+    language: en
+    url: https://ferrexpopstorage.blob.core.windows.net/media/yo2jxkc3/ferrexpo-full-year-financial-results-for-2025-combined-for-website.pdf
+    checkedAt: '2026-09-22'
+    note: 'Аудовані річні результати (оприлюднені 2026-09-03): фінансові показники, зміна продуктового міксу через призупинення відшкодування ПДВ, скорочення до однієї лінії окомкування, показник LTIFR. Падіння виробництва пояснено зовнішніми причинами, а не погіршенням процесу.'
+
+  - id: inditex-fy2025-results
+    type: report
+    title: 'Inditex. FY2025 Results'
+    publisher: Industria de Diseño Textil, S.A. (Inditex)
+    year: 2026
+    language: en
+    url: https://www.inditex.com/itxcomweb/gp/en/press/news-detail/b870d5ec-6b7e-491d-b38e-340cd69036df/fy2025-results
+    checkedAt: '2026-09-22'
+    note: 'Офіційні річні результати (2026-03-11, звітний період завершився 2026-01-31): 900 млн євро на рік інвестицій у логістичні потужності, продажі, капітальні витрати. Сторінка поширених запитань компанії (без дати) — джерело даних про постачальників і час доставки; цифри не датовані конкретним звітним роком.'
+
+  - id: southwest-10k-2025
+    type: report
+    title: Southwest Airlines Co. Form 10-K за 2025 фінансовий рік
+    publisher: Southwest Airlines Co. (SEC EDGAR)
+    year: 2026
+    language: en
+    url: https://www.sec.gov/Archives/edgar/data/92380/000009238026000004/luv-20251231.htm
+    checkedAt: '2026-09-22'
+    note: 'Подано 2026-02-05: point-to-point проти hub-and-spoke, єдиний тип літака Boeing 737, мета скорочення часу розвороту без точного значення в хвилинах.'
+
+  - id: southwest-10k-2018
+    type: report
+    title: Southwest Airlines Co. Form 10-K за 2018 фінансовий рік
+    publisher: Southwest Airlines Co. (SEC EDGAR)
+    year: 2019
+    language: en
+    url: https://www.sec.gov/Archives/edgar/data/92380/000009238019000022/luv-12312018x10k.htm
+    checkedAt: '2026-09-22'
+    note: 'Джерело масштабу мережі «з точки в точку» станом на 2018 р.: приблизно 77% пасажирів летіли безпосереднім рейсом, 704 прямі пари міст станом на 2018-12-31.'
+
+  - id: dot-southwest-penalty-2023
+    type: report
+    title: 'DOT Penalizes Southwest Airlines $140 Million for 2022 Holiday Meltdown'
+    publisher: U.S. Department of Transportation
+    year: 2023
+    language: en
+    url: https://www.transportation.gov/briefing-room/dot-penalizes-southwest-airlines-140-million-2022-holiday-meltdown
+    checkedAt: '2026-09-22'
+    note: 'Пресреліз від 2023-12-18: штраф і його розподіл, 16 900 скасованих рейсів. Сторінка віддає автоматичному клієнту 403; текст прочитано через сторонній текстовий проксі 2026-09-22, тому цитати подано як зміст пресрелізу, а не вивірений текст наказу.'
+
+  - id: swapa-senate-testimony-2023
+    type: report
+    title: Written Testimony of Captain Casey Murray (SWAPA) — слухання Комітету Сенату США з торгівлі
+    publisher: U.S. Senate, Committee on Commerce, Science & Transportation
+    year: 2023
+    language: en
+    url: https://www.commerce.senate.gov/wp-content/uploads/meetings/19F99589-8C0F-4198-BD63-ED8722F2EFBD/Captain%20Casey%20Murray%20Testimony%20Senate%20CST%20Feb2023%20.pdf
+    checkedAt: '2026-09-22'
+    note: 'Слухання 2023-02-09: версія профспілки пілотів про дві неузгоджені інформаційні системи планування рейсів і екіпажів. Це позиція сторони, а не незалежний технічний висновок регулятора.'

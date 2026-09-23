@@ -19,8 +19,9 @@ describe('каталог тренажерів', () => {
     expect(PRACTICAL_TRAINERS).toEqual([PRODUCTIVITY_TRAINER, MATRIX_TRAINER]);
   });
 
-  it('практична p01 опублікована', () => {
+  it('практичні p01 і p02 опубліковані', () => {
     expect(PUBLISHED_PRACTICALS).toContain('p01');
+    expect(PUBLISHED_PRACTICALS).toContain('p02');
   });
 
   it('опубліковані тренажери знаходяться за ID реєстру, неопубліковані — ні', () => {
@@ -65,14 +66,11 @@ describe('practicumProgress', () => {
 });
 
 describe('homeTrainerCards', () => {
-  it('показує тренажер опублікованої практичної, а не лише власні сторінки', () => {
+  it('показує тренажери опублікованих практичних, а не лише власні сторінки', () => {
     const cards = homeTrainerCards();
     expect(cards.length).toBeGreaterThan(0);
     expect(cards.map((card) => card.key)).toContain('productivity');
+    expect(cards.map((card) => card.key)).toContain('priorities-matrix');
     expect(cards.every((card) => card.path !== '' && card.title !== '')).toBe(true);
-  });
-
-  it('не показує тренажер неопублікованої практичної', () => {
-    expect(homeTrainerCards().map((card) => card.key)).not.toContain('priorities-matrix');
   });
 });

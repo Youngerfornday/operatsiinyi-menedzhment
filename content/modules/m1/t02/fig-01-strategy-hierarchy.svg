@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="fig-t02-1" class="scheme" viewBox="0 0 640 420" role="img" aria-labelledby="fig-t02-1-title fig-t02-1-desc" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+  <title id="fig-t02-1-title">Рисунок 1. Місце операційної стратегії в ієрархії стратегій підприємства</title>
+  <desc id="fig-t02-1-desc">Чотири рівні згори вниз. Перший — місія та корпоративна стратегія підприємства. Другий — три функціональні стратегії в один ряд: маркетингова, операційна, фінансова; операційна виділена карміновим як предмет теми. Третій рівень, під операційною стратегією, — структурні рішення: процес, потужність, вертикальна інтеграція, робоча сила, технологія. Четвертий рівень — тактичні, інфраструктурні рішення: запаси, розклади, якість, надійність і ремонт. Стрілки йдуть згори вниз, показуючи, що кожен рівень задає межі наступного.</desc>
+  <style>
+    #fig-t02-1 .box { fill: var(--surface, #ffffff); stroke: var(--ink, #0f1c2e); stroke-width: 1.25; }
+    #fig-t02-1 .box-owner { fill: var(--surface-tint, #eef4fa); }
+    #fig-t02-1 .t { fill: var(--ink, #0f1c2e); font-size: 14.5px; font-weight: 650; }
+    #fig-t02-1 .s { fill: var(--ink-2, #445570); font-size: 12px; }
+    #fig-t02-1 .lbl { fill: var(--ink-2, #445570); font-size: 12px; }
+    #fig-t02-1 .arrow { stroke: var(--ink-2, #445570); stroke-width: 1.25; fill: none; }
+    #fig-t02-1 .arrow-head { fill: var(--ink-2, #445570); }
+    #fig-t02-1 .refc { fill: var(--surface, #ffffff); stroke: var(--ink, #0f1c2e); stroke-width: 1.25; }
+    #fig-t02-1 .refn { fill: var(--ink, #0f1c2e); font-size: 11.5px; font-weight: 700; text-anchor: middle; }
+    #fig-t02-1 .exam { stroke: var(--err, #b42318); }
+    #fig-t02-1 .exam-t { fill: var(--err-ink, #8f1d14); font-size: 12.5px; font-weight: 600; }
+    #fig-t02-1 .refc.exam { stroke: var(--err, #b42318); }
+    #fig-t02-1 .refn.exam-n { fill: var(--err-ink, #8f1d14); }
+  </style>
+
+  <defs>
+    <marker id="fig-t02-1-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="arrow-head" d="M0 0 10 5 0 10z"/>
+    </marker>
+  </defs>
+
+  <rect class="box box-owner" x="120" y="16" width="400" height="44" rx="6"/>
+  <text class="t" x="320" y="43" text-anchor="middle">Місія та корпоративна стратегія підприємства</text>
+
+  <path class="arrow" marker-end="url(#fig-t02-1-arr)" d="M320 60 L320 100"/>
+
+  <rect class="box" x="16" y="100" width="180" height="72" rx="6"/>
+  <text class="t" x="106" y="132" text-anchor="middle">Маркетингова</text>
+  <text class="s" x="106" y="152" text-anchor="middle">формує попит</text>
+
+  <rect class="box exam" x="230" y="100" width="180" height="72" rx="6"/>
+  <text class="exam-t" x="320" y="132" text-anchor="middle">Операційна</text>
+  <text class="exam-t" x="320" y="152" text-anchor="middle">предмет теми</text>
+
+  <rect class="box" x="444" y="100" width="180" height="72" rx="6"/>
+  <text class="t" x="534" y="132" text-anchor="middle">Фінансова</text>
+  <text class="s" x="534" y="152" text-anchor="middle">оцінює економність</text>
+
+  <path class="arrow" marker-end="url(#fig-t02-1-arr)" d="M320 172 L320 210"/>
+
+  <rect class="box box-owner" x="16" y="210" width="608" height="96" rx="6"/>
+  <text class="t" x="320" y="240" text-anchor="middle">Структурні рішення операційної стратегії</text>
+  <text class="s" x="320" y="264" text-anchor="middle">процес, потужність, вертикальна інтеграція,</text>
+  <text class="s" x="320" y="284" text-anchor="middle">робоча сила, технологія</text>
+
+  <path class="arrow" marker-end="url(#fig-t02-1-arr)" d="M320 306 L320 344"/>
+
+  <rect class="box" x="16" y="344" width="608" height="64" rx="6"/>
+  <text class="t" x="320" y="372" text-anchor="middle">Тактичні (інфраструктурні) рішення</text>
+  <text class="s" x="320" y="392" text-anchor="middle">запаси, розклади, якість, надійність і ремонт</text>
+
+  <circle class="refc" cx="16" cy="38" r="11"/><text class="refn" x="16" y="42">1</text>
+  <circle class="refc" cx="16" cy="100" r="11"/><text class="refn" x="16" y="104">2</text>
+  <circle class="refc exam" cx="230" cy="100" r="11"/><text class="refn exam-n" x="230" y="104">3</text>
+  <circle class="refc" cx="16" cy="344" r="11"/><text class="refn" x="16" y="348">4</text>
+</svg>
