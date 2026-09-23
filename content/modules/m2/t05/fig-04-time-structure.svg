@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="fig-t05-4" class="scheme" viewBox="0 0 700 260" role="img" aria-labelledby="fig-t05-4-title fig-t05-4-desc" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+  <title id="fig-t05-4-title">Рисунок 4. Склад робочого часу операції</title>
+  <desc id="fig-t05-4-desc">Горизонтальна смуга, поділена на пронумеровані відрізки. Ліворуч окремим блоком — підготовчо-завершальний час, підписаний «один раз на партію». Праворуч — оперативний час, поділений на основний (виділений карміновим) і допоміжний, а за ним блоки часу обслуговування робочого місця й часу на відпочинок та особисті потреби. Під смугою фігурна дужка від оперативного часу до кінця смуги підписана «штучний час».</desc>
+  <style>
+    #fig-t05-4 .seg { fill: var(--surface-tint, #eef4fa); stroke: var(--ink, #0f1c2e); stroke-width: 1.25; }
+    #fig-t05-4 .seg.pz { fill: var(--surface, #ffffff); stroke-dasharray: 4 3; }
+    #fig-t05-4 .seg.exam { fill: var(--err-tint, #fbeae7); stroke: var(--err, #b42318); }
+    #fig-t05-4 .t { fill: var(--ink, #0f1c2e); font-size: 12px; font-weight: 650; }
+    #fig-t05-4 .exam-t { fill: var(--err-ink, #8f1d14); font-size: 12px; font-weight: 650; }
+    #fig-t05-4 .s { fill: var(--ink-2, #445570); font-size: 10.5px; }
+    #fig-t05-4 .brace { stroke: var(--ink-2, #445570); stroke-width: 1.25; fill: none; }
+    #fig-t05-4 .lbl { fill: var(--ink-2, #445570); font-size: 12px; }
+    #fig-t05-4 .refc { fill: var(--surface, #ffffff); stroke: var(--ink, #0f1c2e); stroke-width: 1.25; }
+    #fig-t05-4 .refn { fill: var(--ink, #0f1c2e); font-size: 11.5px; font-weight: 700; text-anchor: middle; }
+    #fig-t05-4 .refc.exam { stroke: var(--err, #b42318); }
+    #fig-t05-4 .refn.exam-n { fill: var(--err-ink, #8f1d14); }
+  </style>
+
+  <rect class="seg pz" x="20" y="90" width="110" height="70"/>
+  <text class="t" x="75" y="120" text-anchor="middle">Підготовчо-</text>
+  <text class="t" x="75" y="135" text-anchor="middle">завершальний</text>
+  <text class="s" x="75" y="150" text-anchor="middle">один раз на партію</text>
+
+  <rect class="seg exam" x="170" y="90" width="200" height="70"/>
+  <text class="exam-t" x="270" y="122" text-anchor="middle">Основний</text>
+  <text class="s" x="270" y="140" text-anchor="middle">(технологічний) час</text>
+
+  <rect class="seg" x="370" y="90" width="100" height="70"/>
+  <text class="t" x="420" y="122" text-anchor="middle">Допоміжний</text>
+  <text class="s" x="420" y="140" text-anchor="middle">час</text>
+
+  <rect class="seg" x="470" y="90" width="80" height="70"/>
+  <text class="t" x="510" y="118" text-anchor="middle">Обслуго-</text>
+  <text class="t" x="510" y="133" text-anchor="middle">вування</text>
+
+  <rect class="seg" x="550" y="90" width="80" height="70"/>
+  <text class="t" x="590" y="118" text-anchor="middle">Відпо-</text>
+  <text class="t" x="590" y="133" text-anchor="middle">чинок</text>
+
+  <path class="brace" d="M170 172 L170 182 L400 182 L400 190 M400 182 L630 182 L630 172"/>
+  <text class="lbl" x="400" y="205" text-anchor="middle">штучний час</text>
+
+  <path class="brace" d="M170 68 L170 60 L630 60 L630 68"/>
+  <text class="lbl" x="400" y="46" text-anchor="middle">оперативний час = основний + допоміжний</text>
+
+  <circle class="refc" cx="20" cy="90" r="11"/><text class="refn" x="20" y="94">1</text>
+  <circle class="refc exam" cx="170" cy="90" r="11"/><text class="refn exam-n" x="170" y="94">2</text>
+  <circle class="refc" cx="370" cy="90" r="11"/><text class="refn" x="370" y="94">3</text>
+  <circle class="refc" cx="470" cy="90" r="11"/><text class="refn" x="470" y="94">4</text>
+  <circle class="refc" cx="550" cy="90" r="11"/><text class="refn" x="550" y="94">5</text>
+</svg>
