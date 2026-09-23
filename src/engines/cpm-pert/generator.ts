@@ -47,7 +47,7 @@ function cpmVariant(random: RandomSource, variantId: string): CpmPertVariant {
 
   const given = activitiesTable(TOPOLOGY.map((row) => ({ ...row, value: `${formatNumber(durations.get(row.id) as number)} тиж.` })));
   const answers: CpmPertAnswerField[] = [
-    { id: 'duration', label: 'Тривалість проекту (критичний шлях)', unit: 'тиж.', expected: network.projectDuration, tolerance: 0 },
+    { id: 'duration', label: 'Тривалість проєкту (критичний шлях)', unit: 'тиж.', expected: network.projectDuration, tolerance: 0 },
     { id: 'float', label: `Повний резерв роботи ${FLOAT_PROBE_ID}`, unit: 'тиж.', expected: probe.totalFloat, tolerance: 0 },
     { id: 'freeFloat', label: `Вільний резерв роботи ${FLOAT_PROBE_ID}`, unit: 'тиж.', expected: probe.freeFloat, tolerance: 0 },
   ];
@@ -128,21 +128,21 @@ function pertVariant(random: RandomSource, variantId: string): CpmPertVariant {
     const estimate = estimates.find((candidate) => candidate.id === row.id) as PertEstimate;
     return { ...row, value: `o=${formatNumber(estimate.optimistic)}, m=${formatNumber(estimate.mostLikely)}, p=${formatNumber(estimate.pessimistic)} тиж.` };
   }));
-  given.push({ label: 'Директивний строк проекту D', value: `${formatNumber(directiveDeadline)} тиж.` });
+  given.push({ label: 'Директивний строк проєкту D', value: `${formatNumber(directiveDeadline)} тиж.` });
 
   const answers: CpmPertAnswerField[] = [
-    { id: 'expected', label: 'Очікувана тривалість проекту TE', unit: 'тиж.', expected: roundTo(project.expectedDuration, 2), tolerance: 0.05 },
+    { id: 'expected', label: 'Очікувана тривалість проєкту TE', unit: 'тиж.', expected: roundTo(project.expectedDuration, 2), tolerance: 0.05 },
     { id: 'probability', label: 'Імовірність дотримання строку D', unit: '%', expected: roundTo(probability * 100, 1), tolerance: 0.5 },
   ];
   const criticalActivities = project.activities.filter((activity) => project.network.criticalPath.includes(activity.id));
   const solution = [
     ...criticalActivities.map((activity) => `te(${activity.id}) = (o + 4m + p) / 6 = ${formatNumber(activity.expectedTime, { maximumFractionDigits: 3 })} тиж. (PRJ-05).`),
     `Критичний шлях за te: ${project.network.criticalPath.join('–')}, TE = ${formatNumber(project.expectedDuration, { maximumFractionDigits: 3 })} тиж.`,
-    `Дисперсія проекту (сума дисперсій робіт критичного шляху): σ² = ${formatNumber(project.variance, { maximumFractionDigits: 3 })} (PRJ-06); σ ≈ ${formatNumber(project.sigma, { maximumFractionDigits: 3 })} тижня.`,
+    `Дисперсія проєкту (сума дисперсій робіт критичного шляху): σ² = ${formatNumber(project.variance, { maximumFractionDigits: 3 })} (PRJ-06); σ ≈ ${formatNumber(project.sigma, { maximumFractionDigits: 3 })} тижня.`,
     `Z = (D − TE) / σ = (${formatNumber(directiveDeadline)} − ${formatNumber(project.expectedDuration, { maximumFractionDigits: 2 })}) / ${formatNumber(project.sigma, { maximumFractionDigits: 3 })} ≈ ${formatNumber(z)} (PRJ-07).`,
     `За таблицею нормального розподілу Φ(${formatNumber(z)}) ≈ ${formatPercent(probability)}.`,
   ];
-  return { variantId, method: 'pert-probability', prompt: 'Оцініть очікувану тривалість проекту та ймовірність дотримання директивного строку методом PERT (PRJ-05..07).', given, answers, solution };
+  return { variantId, method: 'pert-probability', prompt: 'Оцініть очікувану тривалість проєкту та ймовірність дотримання директивного строку методом PERT (PRJ-05..07).', given, answers, solution };
 }
 
 const GENERATORS: Readonly<Record<CpmPertMethod, (random: RandomSource, variantId: string) => CpmPertVariant>> = {
