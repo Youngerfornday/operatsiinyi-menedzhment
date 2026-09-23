@@ -57,7 +57,7 @@ const marks = [
               }
             </div>
             <div class="row" aria-label="Поля">
-              <div class="field"><label for="demo-input">Пошук</label><input class="input" id="demo-input" type="search" placeholder="Кворум" /></div>
+              <div class="field"><label for="demo-input">Пошук</label><input class="input" id="demo-input" type="search" placeholder="Маршрут" /></div>
               <div class="field">
                 <label for="demo-select">Модуль</label>
                 <select class="select" id="demo-select"><option>Усі модулі</option><option>М1</option></select>
@@ -67,7 +67,7 @@ const marks = [
             <div class="meter meter-xp" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" aria-label="Метр XP"><i style="width:65%"></i></div>
             <div class="row" aria-label="Тост">
               <button class="btn btn-secondary btn-sm" type="button" data-demo-toast>Показати тост</button>
-              <span class="small muted">подія <code>ku:toast</code> з <code>detail.html</code></span>
+              <span class="small muted">подія <code>om:toast</code> з <code>detail.html</code></span>
             </div>
           </div>
         </section>
@@ -97,7 +97,7 @@ const marks = [
     import { initTopicPage } from '../../components/topic/topic-page';
     initTopicPage();
     document.querySelector('[data-demo-toast]')?.addEventListener('click', () => {
-      document.dispatchEvent(new CustomEvent('ku:toast', { detail: { html: 'Тему прочитано <span class="xp">+120 XP</span>' } }));
+      document.dispatchEvent(new CustomEvent('om:toast', { detail: { html: 'Тему прочитано <span class="xp">+120 XP</span>' } }));
     });
   </script>
 </BaseLayout>

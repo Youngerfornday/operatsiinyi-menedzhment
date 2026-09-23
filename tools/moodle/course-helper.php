@@ -34,12 +34,12 @@ $command = $argv[1] ?? '';
 
 \core\session\manager::set_user(get_admin());
 
-function ku_helper_course(string $shortname): stdClass {
+function om_helper_course(string $shortname): stdClass {
     global $DB;
     return $DB->get_record('course', ['shortname' => $shortname], '*', MUST_EXIST);
 }
 
-function ku_helper_user(string $username, string $firstname, string $password): stdClass {
+function om_helper_user(string $username, string $firstname, string $password): stdClass {
     global $DB, $CFG;
     $user = $DB->get_record('user', ['username' => $username, 'mnethostid' => $CFG->mnet_localhost_id]);
     if (!$user) {
@@ -61,7 +61,7 @@ function ku_helper_user(string $username, string $firstname, string $password): 
     return $user;
 }
 
-function ku_helper_enrol(stdClass $course, stdClass $user, string $roleshortname): void {
+function om_helper_enrol(stdClass $course, stdClass $user, string $roleshortname): void {
     global $DB;
     $plugin = enrol_get_plugin('manual');
     $instance = $DB->get_record('enrol', ['courseid' => $course->id, 'enrol' => 'manual']);
@@ -73,13 +73,13 @@ function ku_helper_enrol(stdClass $course, stdClass $user, string $roleshortname
 }
 
 /** Порожній курс-ціль: наявний видаляється, щоб кожна перевірка починалася з чистого аркуша. */
-function ku_helper_setup(string $shortname, string $password): array {
+function om_helper_setup(string $shortname, string $password): array {
     global $DB;
     if (strlen($password) < 8) {
         cli_error('--password (мінімум 8 символів) обов’язковий');
     }
-    $teacher = ku_helper_user('teacher1', 'Викладач', $password);
-    $student = ku_helper_user('student1', 'Студент', $password);
+    $teacher = om_helper_user('teacher1', 'Викладач', $password);
+    $student = om_helper_user('student1', 'Студент', $password);
 
     if ($existing = $DB->get_record('course', ['shortname' => $shortname])) {
         ob_start();
@@ -94,8 +94,8 @@ function ku_helper_setup(string $shortname, string $password): array {
         'numsections' => 0,
         'lang' => 'uk',
     ]);
-    ku_helper_enrol($course, $teacher, 'editingteacher');
-    ku_helper_enrol($course, $student, 'student');
+    om_helper_enrol($course, $teacher, 'editingteacher');
+    om_helper_enrol($course, $student, 'student');
     $context = context_course::instance($course->id);
     return [
         'courseid' => (int)$course->id,
@@ -107,7 +107,7 @@ function ku_helper_setup(string $shortname, string $password): array {
     ];
 }
 
-function ku_helper_tag_names(array $ids): array {
+function om_helper_tag_names(array $ids): array {
     global $DB;
     if (!$ids) {
         return [];
@@ -118,7 +118,7 @@ function ku_helper_tag_names(array $ids): array {
     return array_values($names);
 }
 
-function ku_helper_quiz(stdClass $course, cm_info $cm): array {
+function om_helper_quiz(stdClass $course, cm_info $cm): array {
     global $DB;
     $quiz = $DB->get_record('quiz', ['id' => $cm->instance], '*', MUST_EXIST);
     $context = context_module::instance($cm->id);
@@ -131,7 +131,7 @@ function ku_helper_quiz(stdClass $course, cm_info $cm): array {
         $filters[] = [
             'category' => $categoryid === null ? null : $DB->get_field('question_categories', 'idnumber', ['id' => $categoryid]),
             'includesubcategories' => (bool)($filter['category']['filteroptions']['includesubcategories'] ?? false),
-            'tags' => ku_helper_tag_names($filter['qtagids']['values'] ?? []),
+            'tags' => om_helper_tag_names($filter['qtagids']['values'] ?? []),
             'hasTagFilter' => isset($filter['qtagids']),
         ];
     }
@@ -151,7 +151,7 @@ function ku_helper_quiz(stdClass $course, cm_info $cm): array {
     ];
 }
 
-function ku_helper_assign(cm_info $cm): array {
+function om_helper_assign(cm_info $cm): array {
     $context = context_module::instance($cm->id);
     $manager = get_grading_manager($context, 'mod_assign', 'submissions');
     $method = $manager->get_active_method();
@@ -174,7 +174,7 @@ function ku_helper_assign(cm_info $cm): array {
     ];
 }
 
-function ku_helper_inspect(stdClass $course): array {
+function om_helper_inspect(stdClass $course): array {
     global $DB;
     $modinfo = get_fast_modinfo($course);
     $result = [
@@ -213,10 +213,10 @@ function ku_helper_inspect(stdClass $course): array {
                     'categories' => (int)$DB->count_records('glossary_categories', ['glossaryid' => $cm->instance])];
                 break;
             case 'quiz':
-                $result['quizzes'][$cm->name] = ku_helper_quiz($course, $cm);
+                $result['quizzes'][$cm->name] = om_helper_quiz($course, $cm);
                 break;
             case 'assign':
-                $result['assigns'][$cm->name] = ku_helper_assign($cm);
+                $result['assigns'][$cm->name] = om_helper_assign($cm);
                 break;
             case 'page':
                 $result['pages'][$cm->name] = ['cmid' => (int)$cm->id,
@@ -262,7 +262,7 @@ function ku_helper_inspect(stdClass $course): array {
     return $result;
 }
 
-function ku_helper_restore_status(stdClass $course): array {
+function om_helper_restore_status(stdClass $course): array {
     global $DB;
     $records = $DB->get_records('backup_controllers', ['operation' => 'restore', 'itemid' => $course->id],
         'id DESC', 'id, status, userid, timemodified', 0, 1);
@@ -279,7 +279,7 @@ function ku_helper_restore_status(stdClass $course): array {
  * Питання, які випадкові слоти справді витягли в останню спробу тесту, з їхніми тегами:
  * саме це доводить баланс рівнів Блума, а не лише налаштування фільтрів.
  */
-function ku_helper_attempt_tags(stdClass $course, string $quizname): array {
+function om_helper_attempt_tags(stdClass $course, string $quizname): array {
     global $DB;
     $quiz = $DB->get_record('quiz', ['course' => $course->id, 'name' => $quizname], '*', MUST_EXIST);
     $attempts = $DB->get_records('quiz_attempts', ['quiz' => $quiz->id], 'id DESC', 'id, uniqueid, preview, userid', 0, 1);
@@ -307,23 +307,23 @@ function ku_helper_attempt_tags(stdClass $course, string $quizname): array {
 
 switch ($command) {
     case 'setup':
-        $out = ku_helper_setup($options['shortname'], $options['password']);
+        $out = om_helper_setup($options['shortname'], $options['password']);
         break;
     case 'inspect':
-        $out = ku_helper_inspect(ku_helper_course($options['shortname']));
+        $out = om_helper_inspect(om_helper_course($options['shortname']));
         break;
     case 'restore-status':
-        $out = ku_helper_restore_status(ku_helper_course($options['shortname']));
+        $out = om_helper_restore_status(om_helper_course($options['shortname']));
         break;
     case 'close-quiz':
-        $course = ku_helper_course($options['shortname']);
+        $course = om_helper_course($options['shortname']);
         $quiz = $DB->get_record('quiz', ['course' => $course->id, 'name' => $options['quiz']], '*', MUST_EXIST);
         $DB->set_field('quiz', 'timeclose', time() - 60, ['id' => $quiz->id]);
         purge_caches(['muc' => true]);
         $out = ['quizid' => (int)$quiz->id, 'timeclose' => time() - 60];
         break;
     case 'attempt-tags':
-        $out = ku_helper_attempt_tags(ku_helper_course($options['shortname']), $options['quiz']);
+        $out = om_helper_attempt_tags(om_helper_course($options['shortname']), $options['quiz']);
         break;
     default:
         cli_error('Невідома команда. Доступні: setup | inspect | restore-status | close-quiz | attempt-tags');

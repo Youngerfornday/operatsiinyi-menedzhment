@@ -1,276 +1,173 @@
-# Джерела теми 1. Кожне — з адресою, яку відкрито на дату checkedAt (прямо або через результати пошуку;
-# сторінки видавців із захистом від автоматичних запитів позначено в note). Норми права — лише з docs/research/legal-baseline.md.
+# Джерела теми 1. Кожне — з адресою, відкритою на дату checkedAt.
+# Формули — лише з docs/research/formula-baseline.md (коди CAP-01, CAP-02, CAP-03), пункти стандартів —
+# з docs/research/standards-baseline.md (ISO-9000-02, ISO-9000-03, ISO-22400-01), факти кейсів — з docs/research/cases.md.
 topic: t01
 sources:
-  # Класика теорії
-  - id: berle-means-1932
+  # Основна література курсу
+  - id: starchenko-kalinko-kosach-2020
     type: book
-    title: The Modern Corporation and Private Property
-    authors: [Berle A. A., Means G. C.]
-    publisher: Macmillan
-    year: 1932
-    language: en
-    url: https://archive.org/details/moderncorporatio0000berl_i9j3
-    checkedAt: '2026-09-16'
-    note: 'Перше видання — Macmillan, 1932; у відкритому доступі Internet Archive — перевидання Transaction Publishers, 1991 (з видання Harcourt, Brace & World, 1967).'
-
-  - id: jensen-meckling-1976
-    type: article
-    title: 'Theory of the Firm: Managerial Behavior, Agency Costs and Ownership Structure'
-    authors: [Jensen M. C., Meckling W. H.]
-    publisher: 'Journal of Financial Economics, vol. 3, no. 4, pp. 305–360'
-    year: 1976
-    language: en
-    url: https://doi.org/10.1016/0304-405X(76)90026-X
-    checkedAt: '2026-09-16'
-    note: 'Джерело поняття агентських витрат: моніторинг, гарантування (bonding), залишкові втрати.'
-
-  - id: freeman-1984
-    type: book
-    title: 'Strategic Management: A Stakeholder Approach'
-    authors: [Freeman R. E.]
-    publisher: 'Pitman, 1984; перевидання Cambridge University Press, 2010'
-    year: 1984
-    language: en
-    url: https://doi.org/10.1017/CBO9781139192675
-    checkedAt: '2026-09-16'
-    note: 'Джерело поняття стейкхолдера як групи, що впливає на цілі організації або зазнає її впливу.'
-
-  - id: shleifer-vishny-1997
-    type: article
-    title: A Survey of Corporate Governance
-    authors: [Shleifer A., Vishny R. W.]
-    publisher: 'The Journal of Finance, vol. 52, no. 2, pp. 737–783'
-    year: 1997
-    language: en
-    url: https://dash.harvard.edu/entities/publication/73120379-1d3b-6bd4-e053-0100007fdf3b
-    checkedAt: '2026-09-16'
-    note: 'Огляд механізмів, якими постачальники капіталу забезпечують повернення інвестицій; концентрована власність і захист інвесторів.'
-
-  - id: friedman-1970
-    type: article
-    title: The Social Responsibility of Business Is to Increase Its Profits
-    authors: [Friedman M.]
-    publisher: 'The New York Times Magazine, 13.09.1970; передрук у збірнику Corporate Ethics and Corporate Governance, Springer, 2007'
-    year: 1970
-    language: en
-    url: https://doi.org/10.1007/978-3-540-70818-6_14
-    checkedAt: '2026-09-16'
-    note: 'Класичне формулювання концепції пріоритету акціонерів; сторінка видавця відкривається з перевіркою браузера.'
-
-  - id: business-roundtable-2019
-    type: web
-    title: 'Business Roundtable Redefines the Purpose of a Corporation to Promote «An Economy That Serves All Americans»'
-    authors: [Business Roundtable]
-    year: 2019
-    language: en
-    url: https://www.businessroundtable.org/business-roundtable-redefines-the-purpose-of-a-corporation-to-promote-an-economy-that-serves-all-americans
-    checkedAt: '2026-09-16'
-    note: 'Заява 181 генерального директора від 19.08.2019 про зобов’язання перед клієнтами, працівниками, постачальниками, громадами й акціонерами.'
-
-  # Міжнародні стандарти й дані
-  - id: oecd-principles-2023
-    type: standard
-    title: G20/OECD Principles of Corporate Governance 2023
-    authors: [OECD]
-    publisher: OECD Publishing
-    year: 2023
-    language: en
-    url: https://www.oecd.org/en/publications/g20-oecd-principles-of-corporate-governance-2023_ed750b30-en.html
-    checkedAt: '2026-09-14'
-    note: 'Опубліковано 11.09.2023; шість розділів. Дата перевірки — за docs/research/legal-baseline.md, рядок MS-01.'
-
-  - id: oecd-factbook-2023
-    type: report
-    title: OECD Corporate Governance Factbook 2023
-    authors: [OECD]
-    publisher: OECD Publishing
-    year: 2023
-    language: en
-    url: https://www.oecd.org/content/dam/oecd/en/publications/reports/2023/09/oecd-corporate-governance-factbook-2023_6bae0258/6d912314-en.pdf
-    checkedAt: '2026-09-16'
-    note: 'Розділи 1.5–1.6 і табл. 1.1: концентрація власності лістингових компаній на кінець 2022 р.; дані про власність — по 44 з 49 юрисдикцій.'
-
-  - id: oecd-factbook-2025
-    type: report
-    title: OECD Corporate Governance Factbook 2025
-    authors: [OECD]
-    publisher: OECD Publishing
-    year: 2025
-    language: en
-    url: https://www.oecd.org/content/dam/oecd/en/publications/reports/2025/10/oecd-corporate-governance-factbook-2025_56febc0d/f4f43735-en.pdf
-    checkedAt: '2026-09-17'
-    note: 'Розд. 1.2.1 (с. 29–31): 46 086 лістингових компаній з 98 ринків на кінець 2024 р.; у 44 % компаній три найбільші власники — понад 50 % капіталу (Європа 53 %, США 17 %); стратегічні фізичні особи й родини — 7 % світової капіталізації; розд. 4.1.1 — горизонтальна агентська проблема в контрольованих компаніях.'
-
-  - id: oecd-ukraine-2025
-    type: report
-    title: Mapping Ukraine’s Financial Markets and Corporate Governance Framework for a Sustainable Recovery
-    authors: [OECD]
-    publisher: OECD Publishing
-    year: 2025
-    language: en
-    url: https://www.oecd.org/content/dam/oecd/en/publications/reports/2025/01/mapping-ukraine-s-financial-markets-and-corporate-governance-framework-for-a-sustainable-recovery_ba6fc369/866c5c44-en.pdf
-    checkedAt: '2026-09-17'
-    note: 'Розд. 3.2.1: понад 60 % компаній, акції яких торгувалися на біржах України, мають єдиного власника з пакетом понад 50 % (проти близько 32 % у юрисдикціях Factbook 2022 р.); дані про групи компаній в Україні відсутні (docs/research/data-sources.md, розд. 5.4).'
-
-  # Право України (за legal-baseline)
-  - id: law-2465-ix
-    type: law
-    title: Закон України «Про акціонерні товариства» від 27.07.2022 № 2465-IX
-    authors: [Верховна Рада України]
-    year: 2022
-    url: https://zakon.rada.gov.ua/laws/show/2465-20
-    checkedAt: '2026-09-15'
-    note: 'Чинний, редакція від 01.01.2026. Використано ст. 3 (визначення АТ), ст. 2 (пакети акцій), ст. 69, 72, 107 — коди AT-01, AT-46, AT-49, AT-64, AT-69 legal-baseline.'
-
-  - id: law-361-ix
-    type: law
-    title: Закон України «Про запобігання та протидію легалізації (відмиванню) доходів, одержаних злочинним шляхом, фінансуванню тероризму та фінансуванню розповсюдження зброї масового знищення» від 06.12.2019 № 361-IX
-    authors: [Верховна Рада України]
-    year: 2019
-    url: https://zakon.rada.gov.ua/laws/show/361-20
-    checkedAt: '2026-09-16'
-    note: 'Чинний, редакція від 26.06.2026. Ст. 1 ч. 1 п. 30 (поняття КБВ, поріг 25 %), ст. 5-1 (обов’язок знати КБВ, винятки) — коди UBO-01, UBO-02, UBO-08 legal-baseline.'
-
-  - id: law-755-iv
-    type: law
-    title: Закон України «Про державну реєстрацію юридичних осіб, фізичних осіб - підприємців та громадських формувань» від 15.05.2003 № 755-IV
-    authors: [Верховна Рада України]
-    year: 2003
-    url: https://zakon.rada.gov.ua/laws/show/755-15
-    checkedAt: '2026-09-16'
-    note: 'Чинний, редакція від 24.04.2026. Ст. 9 ч. 2 п. 9, ст. 11 ч. 1 — відомості ЄДР про КБВ відкриті (UBO-04).'
-
-  - id: nssmc-cg-code-2020
-    type: regulation
-    title: 'Кодекс корпоративного управління: ключові вимоги і рекомендації (рішення НКЦПФР від 12.03.2020 № 118)'
-    authors: [НКЦПФР]
+    title: Операційний менеджмент
+    authors: [Старченко Г. В., Калінько І. В., Косач І. А.]
+    publisher: Кондор
     year: 2020
-    url: https://www.nssmc.gov.ua/wp-content/uploads/2020/03/corporate-governance-code_final_ukr.pdf
-    checkedAt: '2026-09-16'
-    note: 'Рекомендаційний документ на основі Принципів ОЕСР/G20 редакції 2015 р.; законодавство — станом на 01.01.2020 (legal-baseline, розд. 6).'
+    language: uk
+    url: https://scholar.google.com/citations?user=9UX4QTYAAAAJ&hl=uk
+    checkedAt: '2026-09-22'
+    note: 'Основний український підручник курсу. Для теми 1 — джерело коефіцієнта використання потужності (CAP-01) і показника ефективності використання потужності (CAP-02) за розділом «Виробнича потужність».'
 
-  # Кейс ПриватБанку (docs/research/cases.md, розд. 1)
-  - id: nbu-privatbank-2016
-    type: web
-    title: Виступ Голови НБУ під час спільного брифінгу з Міністром фінансів щодо переходу ПриватБанку у державну власність
-    authors: [Національний банк України]
+  - id: hevko-2017
+    type: book
+    title: 'Операційний (виробничий) менеджмент: конспект лекцій'
+    authors: [Гевко І. Б.]
+    publisher: ТНТУ імені Івана Пулюя
+    year: 2017
+    language: uk
+    url: https://elartu.tntu.edu.ua/handle/lib/21300
+    checkedAt: '2026-09-22'
+    note: 'Джерело розділу «Продуктивність операційної системи»: загальна ефективність обладнання OEE (CAP-03), закон Літтла і час такту. Для теми 1 використано лише OEE.'
+
+  - id: omelianenko-osokina-2016
+    type: book
+    title: 'Операційний менеджмент: презентаційний курс'
+    authors: [Омельяненко Т. В., Осокіна А. В.]
+    publisher: КНЕУ
     year: 2016
-    url: https://bank.gov.ua/ua/news/all/vistup-golovi-natsionalnogo-banku-valeriyi-gontarevoyi-pid-chas-spilnogo-brifingu-z-ministrom-finansiv-oleksandrom-danilyukom-schodo-perehodu-privatbanku-u-derjavnu-vlasnist
-    checkedAt: '2026-09-16'
-    note: 'Брифінг 19.12.2016; дані про пов’язане кредитування і нестачу капіталу — позиція НБУ.'
+    language: uk
+    url: https://kneu.edu.ua/get_file/8945/.pdf
+    checkedAt: '2026-09-22'
+    note: 'Опорне українське видання для категорійного апарату теми: операція, операційна функція, операційна система, склад входів і виходів.'
 
-  - id: minfin-privatbank-2025
-    type: web
-    title: Ministry of Finance welcomes the judgment of the High Court in London in PrivatBank’s case against its former owners
-    authors: [Кабінет Міністрів України, Міністерство фінансів України]
-    year: 2025
+  - id: kushniruk-2017
+    type: book
+    title: 'Операційний менеджмент: опорний конспект лекцій'
+    authors: [Кушнірук В. С.]
+    publisher: МНАУ
+    year: 2017
+    language: uk
+    url: https://dspace.mnau.edu.ua/jspui/handle/123456789/2078
+    checkedAt: '2026-09-22'
+    note: Українське видання з розгорнутим переліком функцій, принципів і методів операційного менеджменту та завдань операційного менеджера.
+
+  - id: heizer-render-munson-2016
+    type: book
+    title: 'Operations Management: Sustainability and Supply Chain Management'
+    authors: [Heizer J., Render B., Munson C.]
+    publisher: Pearson
+    year: 2016
     language: en
-    url: https://www.kmu.gov.ua/en/news/minfin-vitaie-rishennia-vysokoho-sudu-velykobrytanii-pro-zdobuttia-pryvatbankom-peremohy-u-sudovomu-protsesi-proty-ioho-kolyshnikh-vlasnykiv
-    checkedAt: '2026-09-16'
-    note: 'Повідомлення від 30.07.2025 про рішення Високого суду Англії та Уельсу [2025] EWHC 1987 (Ch).'
+    url: https://openlibrary.org/isbn/9780134163512
+    checkedAt: '2026-09-22'
+    note: Класичний західний підручник; джерело поділу рішень операційного менеджменту на структурні (проектні) та поточні й трактування продуктивності як відношення виходу до входу.
 
-  - id: essex-court-privatbank-2025
+  - id: stevenson-2020
+    type: book
+    title: Operations Management
+    authors: [Stevenson W. J.]
+    publisher: McGraw-Hill Education
+    year: 2020
+    language: en
+    url: https://openlibrary.org/isbn/9781260575712
+    checkedAt: '2026-09-22'
+    note: Джерело розрізнення часткової, багатофакторної та загальної продуктивності й хронології розвитку операційного менеджменту.
+
+  - id: jacobs-chase-2019
+    type: book
+    title: 'Operations and Supply Chain Management: The Core'
+    authors: [Jacobs F. R., Chase R. B.]
+    publisher: McGraw-Hill Education
+    year: 2019
+    language: en
+    url: https://openlibrary.org/isbn/9781260238884
+    checkedAt: '2026-09-22'
+    note: Джерело трактування операційної функції як однієї з трьох базових функцій організації поряд з маркетингом і фінансами.
+
+  - id: slack-brandon-jones-2021
+    type: book
+    title: Operations and Process Management
+    authors: [Slack N., Brandon-Jones A.]
+    publisher: Pearson Education
+    year: 2021
+    language: en
+    url: https://openlibrary.org/isbn/9781292350103
+    checkedAt: '2026-09-22'
+    note: Джерело моделі «вхід — перетворення — вихід» як універсального опису будь-якої операційної системи, зокрема сервісної.
+
+  # Стандарти
+  - id: iso-9000-2015
+    type: standard
+    title: 'ISO 9000:2015 Quality management systems — Fundamentals and vocabulary'
+    publisher: International Organization for Standardization
+    year: 2015
+    language: en
+    url: https://www.en-standard.eu/iso-9000-2015-quality-management-systems-fundamentals-and-vocabulary/
+    checkedAt: '2026-09-22'
+    note: 'Джерело процесного підходу (ISO-9000-03) і циклу PDCA (ISO-9000-02) у редакції, ідентично прийнятій в Україні як ДСТУ ISO 9000:2015.'
+
+  - id: iso-22400-1-2014
+    type: standard
+    title: 'ISO 22400-1:2014 Automation systems and integration — Key performance indicators (KPIs) for manufacturing operations management — Part 1: Overview, concepts and terminology'
+    publisher: International Organization for Standardization
+    year: 2014
+    language: en
+    url: https://www.en-standard.eu/iso-22400-1-2014-automation-systems-and-integration-key-performance-indicators-kpis-for-manufacturing-operations-management-part-1-overview-concepts-and-terminology/
+    checkedAt: '2026-09-22'
+    note: 'Загальна частина серії, яка вводить набір показників операційного управління виробництвом; визначення OEE узято з другої частини серії за кодом ISO-22400-01 бази стандартів. Окремі пункти першої частини в курсі не переказуються — вони не звірені за текстом стандарту.'
+
+  # Кейси
+  - id: ajax-second-plant-2020
     type: case
-    title: US$3bn awarded in PrivatBank litigation
-    authors: [Essex Court Chambers]
-    year: 2025
-    language: en
-    url: https://essexcourt.com/us3bn-awarded-in-privatbank-litigation/
-    checkedAt: '2026-09-16'
-    note: 'Рішення [2025] EWHC 2909 (Ch) від 10.11.2025 про стягнення понад 3 млрд дол. США.'
+    title: Ajax Systems відкрили другий завод у Києві
+    publisher: Ajax Systems
+    year: 2020
+    language: uk
+    url: https://ajax.systems/blog/second-plant-in-kyiv/
+    checkedAt: '2026-09-22'
+    note: 'Корпоративний блог: рішення про другий виробничий майданчик і пряме пояснення його бізнес-ціллю. Кількісні показники — заява приватної компанії без аудованої звітності.'
 
-  - id: blackstone-privatbank-2026
+  - id: ajax-preseries-2024
     type: case
-    title: JSC Commercial Bank Privatbank v Kolomoisky and Ors (Appeal)
-    authors: [Blackstone Chambers]
-    year: 2026
-    language: en
-    url: https://www.blackstonechambers.com/news/jsc-commercial-bank-privatbank-v-kolomoisky-and-ors-appeal/
-    checkedAt: '2026-09-16'
-    note: 'Рішення Апеляційного суду Англії та Уельсу [2026] EWCA Civ 658 від 22.05.2026.'
+    title: Запуск передсерійного виробництва в Києві
+    publisher: Ajax Systems
+    year: 2024
+    language: uk
+    url: https://ajax.systems/blog/opening-pre-series-production-kyiv/
+    checkedAt: '2026-09-22'
+    note: 'Корпоративний блог: передсерійна ділянка як окрема зона освоєння нового продукту. Заявлена потужність стосується одного майданчика, а не компанії загалом.'
 
-  - id: suspilne-privatbank-2025
-    type: web
-    title: Коломойський програв справу у Верховному суді про оскарження націоналізації ПриватБанку
-    authors: [Суспільне]
-    year: 2025
-    url: https://suspilne.media/958547-kolomojskij-prograv-spravu-u-verhovnomu-sudi-pro-oskarzenna-nacionalizacii-privatbanku/
-    checkedAt: '2026-09-16'
-    note: 'Постанова Касаційного адміністративного суду у складі Верховного Суду від 26.02.2025 про закриття провадження.'
-
-  - id: forbes-privatbank-2026
-    type: web
-    title: ПриватБанк переміг Коломойського та Боголюбова в апеляції суду Лондона у справі на $3 млрд
-    authors: [Forbes Ukraine]
-    year: 2026
-    url: https://forbes.ua/news/privatbank-peremig-kolomoyskogo-ta-bogolyubova-v-apelyatsii-sudu-londona-u-spravi-na-3-mlrd-22052026-39047
-    checkedAt: '2026-09-16'
-    note: 'Заява банку про остаточність рішення і початок стягнення активів — позиція сторони.'
-
-  - id: privatbank-fs-2017
-    type: report
-    title: ПАТ КБ «ПриватБанк». Окрема фінансова звітність за 2017 рік (порівняльні дані на 31.12.2016; аудитор EY)
-    authors: [ПриватБанк]
-    year: 2018
-    url: https://static.privatbank.ua/files/year_zvit_05_05.pdf
-    checkedAt: '2026-09-17'
-    note: 'Активи на 31.12.2016 — 205 183 млн грн; кошти клієнтів 181 133 млн грн, з них фізичних осіб 151 203 млн грн (84 % — розрахунок за звітністю, docs/research/cases.md, розд. 1).'
-
-  # Кейс Enron (docs/research/cases.md, розд. 7)
-  - id: crs-enron-chronology
-    type: report
-    title: 'Enron: A Select Chronology of Congressional, Corporate, and Government Activities (RL31364)'
-    authors: [Congressional Research Service]
-    year: 2002
-    language: en
-    url: https://www.everycrsreport.com/reports/RL31364.html
-    checkedAt: '2026-09-16'
-
-  - id: senate-enron-board-2002
-    type: report
-    title: 'The Role of the Board of Directors in Enron’s Collapse (S. Prt. 107-70)'
-    authors: [U.S. Senate, Permanent Subcommittee on Investigations]
-    year: 2002
-    language: en
-    url: https://www.govinfo.gov/content/pkg/CPRT-107SPRT80393/html/CPRT-107SPRT80393.htm
-    checkedAt: '2026-09-16'
-    note: 'Звіт від 08.07.2002 — висновки органу розслідування, не рішення суду.'
-
-  - id: doj-enron-verdicts-2006
+  - id: toyota-production-system
     type: case
-    title: Former Enron CEOs Kenneth Lay and Jeffrey Skilling Convicted (прес-реліз від 25.05.2006)
-    authors: [U.S. Department of Justice]
-    year: 2006
+    title: Toyota Production System
+    publisher: Toyota Motor Corporation
     language: en
-    url: https://www.justice.gov/archive/opa/pr/2006/May/06_crm_328.html
-    checkedAt: '2026-09-16'
+    url: https://global.toyota/en/company/vision-and-philosophy/production-system/index.html
+    checkedAt: '2026-09-22'
+    note: 'Офіційна сторінка компанії: якісний опис jidoka та just-in-time і роль Сакічі Тойоди, Кіічіро Тойоди й Тайіті Оно. Кількісних виробничих метрик сторінка не наводить.'
 
-  - id: enron-proxy-2001
-    type: report
-    title: Enron Corp. Proxy Statement (DEF 14A), подано 27.03.2001, дані на 15.02.2001
-    authors: [Enron Corp., U.S. SEC EDGAR]
-    year: 2001
-    language: en
-    url: https://www.sec.gov/Archives/edgar/data/1024401/000095012901001669/h84664ddef14a.txt
-    checkedAt: '2026-09-17'
-    note: 'Усі директори й посадові особи разом (30 осіб) — 3,44 % голосуючих акцій; єдиний власник понад 5 % — Janus Capital Corporation, 5,43 %. Сервер EDGAR віддає 403 на автоматизовані запити; перевірено дослідником 2026-09-17 (cases.md, розд. 7).'
+  - id: nakaz-1833-2025
+    type: regulation
+    title: Нормативи та нормативні строки пересилання поштових відправлень (наказ Міністерства розвитку громад та територій України від 22.12.2025 № 1833)
+    publisher: Міністерство розвитку громад та територій України
+    year: 2025
+    language: uk
+    url: https://zakon.rada.gov.ua/laws/show/z0019-26
+    checkedAt: '2026-09-22'
+    note: Чинний акт, який встановлює нормативні строки пересилання як державні соціальні стандарти; приклад операційної цілі, заданої ззовні. Попередній наказ від 28.11.2013 № 958 втратив чинність.
 
-  - id: gao-enron-401k-2002
-    type: report
-    title: 'Private Pensions: Key Issues to Consider Following the Enron Collapse (GAO-02-480T, 27.02.2002)'
-    authors: [U.S. Government Accountability Office]
-    year: 2002
-    language: en
-    url: https://www.gao.gov/assets/gao-02-480t.pdf
-    checkedAt: '2026-09-17'
-    note: '63 % активів плану 401(k) Enron на кінець 2000 р. — акції компанії; внесок роботодавця — лише акціями Enron. Сервер GAO віддає 403 на автоматизовані запити; перевірено дослідником 2026-09-17.'
+  - id: ukrposhta-about
+    type: web
+    title: Про Укрпошту
+    publisher: АТ «Укрпошта»
+    language: uk
+    url: https://www.ukrposhta.ua/ua/pro-ukrposhtu
+    checkedAt: '2026-09-22'
+    note: Офіційна сторінка оператора з описом мережі відділень і охоплення території; використано для масштабу операційної системи.
 
-  - id: crs-sox-2002
+  - id: mininfra-ukrposhta-2025
     type: report
-    title: 'Corporate Accountability: Sarbanes-Oxley Act of 2002 (RL31554)'
-    authors: [Congressional Research Service]
-    year: 2002
-    language: en
-    url: https://www.everycrsreport.com/reports/RL31554.html
-    checkedAt: '2026-09-16'
+    title: Як працювала Укрпошта у 2025 році
+    publisher: Міністерство розвитку громад та територій України
+    year: 2025
+    language: uk
+    url: https://mininfra.gov.ua/news/yak-pratsiuvala-ukrposhta-u-2025-rotsi-dlia-liudei-biznesu-ta-veteraniv
+    checkedAt: '2026-09-22'
+    note: Державне джерело річних обсягів послуг оператора. Показники потужності сортувальних ліній у цьому матеріалі походять від компанії й незалежно не аудійовані.

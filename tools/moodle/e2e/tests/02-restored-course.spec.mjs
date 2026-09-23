@@ -54,7 +54,7 @@ test.describe.serial('restored course KU-RESTORE', () => {
     await shot(page, 'book-1-chapter1');
 
     // Посилання між главами переписане імпортом на view.php?chapterid=...
-    await submitAndWait(page, page.locator('.book_content a', { hasText: 'моделі корпоративного управління' }));
+    await submitAndWait(page, page.locator('.book_content a', { hasText: 'моделі операційного менеджменту' }));
     const img2 = page.locator('img[data-spike="svg-img"]').first();
     await expect(img2).toBeVisible();
     const chapter2 = {

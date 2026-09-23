@@ -84,7 +84,7 @@ describe.skipIf(!hasChromium)('друк у Chromium', () => {
     options = {
       siteDir: site,
       basePath: BASE,
-      footerText: 'Корпоративне управління · НУ «Чернігівська політехніка»',
+      footerText: 'Операційний менеджмент · НУ «Чернігівська політехніка»',
       date: DATE,
       extraPages: new Map([['practical/p01/', page('Практична робота 1', '<h1>Рубрика оцінювання</h1><table><tr><th>Критерій</th><th>Бали</th></tr><tr><td>Матриця моделей</td><td>1</td></tr></table>')]]),
     };
@@ -118,7 +118,7 @@ describe.skipIf(!hasChromium)('друк у Chromium', () => {
     const text = execFileSync('pdftotext', ['-enc', 'UTF-8', jobs[0]?.outFile ?? '', '-'], { encoding: 'utf8' });
     expect(text).toContain('Відокремлення власності від контролю');
     expect(text).toContain('ґрунт для конфлікту інтересів');
-    expect(text).toContain('Корпоративне управління · НУ «Чернігівська політехніка»');
+    expect(text).toContain('Операційний менеджмент · НУ «Чернігівська політехніка»');
     expect(text).toMatch(/с\. 1 з 2/);
     const fonts = execFileSync('pdffonts', [jobs[0]?.outFile ?? ''], { encoding: 'utf8' });
     expect(fonts).toContain('OpenSans');

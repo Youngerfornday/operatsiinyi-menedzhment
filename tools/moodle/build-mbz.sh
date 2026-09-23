@@ -3,7 +3,7 @@
 #   npm run build -> Moodle XML питань і глосарію -> ZIP глав Книги -> пакети SCORM -> план курсу -> build-course.php
 #   в інстансі build -> admin/cli/backup.php -> dist-export/moodle/<пакет>.mbz + README-import.md.
 #
-# ./build-mbz.sh                       контрольні банки з ../korporatyvne-upravlinnia-control (якщо є)
+# ./build-mbz.sh                       контрольні банки з ../operatsiinyi-menedzhment-control (якщо є)
 # ./build-mbz.sh --control <каталог>   інший каталог контрольних банків
 # ./build-mbz.sh --no-control          публічний варіант: тести з тренувального банку (з попередженням)
 # ./build-mbz.sh --skip-site-build     не перезбирати сайт (dist уже актуальний)
@@ -15,7 +15,7 @@ REPO_ROOT="$(cd "$MOODLE_DIR/../.." && pwd)"
 BUILD_DIR="$MOODLE_DIR/out/build"
 CONTAINER_DIR=/tmp/ku
 EXPORT_DIR="$REPO_ROOT/dist-export/moodle"
-DEFAULT_CONTROL="$REPO_ROOT/../korporatyvne-upravlinnia-control/banks/control"
+DEFAULT_CONTROL="$REPO_ROOT/../operatsiinyi-menedzhment-control/banks/control"
 
 control_dir=""
 use_control=auto
@@ -93,7 +93,7 @@ moodle_php build "$CONTAINER_DIR/build-course.php" \
 
 shortname="$(node -e 'process.stdout.write(JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")).course.shortname)' "$BUILD_DIR/plan.json")"
 kind="$(node -e 'process.stdout.write(JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")).bank.quizKind)' "$BUILD_DIR/plan.json")"
-package="korporatyvne-upravlinnia-${kind}-$(date +%Y-%m-%d).mbz"
+package="operatsiinyi-menedzhment-${kind}-$(date +%Y-%m-%d).mbz"
 
 stamp "8. Резервна копія без даних користувачів"
 "$MOODLE_DIR/backup.sh" "$shortname" 0 "$package" | tee "$MOODLE_DIR/out/backup.log"

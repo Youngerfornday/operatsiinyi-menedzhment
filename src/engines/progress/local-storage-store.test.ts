@@ -14,8 +14,8 @@ import { createEmptyProgress } from './state';
 const now = () => FIXED_NOW;
 
 describe('localStorage progress keys', () => {
-  it('uses the ku:v1: prefix for every key', () => {
-    expect(PROGRESS_STORAGE_PREFIX).toBe('ku:v1:');
+  it('uses the om:v1: prefix for every key', () => {
+    expect(PROGRESS_STORAGE_PREFIX).toBe('om:v1:');
     expect(PROGRESS_STORAGE_KEY.startsWith(PROGRESS_STORAGE_PREFIX)).toBe(true);
     expect(PROGRESS_BACKUP_KEY.startsWith(PROGRESS_STORAGE_PREFIX)).toBe(true);
   });

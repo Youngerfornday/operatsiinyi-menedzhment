@@ -36,7 +36,7 @@ describe('buildCatalog без маніфесту', () => {
     expect(lectures).toHaveLength(course.topics.length);
     const first = byId(catalog.materials, 'lecture-t01');
     expect(first).toMatchObject({ status: 'published', title: `Лекція 1. ${course.topics[0]?.title}`, updatedLabel: '15.09.2026', moduleNumber: 1 });
-    expect(first.outcomes).toEqual(['ПРН3', 'ПРН12', 'ПРН15']);
+    expect(first.outcomes).toEqual(['ПРН3']);
     expect(first.href).toBe(`/base/temy/${course.topics[0]?.slug}/`);
     expect(byId(catalog.materials, 'lecture-t02').status).toBe('pending');
   });

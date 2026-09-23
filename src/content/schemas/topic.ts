@@ -2,9 +2,9 @@ import { z } from 'zod';
 import {
   IsoDateSchema,
   KebabIdSchema,
-  LawRefSchema,
   LearningOutcomeIdSchema,
   NonEmptyTextSchema,
+  RefSchema,
   TopicIdSchema,
   uniqueArray,
 } from './primitives';
@@ -21,7 +21,7 @@ export const TopicFrontmatterSchema = z.object({
   learningOutcomes: uniqueArray(LearningOutcomeIdSchema, 'ПРН теми').default([]),
   keyTerms: uniqueArray(KebabIdSchema, 'Ключові терміни').default([]),
   readingMinutes: z.int().positive().optional(),
-  lawRef: z.array(LawRefSchema).default([]),
+  refs: z.array(RefSchema).default([]),
   status: z.enum(['draft', 'review', 'verified']).default('draft'),
   updatedAt: IsoDateSchema,
 });

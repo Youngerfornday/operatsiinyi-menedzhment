@@ -10,9 +10,14 @@ export const PACKAGE_DATA_ELEMENT_ID = 'ku-scorm-data';
 export const PACKAGE_ROOT_ELEMENT_ID = 'ku-scorm-root';
 export const PACKAGE_NOTICE_ELEMENT_ID = 'ku-scorm-notice';
 
-export type ScormPackageKind = 'matrix' | 'quorum' | 'cumulative' | 'dividends';
+/**
+ * Наразі єдиний вид пакета — тренажер-матриця. Новий тренажер-калькулятор (EOQ, MRP тощо) додає
+ * власний literal сюди й окремий тип `*PackageData extends PackageBase`, приєднаний до унії нижче
+ * (див. src/engines/README.md — контракт додавання тренажера).
+ */
+export type ScormPackageKind = 'matrix';
 
-export const SCORM_PACKAGE_KINDS: readonly ScormPackageKind[] = ['matrix', 'quorum', 'cumulative', 'dividends'];
+export const SCORM_PACKAGE_KINDS: readonly ScormPackageKind[] = ['matrix'];
 
 interface PackageBase {
   readonly activityId: string;
@@ -29,11 +34,7 @@ export interface MatrixPackageData extends PackageBase {
   readonly companyTasks: readonly CompanyTaskDefinition[];
 }
 
-export interface CalculatorPackageData extends PackageBase {
-  readonly kind: Exclude<ScormPackageKind, 'matrix'>;
-}
-
-export type ScormPackageData = MatrixPackageData | CalculatorPackageData;
+export type ScormPackageData = MatrixPackageData;
 
 /** JSON для вбудовування в `<script>`: `<` екранується, тож текст контенту не закриє тег. */
 export function packageDataScript(data: ScormPackageData): string {

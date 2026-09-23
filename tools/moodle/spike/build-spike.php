@@ -65,8 +65,8 @@ if ($options['no-id-floor']) {
 }
 
 $course = spike_step('course + 2 sections', fn() => spike_create_course($gen, $options['shortname'], [
-    'SPIKE Модуль 1. Основи корпоративного управління',
-    'SPIKE Модуль 2. Органи корпоративного управління',
+    'SPIKE Модуль 1. Основи операційного менеджменту',
+    'SPIKE Модуль 2. Органи операційного менеджменту',
 ]), $timings);
 $report['courseid'] = (int)$course->id;
 

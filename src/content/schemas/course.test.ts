@@ -7,41 +7,40 @@ describe('content/course.yaml', () => {
     expect(issuesOf(loadCourse())).toEqual([]);
   });
 
-  it('seeds 4 modules with 3 topics each and the agreed hours', () => {
+  it('seeds 2 modules with 4 topics each and the agreed hours', () => {
     // Act
     const parsed = CourseSchema.parse(loadCourse());
 
     // Assert
-    expect(parsed.modules.map((m) => m.id)).toEqual(['m1', 'm2', 'm3', 'm4']);
+    expect(parsed.modules.map((m) => m.id)).toEqual(['m1', 'm2']);
     expect(parsed.topics.map((t) => t.id)).toEqual(
-      Array.from({ length: 12 }, (_, i) => `t${String(i + 1).padStart(2, '0')}`),
+      Array.from({ length: 8 }, (_, i) => `t${String(i + 1).padStart(2, '0')}`),
     );
-    expect(parsed.hours).toEqual({ total: 120, lectures: 32, practicals: 16, selfStudy: 72 });
-    expect(parsed.grading.categories.map((c) => c.items * c.pointsPerItem)).toEqual([24, 24, 12, 40]);
+    expect(parsed.hours).toEqual({ total: 180, lectures: 32, practicals: 28, selfStudy: 120 });
+    expect(parsed.grading.categories.map((c) => c.items * c.pointsPerItem)).toEqual([10, 35, 15, 40]);
   });
 
-  it('declares the six programme learning outcomes of standard 073 with verbatim codes', () => {
+  it('declares the three programme learning outcomes used by the syllabus with verbatim codes', () => {
     const parsed = CourseSchema.parse(loadCourse());
-    expect(parsed.learningOutcomes.map((o) => o.code)).toEqual(['ПРН3', 'ПРН4', 'ПРН6', 'ПРН11', 'ПРН12', 'ПРН15']);
-    expect(parsed.competences.filter((c) => c.kind === 'special').map((c) => c.code)).toEqual(['СК1', 'СК6', 'СК12', 'СК13']);
+    expect(parsed.learningOutcomes.map((o) => o.code)).toEqual(['ПРН3', 'ПРН20', 'ПРН24']);
+    expect(parsed.competences.filter((c) => c.kind === 'special').map((c) => c.code)).toEqual(['СК16', 'СК18']);
   });
 
-  it('splits 32 lecture hours into 16 two-hour lectures with exactly four double-lecture topics', () => {
+  it('splits 32 lecture hours across 8 topics with hours 4/4/2/4/4/6/4/4', () => {
     const parsed = CourseSchema.parse(loadCourse());
     const lectureHours = parsed.topics.map((t) => t.hours.lectures);
-    expect(lectureHours.filter((h) => h === 4)).toHaveLength(4);
-    expect(lectureHours.filter((h) => h === 2)).toHaveLength(8);
+    expect(lectureHours).toEqual([4, 4, 2, 4, 4, 6, 4, 4]);
+    expect(lectureHours.reduce((sum, h) => sum + h, 0)).toBe(32);
   });
 
-  it('registers 10–15 glossary terms per topic, about 150 in total', () => {
+  it('registers 12–22 glossary terms per topic, 115 in total', () => {
     const parsed = CourseSchema.parse(loadCourse());
     for (const topic of parsed.topics) {
       const count = parsed.glossaryTerms.filter((term) => term.topic === topic.id).length;
-      expect(count, topic.id).toBeGreaterThanOrEqual(10);
-      expect(count, topic.id).toBeLessThanOrEqual(15);
+      expect(count, topic.id).toBeGreaterThanOrEqual(12);
+      expect(count, topic.id).toBeLessThanOrEqual(22);
     }
-    expect(parsed.glossaryTerms.length).toBeGreaterThanOrEqual(140);
-    expect(parsed.glossaryTerms.length).toBeLessThanOrEqual(165);
+    expect(parsed.glossaryTerms.length).toBe(115);
   });
 });
 
@@ -64,9 +63,9 @@ describe('CourseSchema: registry integrity', () => {
 
   it('rejects two registry terms with the same name under different ids', () => {
     const duplicate = mutated((c) => {
-      c.glossaryTerms.push({ id: 'agency-dilemma', topic: 't12', term: 'агентська  проблема' });
+      c.glossaryTerms.push({ id: 'productivity-dup', topic: 't02', term: 'продуктивність  ' });
     });
-    expect(issuesOf(duplicate)).toContainEqual(expect.stringMatching(/Агентська проблема/i));
+    expect(issuesOf(duplicate)).toContainEqual(expect.stringMatching(/Продуктивність/i));
   });
 
   it('rejects duplicate module and learning outcome ids and codes', () => {
@@ -124,12 +123,12 @@ describe('CourseSchema: topic results and programme outcome coverage', () => {
   it('rejects a programme outcome that no topic result covers', () => {
     const uncovered = mutated((c) => {
       for (const result of c.topics.flatMap((topic) => topic.results)) {
-        const others = result.prn.filter((id) => id !== 'prn11');
-        result.prn = others.length > 0 ? others : ['prn04'];
+        const others = result.prn.filter((id) => id !== 'prn24');
+        result.prn = others.length > 0 ? others : ['prn03'];
       }
-      byId(c.learningOutcomes, 'prn11').topics = [];
+      byId(c.learningOutcomes, 'prn24').topics = [];
     });
-    expect(issuesOf(uncovered)).toContainEqual(expect.stringMatching(/prn11.*тем/));
+    expect(issuesOf(uncovered)).toContainEqual(expect.stringMatching(/prn24.*тем/));
   });
 
   it('rejects a programme outcome that no practical covers', () => {
@@ -163,7 +162,7 @@ describe('CourseSchema: hours, grading and scale', () => {
 
   it('rejects topic lecture hours that do not sum to course lectures or are not whole two-hour lectures', () => {
     const wrongSum = mutated((c) => {
-      at(c.topics, 0).hours.lectures = 4;
+      at(c.topics, 0).hours.lectures = 6;
     });
     const oddHours = mutated((c) => {
       at(c.topics, 0).hours.lectures = 3;
@@ -173,7 +172,7 @@ describe('CourseSchema: hours, grading and scale', () => {
     expect(issuesOf(oddHours)).toContainEqual(expect.stringMatching(/t01.*2 год/));
   });
 
-  it('rejects self-study hours that do not sum to 72 or disagree with the topic tasks', () => {
+  it('rejects self-study hours that do not sum to 120 or disagree with the topic tasks', () => {
     const wrongTotal = mutated((c) => {
       const topic = at(c.topics, 0);
       topic.hours.selfStudy += 1;
@@ -182,15 +181,15 @@ describe('CourseSchema: hours, grading and scale', () => {
     const wrongTasks = mutated((c) => {
       at(at(c.topics, 0).selfStudyTasks, 0).hours += 1;
     });
-    expect(issuesOf(wrongTotal)).toContainEqual(expect.stringMatching(/СРС.*73.*72/));
+    expect(issuesOf(wrongTotal)).toContainEqual(expect.stringMatching(/СРС.*121.*120/));
     expect(issuesOf(wrongTasks)).toContainEqual(expect.stringMatching(/t01.*завдан/));
   });
 
   it('rejects practical hours that do not sum to course practicals', () => {
     const wrong = mutated((c) => {
-      at(c.practicals, 0).hours = 4;
+      at(c.practicals, 0).hours = 6;
     });
-    expect(issuesOf(wrong)).toContainEqual(expect.stringMatching(/практичн.*18.*16/));
+    expect(issuesOf(wrong)).toContainEqual(expect.stringMatching(/практичн.*30.*28/));
   });
 
   it('rejects grading that does not total 100 or breaks the current/final split', () => {

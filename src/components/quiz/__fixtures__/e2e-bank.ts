@@ -1,12 +1,12 @@
 /**
  * Фікстурний банк теми 1 лише для E2E: по одному питанню кожного типу. Не є навчальним контентом
- * і в content/ не потрапляє; підключається тільки збіркою з KU_E2E_BANK=1 (див. load-bank.ts).
+ * і в content/ не потрапляє; підключається тільки збіркою з OM_E2E_BANK=1 (див. load-bank.ts).
  */
 import { QuestionSchema, type Question } from '../../../content/schemas/questions';
 
 export const E2E_BANK_TOPIC = 't01';
 
-const LAW_REF = { act: 'Закон України «Про акціонерні товариства» № 2465-IX', article: 'ст. 3', checkedAt: '2026-09-01' };
+const REF = { source: 'ДСТУ ISO 9001:2015', locator: 'ст. 3', checkedAt: '2026-09-01' };
 
 const RAW_QUESTIONS = [
   {
@@ -17,7 +17,7 @@ const RAW_QUESTIONS = [
     single: true,
     stem: 'Що таке відокремлення власності від контролю?',
     generalFeedback: 'Власники не керують компанією безпосередньо — це роблять наймані менеджери.',
-    lawRef: [LAW_REF],
+    refs: [REF],
     answers: [
       { text: 'Власники передають управління найманим менеджерам', fraction: 100, feedback: 'Так, саме це породжує агентську проблему.' },
       { text: 'Компанія не має власників', fraction: 0, feedback: 'Ні, власники є — вони просто не керують щодня.' },

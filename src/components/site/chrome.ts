@@ -48,7 +48,7 @@ export function showToast(html: string): void {
 }
 
 function initToast(): void {
-  document.addEventListener('ku:toast', (event) => {
+  document.addEventListener('om:toast', (event) => {
     const detail = (event as CustomEvent<{ html?: string; text?: string }>).detail;
     if (detail?.html) showToast(detail.html);
     else if (detail?.text) {

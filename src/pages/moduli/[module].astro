@@ -103,11 +103,15 @@ const description = typo(`Модуль ${module.number} курсу «${course.ti
           <div class="meter" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax={module.topics.length} aria-label="Пройдено тем модуля" data-module-progress-meter><i style="width:0%"></i></div>
           <div class="faint">Стан зберігається у вашому браузері</div>
         </div>
-        <div class="side-block">
-          <h2>Модульний тест</h2>
-          <p class="small muted">{typo(`Після трьох тем — тест на ${moduleTest?.pointsPerItem ?? 6} балів: 15 випадкових питань з банку модуля, 30 хвилин.`)}</p>
-          <p class="soon" data-module-quiz={module.id}>незабаром</p>
-        </div>
+        {
+          moduleTest && (
+            <div class="side-block">
+              <h2>Модульний тест</h2>
+              <p class="small muted">{typo(`Після трьох тем — тест на ${moduleTest.pointsPerItem} балів: 15 випадкових питань з банку модуля, 30 хвилин.`)}</p>
+              <p class="soon" data-module-quiz={module.id}>незабаром</p>
+            </div>
+          )
+        }
       </aside>
     </div>
   </div>

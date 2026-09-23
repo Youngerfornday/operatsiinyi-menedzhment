@@ -30,13 +30,13 @@ const bankEntry = (filePath: string, data: Record<string, unknown>) => ({
 
 describe('checkTopics', () => {
   it('passes a lecture that matches the registry and its folder', () => {
-    const entries = [topicEntry('content/modules/m1/t01/lecture.mdx', { id: 't01', keyTerms: ['agency-problem'], learningOutcomes: ['prn03'] })];
+    const entries = [topicEntry('content/modules/m1/t01/lecture.mdx', { id: 't01', keyTerms: ['operation'], learningOutcomes: ['prn03'] })];
     expect(checkTopics(entries, registry)).toEqual([]);
   });
 
   it('reports a programme outcome that the topic does not declare in course.yaml', () => {
-    const entries = [topicEntry('content/modules/m1/t02/lecture.mdx', { id: 't02', learningOutcomes: ['prn03', 'prn15'] })];
-    expect(checkTopics(entries, registry).map((issue) => issue.message)).toEqual([expect.stringMatching(/prn15.*t02/)]);
+    const entries = [topicEntry('content/modules/m1/t02/lecture.mdx', { id: 't02', learningOutcomes: ['prn03', 'prn24'] })];
+    expect(checkTopics(entries, registry).map((issue) => issue.message)).toEqual([expect.stringMatching(/prn24.*t02/)]);
   });
 
   it('reports an unregistered topic, a wrong folder and unknown references', () => {
@@ -63,7 +63,7 @@ describe('checkTopics', () => {
 
 describe('checkGlossaries', () => {
   it('passes registered terms defined in their own topic', () => {
-    const entries = [glossaryEntry('content/modules/m1/t01/glossary.yaml', 't01', [{ id: 'agency-problem', term: 'Агентська проблема' }])];
+    const entries = [glossaryEntry('content/modules/m1/t01/glossary.yaml', 't01', [{ id: 'productivity', term: 'Продуктивність' }])];
     expect(checkGlossaries(entries, registry)).toEqual([]);
   });
 
@@ -85,16 +85,16 @@ describe('checkGlossaries', () => {
   });
 
   it('reports a term whose name differs from the registry in course.yaml', () => {
-    const entries = [glossaryEntry('content/modules/m1/t01/glossary.yaml', 't01', [{ id: 'agency-problem', term: 'Проблема агента' }])];
+    const entries = [glossaryEntry('content/modules/m1/t01/glossary.yaml', 't01', [{ id: 'productivity', term: 'Неправильна назва' }])];
     expect(checkGlossaries(entries, registry).map((issue) => issue.message)).toEqual([
-      expect.stringMatching(/agency-problem.*Проблема агента.*Агентська проблема/),
+      expect.stringMatching(/productivity.*Неправильна назва.*Продуктивність/),
     ]);
   });
 
   it('reports seeAlso references to terms that are not registered', () => {
     const entries = [
       glossaryEntry('content/modules/m1/t01/glossary.yaml', 't01', [
-        { id: 'agency-problem', term: 'Агентська проблема', seeAlso: ['corporation', 'ghost-term'] },
+        { id: 'productivity', term: 'Продуктивність', seeAlso: ['operation', 'ghost-term'] },
       ]),
     ];
     const messages = checkGlossaries(entries, registry).map((issue) => issue.message);
@@ -105,13 +105,13 @@ describe('checkGlossaries', () => {
     const entries = [
       glossaryEntry('content/modules/m1/t02/glossary.yaml', 't02', [
         { id: 'unregistered', term: 'Незареєстрований' },
-        { id: 'corporation', term: 'Корпорація' },
+        { id: 'operation', term: 'Операція' },
       ]),
       glossaryEntry('content/modules/m1/t03/glossary.yaml', 't01', []),
     ];
     const messages = checkGlossaries(entries, registry).map((issue) => issue.message).join('\n');
     expect(messages).toMatch(/unregistered/);
-    expect(messages).toMatch(/corporation.*t01/);
+    expect(messages).toMatch(/operation.*t01/);
     expect(messages).toMatch(/m1\/t03/);
   });
 });
@@ -129,7 +129,7 @@ describe('checkSources', () => {
 
 describe('checkBanks', () => {
   it('passes a training bank whose questions belong to its module', () => {
-    const entries = [bankEntry('content/banks/training/m2.yaml', { module: 'm2', questions: [multichoiceSingle(), ddwtos()] })];
+    const entries = [bankEntry('content/banks/training/m1.yaml', { module: 'm1', questions: [multichoiceSingle(), ddwtos()] })];
     expect(checkBanks(entries, registry)).toEqual([]);
   });
 
@@ -151,7 +151,7 @@ describe('checkBanks', () => {
       },
     ];
     const messages = checkBanks(entries, registry).map((issue) => issue.message).join('\n');
-    expect(messages).toMatch(/t04-q001.*m2/);
+    expect(messages).toMatch(/t04-q007.*m2/);
     expect(messages).toMatch(/m3\.yaml/);
     expect(messages).toMatch(/контрольн/i);
   });

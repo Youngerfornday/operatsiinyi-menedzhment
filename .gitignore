@@ -36,3 +36,6 @@ design/screens/
 
 # local Moodle credentials (generated from env/*.env.example)
 tools/moodle/env/*.env
+
+# materials supplied by the lecturer (not ours to publish)
+docs/source/

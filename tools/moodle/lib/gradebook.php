@@ -14,7 +14,7 @@ require_once($CFG->libdir . '/grade/grade_item.php');
  * @param array $categories [['name' => ..., 'weight' => ..., 'items' => [[modname, instanceid], ...]], ...]
  * @return array звіт по категоріях
  */
-function ku_setup_gradebook(stdClass $course, array $categories, ku_report $report): array {
+function om_setup_gradebook(stdClass $course, array $categories, om_report $report): array {
     $coursecategory = grade_category::fetch_course_category($course->id);
     $coursecategory->aggregation = GRADE_AGGREGATE_WEIGHTED_MEAN;
     $coursecategory->aggregateonlygraded = 0;
@@ -64,7 +64,7 @@ function ku_setup_gradebook(stdClass $course, array $categories, ku_report $repo
 }
 
 /** Підсумковий стан журналу після налаштування — для звіту й порівняння після відновлення. */
-function ku_gradebook_state(stdClass $course): array {
+function om_gradebook_state(stdClass $course): array {
     $coursecategory = grade_category::fetch_course_category($course->id);
     $state = [
         'courseaggregation' => (int)$coursecategory->aggregation,

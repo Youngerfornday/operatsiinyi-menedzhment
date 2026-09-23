@@ -10,7 +10,7 @@ const PRACTICAL_ID = /^p\d{2}$/;
 
 export function matrixActivityId(practicalId: string): string {
   if (!PRACTICAL_ID.test(practicalId)) throw new Error(`Некоректний ID практичної «${practicalId}»`);
-  return `${practicalId}-model-matrix`;
+  return `${practicalId}-matching-matrix`;
 }
 
 export function matrixCompletedEvent(attempt: MatrixAttempt, summary: Pick<MatrixSummary, 'share'>, practicalId: string): LearningEvent | null {

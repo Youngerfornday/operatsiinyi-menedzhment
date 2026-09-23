@@ -1,6 +1,6 @@
 /**
  * Питання тренувального тесту теми з публічних банків (`content/banks/training/*.yaml`).
- * Для E2E (`KU_E2E_BANK=1` під час збірки у e2e/site/astro.config.mjs) тема 1 отримує лише фікстурний банк
+ * Для E2E (`OM_E2E_BANK=1` під час збірки у e2e/site/astro.config.mjs) тема 1 отримує лише фікстурний банк
  * замість реального — сценарії e2e не залежать від того, чи вже написано content/banks/training/m1.yaml;
  * продакшн-збірка змінну не ставить.
  */
@@ -11,7 +11,7 @@ import { E2E_BANK_TOPIC, e2eBankQuestions } from './__fixtures__/e2e-bank';
 export const QUIZ_QUESTIONS_PER_TOPIC = 15;
 
 function isE2eBankEnabled(): boolean {
-  return typeof process !== 'undefined' && process.env['KU_E2E_BANK'] === '1';
+  return typeof process !== 'undefined' && process.env['OM_E2E_BANK'] === '1';
 }
 
 export async function loadTopicQuestions(topicId: string): Promise<readonly Question[]> {

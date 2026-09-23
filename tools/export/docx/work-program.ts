@@ -56,7 +56,7 @@ export function buildWorkProgram(course: Course, options: DocOptions): Document 
       title: `Робоча програма навчальної дисципліни «${course.title}»`,
       subject: `${course.program.educationalProgram}; ${course.educationLevel}`,
       description: `Робоча програма дисципліни «${course.title}», ${course.institutionShort}. Згенеровано з content/course.yaml.`,
-      keywords: 'робоча програма, корпоративне управління, бакалавр, менеджмент',
+      keywords: 'робоча програма, операційний менеджмент, бакалавр, менеджмент',
     },
     children,
     ctx.placedNotes(),

@@ -70,12 +70,18 @@ function checkPracticalSlots(course: CourseDraft, lectureWeeks: (topic: string) 
 
 function checkModuleTests(course: CourseDraft, lectureWeeks: (topic: string) => number[], report: Report): void {
   const tests = scheduled(course, 'module-test');
-  checkOnce(tests.map((t) => t.module), course.modules.map((m) => m.id), 'Модульний тест', report);
-  for (const test of tests) {
-    const weeks = course.topics.filter((t) => t.module === test.module).flatMap((t) => lectureWeeks(t.id));
-    const last = Math.max(...weeks);
-    if (Number.isFinite(last) && test.week < last) {
-      report(`Модульний тест ${test.module} (тиждень ${test.week}) запланований раніше за останню лекцію модуля (тиждень ${last})`, PATH);
+  if (course.grading.moduleTests === undefined) {
+    for (const test of tests) {
+      report(`Календар містить модульний тест ${test.module}, хоча курс не має grading.moduleTests`, PATH);
+    }
+  } else {
+    checkOnce(tests.map((t) => t.module), course.modules.map((m) => m.id), 'Модульний тест', report);
+    for (const test of tests) {
+      const weeks = course.topics.filter((t) => t.module === test.module).flatMap((t) => lectureWeeks(t.id));
+      const last = Math.max(...weeks);
+      if (Number.isFinite(last) && test.week < last) {
+        report(`Модульний тест ${test.module} (тиждень ${test.week}) запланований раніше за останню лекцію модуля (тиждень ${last})`, PATH);
+      }
     }
   }
 

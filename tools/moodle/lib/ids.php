@@ -7,10 +7,10 @@ defined('MOODLE_INTERNAL') || die();
  * Мінімальне значення всіх послідовностей id на сайті збирання.
  * Менше за 2^31, тож лишається в межах 32-бітного цілого; реальні сайти Moodle цього порогу не досягають.
  */
-const KU_ID_FLOOR = 900000000;
+const OM_ID_FLOOR = 900000000;
 
 /**
- * Піднімає всі послідовності таблиць Moodle (PostgreSQL) до KU_ID_FLOOR.
+ * Піднімає всі послідовності таблиць Moodle (PostgreSQL) до OM_ID_FLOOR.
  *
  * Навіщо: у Moodle 5.2.2 відновлення щонайменше в трьох місцях змішує СТАРИЙ id з копії з НОВИМ id
  * сайту-цілі (теги питань у mod_qbank, категорії банку в контексті тесту, фільтр тегу випадкового слота).
@@ -20,7 +20,7 @@ const KU_ID_FLOOR = 900000000;
  *
  * @return array<string, int> лише змінені послідовності
  */
-function ku_raise_id_sequences(int $floor = KU_ID_FLOOR): array {
+function om_raise_id_sequences(int $floor = OM_ID_FLOOR): array {
     global $DB, $CFG;
 
     if ($DB->get_dbfamily() !== 'postgres') {

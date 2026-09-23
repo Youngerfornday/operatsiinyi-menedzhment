@@ -1,5 +1,5 @@
 <?php
-// Збирає курс «Корпоративне управління» в інстансі build за планом, який приготував tools/moodle/build-plan.mjs.
+// Збирає курс «Операційний менеджмент» в інстансі build за планом, який приготував tools/moodle/build-plan.mjs.
 // Запуск у контейнері (build-mbz.sh копіює каталог у /tmp/ku):
 //   php /tmp/ku/build-course.php --plan=/work/out/build/plan.json --artifacts=/work/out/build --out=/work/out/build-course.json
 //
@@ -41,7 +41,7 @@ if (!is_array($plan) || !isset($plan['course'], $plan['sections'])) {
 }
 $artifacts = rtrim($options['artifacts'] !== '' ? $options['artifacts'] : dirname($planfile), '/');
 
-$report = new ku_report();
+$report = new om_report();
 $report->capture_php_warnings();
 
 \core_php_time_limit::raise();
@@ -53,22 +53,22 @@ $gen = \core\test\phpunit\phpunit_util::get_data_generator();
 $result = [
     'moodle' => $CFG->release,
     'version' => $CFG->version,
-    'plan' => ['generatedAt' => ku_value($plan, 'generatedAt'), 'site' => ku_value($plan, 'site'),
-        'quizKind' => $plan['bank']['quizKind'] ?? null, 'startDate' => ku_value($plan, 'startDate')],
-    'planWarnings' => ku_value($plan, 'warnings', []),
+    'plan' => ['generatedAt' => om_value($plan, 'generatedAt'), 'site' => om_value($plan, 'site'),
+        'quizKind' => $plan['bank']['quizKind'] ?? null, 'startDate' => om_value($plan, 'startDate')],
+    'planWarnings' => om_value($plan, 'warnings', []),
 ];
 
 if ($options['no-id-floor']) {
     $result['idfloor'] = null;
 } else {
-    $raised = $report->step('підняття id-послідовностей', fn() => ku_raise_id_sequences());
-    $result['idfloor'] = ['floor' => KU_ID_FLOOR, 'raised' => count($raised)];
+    $raised = $report->step('підняття id-послідовностей', fn() => om_raise_id_sequences());
+    $result['idfloor'] = ['floor' => OM_ID_FLOOR, 'raised' => count($raised)];
 }
 
 $course = $report->step('курс і розділи', function () use ($gen, $plan) {
-    $course = ku_create_course($gen, $plan['course']);
+    $course = om_create_course($gen, $plan['course']);
     foreach ($plan['sections'] as $section) {
-        ku_update_section($course, (int)$section['num'], $section['name'], ku_value($section, 'summary', ''));
+        om_update_section($course, (int)$section['num'], $section['name'], om_value($section, 'summary', ''));
     }
     return $course;
 });
@@ -76,18 +76,18 @@ $result['courseid'] = (int)$course->id;
 $result['shortname'] = $plan['course']['shortname'];
 
 // Банк питань наповнюємо до тестів: випадкові слоти шукають категорії й теги саме в ньому.
-$bank = $report->step('банк питань (mod_qbank)', fn() => ku_create_question_bank($course, $plan['bank']['name']));
+$bank = $report->step('банк питань (mod_qbank)', fn() => om_create_question_bank($course, $plan['bank']['name']));
 $result['bank'] = ['cmid' => $bank->cmid, 'imports' => []];
-foreach (ku_value($plan['bank'], 'files', []) as $file) {
+foreach (om_value($plan['bank'], 'files', []) as $file) {
     $path = "{$artifacts}/{$file['file']}";
     if (!is_readable($path)) {
         $report->warn("Файл питань {$file['file']} не знайдено — банк лишиться без цих питань");
         continue;
     }
     $result['bank']['imports'][] = $report->step("імпорт питань {$file['file']}",
-        fn() => ku_import_questions($course, $bank, $path, $report));
+        fn() => om_import_questions($course, $bank, $path, $report));
 }
-$result['bank']['questions'] = ku_bank_questions($bank);
+$result['bank']['questions'] = om_bank_questions($bank);
 $result['bank']['total'] = count($result['bank']['questions']);
 
 // Створення елементів курсу. Кожен елемент має ref: за ним журнал оцінок знаходить свій елемент оцінювання.
@@ -106,20 +106,20 @@ foreach ($plan['sections'] as $section) {
                     $report->warn("Книга «{$activity['name']}»: немає архіву глав {$activity['zip']} — пропущено");
                     break;
                 }
-                $created[$ref] = $report->step($label, fn() => ku_create_book($gen, $course, $number, $activity, $zip, $report));
+                $created[$ref] = $report->step($label, fn() => om_create_book($gen, $course, $number, $activity, $zip, $report));
                 $modules[$ref] = ['book', $created[$ref]->id];
                 break;
             case 'page':
-                $created[$ref] = $report->step($label, fn() => ku_create_page($gen, $course, $number, $activity));
+                $created[$ref] = $report->step($label, fn() => om_create_page($gen, $course, $number, $activity));
                 break;
             case 'url':
-                $created[$ref] = $report->step($label, fn() => ku_create_url($gen, $course, $number, $activity));
+                $created[$ref] = $report->step($label, fn() => om_create_url($gen, $course, $number, $activity));
                 break;
             case 'glossary':
-                $created[$ref] = $report->step($label, fn() => ku_create_glossary($gen, $course, $number, $activity));
+                $created[$ref] = $report->step($label, fn() => om_create_glossary($gen, $course, $number, $activity));
                 break;
             case 'assign':
-                $created[$ref] = $report->step($label, fn() => ku_create_assign($gen, $course, $number, $activity, $report));
+                $created[$ref] = $report->step($label, fn() => om_create_assign($gen, $course, $number, $activity, $report));
                 $modules[$ref] = ['assign', $created[$ref]->id];
                 break;
             case 'scorm':
@@ -128,14 +128,14 @@ foreach ($plan['sections'] as $section) {
                     $report->warn("SCORM «{$activity['name']}»: немає пакета {$activity['zip']} — пропущено");
                     break;
                 }
-                $created[$ref] = $report->step($label, fn() => ku_create_scorm($gen, $course, $number, $activity, $zip, $report));
+                $created[$ref] = $report->step($label, fn() => om_create_scorm($gen, $course, $number, $activity, $zip, $report));
                 $modules[$ref] = ['scorm', $created[$ref]->id];
                 break;
             case 'quiz':
                 $created[$ref] = $report->step($label, function () use ($gen, $course, $number, $activity, $bank, $report) {
-                    $quiz = ku_create_quiz($gen, $course, $number, $activity);
-                    ku_add_random_slots($quiz, $bank, ku_value($activity, 'slots', []), $activity['name'], $report);
-                    return (object)ku_quiz_state($quiz, (int)$quiz->cmid);
+                    $quiz = om_create_quiz($gen, $course, $number, $activity);
+                    om_add_random_slots($quiz, $bank, om_value($activity, 'slots', []), $activity['name'], $report);
+                    return (object)om_quiz_state($quiz, (int)$quiz->cmid);
                 });
                 $modules[$ref] = ['quiz', $created[$ref]->id];
                 break;
@@ -147,7 +147,7 @@ foreach ($plan['sections'] as $section) {
 
 // Журнал оцінок: категорії з вагами; елементи знаходяться за ref створених модулів.
 $categories = [];
-foreach (ku_value($plan['gradebook'], 'categories', []) as $category) {
+foreach (om_value($plan['gradebook'], 'categories', []) as $category) {
     $items = [];
     foreach ($category['refs'] as $ref) {
         if (!isset($modules[$ref])) {
@@ -162,8 +162,8 @@ foreach (ku_value($plan['gradebook'], 'categories', []) as $category) {
     }
     $categories[] = ['name' => $category['name'], 'weight' => $category['weight'], 'items' => $items];
 }
-$report->step('журнал оцінок', fn() => ku_setup_gradebook($course, $categories, $report));
-$result['gradebook'] = ku_gradebook_state($course);
+$report->step('журнал оцінок', fn() => om_setup_gradebook($course, $categories, $report));
+$result['gradebook'] = om_gradebook_state($course);
 
 rebuild_course_cache($course->id, true);
 
@@ -178,7 +178,7 @@ $result['modules'] = array_values(array_map(
     $modinfo->get_cms()
 ));
 $result['activities'] = array_map(fn($item) => (array)$item, $created);
-$result['glossaryImport'] = ku_value($plan, 'glossaryImport');
+$result['glossaryImport'] = om_value($plan, 'glossaryImport');
 $result['warnings'] = $report->warnings;
 $result['phpwarnings'] = $report->phpwarnings;
 $result['timings'] = $report->timings;

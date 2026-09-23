@@ -3,7 +3,7 @@ import { DownloadManifestSchema } from './downloads';
 
 const lecturePdf = {
   id: 't01-lecture-pdf',
-  title: 'Тема 1. Корпорація і корпоративне управління',
+  title: 'Тема 1. Корпорація і операційний менеджмент',
   kind: 'lecture',
   format: 'pdf',
   module: 'm1',
@@ -22,7 +22,7 @@ describe('DownloadManifestSchema', () => {
       kind: 'backup',
       format: 'mbz',
       audience: 'teacher',
-      url: 'https://github.com/Youngerfornday/korporatyvne-upravlinnia/releases/latest/download/korporatyvne-upravlinnia.mbz',
+      url: 'https://github.com/Youngerfornday/operatsiinyi-menedzhment/releases/latest/download/operatsiinyi-menedzhment.mbz',
       bytes: 2_000_000,
     };
     const parsed = DownloadManifestSchema.parse(manifest([lecturePdf, backup]));

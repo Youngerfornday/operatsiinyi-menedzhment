@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { joinBase } from './url';
 
-const BASE = '/korporatyvne-upravlinnia/';
+const BASE = '/operatsiinyi-menedzhment/';
 
 describe('joinBase', () => {
   it('returns the base itself for an empty path or a lone slash', () => {
@@ -11,22 +11,22 @@ describe('joinBase', () => {
   });
 
   it('adds the base and a trailing slash to page paths', () => {
-    expect(joinBase(BASE, 'moduli/m1')).toBe('/korporatyvne-upravlinnia/moduli/m1/');
-    expect(joinBase(BASE, '/moduli/m1/')).toBe('/korporatyvne-upravlinnia/moduli/m1/');
+    expect(joinBase(BASE, 'moduli/m1')).toBe('/operatsiinyi-menedzhment/moduli/m1/');
+    expect(joinBase(BASE, '/moduli/m1/')).toBe('/operatsiinyi-menedzhment/moduli/m1/');
   });
 
   it('keeps file paths without a trailing slash', () => {
-    expect(joinBase(BASE, 'sitemap-index.xml')).toBe('/korporatyvne-upravlinnia/sitemap-index.xml');
-    expect(joinBase(BASE, '/files/m1/tema-1.pdf')).toBe('/korporatyvne-upravlinnia/files/m1/tema-1.pdf');
+    expect(joinBase(BASE, 'sitemap-index.xml')).toBe('/operatsiinyi-menedzhment/sitemap-index.xml');
+    expect(joinBase(BASE, '/files/m1/tema-1.pdf')).toBe('/operatsiinyi-menedzhment/files/m1/tema-1.pdf');
   });
 
   it('puts the trailing slash before the query and hash', () => {
-    expect(joinBase(BASE, 'poshuk?q=kvorum')).toBe('/korporatyvne-upravlinnia/poshuk/?q=kvorum');
-    expect(joinBase(BASE, 'moduli/m1#t02')).toBe('/korporatyvne-upravlinnia/moduli/m1/#t02');
+    expect(joinBase(BASE, 'poshuk?q=kvorum')).toBe('/operatsiinyi-menedzhment/poshuk/?q=kvorum');
+    expect(joinBase(BASE, 'moduli/m1#t02')).toBe('/operatsiinyi-menedzhment/moduli/m1/#t02');
   });
 
   it('normalises a base written without slashes and the root base', () => {
-    expect(joinBase('korporatyvne-upravlinnia', 'kabinet')).toBe('/korporatyvne-upravlinnia/kabinet/');
+    expect(joinBase('operatsiinyi-menedzhment', 'kabinet')).toBe('/operatsiinyi-menedzhment/kabinet/');
     expect(joinBase('/', 'kabinet')).toBe('/kabinet/');
     expect(joinBase('', '')).toBe('/');
   });

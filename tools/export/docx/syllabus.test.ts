@@ -12,7 +12,7 @@ import { activityLabel } from './policies.ts';
 /** Силабус, відтворюваність DOCX і примітки для погодження. */
 
 const DATE = new Date('2026-09-17T00:00:00.000Z');
-const SITE_URL = 'https://youngerfornday.github.io/korporatyvne-upravlinnia/';
+const SITE_URL = 'https://youngerfornday.github.io/operatsiinyi-menedzhment/';
 
 let course: Course;
 let docx: Buffer;
@@ -42,7 +42,7 @@ describe('силабус', () => {
     const text = view.paragraphs.map((p) => p.text).join('\n');
     for (const topic of course.topics) expect(text).toContain(topic.results[0]?.statement.slice(0, 30));
     const hours = tableWithHeaders(view, ['Назва модуля і теми', 'СРС']);
-    expect(hours.find((row) => row[0] === 'Усього годин')?.slice(1).map(numberUk)).toEqual([120, 32, 16, 72]);
+    expect(hours.find((row) => row[0] === 'Усього годин')?.slice(1).map(numberUk)).toEqual([180, 32, 28, 120]);
     const outcomes = tableWithHeaders(view, ['Код', 'Програмний результат навчання']);
     expect(outcomes).toHaveLength(course.learningOutcomes.length + 1);
   });
@@ -104,19 +104,24 @@ describe('примітки й допоміжні записи', () => {
   });
 
   test('бібліографічний запис: автори, назва, видання, місце, видавець, рік, ISBN і DOI', () => {
-    const book = course.literature.main.find((candidate) => candidate.doi !== undefined && candidate.place !== undefined);
-    expect(book).toBeDefined();
-    const parts = bookReference(book!);
+    // Жодне джерело курсу «Операційний менеджмент» не має DOI (перевірка велася через ISBN і сторінки
+    // видавця/каталогу) — беремо реальну позицію з ISBN і місцем видання та додаємо синтетичний DOI,
+    // щоб перевірити саме форматування bookReference, а не конкретний факт course.yaml.
+    const base = course.literature.main.find((candidate) => candidate.place !== undefined && candidate.isbn !== undefined);
+    expect(base).toBeDefined();
+    const book = { ...base!, doi: 'https://doi.org/10.1000/example' };
+    const parts = bookReference(book);
     const text = parts.map((part) => (typeof part === 'string' ? part : part.text)).join('');
-    expect(text).toContain(`${book!.place} : ${book!.publisher}, ${book!.year}. ISBN ${book!.isbn}.`);
-    expect(parts.at(-1)).toEqual({ text: book!.doi, link: book!.doi });
+    expect(text).toContain(`${book.place} : ${book.publisher}, ${book.year}. ISBN ${book.isbn}.`);
+    expect(parts.at(-1)).toEqual({ text: book.doi, link: book.doi });
   });
 
   test('підписи календаря для кожного виду робіт', () => {
     expect(activityLabel(course, { type: 'lecture', topic: 't01' })).toBe(`Лекція (2 год): Тема 1. ${course.topics[0]?.title}`);
-    expect(activityLabel(course, { type: 'practical', practical: 'p01' })).toContain('Практична робота 1 (2 год)');
+    expect(activityLabel(course, { type: 'practical', practical: 'p01' })).toContain('Практична робота 1 (4 год)');
     expect(activityLabel(course, { type: 'module-test', module: 'm2' })).toBe('Модульний тест: модуль 2');
-    expect(activityLabel(course, { type: 'case-project', stage: 'cp-select' })).toBe('Кейс-проєкт: Вибір компанії');
+    const firstStage = course.grading.caseProject.stages[0]!;
+    expect(activityLabel(course, { type: 'case-project', stage: firstStage.id })).toBe(`${course.grading.caseProject.title}: ${firstStage.title}`);
     expect(activityLabel(course, { type: 'final-test' })).toBe('Підсумковий тест');
   });
 });

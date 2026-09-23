@@ -20,7 +20,7 @@ export const DEFAULT_SELF_CHECK_NOTE =
   'Питання самоперевірки з поясненнями до кожного варіанта — на сайті курсу: пройдіть тренувальний тест теми.';
 
 export interface BookOptions {
-  /** Корінь сайту разом із base, напр. https://example.github.io/korporatyvne-upravlinnia/ */
+  /** Корінь сайту разом із base, напр. https://example.github.io/operatsiinyi-menedzhment/ */
   readonly siteUrl: string;
   readonly imageDir?: string;
   readonly preambleTitle?: string;

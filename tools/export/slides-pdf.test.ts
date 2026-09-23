@@ -110,8 +110,10 @@ describe('runSlidesPdfCli', () => {
 
     const text = execFileSync('pdftotext', ['-enc', 'UTF-8', file, '-'], { encoding: 'utf8' });
     expect(text.split('\f').filter((page) => page.trim() !== '')).toHaveLength(deck.slides.length);
-    expect(text).toContain('Корпорація і корпоративне управління');
-    expect(text).toContain('Агентські витрати');
-    expect(text).not.toContain('Нотатки доповідача');
+    // Довгі заголовки друк переносить по рядках, тому звіряємо текст без урахування переносів.
+    const flat = text.replace(/\s+/gu, ' ');
+    expect(flat).toContain('Операційний менеджмент як різновид функціонального менеджменту');
+    expect(flat).toContain('Сутність і місце операційного менеджменту в системі менеджменту');
+    expect(flat).not.toContain('Нотатки доповідача');
   }, PRINT_TIMEOUT_MS);
 });

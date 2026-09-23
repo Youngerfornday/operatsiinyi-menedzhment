@@ -40,7 +40,7 @@ export interface PrintJob {
 
 export interface PrintOptions {
   readonly siteDir: string;
-  /** base сайту з обома скісними рисками: `/korporatyvne-upravlinnia/`. */
+  /** base сайту з обома скісними рисками: `/operatsiinyi-menedzhment/`. */
   readonly basePath: string;
   /** Назва курсу й закладу для нижнього колонтитула. */
   readonly footerText: string;

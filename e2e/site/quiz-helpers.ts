@@ -4,7 +4,7 @@ import { expect, type Locator, type Page } from '@playwright/test';
  * Правильні відповіді на фікстурний банк теми 1 (src/components/quiz/__fixtures__/e2e-bank.ts).
  * Порядок питань і варіантів у спробі випадковий, тому питання впізнається за стовбуром.
  */
-export const QUIZ_PATH = 'testy/korporatsiia-i-korporatyvne-upravlinnia/';
+export const QUIZ_PATH = 'testy/operatsiinyi-menedzhment-yak-funktsiia/';
 export const QUIZ_QUESTIONS = 8;
 
 export function quiz(page: Page): Locator {

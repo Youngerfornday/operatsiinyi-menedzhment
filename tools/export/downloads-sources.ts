@@ -15,12 +15,14 @@ export interface DownloadSources {
   readonly course: Course;
   /** Опубліковані практичні: файл тренажера є і пройшов валідацію. */
   readonly practicals: readonly PracticalFile[];
-  readonly backup: CourseBackup;
+  readonly backup: CourseBackup | undefined;
   /** Дата збірки — найпізніша дата оновлення контенту: однаковий контент дає однакові файли. */
   readonly date: Date;
 }
 
 const CourseBackupSchema = z.object({
+  /** false, доки для цього курсу не зібрано .mbz: у маніфест не можна класти посилання, яке віддає 404. */
+  published: z.boolean(),
   tag: z.string().min(1),
   asset: z.string().regex(/\.mbz$/, 'Назва файлу резервної копії має закінчуватися на .mbz'),
   url: HttpUrlSchema,
@@ -86,7 +88,8 @@ export function latestDate(dates: readonly string[]): Date {
 export async function loadDownloadSources(root: string): Promise<DownloadSources> {
   const course = await parseDataFile(join(root, 'content/course.yaml'), CourseSchema);
   const practicals = await loadPracticals(join(root, 'content/practicals'), course);
-  const backup = await parseDataFile(join(root, 'tools/export/course-backup.json'), CourseBackupSchema);
-  const dates = [...(await lectureDates(join(root, 'content/modules'))), ...practicals.map((file) => file.updatedAt), backup.builtAt];
+  const release = await parseDataFile(join(root, 'tools/export/course-backup.json'), CourseBackupSchema);
+  const backup = release.published ? release : undefined;
+  const dates = [...(await lectureDates(join(root, 'content/modules'))), ...practicals.map((file) => file.updatedAt), ...(backup ? [backup.builtAt] : [])];
   return { course, practicals, backup, date: latestDate(dates) };
 }

@@ -7,8 +7,8 @@ import { LIVE_URL } from '../../playwright.live.config';
  */
 
 const BASE_PATH = new URL(LIVE_URL).pathname;
-const TOPIC_1 = 'temy/korporatsiia-i-korporatyvne-upravlinnia/';
-const QUIZ_1 = 'testy/korporatsiia-i-korporatyvne-upravlinnia/';
+const TOPIC_1 = 'temy/operatsiinyi-menedzhment-yak-funktsiia/';
+const QUIZ_1 = 'testy/operatsiinyi-menedzhment-yak-funktsiia/';
 const SLIDES_1 = `${TOPIC_1}prezentatsiia/`;
 
 const live = (path: string): string => new URL(path, LIVE_URL).href;
@@ -26,13 +26,13 @@ async function expectNoHorizontalScroll(page: Page): Promise<void> {
   expect(overflow).toBeLessThanOrEqual(1);
 }
 
-test('головна: українською, назва курсу, 12 тем порядку денного і тренажери ведуть на сторінки', async ({ page }) => {
+test('головна: українською, назва курсу, 8 тем маршрутної карти і тренажери ведуть на сторінки', async ({ page }) => {
   const response = await page.goto(LIVE_URL);
 
   expect(response?.status()).toBe(200);
   await expect(page.locator('html')).toHaveAttribute('lang', 'uk');
-  await expect(page.getByRole('heading', { level: 1, name: 'Корпоративне управління' })).toBeVisible();
-  await expect(page.locator('#agenda a.topic')).toHaveCount(12);
+  await expect(page.getByRole('heading', { level: 1, name: 'Операційний менеджмент' })).toBeVisible();
+  await expect(page.locator('#agenda a.topic')).toHaveCount(8);
   await expect(page.locator('[data-trainers] a[href]')).not.toHaveCount(0);
   await expectNoHorizontalScroll(page);
 });
@@ -86,7 +86,7 @@ test('кабінет викладача, практичні й тренажер�
   await expect(page.locator('[data-cabinet]')).toBeVisible({ timeout: 15_000 });
   await expect(page.getByRole('tablist', { name: 'Представлення' })).toBeVisible();
 
-  for (const path of ['moodle/', 'praktychni/', 'praktychni/p01/', 'trenazhery/', 'trenazhery/kvorum/', 'profil/']) {
+  for (const path of ['moodle/', 'praktychni/', 'praktychni/p01/', 'trenazhery/', 'profil/']) {
     const response = await page.goto(live(path));
     expect(response?.status(), path).toBe(200);
     await expect(page.getByRole('heading', { level: 1 }), path).toBeVisible();

@@ -1,5 +1,5 @@
 /**
- * Оглядач тренувального банку для викладача: питання з типом, рівнем Блума, нормою і правильною відповіддю.
+ * Оглядач тренувального банку для викладача: питання з типом, рівнем Блума, джерелом і правильною відповіддю.
  * Це публічний тренувальний банк — ті самі ключі вже є в тесті на сайті; контрольних банків тут немає.
  */
 import type { Question } from '../../content/schemas/questions';
@@ -20,9 +20,9 @@ export interface AnswerRow {
   readonly feedback?: string;
 }
 
-export interface LawRefView {
-  readonly act: string;
-  readonly article: string;
+export interface RefView {
+  readonly source: string;
+  readonly locator: string;
   readonly checked: string;
   readonly url?: string;
 }
@@ -39,7 +39,7 @@ export interface BankQuestionView {
   readonly distractors: readonly string[];
   readonly correctText?: string;
   readonly generalFeedback: string;
-  readonly lawRefs: readonly LawRefView[];
+  readonly refs: readonly RefView[];
 }
 
 function percent(fraction: number): string {
@@ -122,6 +122,6 @@ export function bankQuestionView(question: Question, index: number): BankQuestio
     mark: marksText(question.defaultMark),
     ...typeSpecific(question),
     generalFeedback: question.generalFeedback,
-    lawRefs: question.lawRef.map((ref) => ({ act: ref.act, article: ref.article, checked: formatDate(ref.checkedAt), ...(ref.url ? { url: ref.url } : {}) })),
+    refs: question.refs.map((ref) => ({ source: ref.source, locator: ref.locator, checked: formatDate(ref.checkedAt), ...(ref.url ? { url: ref.url } : {}) })),
   };
 }

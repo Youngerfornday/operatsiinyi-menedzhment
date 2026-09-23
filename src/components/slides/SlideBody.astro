@@ -16,7 +16,7 @@ interface Props {
 const { view, course, topicId } = Astro.props;
 const { slide } = view;
 const results = course.topics.find((topic) => topic.id === topicId)?.results ?? [];
-const lawHost = slide.type === 'norm' && slide.lawRef.url ? new URL(slide.lawRef.url).hostname.replace(/^www\./, '') : undefined;
+const refHost = slide.type === 'standard' && slide.ref.url ? new URL(slide.ref.url).hostname.replace(/^www\./, '') : undefined;
 ---
 
 {
@@ -61,22 +61,22 @@ const lawHost = slide.type === 'norm' && slide.lawRef.url ? new URL(slide.lawRef
 }
 
 {
-  slide.type === 'norm' && (
-    <div class="slide-norm" role="note" aria-label={`Норма: ${slide.title}`}>
-      <Icon name="scale" size="lg" />
+  slide.type === 'standard' && (
+    <div class="slide-standard" role="note" aria-label={`Стандарт/джерело: ${slide.title}`}>
+      <Icon name="book" size="lg" />
       <div>
-        <p class="slide-norm-text">{typo(slide.text)}</p>
-        <p class="slide-norm-src">
-          <span>{typo(slide.lawRef.act, { keepSpacedHyphens: true })}, {slide.lawRef.article}</span>
-          {slide.lawRef.url && lawHost && (
-            <a href={slide.lawRef.url} target="_blank" rel="noopener">
-              {lawHost}
+        <p class="slide-standard-text">{typo(slide.text)}</p>
+        <p class="slide-standard-src">
+          <span>{typo(slide.ref.source, { keepSpacedHyphens: true })}, {slide.ref.locator}</span>
+          {slide.ref.url && refHost && (
+            <a href={slide.ref.url} target="_blank" rel="noopener">
+              {refHost}
               <Icon name="external" size="sm" />
             </a>
           )}
           <span class="verified">
             <Icon name="check" size="sm" />
-            перевірено {formatDate(slide.lawRef.checkedAt)}
+            перевірено {formatDate(slide.ref.checkedAt)}
           </span>
         </p>
       </div>

@@ -1,4 +1,4 @@
-/* components.css — кнопки, чипи, картки, знаки стану, кворум, шестикутник, метр, поля, поповер, тост.
+/* components.css — кнопки, чипи, картки, знаки стану, маршрут, шестикутник, метр, поля, поповер, тост.
    Джерело: design/mockups/base.css. Табличні й кабінетні стилі додає кабінет. */
 
 /* ---- Кнопки ---- */
@@ -53,7 +53,7 @@
 .mark-lock { color: var(--ink-3); }
 .mark svg { width: 0.8rem; height: 0.8rem; stroke-width: 2.5; }
 
-/* ---- Порядок денний (карта курсу) ---- */
+/* ---- Маршрутна карта (карта курсу) ---- */
 .agenda { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-5); }
 .module { padding-top: var(--s-4); border-top: 1px solid var(--rule); }
 .module-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-3); margin-bottom: var(--s-3); }
@@ -71,12 +71,12 @@
 @media (max-width: 1024px) { .agenda { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 640px) { .agenda { grid-template-columns: 1fr; } }
 
-/* ---- Кворум: 12 комірок ---- */
-.quorum { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; }
-.quorum i { display: block; height: 0.5rem; border-radius: 2px; background: var(--band-line); }
-.quorum i[data-state="done"] { background: #fff; }
-.quorum i[data-state="doing"] { background: repeating-linear-gradient(90deg, #fff 0 3px, transparent 3px 6px); }
-.quorum-label { display: flex; justify-content: space-between; gap: var(--s-3); font-size: var(--text-sm); margin-top: var(--s-2); font-variant-numeric: tabular-nums; flex-wrap: wrap; }
+/* ---- Маршрут: комірки прогресу ---- */
+.route { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; }
+.route i { display: block; height: 0.5rem; border-radius: 2px; background: var(--band-line); }
+.route i[data-state="done"] { background: #fff; }
+.route i[data-state="doing"] { background: repeating-linear-gradient(90deg, #fff 0 3px, transparent 3px 6px); }
+.route-label { display: flex; justify-content: space-between; gap: var(--s-3); font-size: var(--text-sm); margin-top: var(--s-2); font-variant-numeric: tabular-nums; flex-wrap: wrap; }
 
 /* ---- Шестикутник бейджа / рівня ---- */
 .hex { width: 3rem; height: 3rem; }

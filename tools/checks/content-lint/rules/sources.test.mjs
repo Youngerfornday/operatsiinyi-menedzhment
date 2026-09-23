@@ -70,3 +70,30 @@ describe('checkSourceUsage', () => {
     expect(checkSourceUsage([file('content/course.yaml', ['title: Курс', 'source: whatever'])])).toEqual([]);
   });
 });
+
+describe('references: посилання на базу — не id у списку джерел', () => {
+  it('не вважає `source:` всередині refs[] висячим посиланням', () => {
+    const lecture = file('content/modules/m1/t01/lecture.mdx', [
+      '---',
+      'id: t01',
+      'refs:',
+      "  - source: Старченко Г.В., Калінько І.В., Косач І.А. Операційний менеджмент, 2020",
+      "    locator: 'розділ «Потужність», форм. 3.1 (CAP-01)'",
+      "    checkedAt: '2026-09-22'",
+      '---',
+      'Текст лекції.',
+    ]);
+    expect(references(lecture).map((ref) => ref.id)).toEqual([]);
+  });
+
+  it('далі ловить справжній `source:` без locator поруч', () => {
+    const practical = file('content/practicals/p02.yaml', [
+      'id: p02',
+      'trainer:',
+      '  features:',
+      '    - cells:',
+      '        - source: berle-means-1932',
+    ]);
+    expect(references(practical).map((ref) => ref.id)).toEqual(['berle-means-1932']);
+  });
+});

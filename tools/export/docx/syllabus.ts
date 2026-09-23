@@ -62,7 +62,7 @@ export function buildSyllabus(course: Course, options: DocOptions): Document {
       title: `Силабус навчальної дисципліни «${course.title}»`,
       subject: `${course.program.educationalProgram}; ${course.educationLevel}`,
       description: `Силабус дисципліни «${course.title}», ${course.institutionShort}. Згенеровано з content/course.yaml.`,
-      keywords: 'силабус, корпоративне управління, бакалавр, менеджмент',
+      keywords: 'силабус, операційний менеджмент, бакалавр, менеджмент',
     },
     children,
     ctx.placedNotes(),

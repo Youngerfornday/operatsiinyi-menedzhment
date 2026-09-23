@@ -1,0 +1,38 @@
+---
+import { formatDate } from '../../lib/course-data-pure';
+import Icon from '../site/Icon.astro';
+
+/** Посилання на перевірене джерело (стандарт, підручник): опис у слоті, джерело з локатором, посилання і дата перевірки. */
+interface Props {
+  source: string;
+  locator: string;
+  url?: string;
+  /** РРРР-ММ-ДД, дата звірки з базовим джерелом теми. */
+  checkedAt: string;
+  id?: string;
+}
+
+const { source, locator, url: refUrl, checkedAt, id } = Astro.props;
+const host = refUrl ? new URL(refUrl).hostname.replace(/^www\./, '') : undefined;
+---
+
+<div class="norm" role="note" aria-labelledby={id} data-standard-ref>
+  <Icon name="book" size="lg" />
+  <div>
+    <div class="norm-title" id={id}>Джерело</div>
+    <div class="norm-body">
+      <slot />
+    </div>
+    <div class="norm-src">
+      <span>{source}, {locator}</span>
+      {
+        refUrl && host && (
+          <a href={refUrl} target="_blank" rel="noopener">
+            {host} <Icon name="external" size="sm" />
+          </a>
+        )
+      }
+      <span class="verified"><Icon name="check" size="sm" />перевірено {formatDate(checkedAt)}</span>
+    </div>
+  </div>
+</div>

@@ -2,7 +2,7 @@
  * Маніфест матеріалів `public/downloads/manifest.json` під час збирання сайту (лише сервер).
  * Немає файлу — кабінет показує стан «Матеріали ще не зібрано»; файл не відповідає схемі — збірка падає,
  * бо кабінет інакше мовчки показав би неповний або хибний перелік файлів.
- * E2E-збірка (KU_E2E_DOWNLOADS=1, e2e/site/playwright.config.ts) бере фікстурний маніфест.
+ * E2E-збірка (OM_E2E_DOWNLOADS=1, e2e/site/playwright.config.ts) бере фікстурний маніфест.
  */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -13,7 +13,7 @@ export const MANIFEST_FILE = 'public/downloads/manifest.json';
 export const BUILD_DOWNLOADS_COMMAND = 'npm run build:downloads';
 
 function isE2eDownloadsEnabled(): boolean {
-  return typeof process !== 'undefined' && process.env['KU_E2E_DOWNLOADS'] === '1';
+  return typeof process !== 'undefined' && process.env['OM_E2E_DOWNLOADS'] === '1';
 }
 
 function readManifestText(file: string): string | null {

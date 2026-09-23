@@ -21,8 +21,8 @@ const EXPRESSION = /\{[^{}\n]*\}/g;
 
 /** @typedef {{ nbsp?: boolean }} LintOptions */
 
-/** Поля з офіційними назвами актів і джерел (sources.yaml title, lawRef act): дефіс у пробілах там — частина назви. */
-const OFFICIAL_TITLE_KEYS = new Set(['title', 'act']);
+/** Поля з офіційними назвами джерел (sources.yaml title, refs source): дефіс у пробілах там — частина назви. */
+const OFFICIAL_TITLE_KEYS = new Set(['title', 'source']);
 
 function blankKeepingLines(text) {
   return text.replace(/[^\n]/g, ' ');

@@ -1,13 +1,12 @@
 /**
  * Збірка правил лінту контенту в один прогін.
- * Вхід — розібрані файли content/ і legal-baseline.md; вихід — плоский список знахідок.
+ * Вхід — розібрані файли content/ і бази (formula-baseline.md, standards-baseline.md); вихід — плоский список знахідок.
  * Правила незалежні: кожне можна викликати окремо (і так вони й тестуються).
  */
 import { checkCaseCaveats } from './rules/case-caveats.mjs';
 import { checkCheckedDates, todayIso } from './rules/checked-dates.mjs';
-import { checkLawCodes } from './rules/law-codes.mjs';
-import { checkLawNumbers } from './rules/law-numbers.mjs';
-import { checkLawrefConsistency } from './rules/lawref-consistency.mjs';
+import { checkRefCodes } from './rules/ref-codes.mjs';
+import { checkRefConsistency } from './rules/ref-consistency.mjs';
 import { checkNumbersWithoutSource } from './rules/numbers.mjs';
 import { checkBankAnswerPosition } from './rules/bank-answer-position.mjs';
 import { checkSlides } from './rules/slides.mjs';
@@ -23,9 +22,8 @@ import { checkUnconfirmedZone } from './rules/unconfirmed-zone.mjs';
  */
 export function lintContent({ files, baseline, course, today = todayIso() }) {
   return [
-    ...checkLawNumbers(files, baseline),
-    ...checkLawCodes(files, baseline),
-    ...checkLawrefConsistency(files),
+    ...checkRefCodes(files, baseline),
+    ...checkRefConsistency(files),
     ...checkUnconfirmedZone(files, baseline),
     ...checkCheckedDates(files, baseline, today),
     ...checkCaseCaveats(files, course?.cases ?? []),

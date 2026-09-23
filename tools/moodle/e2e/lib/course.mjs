@@ -10,14 +10,14 @@ const CONTAINER_HELPER = '/tmp/ku-verify/course-helper.php';
 
 export const BUILD_DIR = resolve(OUT_DIR, 'build');
 export const PACKAGE_DIR = resolve(MOODLE_DIR, '../../dist-export/moodle');
-export const TARGET_SHORTNAME = process.env.KU_TARGET_SHORTNAME ?? 'KU-COURSE';
+export const TARGET_SHORTNAME = process.env.OM_TARGET_SHORTNAME ?? 'KU-COURSE';
 
 /**
- * Пакет для перевірки: явний KU_MBZ або найсвіжіший за часом зміни .mbz у dist-export/moodle
+ * Пакет для перевірки: явний OM_MBZ або найсвіжіший за часом зміни .mbz у dist-export/moodle
  * (там можуть лежати обидва варіанти пакета — з контрольним і з тренувальним банком).
  */
 export function packagePath() {
-  if (process.env.KU_MBZ) return resolve(process.env.KU_MBZ);
+  if (process.env.OM_MBZ) return resolve(process.env.OM_MBZ);
   const files = readdirSync(PACKAGE_DIR)
     .filter((name) => name.endsWith('.mbz'))
     .map((name) => resolve(PACKAGE_DIR, name))

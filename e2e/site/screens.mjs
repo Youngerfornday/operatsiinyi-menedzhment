@@ -10,11 +10,11 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(fileURLToPath(new URL('../../', import.meta.url)));
 const OUT = resolve(ROOT, 'design/screens/impl');
-const BASE = process.env['SCREENS_URL'] ?? 'http://localhost:4321/korporatyvne-upravlinnia/';
+const BASE = process.env['SCREENS_URL'] ?? 'http://localhost:4321/operatsiinyi-menedzhment/';
 const PAGES = [
   ['index', ''],
   ['module', 'moduli/m1/'],
-  ['topic-pending', 'temy/korporatsiia-i-korporatyvne-upravlinnia/'],
+  ['topic-pending', 'temy/operatsiinyi-menedzhment-yak-funktsiia/'],
   ['components', 'rozrobka/komponenty/'],
 ];
 const VIEWPORTS = [

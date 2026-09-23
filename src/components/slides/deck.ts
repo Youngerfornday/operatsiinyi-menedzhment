@@ -6,7 +6,7 @@
 import { announcement, clampIndex, counterLabel, hashForIndex, indexFromHash, keyAction, swipeAction, type DeckAction } from './deck-state';
 
 /** Відкриті нотатки — зручність одного переглядача, тому localStorage (з префіксом сховища курсу). */
-const NOTES_STORAGE_KEY = 'ku:v1:slides-notes';
+const NOTES_STORAGE_KEY = 'om:v1:slides-notes';
 const PRINT_NOTES_ATTRIBUTE = 'data-print-notes';
 const IGNORED_TARGETS = 'input, textarea, select, [contenteditable="true"], dialog[open]';
 

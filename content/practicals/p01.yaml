@@ -1,758 +1,123 @@
-# Практична 1 «Матриця моделей корпоративного управління»: дані тренажера model-matrix.
-# Мета, результати, ПРН і рубрика — у реєстрі course.yaml (practicals[p01]). Тут — зміст: моделі, ознаки, клітинки з поясненням
-# і джерелом, завдання «визнач модель», тема есе. Моделі описано як узагальнення; кожна клітинка має джерело зі списку sources.
-# Формулювання клітинок не називають країн, органів і власників, які видавали б відповідь; назви — лише в поясненнях.
-# Історичні характеристики (огляд 1997 р.) подано в минулому часі; сучасний стан — за джерелами 2021–2026 рр.
+# Дані тренажера практичної 1. Реєстр (мета, результати, рубрика, ПРН, дані статистики) — у course.yaml.
+# Формули — лише з docs/research/formula-baseline.md (коди PROD-01, PROD-02, PROD-03, CAP-01, CAP-02).
 id: p01
-title: Матриця моделей корпоративного управління
+title: Операційна функція підприємства і вимірювання продуктивності
 intro: >-
-  Чотири моделі корпоративного управління — це чотири способи відповісти на одне питання: хто контролює компанію
-  і як захищені ті, хто нею не керує. У тренажері ви зіставляєте формулювання ознак з моделями; після кожної відповіді
-  відкривається пояснення і джерело. Перша спроба — навчальна, з розбором кожної клітинки; за рубрикою оцінюється друга.
-  Далі — три компанії, для яких треба визначити модель і назвати дві ключові ознаки, і есе про українські акціонерні
-  товариства. Зарахування — за рубрикою практичної в реєстрі курсу.
+  У тренажері розрахуйте показники продуктивності операційної системи за завданнями нижче: часткову
+  продуктивність за працею, матеріалами й енергією, багатофакторну продуктивність, індекс її зміни та
+  використання й ефективність виробничої потужності. Кожен варіант генерує нові дані; після перевірки
+  тренажер показує повний розв'язок за формулою. XP нараховується лише за перший правильно розв'язаний
+  варіант кожного типу задачі — до 60 XP за тренажер загалом.
 status: review
-updatedAt: '2026-09-17'
-
+updatedAt: '2026-09-23'
 sources:
-  - id: oecd-principles-2023
-    type: standard
-    title: G20/OECD Principles of Corporate Governance 2023
-    authors: [OECD]
-    publisher: OECD Publishing
-    year: 2023
-    language: en
-    url: https://www.oecd.org/en/publications/g20-oecd-principles-of-corporate-governance-2023_ed750b30-en.html
-    checkedAt: '2026-09-14'
-    note: 'Дата перевірки — за docs/research/legal-baseline.md, MS-01.'
-  - id: oecd-factbook-2023
-    type: report
-    title: OECD Corporate Governance Factbook 2023
-    authors: [OECD]
-    publisher: OECD Publishing
-    year: 2023
-    language: en
-    url: https://www.oecd.org/content/dam/oecd/en/publications/reports/2023/09/oecd-corporate-governance-factbook-2023_6bae0258/6d912314-en.pdf
-    checkedAt: '2026-09-16'
-    note: 'Розділи 1.5–1.6 і табл. 1.1 (структура власності лістингових компаній на кінець 2022 р., дані по 44 з 49 юрисдикцій).'
-  - id: oecd-factbook-2025
-    type: report
-    title: OECD Corporate Governance Factbook 2025
-    authors: [OECD]
-    publisher: OECD Publishing
-    year: 2025
-    language: en
-    url: https://www.oecd.org/content/dam/oecd/en/publications/reports/2025/10/oecd-corporate-governance-factbook-2025_56febc0d/f4f43735-en.pdf
-    checkedAt: '2026-09-17'
-    note: 'Розд. 1.2.1 (с. 29–31): 46 086 лістингових компаній на кінець 2024 р.; у 44 % три найбільші власники — понад 50 % (Європа 53 %, США 17 %); стратегічні особи й родини — 7 % світової капіталізації; розд. 4.1.1 — горизонтальна агентська проблема в контрольованих компаніях, шість юрисдикцій прив’язують вимоги до незалежності ради до структури власності; розд. 3.8 — 94 % юрисдикцій вимагають негайного розкриття суттєвих угод із пов’язаними сторонами.'
-  - id: oecd-wp27-2022
-    type: report
-    title: 'Corporate ownership and concentration (OECD Corporate Governance Working Papers No. 27)'
-    authors: [Medina A., de la Cruz A., Tang Y.]
-    publisher: OECD Publishing
-    year: 2022
-    language: en
-    url: https://www.oecd.org/content/dam/oecd/en/publications/reports/2022/09/corporate-ownership-and-concentration_071a223d/bc3adca3-en.pdf
-    checkedAt: '2026-09-17'
-    note: 'Стратегічні фізичні особи — у середньому понад 20 % акцій у 16 юрисдикціях (с. 9–10); механізми контролю — піраміди, подвійні класи акцій, перехресне володіння (Японія 6,3 % капіталізації, табл. 2.3); розкриття акціонерних угод не обов’язкове у 12 юрисдикціях, бенефіціарів — у 13 (с. 20); схвалення угод із пов’язаними сторонами незалежними директорами — 21 юрисдикція, міноритаріями — 17, «majority of the minority» — 4 (с. 17).'
-  - id: villalonga-amit-2020
-    type: article
-    title: Family ownership
-    authors: [Villalonga B., Amit R.]
-    publisher: 'Oxford Review of Economic Policy, vol. 36, no. 2, pp. 241–257'
+  - id: stevenson-2020
+    type: book
+    title: Operations Management
+    authors: [Stevenson W. J.]
+    publisher: McGraw-Hill Education
     year: 2020
     language: en
-    url: https://faculty.wharton.upenn.edu/wp-content/uploads/2020/04/Family_Ownership.pdf
-    checkedAt: '2026-09-17'
-    note: 'Рецензований огляд про сімейні фірми: Західна Європа — 44 % сімейних проти 45 % розпорошених (табл. 1); родина в раді чи менеджменті — третина S&P 500; довгий горизонт і «терплячий капітал»; нижчі зарплати, але рідші звільнення; зворотний бік — тунелювання і гірші результати під керівництвом нащадків. Теза «30 % доживають до другого покоління» емпірично не підтверджена — не використано.'
-  - id: shleifer-vishny-1997
-    type: article
-    title: A Survey of Corporate Governance
-    authors: [Shleifer A., Vishny R. W.]
-    publisher: 'The Journal of Finance, vol. 52, no. 2, pp. 737–783'
-    year: 1997
-    language: en
-    url: https://dash.harvard.edu/entities/publication/73120379-1d3b-6bd4-e053-0100007fdf3b
-    checkedAt: '2026-09-16'
-    note: 'Порівняння ринкових систем США і Великої Британії з банкоцентричними системами Німеччини та Японії станом на 1990-ті; у матриці — лише історичні характеристики.'
-  - id: mitbestg-1976
-    type: law
-    title: Gesetz über die Mitbestimmung der Arbeitnehmer (Mitbestimmungsgesetz) від 04.05.1976
-    authors: [Bundesministerium der Justiz]
-    year: 1976
-    language: de
-    url: https://www.gesetze-im-internet.de/mitbestg/BJNR011530976.html
-    checkedAt: '2026-09-16'
-    note: '§ 1: компанії, що зазвичай мають понад 2 000 працівників; § 7: наглядова рада з рівної кількості представників акціонерів і працівників.'
-  - id: drittelbg-2004
-    type: law
-    title: Gesetz über die Drittelbeteiligung der Arbeitnehmer im Aufsichtsrat (Drittelbeteiligungsgesetz) від 18.05.2004
-    authors: [Bundesministerium der Justiz]
-    year: 2004
-    language: de
-    url: https://www.gesetze-im-internet.de/drittelbg/BJNR097410004.html
-    checkedAt: '2026-09-16'
-    note: 'Третина наглядової ради — представники працівників у компаніях, що зазвичай мають понад 500 працівників.'
-  - id: aktg-135
-    type: law
-    title: Aktiengesetz, § 135 Ausübung des Stimmrechts durch Intermediäre und geschäftsmäßig Handelnde
-    authors: [Bundesministerium der Justiz]
-    year: 1965
-    language: de
-    url: https://www.gesetze-im-internet.de/aktg/__135.html
-    checkedAt: '2026-09-17'
-    note: 'Посередник (зокрема банк-депозитарій) голосує акціями, які йому не належать, лише за дорученням акціонера і за його вказівками або за заздалегідь розкритими пропозиціями.'
-  - id: dcgk-2022
-    type: regulation
-    title: Deutscher Corporate Governance Kodex у редакції від 28.04.2022
-    authors: [Regierungskommission Deutscher Corporate Governance Kodex]
-    year: 2022
-    language: en
-    url: https://www.dcgk.de/en/code.html
-    checkedAt: '2026-09-16'
-    note: 'Правління і наглядова рада; декларація відповідності за § 161 Закону про АТ («дотримуйся або пояснюй»).'
-  - id: jcgc-code-2026
-    type: regulation
-    title: Japan’s Corporate Governance Code (редакція від 21.07.2026)
-    authors: [Tokyo Stock Exchange, Inc.]
-    year: 2026
-    language: en
-    url: https://www.jpx.co.jp/english/corporate/news/news-releases/1020/vk0khi000001xys3-att/vk0khi000001xyv1.pdf
-    checkedAt: '2026-09-17'
-    note: 'Чинна редакція; звіти за нею — до липня 2027 р. Принцип 4.10: для ринку Prime — щонайменше третина незалежних директорів, а за наявності контролюючого акціонера — більшість (або спеціальний комітет); принцип 4.7 — більшість незалежних у комітетах з номінацій і винагород для Prime; принцип 1.4 (1)–(4) — перехресне володіння. «Дотримуйся або пояснюй» з різним обсягом для сегментів ринку (docs/research/cases.md, розд. 11).'
-  - id: jcgc-code-2015
-    type: regulation
-    title: 'Japan’s Corporate Governance Code [Final Proposal] (05.03.2015)'
-    authors: [The Council of Experts Concerning the Corporate Governance Code, Financial Services Agency of Japan]
-    year: 2015
-    language: en
-    url: https://www.fsa.go.jp/en/refer/councils/corporategovernance/20150306-1/01.pdf
-    checkedAt: '2026-09-17'
-    note: 'Перша редакція: принцип 1.4 уже вимагав розкривати політику щодо перехресного володіння, щорічно оцінювати економічну доцільність великих пакетів і розкривати стандарти голосування ними.'
-  - id: jcgc-code-2018
-    type: regulation
-    title: Japan’s Corporate Governance Code (Revised June 2018)
-    authors: [Tokyo Stock Exchange, Inc.]
-    year: 2018
-    language: en
-    url: https://www.jpx.co.jp/english/rules-participants/public-comment/detail/d1/b5b4pj0000022v6o-att/20180601.pdf
-    checkedAt: '2026-09-17'
-    note: 'Редакція 2018 р. посилила принцип 1.4: щорічна оцінка кожного окремого пакета проти вартості капіталу, оприлюднення результатів, голосування за оприлюдненими стандартами; додаткові принципи 1.4.1 і 1.4.2.'
-  - id: fsa-tse-overview-2026
-    type: web
-    title: The Revised Corporate Governance Code to Promote Growth Investments (21.07.2026)
-    authors: [Financial Services Agency of Japan, Tokyo Stock Exchange]
-    year: 2026
-    language: en
-    url: https://www.jpx.co.jp/english/equities/listing/cg/tvdivq0000008jdy-att/b5b4pj0000046lke.pdf
-    checkedAt: '2026-09-17'
-    note: 'Офіційний огляд редакції 2026 р.: «growth-oriented governance» — розподіл ресурсів і інвестиції у зростання, роль ради щодо накопиченої готівки; орієнтир на більшість незалежних для Prime — лише як позиція в пояснювальному документі, не норма Кодексу.'
-  - id: fsa-cgc-revisions-2021
-    type: web
-    title: Revisions of Japan’s Corporate Governance Code and Guidelines for Investor and Company Engagement (06.04.2021)
-    authors: [Financial Services Agency of Japan]
-    year: 2021
-    language: en
-    url: https://www.fsa.go.jp/en/news/2021/20210406.html
-    checkedAt: '2026-09-16'
-    note: 'Пропозиції до перегляду 2021 р.: третина незалежних для Prime, комітети з більшістю незалежних, розкриття за TCFD, розкриття англійською.'
-  - id: uk-cg-code-2024
-    type: regulation
-    title: UK Corporate Governance Code 2024
-    authors: [Financial Reporting Council]
-    year: 2024
-    language: en
-    url: https://www.frc.org.uk/library/standards-codes-policy/corporate-governance/uk-corporate-governance-code/
-    checkedAt: '2026-09-16'
-    note: 'Опубліковано 22.01.2024, застосовується з 01.01.2025; режим «дотримуйся або пояснюй» для компаній з лістингом (legal-baseline MS-04).'
-  - id: law-2465-ix
-    type: law
-    title: Закон України «Про акціонерні товариства» від 27.07.2022 № 2465-IX
-    authors: [Верховна Рада України]
-    year: 2022
-    url: https://zakon.rada.gov.ua/laws/show/2465-20
-    checkedAt: '2026-09-15'
-    note: 'Ст. 4 (одно- і дворівнева структура, AT-03), ст. 72 ч. 4 (незалежні директори, AT-49), ст. 107 (правочини із заінтересованістю, AT-64).'
-  - id: nssmc-cg-code-2020
-    type: regulation
-    title: 'Кодекс корпоративного управління: ключові вимоги і рекомендації (рішення НКЦПФР від 12.03.2020 № 118)'
-    authors: [НКЦПФР]
+    url: https://openlibrary.org/isbn/9781260575712
+    checkedAt: '2026-09-22'
+    note: 'Джерело розрізнення часткової, багатофакторної продуктивності й індексу її зміни (PROD-01, PROD-02, PROD-03).'
+
+  - id: starchenko-kalinko-kosach-2020
+    type: book
+    title: Операційний менеджмент
+    authors: [Старченко Г. В., Калінько І. В., Косач І. А.]
+    publisher: Кондор
     year: 2020
-    url: https://www.nssmc.gov.ua/wp-content/uploads/2020/03/corporate-governance-code_final_ukr.pdf
-    checkedAt: '2026-09-16'
-    note: 'Рекомендаційний, «дотримуйся або пояснюй» (legal-baseline KKU-03). Відображає законодавство станом на 01.01.2020: розділ «Вимоги» спирається на попередній закон про АТ 2008 р. і не оновлювався під Закон № 2465-IX.'
-  - id: oecd-ukraine-2025
-    type: report
-    title: Mapping Ukraine’s Financial Markets and Corporate Governance Framework for a Sustainable Recovery
-    authors: [OECD]
-    publisher: OECD Publishing
-    year: 2025
-    language: en
-    url: https://www.oecd.org/content/dam/oecd/en/publications/reports/2025/01/mapping-ukraine-s-financial-markets-and-corporate-governance-framework-for-a-sustainable-recovery_ba6fc369/866c5c44-en.pdf
-    checkedAt: '2026-09-17'
-    note: 'Розд. 3.2.1: понад 60 % компаній, акції яких торгувалися на біржах України, мають єдиного власника з пакетом понад 50 %; дані про групи компаній відсутні; про дотримання Кодексу 2020 р. агрегованої інформації немає.'
-  - id: vw-shareholders-2025
-    type: web
-    title: Volkswagen Group. Shareholder structure (станом на 31.12.2025)
-    authors: [Volkswagen AG]
-    year: 2026
-    language: en
-    url: https://www.volkswagen-group.com/en/shareholder-structure-15951
-    checkedAt: '2026-09-16'
-    note: 'Права голосу: Porsche Automobil Holding SE 53,3 %, земля Нижня Саксонія 20,0 %, Qatar Holding 17,0 %, вільний обіг 9,7 %.'
-  - id: toyota-industries-2026
-    type: web
-    title: Toyota Industries Corporation. Notice Concerning Share Consolidation (17.04.2026)
-    authors: [Toyota Industries Corporation]
-    year: 2026
-    language: en
-    url: https://www.toyota-industries.com/news/item/20260417_document_e01.pdf
-    checkedAt: '2026-09-16'
-    note: 'Toyota Motor володіла 24,66 % акцій компанії-засновниці групи; спеціальний комітет незалежних директорів при тендерній пропозиції через конфлікт інтересів найбільшого акціонера; делістинг 01.06.2026 (docs/research/cases.md, розд. 11).'
-  - id: toyota-voting-2025
-    type: web
-    title: Toyota Motor Corporation. Extraordinary Report, 121st Ordinary General Shareholders’ Meeting (12.06.2025)
-    authors: [Toyota Motor Corporation]
-    year: 2025
-    language: en
-    url: https://global.toyota/pages/global_toyota/ir/stock/2025_voting_results_en.pdf
-    checkedAt: '2026-09-16'
-    note: 'Перехід до структури «компанія з аудиторсько-наглядовим комітетом» — 98,80 % голосів «за».'
-  - id: hsbc-board-2026
-    type: web
-    title: HSBC Holdings plc. Board of Directors
-    authors: [HSBC Holdings plc]
-    year: 2026
-    language: en
-    url: https://www.hsbc.com/who-we-are/leadership-and-governance/board-of-directors
-    checkedAt: '2026-09-16'
-    note: 'Станом на 06.05.2026: 14 директорів, з них 11 незалежних невиконавчих; голова ради і головний виконавчий директор — різні особи.'
-  - id: microsoft-governance-2026
-    type: web
-    title: Microsoft Corporation. Corporate Governance — Board of Directors and Committees
-    authors: [Microsoft Corporation]
-    year: 2026
-    language: en
-    url: https://www.microsoft.com/en-us/investor/corporate-governance/board-of-directors
-    checkedAt: '2026-09-16'
-    note: 'Чотири постійні комітети ради, до складу яких входять лише незалежні директори; настанови щодо незалежності директорів.'
-  - id: roche-agm-2022
-    type: web
-    title: Annual General Meeting Roche Holding Ltd, 15 March 2022. Address by André Hoffmann, Vice-Chairman of the Board of Directors
-    authors: [Roche Holding Ltd]
-    year: 2022
-    language: en
-    url: https://assets.roche.com/f/176343/x/e3c69256dc/gv-2022_speech_ah_e_final_14marz_handout.pdf
-    checkedAt: '2026-09-16'
-    note: 'Самопрезентація родини засновника (ілюстрація, не доказ): пул тримає понад 67 % голосів після викупу пакета Novartis (2021); «що добре для Roche — добре для нашої родини, а не навпаки».'
-  - id: roche-finance-2025
-    type: report
-    title: Roche Holding Ltd. Finance Report 2025, примітка «Controlling shareholders» і розділ про акціонерний капітал
-    authors: [Roche Holding Ltd]
-    year: 2026
-    language: en
-    url: https://assets.roche.com/f/176343/x/fca190f63e/fb25e.pdf
-    checkedAt: '2026-09-17'
-    note: 'На 31.12.2025 група акціонерів з об’єднаними правами голосу володіла 69 318 000 акцій — 64,97 % випущених акцій (2024: 64,97 %); угода про спільне голосування діє з 1948 р.; неголосуючі сертифікати участі — 702 562 700 шт.'
+    language: uk
+    url: https://scholar.google.com/citations?user=9UX4QTYAAAAJ&hl=uk
+    checkedAt: '2026-09-22'
+    note: 'Джерело коефіцієнта використання потужності (CAP-01) і ефективності використання потужності (CAP-02).'
 
 trainer:
-  kind: model-matrix
-  models:
-    - id: anglo-american
-      title: Англо-американська модель
-      short: Англо-американська
-      term: anglo-american-model
-      countries: [США, Велика Британія, Канада, Австралія]
-      summary: >-
-        Аутсайдерська система: розпорошена власність, інституційні інвестори як головні акціонери, однорівнева рада
-        з більшістю незалежних директорів, глибокий ринок капіталу і активний ринок корпоративного контролю.
-        Головний агентський конфлікт — між менеджментом і акціонерами.
-      examples:
-        - company: HSBC Holdings plc
-          country: Велика Британія
-          note: >-
-            Станом на 06.05.2026 рада з 14 директорів, з них 11 незалежних невиконавчих; голова ради і головний виконавчий
-            директор — різні особи, як рекомендує Кодекс корпоративного управління Великої Британії.
-          url: https://www.hsbc.com/who-we-are/leadership-and-governance/board-of-directors
-          checkedAt: '2026-09-16'
-        - company: Microsoft Corporation
-          country: США
-          note: >-
-            Чотири постійні комітети ради складаються лише з незалежних директорів; власна настанова щодо незалежності директорів.
-            Найбільші акціонери — інституційні інвестори.
-          url: https://www.microsoft.com/en-us/investor/corporate-governance/board-of-directors
-          checkedAt: '2026-09-16'
-    - id: german
-      title: Німецька (континентальна) модель
-      short: Німецька
-      term: german-model
-      countries: [Німеччина, Австрія, Нідерланди]
-      summary: >-
-        Інсайдерська система: концентрована власність стратегічних власників, дворівнева рада з правління й наглядової
-        ради, законодавчо закріплена співучасть працівників, історично — банківське фінансування. Головний конфлікт — між
-        контролюючим акціонером і міноритаріями, врівноважений інтересами праці.
-      examples:
-        - company: Volkswagen AG
-          country: Німеччина
-          note: >-
-            Права голосу на 31.12.2025: Porsche Automobil Holding SE 53,3 %, земля Нижня Саксонія 20,0 %, Qatar Holding 17,0 %,
-            вільний обіг 9,7 %. Правління і наглядова рада; за законом про співучасть половина наглядової ради — представники працівників.
-          url: https://www.volkswagen-group.com/en/shareholder-structure-15951
-          checkedAt: '2026-09-16'
-    - id: japanese
-      title: Японська модель
-      short: Японська
-      term: japanese-model
-      countries: [Японія]
-      summary: >-
-        Інсайдерська система групового типу: перехресне володіння акціями всередині груп (кейрецу), історична роль головного
-        банку, довгострокові відносини з працівниками й партнерами; у радах історично переважали виконавчі директори, що виросли
-        в компанії. Кодекс корпоративного управління Токійської біржі (2015; переглянутий 2018, 2021 і 21.07.2026) вимагає для
-        ринку Prime щонайменше третину незалежних директорів — а більшість лише за наявності контролюючого акціонера — і політику
-        щодо перехресних пакетів (з 2015 р., посилену 2018 р.).
-      examples:
-        - company: Toyota Motor Corporation
-          country: Японія
-          note: >-
-            Володіла 24,66 % акцій Toyota Industries — компанії-засновниці групи, яка сама була її акціонером (перехресне володіння);
-            у 2025–2026 рр. Toyota Industries приватизовано через тендерну пропозицію зі спеціальним комітетом незалежних директорів
-            і 01.06.2026 делістинговано. Паралельно у 2025 р. збори Toyota Motor перевели компанію до структури з аудиторсько-наглядовим
-            комітетом (98,80 % голосів «за»).
-          url: https://www.toyota-industries.com/news/item/20260417_document_e01.pdf
-          checkedAt: '2026-09-16'
-    - id: family
-      title: Сімейна модель
-      short: Сімейна
-      term: family-model
-      countries: ['поширена в Азії, Латинській Америці, континентальній Європі і Швейцарії; трапляється в Україні']
-      summary: >-
-        Контроль родини засновника через великий пакет, угоду про спільне голосування, піраміду або акції з різними правами
-        голосу; засновники чи їхні нащадки самі входять до ради й менеджменту; мета — збереження контролю і передавання компанії
-        наступному поколінню. У Західній Європі сімейних лістингових компаній близько 44 % — стільки ж, скільки з розпорошеною
-        власністю. Головний конфлікт — між родиною і зовнішніми інвесторами. Приклад Roche — ілюстрація за даними самої компанії.
-      examples:
-        - company: Roche Holding Ltd
-          country: Швейцарія
-          note: >-
-            За даними компанії: пул нащадків засновника тримав понад 67 % голосів після викупу пакета Novartis (промова віцеголови ради
-            15.03.2022) і 64,97 % на 31.12.2025 (Finance Report 2025); більшість капіталу — неголосуючі сертифікати участі зовнішніх
-            інвесторів; угода про спільне голосування діє з 1948 р.
-          url: https://assets.roche.com/f/176343/x/fca190f63e/fb25e.pdf
-          checkedAt: '2026-09-17'
+  kind: calculation-tasks
+  tasks:
+    - id: partial-labor
+      method: partial-productivity
+      resource: labor
+      title: Часткова продуктивність за працею
+      formula: 'Продуктивність = Обсяг випуску / Людино-години'
+      ref:
+        source: 'Stevenson W. J. Operations Management, 2020'
+        locator: 'розділ «Competitiveness, Strategy, and Productivity», підрозділ Productivity, часткова продуктивність за працею (PROD-01)'
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9781260575712
 
-  features:
-    - id: ownership-structure
-      title: Структура власності
-      cells:
-        - model: anglo-american
-          statement: Розпорошена — три найбільші акціонери типової лістингової компанії разом тримають лише близько третини капіталу; на найбільшому ринку моделі контроль трьох найбільших перевищує 50 % лише у 17 % компаній.
-          explanation: >-
-            За Factbook 2023 найнижча концентрація власності — в Австралії, Фінляндії, Ірландії, США, Канаді та Великій Британії
-            (три найбільші акціонери — у середньому 33–36 % капіталу); Factbook 2025: у США три найбільші власники тримають понад
-            50 % лише у 17 % лістингових компаній. Саме така картина стоїть за працею Берлі й Мінза.
-          source: oecd-factbook-2023
-          alsoSources: [oecd-factbook-2025]
-        - model: german
-          statement: Концентрована — у більшості лістингових компаній три найбільші акціонери володіють понад половиною капіталу; серед них холдинги, засновники і публічні власники.
-          explanation: >-
-            У Німеччині три найбільші акціонери контролюють понад 50 % капіталу у 59 % лістингових компаній (табл. 1.1 Factbook 2023);
-            по Європі загалом — у 53 % (Factbook 2025). Приклад — Volkswagen AG, де 53,3 % голосів у Porsche SE і 20,0 % у землі Нижня Саксонія.
-          source: oecd-factbook-2023
-          alsoSources: [oecd-factbook-2025]
-        - model: japanese
-          statement: Помірно концентрована з перехресним володінням — контролюючого акціонера часто немає, але помітна частка капіталізації ринку належить партнерським компаніям, які тримають пакети одна одної.
-          explanation: >-
-            В Японії три найбільші акціонери контролюють понад половину капіталу лише у 28 % лістингових компаній, водночас корпорації
-            володіють 22 % капіталу ринку (Factbook 2023, розд. 1.5, табл. 1.1); перехресне володіння — 6,3 % капіталізації, найвищий
-            показник серед юрисдикцій ОЕСР (Working Paper № 27, табл. 2.3).
-          source: oecd-factbook-2023
-          alsoSources: [oecd-wp27-2022]
-        - model: family
-          statement: Контроль зосереджений у групі пов’язаних між собою фізичних осіб; у Західній Європі таких близько 44 % лістингових компаній — стільки ж, скільки з розпорошеною власністю, від 23 % до близько 60 % залежно від країни.
-          explanation: >-
-            За оглядом Villalonga і Amit (2020, табл. 1, дані Faccio і Lang по 5 232 компаніях 13 країн), у Західній Європі 44 %
-            лістингових компаній — сімейні проти 45 % з розпорошеною власністю; від 23 % у Великій Британії до близько 60 % у Франції,
-            Німеччині, Португалії та Італії. Ілюстрація — Roche: пул нащадків засновника тримав 64,97 % акцій на 31.12.2025.
-          source: villalonga-amit-2020
-          alsoSources: [roche-finance-2025]
+    - id: partial-materials
+      method: partial-productivity
+      resource: materials
+      title: Часткова продуктивність за матеріалами
+      formula: 'Продуктивність = Обсяг випуску / Кілограми матеріалів'
+      ref:
+        source: 'Stevenson W. J. Operations Management, 2020'
+        locator: 'розділ «Competitiveness, Strategy, and Productivity», підрозділ Productivity, часткова продуктивність за матеріалами (PROD-01)'
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9781260575712
 
-    - id: key-owners
-      title: Хто найбільші власники
-      cells:
-        - model: anglo-american
-          statement: Інституційні інвестори — пенсійні, взаємні й індексні фонди; на найбільшому ринку моделі вони володіють щонайменше 70 % капіталу лістингових компаній.
-          explanation: >-
-            Factbook 2023 (розд. 1.5): інституційні інвестори — беззаперечно домінуючі власники в США. Тому «активний принципал»
-            у цій моделі — фонд, який голосує за політикою залученості, а не окрема людина.
-          source: oecd-factbook-2023
-        - model: german
-          statement: Стратегічні власники — промислові холдинги, засновники, регіональна влада; історично також банки і страховики.
-          explanation: >-
-            Структура Volkswagen AG (холдинг родин засновників, земля, суверенний фонд) — типовий набір стратегічних власників
-            континентальної моделі; частка вільного обігу лише 9,7 %.
-          source: vw-shareholders-2025
-        - model: japanese
-          statement: Інші компанії тієї самої групи та фінансові установи, які тримають пакети одне одного; кодекс біржі вимагає розкривати політику щодо таких пакетів і щороку оцінювати кожен.
-          explanation: >-
-            Toyota Motor володіла 24,66 % акцій Toyota Industries — компанії-засновниці групи, яка сама була акціонером Toyota Motor;
-            принцип 1.4 чинного Кодексу (з 2015 р., посилений 2018 р.) вимагає розкривати політику щодо перехресного володіння і щорічно
-            оцінювати кожен пакет проти вартості капіталу.
-          source: toyota-industries-2026
-          alsoSources: [jcgc-code-2026]
-        - model: family
-          statement: Стратегічні фізичні особи — засновники та їхні нащадки; у 16 юрисдикціях вони в середньому тримають понад 20 % акцій лістингових компаній, а у світі їм належить 7 % капіталізації.
-          explanation: >-
-            Working Paper ОЕСР № 27: стратегічні фізичні особи концентрують у середньому понад 20 % акцій у 16 юрисдикціях, зокрема у
-            Франції, Італії, Німеччині та Іспанії; Factbook 2025: стратегічним особам і родинам належить 7 % світової капіталізації
-            (у Європі — 9 %, у США — 5 %).
-          source: oecd-wp27-2022
-          alsoSources: [oecd-factbook-2025]
+    - id: partial-energy
+      method: partial-productivity
+      resource: energy
+      title: Часткова продуктивність за енергією
+      formula: 'Продуктивність = Обсяг випуску / Кіловат-години'
+      ref:
+        source: 'Stevenson W. J. Operations Management, 2020'
+        locator: 'розділ «Competitiveness, Strategy, and Productivity», підрозділ Productivity, часткова продуктивність за енергією (PROD-01)'
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9781260575712
 
-    - id: role-of-banks
-      title: Роль банків
-      cells:
-        - model: anglo-american
-          statement: Історично банкам обмежували володіння акціями; нині банки — кредитори на ринкових умовах без місця в радах, а головні власники — інституційні інвестори.
-          explanation: >-
-            Шляйфер і Вішні (1997) протиставляли ринкові системи США і Великої Британії, де банкам обмежено володіння акціями, банкоцентричним
-            системам; сучасний стан — Factbook 2023: інституційні інвестори володіють щонайменше 70 % капіталу лістингових компаній США.
-          source: shleifer-vishny-1997
-          alsoSources: [oecd-factbook-2023]
-        - model: german
-          statement: Історично «домашній банк» поєднував кредитування, володіння акціями і голосування за депонованими акціями клієнтів; нині посередник голосує чужими акціями лише за дорученням і вказівками акціонера.
-          explanation: >-
-            За оглядом Шляйфера й Вішні (стан на 1990-ті), німецькі банки поєднували кредитування з володінням акціями і голосуванням за
-            депонованими акціями, що давало їм місце в наглядових радах. Сьогодні § 135 Закону про АТ дозволяє посереднику голосувати
-            чужими акціями лише за дорученням акціонера і за його вказівками або за заздалегідь розкритими пропозиціями.
-          source: shleifer-vishny-1997
-          alsoSources: [aktg-135]
-        - model: japanese
-          statement: Історично «головний банк» групи був кредитором, акціонером і рятівником у кризі; паралельно з 2015 р. кодекс біржі вимагає політику щодо перехресних пакетів, а їхня частка на кінець 2022 р. — 6,3 % капіталізації.
-          explanation: >-
-            Систему головного банку описали Шляйфер і Вішні як механізм моніторингу в Японії 1990-х. Паралельні факти без причинного
-            зв’язку: принцип 1.4 Кодексу з 2015 р. вимагає розкривати політику щодо перехресного володіння (з 2018 р. — оцінювати кожен
-            пакет проти вартості капіталу), а Working Paper № 27 фіксує перехресне володіння на рівні 6,3 % капіталізації Японії.
-          source: shleifer-vishny-1997
-          alsoSources: [jcgc-code-2026, oecd-wp27-2022]
-        - model: family
-          statement: Банк — зовнішній кредитор; емісія голосуючих акцій розмиває контроль, тому власники воліють кредит, піраміду, подвійні класи акцій або неголосуючі папери.
-          explanation: >-
-            Working Paper ОЕСР № 27 описує піраміди й подвійні класи акцій як механізми, що зберігають контроль за меншої частки в капіталі;
-            ілюстрація — Roche, де капітал зовнішніх інвесторів залучено через неголосуючі сертифікати участі (702 562 700 шт. на 31.12.2025),
-            а голосуючі акції лишилися в пулі.
-          source: oecd-wp27-2022
-          alsoSources: [roche-finance-2025]
+    - id: multifactor
+      method: multifactor-productivity
+      title: Багатофакторна продуктивність
+      formula: 'Продуктивність = Обсяг випуску / (Праця + Матеріали + Енергія + Утримання обладнання)'
+      ref:
+        source: 'Stevenson W. J. Operations Management, 2020'
+        locator: 'розділ «Competitiveness, Strategy, and Productivity», підрозділ Productivity, багатофакторна продуктивність (PROD-02)'
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9781260575712
 
-    - id: board-structure
-      title: Будова ради
-      cells:
-        - model: anglo-american
-          statement: Однорівнева рада з більшістю незалежних невиконавчих директорів; голова ради зазвичай не є головним виконавчим директором.
-          explanation: >-
-            Кодекс Великої Британії 2024 р. вимагає поділу ролей голови ради і CEO та незалежності більшості ради; приклад — HSBC: 14 директорів,
-            11 незалежних, голова і CEO — різні особи (станом на 06.05.2026).
-          source: uk-cg-code-2024
-          alsoSources: [hsbc-board-2026]
-        - model: german
-          statement: Дворівнева — один орган веде бізнес, інший його призначає й контролює; одна особа не може входити до обох одночасно.
-          explanation: >-
-            Німецький кодекс корпоративного управління описує правління (Vorstand) і наглядову раду (Aufsichtsrat) як окремі органи з різними
-            повноваженнями, процедурами й винагородою.
-          source: dcgk-2022
-        - model: japanese
-          statement: Історично в раді переважали виконавчі директори з-поміж працівників компанії; нині для найвищого сегмента біржі потрібна щонайменше третина незалежних директорів, а за наявності контролюючого акціонера — більшість або спеціальний комітет; структуру органів компанія обирає з трьох законних.
-          explanation: >-
-            Принцип 4.10 чинного Кодексу (21.07.2026): для ринку Prime — щонайменше третина незалежних директорів; для компаній Prime з
-            контролюючим акціонером — більшість, незалежних від нього (або спеціальний комітет). Вимоги більшості для всіх компаній Prime
-            в Кодексі немає. Паралельний факт: Toyota Motor у 2025 р. перейшла до структури з аудиторсько-наглядовим комітетом; причинного
-            зв’язку з Кодексом джерела не встановлюють.
-          source: jcgc-code-2026
-          alsoSources: [toyota-voting-2025]
-        - model: family
-          statement: Засновники або їхні нащадки самі входять до ради чи менеджменту — так навіть у третині найбільших публічних компаній США; незалежні директори з’являються з виходом на біржу або під тиском інвесторів.
-          explanation: >-
-            Villalonga і Amit (2020, с. 244): засновники або їхні родини — ключові посадові особи, директори чи власники у третині компаній
-            S&P 500 (Anderson і Reeb, 2003); Factbook 2025 (розд. 4.1.1): шість юрисдикцій прив’язують вимоги до незалежності ради до
-            структури власності, тобто посилюють їх саме для контрольованих компаній.
-          source: villalonga-amit-2020
-          alsoSources: [oecd-factbook-2025]
+    - id: productivity-index
+      method: productivity-index
+      title: Індекс зміни продуктивності
+      formula: 'I = Продуктивність поточного періоду / Продуктивність базового періоду · 100 %'
+      ref:
+        source: 'Stevenson W. J. Operations Management, 2020'
+        locator: 'розділ «Competitiveness, Strategy, and Productivity», підрозділ Productivity, індекс зміни продуктивності (PROD-03)'
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9781260575712
 
-    - id: employees
-      title: Роль працівників
-      cells:
-        - model: anglo-american
-          statement: Працівники — стейкхолдери без місця в раді; кодекс рекомендує механізм залучення персоналу — директора від персоналу, консультативну раду або відповідального невиконавчого директора.
-          explanation: >-
-            Кодекс Великої Британії рекомендує один із механізмів залучення працівників, але не закріплює за працівниками місць у раді.
-          source: uk-cg-code-2024
-        - model: german
-          statement: Представники працівників за законом займають половину місць у контрольному органі компаній з понад 2 000 працівників і третину — у компаніях з понад 500 працівниками.
-          explanation: >-
-            Закон про співучасть 1976 р. (§ 1, § 7) встановлює паритет представників акціонерів і працівників у наглядовій раді компаній,
-            що зазвичай мають понад 2 000 працівників; Закон про третинну участь 2004 р. — третину для компаній з понад 500 працівниками.
-          source: mitbestg-1976
-          alsoSources: [drittelbg-2004]
-        - model: japanese
-          statement: Історично — довічний найм і внутрішня кар’єра, менеджери виростали з працівників; чинний кодекс біржі називає працівників серед сторін, на потреби яких зважає управління, але представництва в раді не передбачає.
-          explanation: >-
-            Шляйфер і Вішні описували японську систему 1990-х як інсайдерську з довгостроковими відносинами менеджменту і працівників.
-            Чинний Кодекс визначає корпоративне управління як ухвалення рішень «з належною увагою до потреб акціонерів, а також клієнтів,
-            працівників і місцевих громад», однак місць працівникам у раді не відводить.
-          source: shleifer-vishny-1997
-          alsoSources: [jcgc-code-2026]
-        - model: family
-          statement: Довгостроковий неявний контракт — нижчі зарплати, але рідші звільнення; представництва працівників в органах немає, власники говорять про персонал як про власну відповідальність.
-          explanation: >-
-            Villalonga і Amit (2020, с. 248–249): сімейні фірми платять нижчі зарплати, але рідше звільняють, що є ознакою довгострокового
-            неявного контракту з працівниками. Ілюстрація — промова віцеголови ради Roche 2022 р. про відповідальність за персонал понад 100 000 осіб.
-          source: villalonga-amit-2020
-          alsoSources: [roche-agm-2022]
+    - id: capacity-usage
+      method: capacity-usage
+      title: Коефіцієнт використання потужності
+      formula: 'Використання = Фактичний випуск / Проєктна потужність · 100 %'
+      ref:
+        source: 'Старченко Г.В., Калінько І.В., Косач І.А. Операційний менеджмент, 2020'
+        locator: 'розділ «Виробнича потужність», коефіцієнт використання потужності (CAP-01)'
+        checkedAt: '2026-09-22'
+        url: https://scholar.google.com/citations?user=9UX4QTYAAAAJ&hl=uk
 
-    - id: financing
-      title: Джерела фінансування
-      cells:
-        - model: anglo-american
-          statement: Ринок капіталу — емісія акцій і облігацій на глибокому фондовому ринку, найбільшому у світі за капіталізацією.
-          explanation: >-
-            Factbook 2023: США лишаються найбільшим ринком за капіталізацією, а публічний ринок акцій — основне джерело довгострокового
-            капіталу для компаній цієї моделі.
-          source: oecd-factbook-2023
-        - model: german
-          statement: Історично — банківський кредит і нерозподілений прибуток; нині ринок акцій лишається невеликим відносно економіки — близько 800 лістингових компаній з капіталізацією близько 2 трлн дол. на кінець 2022 р.
-          explanation: >-
-            Банкоцентрична система, за Шляйфером і Вішні (1990-ті), фінансувала компанії через кредит і довгострокові відносини з банком;
-            сучасний стан — табл. 1.1 Factbook 2023: у Німеччині 804 лістингові компанії з капіталізацією 1 993 млрд дол. США
-            (для порівняння, в Японії — 3 904 і 5 367 млрд).
-          source: shleifer-vishny-1997
-          alsoSources: [oecd-factbook-2023]
-        - model: japanese
-          statement: Кредит головного банку і ресурси групи; за кількістю лістингових компаній ринок найбільший серед розвинених, але значна частина акцій — у перехресних пакетах.
-          explanation: >-
-            В Японії 3 904 лістингові компанії (табл. 1.1 Factbook 2023) — найбільше серед розвинених ринків, але 22 % капіталу належить
-            корпораціям, що відображає групові структури.
-          source: oecd-factbook-2023
-        - model: family
-          statement: «Терплячий капітал» власників, нерозподілений прибуток і кредит; вихід на біржу — без втрати контролю, через неголосуючі папери або подвійні класи акцій.
-          explanation: >-
-            Villalonga і Amit (2020): родини дають фірмам довгострокову орієнтацію і «терплячий капітал»; Working Paper № 27 описує подвійні
-            класи акцій і піраміди як спосіб залучити капітал без втрати контролю. Ілюстрація — Roche з неголосуючими сертифікатами участі.
-          source: villalonga-amit-2020
-          alsoSources: [oecd-wp27-2022, roche-finance-2025]
-
-    - id: disclosure
-      title: Розкриття інформації
-      cells:
-        - model: anglo-american
-          statement: Найширше — регулярна звітність, детальні звіти про винагороду, жорсткі санкції регулятора ринку; розпорошений інвестор захищений лише тим, що знає.
-          explanation: >-
-            Принципи G20/ОЕСР 2023 (розд. IV) описують розкриття як основу аутсайдерської системи: розпорошений акціонер захищений лише тим,
-            що знає, тому вимоги до розкриття тут історично найжорсткіші.
-          source: oecd-principles-2023
-        - model: german
-          statement: Обов’язкове розкриття для лістингових компаній плюс щорічна декларація відповідності кодексу за принципом «дотримуйся або пояснюй», передбачена законом.
-          explanation: >-
-            Німецький кодекс спирається на декларацію відповідності за § 161 Закону про АТ: відхилення від рекомендацій треба пояснити й розкрити.
-          source: dcgk-2022
-        - model: japanese
-          statement: З 2015 р. розкривається політика щодо перехресних пакетів, з 2018 р. — результати щорічної оцінки кожного пакета проти вартості капіталу і стандарти голосування; з 2021 р. компанії найвищого сегмента розкривають кліматичні ризики за TCFD і публікують інформацію англійською.
-          explanation: >-
-            Принцип 1.4 з’явився в першій редакції Кодексу 2015 р.; редакція 2018 р. посилила його (оцінка кожного окремого пакета проти
-            вартості капіталу, оприлюднення результатів, голосування за оприлюдненими стандартами); редакція 2021 р. додала для ринку Prime
-            розкриття за TCFD або еквівалентом і англомовне розкриття; редакція 2026 р. зберігає це в чотирьох пунктах принципу 1.4.
-          source: jcgc-code-2015
-          alsoSources: [jcgc-code-2018, fsa-cgc-revisions-2021, jcgc-code-2026]
-        - model: family
-          statement: Для зовнішніх інвесторів вирішальне розкриття — акціонерні угоди, піраміди й кінцеві бенефіціари, бо саме через них тримають контроль; при цьому у 12 юрисдикціях розкриття акціонерних угод не обов’язкове, а у 13 — розкриття бенефіціарів.
-          explanation: >-
-            Working Paper ОЕСР № 27 (с. 20): прозорість акціонерних угод не є обов’язковою у 12 юрисдикціях, публічне розкриття бенефіціарної
-            власності лістингових компаній — у 13; це прогалини, які б’ють по міноритаріях саме контрольованих компаній, де контроль
-            тримають угодами, пірамідами й подвійними класами акцій. Ілюстрація — угода про спільне голосування пулу Roche, що діє з 1948 р.
-          source: oecd-wp27-2022
-          alsoSources: [roche-finance-2025]
-
-    - id: market-for-control
-      title: Ринок корпоративного контролю
-      cells:
-        - model: anglo-american
-          statement: Активний — ворожі поглинання й інвестори-активісти дисциплінують менеджмент; розпорошена власність робить компанію доступною для покупця.
-          explanation: >-
-            Шляйфер і Вішні розглядають поглинання як головний зовнішній механізм дисципліни менеджменту в США і Великій Британії.
-          source: shleifer-vishny-1997
-        - model: german
-          statement: Обмежений — блокуючі пакети стратегічних власників роблять вороже поглинання майже неможливим без їхньої згоди.
-          explanation: >-
-            У Volkswagen AG 73,3 % голосів належать двом власникам (Porsche SE і земля Нижня Саксонія); купити контроль на ринку за такої
-            структури неможливо без їхньої згоди.
-          source: vw-shareholders-2025
-        - model: japanese
-          statement: Історично майже відсутній — перехресне володіння захищало від поглинань; паралельно кодекс біржі вимагає політику скорочення пакетів, а угоди всередині групи проходять через спеціальні комітети незалежних директорів.
-          explanation: >-
-            Принцип 1.4 Кодексу вимагає розкривати політику щодо перехресних пакетів, зокрема їх скорочення; випадок Toyota Industries
-            2025–2026 рр. показує, що навіть усередині групи тендерна пропозиція проходила через спецкомітет незалежних директорів і
-            завершилася делістингом 01.06.2026. Це паралельні факти, а не наслідок один одного.
-          source: jcgc-code-2026
-          alsoSources: [toyota-industries-2026]
-        - model: family
-          statement: Контроль не купиш на ринку — його закріплено пірамідою, подвійним класом акцій або угодою про спільне голосування, тож зміна контролю можлива лише за рішенням контролюючої групи.
-          explanation: >-
-            Working Paper ОЕСР № 27 описує піраміди й подвійні класи акцій як механізми, що відокремлюють контроль від частки в капіталі;
-            ілюстрація — Roche: угода про спільне голосування діє з 1948 р., у 2009 р. продовжена на невизначений строк, пул тримав 64,97 %
-            акцій на 31.12.2025.
-          source: oecd-wp27-2022
-          alsoSources: [roche-finance-2025]
-
-    - id: minority-protection
-      title: Головний агентський конфлікт і захист міноритаріїв
-      cells:
-        - model: anglo-american
-          statement: Головний конфлікт — «менеджмент — акціонери»; захист — незалежна рада, суди, колективні позови й голосування інституційних інвесторів.
-          explanation: >-
-            Принципи G20/ОЕСР 2023 (розд. III і V) відводять інституційним інвесторам і незалежній раді роль головних дисциплінуючих сил
-            там, де контролюючого власника немає.
-          source: oecd-principles-2023
-        - model: german
-          statement: Головний конфлікт — «контролюючий акціонер — міноритарії», врівноважений участю працівників у контрольному органі; захист — права меншості в законі.
-          explanation: >-
-            Розділ II Принципів G20/ОЕСР 2023 присвячений рівному ставленню до акціонерів і захисту від зловживань контролюючих осіб — головній
-            проблемі систем з концентрованою власністю; співучасть працівників додає до конфлікту третю сторону.
-          source: oecd-principles-2023
-          alsoSources: [mitbestg-1976]
-        - model: japanese
-          statement: Головний конфлікт — «інсайдери групи — зовнішні акціонери»; захист — незалежні директори (більшість там, де є контролюючий акціонер) і спеціальні комітети при угодах з великим акціонером.
-          explanation: >-
-            Принцип 4.10 чинного Кодексу вимагає для компаній Prime з контролюючим акціонером більшості незалежних від нього директорів або
-            спеціального комітету для правочинів із конфліктом інтересів. При тендерній пропозиції щодо Toyota Industries, де Toyota Motor
-            мала 24,66 % і не контролювала компанію, спеціальний комітет із трьох незалежних зовнішніх директорів створили через конфлікт
-            інтересів найбільшого акціонера.
-          source: jcgc-code-2026
-          alsoSources: [toyota-industries-2026]
-        - model: family
-          statement: Головний конфлікт — «контролююча група — зовнішні інвестори», типовий прояв — тунелювання прибутків усередині групи; захист — схвалення угод із пов’язаними сторонами незалежними директорами або міноритаріями, правило «більшість меншості» діє лише в 4 юрисдикціях.
-          explanation: >-
-            Villalonga і Amit (2020) називають тунелювання прибутків усередині груп зворотним боком сімейної власності; Working Paper № 27:
-            контролююча особа може вилучати приватні вигоди коштом міноритаріїв, тому схвалення угод із пов’язаними сторонами незалежними
-            директорами вимагає 21 юрисдикція, міноритаріями — 17, а правило «majority of the minority» — лише 4.
-          source: oecd-wp27-2022
-          alsoSources: [villalonga-amit-2020]
-
-    - id: management-orientation
-      title: Мета і горизонт компанії
-      cells:
-        - model: anglo-american
-          statement: Головна мета — повернення на вкладений капітал тим, хто його надав; корпоративне управління визначають саме через це.
-          explanation: >-
-            Шляйфер і Вішні визначають корпоративне управління як способи, якими постачальники капіталу забезпечують повернення інвестицій, —
-            формулювання, у центрі якого саме інвестор.
-          source: shleifer-vishny-1997
-        - model: german
-          statement: Інтерес підприємства з урахуванням акціонерів, працівників та інших стейкхолдерів; орієнтир — сталий довгостроковий розвиток.
-          explanation: >-
-            Німецький кодекс орієнтує правління на інтерес підприємства з урахуванням акціонерів, працівників та інших стейкхолдерів і на сталий
-            довгостроковий розвиток.
-          source: dcgk-2022
-        - model: japanese
-          statement: Історично — стабільність відносин у групі й зайнятості понад поточний прибуток; чинна редакція кодексу біржі орієнтує раду на «зростання» — розподіл ресурсів, інвестиції й перегляд доцільності накопиченої готівки.
-          explanation: >-
-            Інсайдерська система 1990-х, за Шляйфером і Вішні, винагороджувала стабільність відносин, а не короткострокову доходність.
-            Офіційний огляд редакції 2026 р. описує «growth-oriented governance»: рада визначає шлях зростання і постійно переглядає
-            доцільність розподілу ресурсів, зокрема накопиченої готівки.
-          source: shleifer-vishny-1997
-          alsoSources: [fsa-tse-overview-2026]
-        - model: family
-          statement: Довгий горизонт і збереження компанії для наступного покоління; зворотний бік — гірші результати під керівництвом нащадків.
-          explanation: >-
-            Villalonga і Amit (2020, с. 248–253): родини дають фірмам довгострокову орієнтацію, але позитивний ефект сімейної власності
-            поєднується з негативним ефектом контролю понад частку в капіталі та гіршими результатами компаній під керівництвом нащадків.
-            Ілюстрація — «що добре для Roche — добре для нашої родини, а не навпаки» (промова 2022 р.).
-          source: villalonga-amit-2020
-          alsoSources: [roche-agm-2022]
-
-    - id: governance-instrument
-      title: Головний інструмент регулювання
-      cells:
-        - model: anglo-american
-          statement: Кодекс за принципом «дотримуйся або пояснюй», який видає регулятор фінансової звітності для компаній з лістингом.
-          explanation: >-
-            Кодекс Великої Британії 2024 р. (FRC) працює в режимі «дотримуйся або пояснюй» для компаній з лістингом; у США основну роль
-            відіграють закони про цінні папери і корпоративне право штатів, які в цій матриці не розглядаються.
-          source: uk-cg-code-2024
-        - model: german
-          statement: Закон про акціонерні товариства і закони про співучасть плюс кодекс зі щорічною декларацією відповідності.
-          explanation: >-
-            Обов’язковий рівень — Закон про АТ і Закон про співучасть 1976 р.; рекомендаційний — Кодекс з декларацією за § 161 Закону про АТ.
-          source: dcgk-2022
-          alsoSources: [mitbestg-1976]
-        - model: japanese
-          statement: Кодекс корпоративного управління біржі (2015; переглянутий 2018, 2021 і 2026 рр.) за принципом «дотримуйся або пояснюй» з різним обсягом для сегментів ринку.
-          explanation: >-
-            Кодекс видає Токійська фондова біржа як правило лістингу, а не закон; чинна редакція — від 21.07.2026, звіти за нею — до липня 2027 р.
-            Компанії ринків Prime і Standard пояснюють відхилення від будь-якого принципу, компанії ринку Growth — лише від загальних принципів.
-          source: jcgc-code-2026
-        - model: family
-          statement: Статут і акціонерна угода або угода про спільне голосування контролюючої групи; кодекси — лише за лістингу, а розкриття самих угод обов’язкове не скрізь.
-          explanation: >-
-            Working Paper ОЕСР № 27 фіксує акціонерні угоди як інструмент контролю, розкриття якого не є обов’язковим у 12 юрисдикціях;
-            ілюстрація — угода про спільне голосування пулу Roche, що діє з 1948 р.
-          source: oecd-wp27-2022
-          alsoSources: [roche-finance-2025]
-
-  companyTasks:
-    - id: volkswagen
-      company: Volkswagen AG
-      description: >-
-        Автовиробник з Вольфсбурга. Права голосу на 31.12.2025: холдинг родин засновників — 53,3 %, федеральна земля — 20,0 %,
-        суверенний фонд — 17,0 %, вільний обіг — 9,7 %. Органи: правління і наглядова рада; половина наглядової ради — представники
-        працівників за законом. Щорічна декларація відповідності кодексу.
-      answer: german
-      keyFeatures: [ownership-structure, board-structure, employees]
-      explanation: >-
-        Концентрована власність стратегічних власників (холдинг, земля, фонд), дворівнева структура і законодавча співучасть працівників —
-        три визначальні ознаки німецької моделі. Сімейний холдинг у структурі не робить компанію «сімейною моделлю»: контроль поділений
-        із землею, а органи й співучасть визначає німецьке право.
-      source: vw-shareholders-2025
-    - id: toyota
-      company: Toyota Motor Corporation
-      description: >-
-        Автовиробник володів 24,66 % акцій компанії-засновниці своєї групи, яка сама була його акціонером; у 2025–2026 рр. цю компанію
-        приватизовано через тендерну пропозицію з участю спеціального комітету незалежних директорів і 01.06.2026 делістинговано.
-        У 2023 р. один радник з голосування рекомендував голосувати проти голови ради, посилаючись на малу частку незалежних
-        директорів; у 2024 р. інший радник — посилаючись на сертифікаційні порушення в групі. У 2025 р. збори перевели компанію
-        до структури з аудиторсько-наглядовим комітетом. Паралельно біржовий кодекс вимагає щороку переоцінювати перехресні пакети
-        і тримати в раді щонайменше третину незалежних директорів.
-      answer: japanese
-      keyFeatures: [key-owners, board-structure, market-for-control]
-      explanation: >-
-        Перехресне володіння всередині групи, рада, яка лише поступово рухається до незалежності, і кодекс біржі як головний інструмент —
-        ознаки японської моделі. Спеціальний комітет незалежних директорів при угоді з Toyota Industries показує, як модель змінюється;
-        причинного зв’язку між Кодексом і змінами в раді Toyota джерела не встановлюють — це паралельні факти.
-      source: toyota-industries-2026
-    - id: dispersed
-      company: Умовна компанія «Північна енергія»
-      description: >-
-        Акції в обігу на Нью-Йоркській фондовій біржі; найбільший акціонер — індексний фонд з 8 %, десять найбільших разом — 30 %.
-        Однорівнева рада з 11 членів, з них 9 незалежних; голова ради і головний виконавчий директор — різні особи. Інвестор-активіст
-        з 3 % вимагає продати підрозділ і публікує відкритого листа раді; менеджмент відповідає, що це знизить довгострокову вартість.
-      answer: anglo-american
-      keyFeatures: [ownership-structure, board-structure, market-for-control]
-      explanation: >-
-        Розпорошена власність з інституційними інвесторами, однорівнева рада з більшістю незалежних і активний ринок корпоративного
-        контролю (активіст, який тисне на раду публічно) — усе це англо-американська модель. Головний конфлікт тут — між менеджментом
-        і акціонерами, тому й механізми спрямовані на менеджмент.
-      source: oecd-factbook-2023
+    - id: capacity-efficiency
+      method: capacity-efficiency
+      title: Ефективність використання потужності
+      formula: 'Ефективність = Фактичний випуск / Ефективна потужність · 100 %'
+      ref:
+        source: 'Старченко Г.В., Калінько І.В., Косач І.А. Операційний менеджмент, 2020'
+        locator: 'розділ «Виробнича потужність», ефективність використання потужності (CAP-02)'
+        checkedAt: '2026-09-22'
+        url: https://scholar.google.com/citations?user=9UX4QTYAAAAJ&hl=uk
 
   essay:
     prompt: >-
-      Яка модель корпоративного управління найближча до українських акціонерних товариств після Закону № 2465-IX і як вона враховує
-      інтереси стейкхолдерів? Есе до 300 слів з тезою, щонайменше двома аргументами на основі ознак моделей і Принципів G20/ОЕСР 2023
-      та оцінкою впливу на щонайменше дві групи стейкхолдерів.
+      Поясніть, чому зростання продуктивності за працею в тренажері може супроводжуватися падінням
+      багатофакторної продуктивності, і назвіть два управлінські рішення, що дають такий ефект.
     maxWords: 300
     expectations:
-      - Чітка теза про модель (або поєднання моделей), а не переказ лекції.
-      - Щонайменше два аргументи, що спираються на ознаки з матриці (структура власності, будова ради, роль працівників, розкриття) і на розділи Принципів G20/ОЕСР 2023.
-      - Названо щонайменше дві групи стейкхолдерів і оцінено, як обрана модель впливає на їхні інтереси, з етичним аспектом (кому вигідно, хто несе ризик).
-      - 'Норми права — лише чинні: Закон № 2465-IX, Кодекс НКЦПФР; без ВАТ/ЗАТ і Господарського кодексу.'
+      - 'Названо конкретну причину розбіжності: зекономлений ресурс (наприклад, праця) замінено іншим, який теж входить до знаменника багатофакторного показника.'
+      - 'Наведено щонайменше два управлінські рішення з таким ефектом (наприклад, автоматизація дільниці, перехід на дорожче обладнання чи енергоємнішу технологію).'
+      - 'Пояснення спирається на власний розрахунок із тренажера, а не переказує визначення часткової й багатофакторної продуктивності.'
     hints:
-      - Закон № 2465-IX дозволяє обрати однорівневу (рада директорів) або дворівневу (наглядова рада і виконавчий орган) структуру — ст. 4 (legal-baseline AT-03); у публічних товариствах незалежними мають бути не менше третини наглядової ради, але не менше двох осіб — ст. 72 ч. 4 (AT-49).
-      - За звітом ОЕСР 2025 р., понад 60 % компаній, акції яких торгувалися на біржах України, мають єдиного власника з пакетом понад 50 % (проти близько 32 % у юрисдикціях Factbook 2022 р.); це лише біржові компанії — чи так само в решти АТ, перевірте на практичній 7 за розкриттям емітентів у базі SMIDA або в кейс-проєкті.
-      - Кодекс НКЦПФР 2020 р. рекомендаційний і працює за принципом «дотримуйся або пояснюй» — інструмент, спільний для британської, німецької та японської моделей; але він відображає законодавство станом на 01.01.2020 і спирається на попередній закон про АТ, тому його «вимоги» звіряйте з Законом № 2465-IX.
-      - Розділ VI Принципів G20/ОЕСР 2023 (сталий розвиток і стійкість) — місце, де стандарт говорить про інтереси стейкхолдерів; розділ II — про захист міноритаріїв від контролюючих осіб; Factbook 2025 називає конфлікт контролюючого і міноритарних акціонерів «горизонтальною» агентською проблемою.
+      - 'Порівняйте, у скільки разів зросли випуск і сумарні витрати ресурсів: якщо витрати зросли швидше за випуск — багатофакторна продуктивність падає, навіть коли часткова за одним ресурсом зростає.'
+      - 'Перегляньте розділ лекції «Продуктивність операційної системи: часткова, багатофакторна, загальна» — приклад цеху з новою напівавтоматичною лінією.'

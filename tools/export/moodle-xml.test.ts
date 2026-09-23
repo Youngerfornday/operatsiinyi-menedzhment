@@ -43,12 +43,12 @@ describe('категорії, теги й порядок', () => {
       .map((node) => [textAt(node, 'idnumber'), textAt(node, 'category', 'text')]);
     expect(categories).toEqual([
       ['tr', 'top/Тренувальний банк'],
-      ['tr-m1', 'top/Тренувальний банк/Модуль 1. Основи корпоративного управління'],
-      ['tr-t01', 'top/Тренувальний банк/Модуль 1. Основи корпоративного управління/Тема 01. Корпорація'],
-      ['tr-t02', 'top/Тренувальний банк/Модуль 1. Основи корпоративного управління/Тема 02. Моделі КУ'],
-      ['tr-m2', 'top/Тренувальний банк/Модуль 2. Органи корпоративного управління'],
-      ['tr-t04', 'top/Тренувальний банк/Модуль 2. Органи корпоративного управління/Тема 04. Акціонери та загальні збори'],
-      ['tr-t05', 'top/Тренувальний банк/Модуль 2. Органи корпоративного управління/Тема 05. Наглядова рада'],
+      ['tr-m1', 'top/Тренувальний банк/Модуль 1. Основи операційного менеджменту'],
+      ['tr-t01', 'top/Тренувальний банк/Модуль 1. Основи операційного менеджменту/Тема 01. Корпорація'],
+      ['tr-t02', 'top/Тренувальний банк/Модуль 1. Основи операційного менеджменту/Тема 02. Моделі КУ'],
+      ['tr-m2', 'top/Тренувальний банк/Модуль 2. Органи операційного менеджменту'],
+      ['tr-t04', 'top/Тренувальний банк/Модуль 2. Органи операційного менеджменту/Тема 04. Акціонери та загальні збори'],
+      ['tr-t05', 'top/Тренувальний банк/Модуль 2. Органи операційного менеджменту/Тема 05. Наглядова рада'],
       ['tr-m3', 'top/Тренувальний банк/Модуль 3. Капітал // ринок'],
       ['tr-t07', 'top/Тренувальний банк/Модуль 3. Капітал // ринок/Тема 07. Капітал і дивіденди'],
     ]);
@@ -61,8 +61,8 @@ describe('категорії, теги й порядок', () => {
       .map((node) => [textAt(node, 'idnumber'), textAt(node, 'category', 'text')]);
     expect(categories).toEqual([
       ['ct', 'top/Контрольний банк'],
-      ['ct-m2', 'top/Контрольний банк/Модуль 2. Органи корпоративного управління'],
-      ['ct-t04', 'top/Контрольний банк/Модуль 2. Органи корпоративного управління/Тема 04. Акціонери та загальні збори'],
+      ['ct-m2', 'top/Контрольний банк/Модуль 2. Органи операційного менеджменту'],
+      ['ct-t04', 'top/Контрольний банк/Модуль 2. Органи операційного менеджменту/Тема 04. Акціонери та загальні збори'],
     ]);
     const ids = childrenNamed(parseXml(bankToMoodleXml(control, REGISTRY)), 'question')
       .filter((node) => node.attributes.type !== 'category')
@@ -80,20 +80,20 @@ describe('категорії, теги й порядок', () => {
     expect(ids).toEqual(['t01-q003', 't02-q004', 't04-q001', 't04-q007', 't04-q008', 't05-q002', 't07-q005', 't07-q006']);
   });
 
-  it('норми з lawRef дописуються до загального відгуку окремими рядками', () => {
+  it('джерела з refs дописуються до загального відгуку окремими рядками', () => {
     const raw = {
       ...examples.multichoiceSingle(),
-      lawRef: [
-        { act: 'Закону № 2465-IX', article: 'ст. 40 ч. 1', checkedAt: '2026-09-15' },
-        { act: 'Кодексу корпоративного управління', article: 'п. 2.3', checkedAt: '2026-09-01', url: 'https://zakon.rada.gov.ua/laws/show/2465-20' },
+      refs: [
+        { source: 'Закону № 2465-IX', locator: 'ст. 40 ч. 1', checkedAt: '2026-09-15' },
+        { source: 'Кодексу операційного менеджменту', locator: 'п. 2.3', checkedAt: '2026-09-01', url: 'https://zakon.rada.gov.ua/laws/show/2465-20' },
       ],
     };
     const feedback = textAt(parsedQuestion(raw), 'generalfeedback', 'text');
-    expect(feedback).toContain(`<p>Норма: ст.${NBSP}40 ч.${NBSP}1 Закону №${NBSP}2465-IX (перевірено 15.09.2026)</p>`);
+    expect(feedback).toContain(`<p>Джерело: ст.${NBSP}40 ч.${NBSP}1 Закону №${NBSP}2465-IX (перевірено 15.09.2026)</p>`);
     expect(feedback).toContain(
-      `<p>Норма: <a href="https://zakon.rada.gov.ua/laws/show/2465-20">п.${NBSP}2.3 Кодексу корпоративного управління</a> (перевірено 01.09.2026)</p>`,
+      `<p>Джерело: <a href="https://zakon.rada.gov.ua/laws/show/2465-20">п.${NBSP}2.3 Кодексу операційного менеджменту</a> (перевірено 01.09.2026)</p>`,
     );
-    expect(textAt(parsedQuestion(examples.trueFalse()), 'generalfeedback', 'text')).not.toContain('Норма:');
+    expect(textAt(parsedQuestion(examples.trueFalse()), 'generalfeedback', 'text')).not.toContain('Джерело:');
   });
 
   it('кожне питання має теги bloom-<рівень> і topic-tNN та idnumber = ID', () => {
@@ -176,8 +176,8 @@ describe('помилки вхідних даних', () => {
       .filter((node) => node.attributes.type === 'category')
       .map((node) => [textAt(node, 'idnumber'), textAt(node, 'category', 'text')])).toEqual([
       ['ct-final', 'top/Контрольний банк. Підсумковий'],
-      ['ct-final-m2', 'top/Контрольний банк. Підсумковий/Модуль 2. Органи корпоративного управління'],
-      ['ct-final-t04', 'top/Контрольний банк. Підсумковий/Модуль 2. Органи корпоративного управління/Тема 04. Акціонери та загальні збори'],
+      ['ct-final-m2', 'top/Контрольний банк. Підсумковий/Модуль 2. Органи операційного менеджменту'],
+      ['ct-final-t04', 'top/Контрольний банк. Підсумковий/Модуль 2. Органи операційного менеджменту/Тема 04. Акціонери та загальні збори'],
     ]);
     expect(bankToMoodleXml(finalBank, REGISTRY)).toContain('контрольний банк питань, підсумковий пул');
     expect(describeQuestionPlan(planQuestionExport([finalBank], REGISTRY)).pool).toBe('final');
@@ -206,8 +206,8 @@ describe('describeQuestionPlan', () => {
     expect(Object.keys(manifest.byType)).toEqual([...Object.keys(manifest.byType)].sort());
     expect(manifest.categories.slice(0, 3)).toEqual([
       { idnumber: 'tr', path: 'top/Тренувальний банк', parent: null },
-      { idnumber: 'tr-m1', path: 'top/Тренувальний банк/Модуль 1. Основи корпоративного управління', parent: 'tr' },
-      { idnumber: 'tr-t01', path: 'top/Тренувальний банк/Модуль 1. Основи корпоративного управління/Тема 01. Корпорація', parent: 'tr-m1' },
+      { idnumber: 'tr-m1', path: 'top/Тренувальний банк/Модуль 1. Основи операційного менеджменту', parent: 'tr' },
+      { idnumber: 'tr-t01', path: 'top/Тренувальний банк/Модуль 1. Основи операційного менеджменту/Тема 01. Корпорація', parent: 'tr-m1' },
     ]);
     const cloze = manifest.questions.find((entry) => entry.idnumber === 't04-q008');
     expect(cloze).toEqual({ idnumber: 't04-q008', qtype: 'multianswer', category: 'tr-t04', defaultMark: 2, tags: ['bloom-analyze', 'topic-t04'] });

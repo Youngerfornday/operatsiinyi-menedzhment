@@ -8,32 +8,33 @@ describe('lintContent', () => {
       '---',
       'id: t01',
       'keyTerms:',
-      '  - corporation',
-      'lawRef:',
-      '  - act: Закон України № 2465-IX',
-      '    article: ст. 40 ч. 1 (AT-26)',
-      "    checkedAt: '2026-09-14'",
+      '  - eoq',
+      'refs:',
+      '  - source: Старченко Г.В. та ін., 2020',
+      '    locator: розділ «Запаси», формула EOQ (EOQ-01)',
+      "    checkedAt: '2026-09-15'",
       'updatedAt: 2026-09-16',
       '---',
-      'Суд закрив провадження на підставі Закону № 590-IX, який передбачає компенсацію.',
+      'Toyota змінила виробничі процеси через причини, повʼязані з конкуренцією.',
       '',
-      'Понад 97 % портфеля — кредити пов’язаним особам.',
+      'Показник: точні порогові частки ABC-аналізу за цим курсом становлять 80/15/5.',
       '',
-      '<Term id="squeeze-out">примусовий викуп</Term>',
+      'Понад 97 % запасів належать до категорії C.',
+      '',
+      '<Term id="oee">загальна ефективність обладнання</Term>',
     ]);
     const findings = lintContent({ files: [lecture], baseline: baseline(), course, today: '2026-09-17' });
     expect([...new Set(findings.map((finding) => finding.rule))].sort()).toEqual([
       'case-caveat',
-      'checked-date',
-      'law-number',
-      'lawref-consistency',
       'number-without-source',
+      'ref-consistency',
       'term',
+      'unconfirmed-zone',
     ]);
   });
 
   it('works without a course registry and with the current date', () => {
-    const lecture = file('content/modules/m1/t01/lecture.mdx', ['<Term id="corporation">корпорація</Term>']);
+    const lecture = file('content/modules/m1/t01/lecture.mdx', ['<Term id="eoq">EOQ</Term>']);
     expect(lintContent({ files: [lecture], baseline: baseline() }).map((finding) => finding.rule)).toEqual(['term']);
   });
 

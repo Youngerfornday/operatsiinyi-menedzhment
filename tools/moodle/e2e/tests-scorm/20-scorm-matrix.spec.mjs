@@ -8,7 +8,7 @@ import { expect, test } from '@playwright/test';
 import { MOODLE_DIR, OUT_DIR } from '../lib/config.mjs';
 import { login, saveEvidence, shot } from '../lib/moodle.mjs';
 
-const SHORTNAME = process.env.KU_SCORM_SHORTNAME ?? 'KU-SCORM-CHECK';
+const SHORTNAME = process.env.OM_SCORM_SHORTNAME ?? 'KU-SCORM-CHECK';
 const WORK_DIR = resolve(OUT_DIR, 'scorm-check');
 const CONTAINER_HELPER = '/tmp/ku-scorm/scorm-helper.php';
 const HELPER_TIMEOUT_MS = 120 * 1000;

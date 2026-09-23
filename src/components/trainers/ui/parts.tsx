@@ -1,8 +1,7 @@
-/** Спільні блоки тренажерів: покроковий розбір, вердикт зі знаком, норми з датою перевірки, перевірка задачі. */
+/** Спільні блоки тренажерів: покроковий розбір, вердикт зі знаком, джерела й формули з датою перевірки, перевірка задачі. */
 import type { ReactNode } from 'react';
 import { formatDate } from '../../../lib/course-data-pure';
 import { Icon } from '../../quiz/Icon';
-import type { NormRef } from '../norms';
 import type { TaskCheck } from '../model/task-check';
 
 export function Steps({ title, steps, name }: { readonly title: string; readonly steps: readonly string[]; readonly name: string }) {
@@ -41,33 +40,45 @@ export function Verdict({ ok, title, children, name }: VerdictProps) {
   );
 }
 
-export interface NormItem {
-  readonly norm: NormRef;
-  /** Значення з рушія, якщо норма задає число: «більше 50 % голосуючих акцій». */
+/**
+ * Перевірене джерело чи формула тренажера: підручник, стандарт або норма (`RefSchema` контенту —
+ * `{ source, locator, checkedAt, url? }`). `locator` уже містить код рядка бази, якщо він є
+ * («с. 142, форм. 5.3 (EOQ-01)»), тож окремого поля для коду немає.
+ */
+export interface SourceRef {
+  readonly source: string;
+  readonly locator: string;
+  readonly checkedAt: string;
+  readonly url?: string;
+}
+
+export interface SourceItem {
+  readonly item: SourceRef;
+  /** Що саме дає це джерело чи формула — на розсуд тренажера. */
+  readonly text?: string;
+  /** Значення з рушія, якщо джерело задає число: «більше 50 % голосуючих акцій». */
   readonly value?: string;
 }
 
-export function NormNotes({ items, note }: { readonly items: readonly NormItem[]; readonly note?: string }) {
+export interface SourceNotesProps {
+  readonly items: readonly SourceItem[];
+  readonly note?: string;
+  /** «Джерела» (тексти, норми) або «Формули» (розрахункові залежності) — обирає тренажер. */
+  readonly heading?: string;
+}
+
+export function SourceNotes({ items, note, heading = 'Джерела' }: SourceNotesProps) {
   return (
-    <aside className="tnorms" aria-label="Норми, за якими рахує тренажер">
-      <h4 className="steps-title">Норми за замовчуванням</h4>
+    <aside className="tnorms" aria-label={`${heading}, за якими рахує тренажер`}>
+      <h4 className="steps-title">{heading}</h4>
       <ul>
-        {items.map(({ norm, value }) => (
-          <li key={`${norm.code}-${norm.article}`}>
+        {items.map(({ item, text, value }, index) => (
+          <li key={`${item.source}-${item.locator}-${index}`}>
             <Icon name="scale" className="icon icon-sm" />
             <span>
               {value && <b>{value}. </b>}
-              {norm.summary}{' '}
-              <span className="tnorm-src">
-                <a href={norm.url} target="_blank" rel="noopener noreferrer">
-                  {norm.article} {norm.law}
-                  <Icon name="external" className="icon icon-sm" label="відкривається в новій вкладці" />
-                </a>
-                <span className="verified">
-                  <Icon name="check" className="icon icon-sm" />
-                  перевірено {formatDate(norm.checkedAt)}
-                </span>
-              </span>
+              {text && <>{text} </>}
+              <SourceRefLink item={item} />
             </span>
           </li>
         ))}
@@ -107,21 +118,23 @@ export function TaskValue({ name, raw, children }: { readonly name: string; read
   );
 }
 
-/**
- * Посилання на норму поруч із поясненням: стаття (з кодом рядка legal-baseline у дужках, якщо його там
- * записано), акт і дата перевірки. Код додається окремо лише тоді, коли його немає в самій статті.
- */
-export function NormRefLink({ norm }: { readonly norm: NormRef }) {
-  const article = norm.article.includes(`(${norm.code})`) ? norm.article : `${norm.article} (${norm.code})`;
+/** Посилання на джерело чи формулу поруч із поясненням: локатор, назва джерела і дата перевірки. */
+export function SourceRefLink({ item }: { readonly item: SourceRef }) {
   return (
-    <span className="tnorm-src" data-norm={norm.code}>
-      <a href={norm.url} target="_blank" rel="noopener noreferrer">
-        {article} {norm.law}
-        <Icon name="external" className="icon icon-sm" label="відкривається в новій вкладці" />
-      </a>
+    <span className="tnorm-src" data-source={item.source}>
+      {item.url ? (
+        <a href={item.url} target="_blank" rel="noopener noreferrer">
+          {item.source}, {item.locator}
+          <Icon name="external" className="icon icon-sm" label="відкривається в новій вкладці" />
+        </a>
+      ) : (
+        <span>
+          {item.source}, {item.locator}
+        </span>
+      )}
       <span className="verified">
         <Icon name="check" className="icon icon-sm" />
-        перевірено {formatDate(norm.checkedAt)}
+        перевірено {formatDate(item.checkedAt)}
       </span>
     </span>
   );

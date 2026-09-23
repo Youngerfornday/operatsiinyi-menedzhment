@@ -15,7 +15,7 @@ const practicals = course.grading.categories.find((category) => category.id === 
 const credits = pluralUk(course.credits, { one: 'кредит', few: 'кредити', many: 'кредитів', other: 'кредиту' });
 const description = `Онлайн-курс «${course.title}» для бакалаврів менеджменту: ${topics.length} тем, ${practicals} практикумів, тренажери з розрахунками й тести з розбором кожної відповіді. ${course.institutionShort}.`;
 
-/** Початковий стан без прогресу: наступна тема — перша. Рушій прогресу гідрує [data-quorum] і [data-continue]. */
+/** Початковий стан без прогресу: наступна тема — перша. Рушій прогресу гідрує [data-route] і [data-continue]. */
 const nextTopic = topics[0];
 const facts = [
   { value: modules.length, label: pluralUk(modules.length, { one: 'модуль', few: 'модулі', many: 'модулів', other: 'модуля' }).replace(/^\S+\s/, '') },
@@ -46,7 +46,7 @@ const trainers = CALCULATOR_TRAINERS;
         <div>
           <h1 class="display" id="hero-title">{course.title}</h1>
           <p class="lede">
-            {typo(`Як власники, наглядова рада і менеджмент ділять владу та відповідальність у компанії, і що робити, коли їхні інтереси розходяться. ${topics.length} тем, ${practicals} практикумів, тренажери з розрахунками й тести з розбором кожної відповіді.`)}
+            {typo(`Як планування, виробництво і логістика ділять відповідальність за потік цінності, і що робити, коли терміни, запаси й потужності розходяться. ${topics.length} тем, ${practicals} практикумів, тренажери з розрахунками й тести з розбором кожної відповіді.`)}
           </p>
           <div class="hero-cta">
             {
@@ -57,7 +57,7 @@ const trainers = CALCULATOR_TRAINERS;
                 </a>
               )
             }
-            <a class="btn btn-secondary btn-lg" href="#agenda">Порядок денний</a>
+            <a class="btn btn-secondary btn-lg" href="#agenda">Маршрутна карта</a>
           </div>
           <dl class="facts" aria-label="Обсяг курсу">
             {
@@ -75,27 +75,27 @@ const trainers = CALCULATOR_TRAINERS;
             {course.program.specialtyTitle && <span>{typo(course.program.specialtyTitle)}</span>}
           </p>
         </div>
-        <aside class="quorum-panel" aria-labelledby="quorum-title" data-quorum data-total={topics.length}>
-          <h2 id="quorum-title">
-            Ваш кворум <span class="num" data-quorum-label>0 із {topics.length} тем</span>
+        <aside class="route-panel" aria-labelledby="route-title" data-route data-total={topics.length}>
+          <h2 id="route-title">
+            Ваш маршрут <span class="num" data-route-label>0 із {topics.length} тем</span>
           </h2>
-          <div class="quorum" role="img" aria-label={`Пройдено 0 тем із ${topics.length}`} data-quorum-cells>
+          <div class="route" role="img" aria-label={`Пройдено 0 тем із ${topics.length}`} data-route-cells>
             {topics.map((topic) => <i data-topic={topic.id} data-state="todo"></i>)}
           </div>
-          <div class="quorum-label">
-            <span data-quorum-position>Початок курсу</span>
-            <span>Кворум для заліку: {topics.length} із {topics.length}</span>
+          <div class="route-label">
+            <span data-route-position>Початок курсу</span>
+            <span>Маршрут пройдено: {topics.length} із {topics.length}</span>
           </div>
           {
             nextTopic && (
-              <div class="next" data-quorum-next>
+              <div class="next" data-route-next>
                 <div>
-                  <div class="next-label">Наступне питання порядку денного</div>
-                  <div class="next-title" data-quorum-next-title>
+                  <div class="next-label">Наступний пункт маршруту</div>
+                  <div class="next-title" data-route-next-title>
                     {nextTopic.number}. {typo(nextTopic.title)}
                   </div>
                 </div>
-                <a class="btn btn-ghost btn-sm" href={url(`temy/${nextTopic.slug}/`)} aria-label={`Відкрити тему ${nextTopic.number}`} data-quorum-next-link>
+                <a class="btn btn-ghost btn-sm" href={url(`temy/${nextTopic.slug}/`)} aria-label={`Відкрити тему ${nextTopic.number}`} data-route-next-link>
                   <Icon name="arrow-r" />
                 </a>
               </div>
@@ -108,9 +108,9 @@ const trainers = CALCULATOR_TRAINERS;
 
   <section class="section container" id="agenda" aria-labelledby="agenda-title">
     <div class="section-head">
-      <h2 class="h2" id="agenda-title">Порядок денний</h2>
+      <h2 class="h2" id="agenda-title">Маршрутна карта</h2>
       <p class="muted">
-        {typo(`Чотири модулі по три теми. Кожна тема — лонгрід зі схемою, нормою права, кейсом і самоперевіркою; за нею тренувальний тест.`)}
+        {typo(`${pluralUk(modules.length, { one: 'модуль', few: 'модулі', many: 'модулів', other: 'модуля' })} і ${pluralUk(topics.length, { one: 'тема', few: 'теми', many: 'тем', other: 'теми' })}. Кожна тема — лонгрід зі схемою, формулою і розібраним прикладом, кейсом і самоперевіркою; за нею тренувальний тест.`)}
       </p>
     </div>
     <Agenda modules={modules} />
@@ -145,7 +145,7 @@ const trainers = CALCULATOR_TRAINERS;
       <div>
         <h2 class="h2" id="how-title">Як росте ваш голос у курсі</h2>
         <p class="muted how-text">
-          {typo('За прочитані теми, картки, тести й кейси нараховуються бали досвіду. Вони відкривають симуляції та наступні кар’єрні рівні — від акціонера з однією акцією до голови ради. Серій днів і таймерів немає: курс не підганяє.')}
+          {typo('За прочитані теми, картки, тести й кейси нараховуються бали досвіду. Вони відкривають симуляції та наступні кар’єрні рівні — від стажиста дільниці до директора з операцій. Серій днів і таймерів немає: курс не підганяє.')}
         </p>
         <p class="muted how-text small">{typo('Прогрес зберігається у вашому браузері; його можна експортувати кодом і перенести на інший пристрій.')}</p>
       </div>
@@ -189,9 +189,9 @@ const trainers = CALCULATOR_TRAINERS;
   .hero-kicker-row span + span::before { content: "·"; margin-right: var(--s-4); }
   .hero .lede { color: var(--band-ink-muted); margin-top: var(--s-5); max-width: 48ch; }
   .hero-cta { display: flex; gap: var(--s-3); margin-top: var(--s-6); flex-wrap: wrap; }
-  .quorum-panel { background: rgba(255, 255, 255, 0.07); border: 1px solid var(--band-line); border-radius: var(--r-3); padding: var(--s-5); backdrop-filter: blur(6px); }
-  .quorum-panel h2 { font-size: var(--text-md); font-weight: 650; margin-bottom: var(--s-4); display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-3); flex-wrap: wrap; }
-  .quorum-panel h2 .num { font-weight: 500; color: var(--band-ink-muted); font-size: var(--text-sm); }
+  .route-panel { background: rgba(255, 255, 255, 0.07); border: 1px solid var(--band-line); border-radius: var(--r-3); padding: var(--s-5); backdrop-filter: blur(6px); }
+  .route-panel h2 { font-size: var(--text-md); font-weight: 650; margin-bottom: var(--s-4); display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-3); flex-wrap: wrap; }
+  .route-panel h2 .num { font-weight: 500; color: var(--band-ink-muted); font-size: var(--text-sm); }
   .next { display: grid; grid-template-columns: 1fr auto; gap: var(--s-3); align-items: center; margin-top: var(--s-5); padding-top: var(--s-4); border-top: 1px solid var(--band-line); }
   .next-label { font-size: var(--text-xs); color: var(--band-ink-muted); }
   .next-title { font-weight: 600; font-size: var(--text-sm); margin-top: 2px; text-wrap: balance; }

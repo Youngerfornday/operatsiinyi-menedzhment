@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('перемикач теми', () => {
-  test('перемикає data-theme і зберігає вибір у localStorage під ключем ku:v1:theme; без мерехтіння після перезавантаження', async ({ page }) => {
+  test('перемикає data-theme і зберігає вибір у localStorage під ключем om:v1:theme; без мерехтіння після перезавантаження', async ({ page }) => {
     await page.emulateMedia({ colorScheme: 'light' });
     await page.goto('');
     const toggle = page.locator('[data-theme-toggle]').first();
@@ -10,7 +10,7 @@ test.describe('перемикач теми', () => {
     await toggle.click();
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
     await expect(toggle).toHaveAttribute('aria-label', 'Увімкнути світлу тему');
-    expect(await page.evaluate(() => localStorage.getItem('ku:v1:theme'))).toBe('dark');
+    expect(await page.evaluate(() => localStorage.getItem('om:v1:theme'))).toBe('dark');
 
     await page.reload();
     // Inline-скрипт у <head> ставить атрибут до першого рендеру: тема відома вже на document.readyState=loading
@@ -84,7 +84,7 @@ test('вітрина: підказка терміна відкривається
   await expect(pop).toBeHidden();
 
   const selfcheck = page.locator('[data-selfcheck]');
-  const answered = page.evaluate(() => new Promise<{ correct: boolean }>((resolve) => document.addEventListener('ku:selfcheck', (e) => resolve((e as CustomEvent).detail), { once: true })));
+  const answered = page.evaluate(() => new Promise<{ correct: boolean }>((resolve) => document.addEventListener('om:selfcheck', (e) => resolve((e as CustomEvent).detail), { once: true })));
   await selfcheck.locator('.sc-q').first().locator('.opt').nth(1).click();
   expect((await answered).correct).toBe(false);
   await expect(selfcheck.locator('.sc-q').first().locator('.options')).toHaveAttribute('data-answered', '');

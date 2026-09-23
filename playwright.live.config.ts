@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /** Смоук-перевірка живого сайту на GitHub Pages: npm run test:live (адресу можна змінити через LIVE_URL). */
-export const LIVE_URL = process.env['LIVE_URL'] ?? 'https://youngerfornday.github.io/korporatyvne-upravlinnia/';
+export const LIVE_URL = process.env['LIVE_URL'] ?? 'https://youngerfornday.github.io/operatsiinyi-menedzhment/';
 
 export default defineConfig({
   testDir: './e2e/live',

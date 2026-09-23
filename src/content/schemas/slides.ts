@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { KebabIdSchema, LawRefSchema, NonEmptyTextSchema, TopicIdSchema, findDuplicates } from './primitives';
+import { KebabIdSchema, NonEmptyTextSchema, RefSchema, TopicIdSchema, findDuplicates } from './primitives';
 
 /**
  * Презентація теми: `content/modules/mN/tNN/slides.yaml`.
@@ -44,8 +44,8 @@ export const SlideSchema = z.discriminatedUnion('type', [
     figure: z.string().regex(/^fig-[a-z0-9-]+\.svg$/, 'Схема — файл fig-*.svg з каталогу теми'),
     caption: NonEmptyTextSchema,
   }),
-  /** Норма права — лише з правової бази, з кодом рядка в lawRef. */
-  z.object({ ...base, type: z.literal('norm'), title: SlideTitleSchema, text: NonEmptyTextSchema.max(400), lawRef: LawRefSchema }),
+  /** Стандарт або джерело — цитата чи переказ з кодом рядка бази в ref. */
+  z.object({ ...base, type: z.literal('standard'), title: SlideTitleSchema, text: NonEmptyTextSchema.max(400), ref: RefSchema }),
   z.object({ ...base, type: z.literal('formula'), title: SlideTitleSchema, formula: NonEmptyTextSchema, explanation: BulletsSchema }),
   /** Кейс з реєстру курсу: ключові факти й питання для обговорення. */
   z.object({

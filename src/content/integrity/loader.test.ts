@@ -56,8 +56,8 @@ describe('withIntegrityCheck', () => {
     expect(loader.name).toBe('glob-loader+integrity');
     expect(inner.calls).toBe(1);
     expect(seen).toEqual([
-      { filePath: 'content/modules/m1/t01/glossary.yaml', topics: 12 },
-      { filePath: 'no-file-path', topics: 12 },
+      { filePath: 'content/modules/m1/t01/glossary.yaml', topics: 8 },
+      { filePath: 'no-file-path', topics: 8 },
     ]);
   });
 

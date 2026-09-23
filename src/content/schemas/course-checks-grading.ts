@@ -53,8 +53,14 @@ function checkPracticalRubrics(course: CourseDraft, report: Report): void {
 }
 
 function checkModuleTests(course: CourseDraft, report: Report): void {
-  const { moduleTests } = course.grading;
+  const { moduleTests, categories } = course.grading;
   const path = ['grading', 'moduleTests'];
+  if (!moduleTests) {
+    if (categories.some((c) => c.id === 'module-tests')) {
+      report('У журналі оцінок є категорія «module-tests», хоча курс не має grading.moduleTests', ['grading', 'categories']);
+    }
+    return;
+  }
   const bloomTotal = sum(BloomLevelSchema.options.map((level) => moduleTests.bloom[level]));
   if (bloomTotal !== moduleTests.questions) {
     report(`Баланс Блума модульного тесту (${bloomTotal}) не дорівнює кількості питань (${moduleTests.questions})`, path);

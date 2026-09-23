@@ -1,12 +1,12 @@
-/** Витяг посилань на норми з моделі контенту: lawRef-мапи, коди рядків, дати перевірки. */
+/** Витяг посилань на код бази з моделі контенту: refs-мапи, коди рядків, дати перевірки. */
 import { CODE_TOKEN } from './baseline.mjs';
 import { normalizeText } from './text.mjs';
 
-const LEGAL_BASELINE_MENTION = /legal-baseline[\s,]+([A-Z]{2,4}(?:-[A-Z]{2})?-\d{2})/g;
+const BASELINE_MENTION = /(?:formula|standards)-baseline[\s,]+([A-Z][A-Z0-9-]*-\d{2})/g;
 
-/** @typedef {{ line: number, endLine: number, articleLine: number, dateLine: number, act: string, article: string, checkedAt: string|null, url: string|null, codes: string[] }} LawRef */
+/** @typedef {{ line: number, endLine: number, locatorLine: number, dateLine: number, source: string, locator: string, checkedAt: string|null, url: string|null, codes: string[] }} ContentRef */
 
-/** Рядок поля всередині запису: посилатися на `article:` точніше, ніж на початок блоку. */
+/** Рядок поля всередині запису: посилатися на `locator:` точніше, ніж на початок блоку. */
 function fieldLine(file, node, field) {
   for (let line = node.line; line <= Math.min(node.endLine, file.lines.length); line += 1) {
     if (new RegExp(`(^|[\\s{,])${field}:`).test(file.lines[line - 1] ?? '')) return line;
@@ -14,68 +14,81 @@ function fieldLine(file, node, field) {
   return node.line;
 }
 
-/** Тег <LawNorm …> у тілі лекції — те саме посилання на норму, що й lawRef у frontmatter. Значення атрибутів можуть містити «>». */
-const LAW_NORM_TAG = /<LawNorm\b(?:[^>"]|"[^"]*")*>/g;
+/** Тег <StandardRef …> у тілі лекції — те саме посилання на код, що й refs у frontmatter. Значення атрибутів можуть містити «>». */
+const STANDARD_REF_TAG = /<StandardRef\b(?:[^>"]|"[^"]*")*>/g;
+/** Атрибут `code` тегів <Formula> і <WorkedExample>: посилання на код без source/locator. */
+const CODE_ATTR_TAG = /<(Formula|WorkedExample)\b(?:[^>"]|"[^"]*")*>/g;
 
 function attribute(tag, name) {
   return new RegExp(`\\s${name}="([^"]*)"`).exec(tag)?.[1] ?? null;
 }
 
-function lawNormRefs(file) {
+function standardRefTags(file) {
   if (file.kind !== 'mdx') return [];
-  return [...file.text.matchAll(LAW_NORM_TAG)].flatMap((match) => {
-    const article = attribute(match[0], 'article');
+  return [...file.text.matchAll(STANDARD_REF_TAG)].flatMap((match) => {
+    const locator = attribute(match[0], 'locator');
     const checkedAt = attribute(match[0], 'checkedAt');
-    if (article === null || checkedAt === null) return [];
+    if (locator === null || checkedAt === null) return [];
     const line = file.text.slice(0, match.index).split('\n').length;
     return [{
       line,
       endLine: line + (match[0].match(/\n/g) ?? []).length,
-      articleLine: line,
+      locatorLine: line,
       dateLine: line,
-      act: attribute(match[0], 'act') ?? '',
-      article: normalizeText(article),
+      source: attribute(match[0], 'source') ?? '',
+      locator: normalizeText(locator),
       checkedAt,
       url: attribute(match[0], 'url'),
-      codes: codesIn(article),
+      codes: codesIn(locator),
     }];
   });
 }
 
 /**
- * Посилання на норми: мапи з article і checkedAt (формат docs/research/legal-baseline.md)
- * і теги <LawNorm> з тими самими атрибутами.
+ * Посилання на код бази: мапи з locator і checkedAt (формат baseline-документів) і теги <StandardRef>
+ * з тими самими атрибутами.
  */
-export function lawRefsOf(file) {
+export function refsOf(file) {
   const fromMaps = file.maps
-    .filter((node) => typeof node.keys.article === 'string' && typeof node.keys.checkedAt === 'string')
+    .filter((node) => typeof node.keys.locator === 'string' && typeof node.keys.checkedAt === 'string')
     .map((node) => ({
       line: node.line,
       endLine: node.endLine,
-      articleLine: fieldLine(file, node, 'article'),
+      locatorLine: fieldLine(file, node, 'locator'),
       dateLine: fieldLine(file, node, 'checkedAt'),
-      act: String(node.keys.act ?? ''),
-      article: normalizeText(String(node.keys.article)),
+      source: String(node.keys.source ?? ''),
+      locator: normalizeText(String(node.keys.locator)),
       checkedAt: String(node.keys.checkedAt),
       url: node.keys.url ? String(node.keys.url) : null,
-      codes: codesIn(String(node.keys.article)),
+      codes: codesIn(String(node.keys.locator)),
     }));
-  return [...fromMaps, ...lawNormRefs(file)];
+  return [...fromMaps, ...standardRefTags(file)];
 }
 
-/** Коди в довільному тексті: «ст. 6 ч. 1–4 (AT-01)» → ['AT-01']. */
+/** Коди в тегах <Formula code="…"> і <WorkedExample code="…"> — без окремого source/locator. */
+export function codeAttrRefsOf(file) {
+  if (file.kind !== 'mdx') return [];
+  return [...file.text.matchAll(CODE_ATTR_TAG)].flatMap((match) => {
+    const code = attribute(match[0], 'code');
+    if (code === null) return [];
+    const line = file.text.slice(0, match.index).split('\n').length;
+    return [{ line, component: match[1], code }];
+  });
+}
+
+/** Коди в довільному тексті: «п. 8.5.1 (ISO-9001-11)» → ['ISO-9001-11']. */
 export function codesIn(text) {
   return [...new Set([...normalizeText(text).matchAll(CODE_TOKEN)].map(([, code]) => code))];
 }
 
-/** Згадки «legal-baseline AT-01» у прозі лекцій, приміток і практичних. */
+/** Згадки «formula-baseline EOQ-01» / «standards-baseline ISO-9001-11» у прозі лекцій і практичних. */
 export function baselineMentionsIn(text) {
-  return [...normalizeText(text).matchAll(LEGAL_BASELINE_MENTION)].map(([, code]) => code);
+  return [...normalizeText(text).matchAll(BASELINE_MENTION)].map(([, code]) => code);
 }
 
-/** Дати перевірки джерел: sources.yaml і список sources практичної. */
+/** Дати перевірки джерел: sources.yaml і список sources практичної (не refs). */
 export function sourceCheckedDates(file) {
   return file.maps
-    .filter((node) => typeof node.keys.checkedAt === 'string' && typeof node.keys.url === 'string' && typeof node.keys.article !== 'string')
+    .filter((node) => typeof node.keys.checkedAt === 'string' && typeof node.keys.url === 'string' && typeof node.keys.locator !== 'string')
     .map((node) => ({ line: node.line, checkedAt: String(node.keys.checkedAt), id: node.keys.id ? String(node.keys.id) : '', title: String(node.keys.title ?? '') }));
 }

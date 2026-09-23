@@ -1,72 +1,53 @@
 /**
- * Розбір docs/research/legal-baseline.md — єдиного джерела норм для курсу.
- * Витягує: номери законів, коди рядків зі статтями й датами перевірки, розділ «Не підтверджено».
- * Формат документа описано в його розділі «Правила використання»; парсер тримається саме цих домовленостей.
+ * Розбір docs/research/formula-baseline.md і docs/research/standards-baseline.md —
+ * єдиних джерел кодів для курсу «Операційний менеджмент».
+ * Витягує: коди рядків з назвою, локатором, джерелом і датою перевірки; розділ «Не підтверджено».
+ * Формат документів описано в їхньому розділі «Правила використання»; парсер тримається саме цих домовленостей.
+ * Обидва документи мають однаковий рядок коду: `| [КОД] Назва | Локатор | Джерело | Перевірено |`.
  */
 import { normalizeText, signatureStems } from './text.mjs';
 
 const BASE_DATE = /Дата перевірки:\s*\*\*(\d{4}-\d{2}-\d{2})\*\*/;
 const SECTION = /^##\s+(.+?)\s*$/;
 const SECTION_CHECKED = /^Перевірено\s+(\d{4}-\d{2}-\d{2})/i;
-const INLINE_CHECKED = /перевірено\s+(\d{4}-\d{2}-\d{2})/i;
-const CODE_ROW = /^\|\s*\[([A-Z][A-Z0-9-]*-\d{2})\]\s*([^|]*)\|([^|]*)\|/;
+/** Рядок бази: `| [EOQ-01] Назва | Локатор | Джерело | Перевірено |`. */
+const CODE_ROW = /^\|\s*\[([A-Z][A-Z0-9-]*-\d{2})\]\s*([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|/;
 const UNCONFIRMED_ITEM = /^(\d+)\.\s+\*\*(.+?)\*\*(.*)$/;
-const KEY_NUMBERS_HEADING = 'Ключові числа';
 const UNCONFIRMED_HEADING = 'Не підтверджено';
+const DATE = /^\d{4}-\d{2}-\d{2}$/;
 
-/** Номер акта: 2465-IX, 448/96-ВР, 8073-X. Картки актів (514-17) сюди не потрапляють — після дефіса лише літери. */
-export const LAW_NUMBER = /\b(\d{1,5}(?:\/\d{1,4})?-[IVXLCDMА-ЯҐЄІЇ]{1,6})\b/gu;
-/** Згадка акта в контенті: лише з «№», щоб DOI й номери звітів не вважалися законами. */
-export const LAW_MENTION = /№\s*(\d{1,5}(?:\/\d{1,4})?-[IVXLCDMА-ЯҐЄІЇ]{1,6})\b/gu;
-/** Адреси прибираються перед пошуком: у них трапляються схожі на номери актів шматки. */
+/** Код бази: EOQ-01, ISO-9001-04, ISO-22400-01, DSTU-01. */
+export const CODE_TOKEN = /\b([A-Z][A-Z0-9-]*-\d{2})\b/g;
+/** Адреси прибираються перед пошуком кодів: у них трапляються схожі на код шматки. */
 export const URL_IN_TEXT = /https?:\/\/\S+/g;
-/** Код рядка бази: AT-01, ESG-UA-03, MZP-01. */
-export const CODE_TOKEN = /\b([A-Z]{2,4}(?:-[A-Z]{2})?-\d{2})\b/g;
 
-/** Номери статей у рядку: «ст. 107 ч. 1–3, 15 п. 1» → {107}; «ст. 5-1 ч. 4» → {5-1}. */
-export function articleNumbers(text) {
-  const found = new Set();
-  for (const [, number] of normalizeText(text).matchAll(/ст\.\s*(\d{1,3}(?:-\d{1,2})?)/g)) found.add(number);
-  return found;
-}
-
-export function lawNumbers(text) {
-  return [...normalizeText(text).matchAll(LAW_NUMBER)].map(([, number]) => number.toUpperCase());
-}
-
-function splitRow(line) {
-  return line.split('|').slice(1, -1).map((cell) => cell.trim());
-}
+/** @typedef {{ code: string, line: number, name: string, locator: string, source: string, dates: Set<string>, section: string, row: string, docName: string }} CodeEntry */
+/** @typedef {{ number: number, line: number, title: string, text: string, stems: string[], docName: string }} UnconfirmedItem */
+/** @typedef {{ codes: Map<string, CodeEntry>, unconfirmed: UnconfirmedItem[] }} Baseline */
 
 function addCode(codes, code, patch) {
-  const current = codes.get(code) ?? { code, line: patch.line ?? 0, name: '', article: '', articles: new Set(), dates: new Set(), section: '', row: '' };
-  const merged = {
+  const current = codes.get(code) ?? {
+    code, line: 0, name: '', locator: '', source: '', dates: new Set(), section: '', row: '', docName: patch.docName,
+  };
+  codes.set(code, {
     ...current,
     ...Object.fromEntries(Object.entries(patch).filter(([, value]) => value !== undefined && !(value instanceof Set))),
-    articles: new Set([...current.articles, ...(patch.articles ?? [])]),
     dates: new Set([...current.dates, ...(patch.dates ?? [])]),
-  };
-  codes.set(code, merged);
+  });
 }
 
 /**
- * @param {string} text вміст legal-baseline.md
- * @returns {{
- *   baseDate: string,
- *   laws: Map<string, { confirmed: boolean, line: number }>,
- *   codes: Map<string, { code: string, line: number, name: string, article: string, articles: Set<string>, dates: Set<string>, section: string, row: string }>,
- *   unconfirmed: Array<{ number: number, line: number, title: string, text: string, stems: string[], laws: string[] }>,
- * }}
+ * Розбирає один документ бази.
+ * @param {string} text
+ * @param {string} docName ім'я файла для повідомлень («formula-baseline.md»)
  */
-export function parseBaseline(text) {
+function parseOne(text, docName) {
   const lines = text.split(/\r?\n/);
   const baseDate = BASE_DATE.exec(text)?.[1] ?? '';
   const codes = new Map();
-  const laws = new Map();
   const unconfirmed = [];
   const sectionDates = new Map();
   let section = '';
-  let inKeyNumbers = false;
   let inUnconfirmed = false;
 
   lines.forEach((line, index) => {
@@ -74,40 +55,25 @@ export function parseBaseline(text) {
     const heading = SECTION.exec(line);
     if (heading) {
       section = heading[1];
-      inKeyNumbers = section.startsWith(KEY_NUMBERS_HEADING);
       inUnconfirmed = section.startsWith(UNCONFIRMED_HEADING);
     }
     const sectionChecked = SECTION_CHECKED.exec(line.trim());
     if (sectionChecked) sectionDates.set(section, sectionChecked[1]);
 
-    for (const number of lawNumbers(line)) {
-      const known = laws.get(number);
-      if (!known) laws.set(number, { confirmed: !inUnconfirmed, line: lineNumber });
-      else if (!known.confirmed && !inUnconfirmed) laws.set(number, { confirmed: true, line: lineNumber });
-    }
-
     const codeRow = CODE_ROW.exec(line);
     if (codeRow) {
-      const [, code, name, article] = codeRow;
+      const [, code, name, locator, source, checkedAt] = codeRow;
+      const trimmedDate = checkedAt.trim();
       addCode(codes, code, {
         line: lineNumber,
         name: name.trim(),
-        article: article.trim(),
-        articles: articleNumbers(article),
+        locator: locator.trim(),
+        source: source.trim(),
         section,
         row: line,
-        dates: INLINE_CHECKED.test(line) ? [INLINE_CHECKED.exec(line)[1]] : [],
+        dates: DATE.test(trimmedDate) ? [trimmedDate] : [],
+        docName,
       });
-    }
-
-    if (inKeyNumbers && line.startsWith('|')) {
-      const cells = splitRow(line);
-      const KEY_ROW_CELLS = 7;
-      if (cells.length >= KEY_ROW_CELLS && /^\d{4}-\d{2}-\d{2}$/.test(cells[6])) {
-        for (const [, code] of cells[4].matchAll(CODE_TOKEN)) {
-          addCode(codes, code, { articles: articleNumbers(cells[2]), dates: [cells[6]] });
-        }
-      }
     }
 
     if (inUnconfirmed) {
@@ -120,7 +86,7 @@ export function parseBaseline(text) {
           title: title.replace(/[.,;:]\s*$/, ''),
           text: normalizeText(`${title} ${rest}`),
           stems: signatureStems(title),
-          laws: [...new Set(lawNumbers(`${title} ${rest}`))],
+          docName,
         });
       }
     }
@@ -132,10 +98,25 @@ export function parseBaseline(text) {
       codes.set(code, { ...entry, dates: new Set([sectionDate ?? baseDate]) });
     }
   }
-  return { baseDate, laws, codes, unconfirmed };
+  return { codes, unconfirmed };
 }
 
-/** Дати, дозволені для коду: колонка «Перевірено», інакше дата рядка/розділу, інакше базова дата документа. */
+/**
+ * @param {Array<{ name: string, text: string }>} docs formula-baseline.md і standards-baseline.md
+ * @returns {Baseline}
+ */
+export function parseBaseline(docs) {
+  const codes = new Map();
+  const unconfirmed = [];
+  for (const { name, text } of docs) {
+    const parsed = parseOne(text, name);
+    for (const [code, entry] of parsed.codes) codes.set(code, entry);
+    unconfirmed.push(...parsed.unconfirmed);
+  }
+  return { codes, unconfirmed };
+}
+
+/** Дати, дозволені для коду: колонка «Перевірено» його рядка, інакше дата розділу, інакше базова дата документа. */
 export function expectedDates(baseline, code) {
-  return baseline.codes.get(code)?.dates ?? new Set([baseline.baseDate]);
+  return baseline.codes.get(code)?.dates ?? new Set();
 }

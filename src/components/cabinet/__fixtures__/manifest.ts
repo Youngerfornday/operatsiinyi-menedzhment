@@ -1,10 +1,10 @@
 /**
- * Фікстурний маніфест матеріалів для модульних тестів і E2E-збірки кабінету (KU_E2E_DOWNLOADS=1).
+ * Фікстурний маніфест матеріалів для модульних тестів і E2E-збірки кабінету (OM_E2E_DOWNLOADS=1).
  * Самих файлів у репозиторії немає: E2E віддає їх через page.route, модульним тестам вони не потрібні.
  */
 import { DownloadManifestSchema, type DownloadManifest } from '../../../content/schemas/downloads';
 
-export const E2E_BACKUP_URL = 'https://github.com/Youngerfornday/korporatyvne-upravlinnia/releases/latest/download/korporatyvne-upravlinnia.mbz';
+export const E2E_BACKUP_URL = 'https://github.com/Youngerfornday/operatsiinyi-menedzhment/releases/latest/download/operatsiinyi-menedzhment.mbz';
 
 const RAW_MANIFEST = {
   schemaVersion: 1,
@@ -20,7 +20,7 @@ const RAW_MANIFEST = {
     },
     {
       id: 't01-lecture-pdf',
-      title: 'Лекція 1. Корпорація і корпоративне управління',
+      title: 'Лекція 1. Корпорація і операційний менеджмент',
       kind: 'lecture',
       format: 'pdf',
       module: 'm1',
@@ -63,7 +63,7 @@ const RAW_MANIFEST = {
     },
     {
       id: 'p01-practical-pdf',
-      title: 'Практична 1. Матриця моделей корпоративного управління',
+      title: 'Практична 1. Матриця моделей операційного менеджменту',
       kind: 'practical',
       format: 'pdf',
       module: 'm1',

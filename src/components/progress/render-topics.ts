@@ -1,4 +1,4 @@
-/** Порядок денний, сторінка модуля, список тестів: стан тем, лічильники модулів, результати тестів. */
+/** Маршрутна карта, сторінка модуля, список тестів: стан тем, лічильники модулів, результати тестів. */
 import type { ProgressState } from '../../engines/progress';
 import { formatPercent } from '../../engines/shared/number-format';
 import { completedCount, quizIdForTopic, topicQuizText, topicVisualState } from './derive';

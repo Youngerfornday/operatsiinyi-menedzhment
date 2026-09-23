@@ -1,16 +1,16 @@
 /**
  * Правило 3. Заборонена зона.
- * Розділ «Не підтверджено / потребує звірки викладачем» у legal-baseline.md — заборонена зона:
- * якщо речення з маркером норми («стаття», «ст.», «закон», «кодекс», «вимагає», «зобов'язаний»)
- * описує сутність із цього розділу, лінт попереджає і цитує пункт бази.
+ * Розділ «Не підтверджено / потребує звірки викладачем» у formula-baseline.md і standards-baseline.md —
+ * заборонена зона: якщо речення з маркером формули чи стандарту («формула», «норматив», «стандарт»,
+ * «iso», «дсту», «коефіцієнт», «показник») описує сутність із цього розділу, лінт попереджає і цитує пункт бази.
  */
 import { refineLine } from '../content.mjs';
 import { WARNING, makeFinding } from '../finding.mjs';
 import { hasAllStems, lower, quote, splitSentences } from '../text.mjs';
 
 export const RULE = 'unconfirmed-zone';
-const HINT = 'Або приберіть нормативне твердження, або спершу звірте пункт і перенесіть його з розділу «Не підтверджено» в основну частину legal-baseline.md з кодом рядка.';
-const NORM_MARKERS = ['статт', 'закон', 'кодекс', 'вимага', 'зобов’яз', 'ст. '];
+const HINT = 'Або приберіть тверде твердження, або спершу звірте пункт і перенесіть його з розділу «Не підтверджено» в основну частину бази з кодом рядка.';
+const NORM_MARKERS = ['формул', 'норматив', 'стандарт', 'iso', 'дсту', 'коефіцієнт', 'показник'];
 const EXEMPT_KEYS = new Set(['caveat']);
 /** Пункт без власних основ (надто короткий заголовок) не перевіряється: він збігався б з будь-чим. */
 const MIN_STEMS = 2;
@@ -36,7 +36,7 @@ export function checkUnconfirmedZone(files, baseline) {
           .filter((item) => hasAllStems(sentence, item.stems))
           .map((item) => makeFinding({
             file: file.file, line: refineLine(file, unit, sentence.slice(0, 40)), rule: RULE, level: WARNING,
-            message: `Твердження з маркером норми торкається пункту ${item.number} розділу «Не підтверджено»: «${quote(item.title, 90)}»`,
+            message: `Твердження торкається пункту ${item.number} розділу «Не підтверджено» (${item.docName}): «${quote(item.title, 90)}»`,
             hint: `${HINT} Пункт бази: «${quote(item.text, 220)}»`,
             quote: quote(sentence),
           }));

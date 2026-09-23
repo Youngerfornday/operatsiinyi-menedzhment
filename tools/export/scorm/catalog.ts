@@ -1,4 +1,4 @@
-import { CALCULATOR_TRAINERS, practicalLabel, type CalculatorKey } from '../../../src/components/trainers/catalog.ts';
+import { practicalLabel } from '../../../src/components/trainers/catalog.ts';
 import type { Course } from '../../../src/content/schemas/course.ts';
 import { matrixTrainerOf, type PracticalFile } from '../../../src/content/schemas/practical.ts';
 import { rubricBandsFromLevels, matrixActivityId, type RubricBand } from '../../../src/engines/matrix/index.ts';
@@ -6,13 +6,14 @@ import { typo } from '../../../src/lib/typography/index.ts';
 import type { ScormPackageData, ScormPackageKind } from './app/data.ts';
 
 /**
- * Які пакети SCORM збираються і з якими даними: тренажер-матриця кожної практичної з файлом тренажера
- * (дані й рубрика — як на сторінці практичної) і три тренажери-калькулятори з каталогу сайту.
- * Прохідний бал (`adlcp:masteryscore`): для матриці — нижня межа найвищого рівня рубрики («не менше 90%»);
- * калькулятор зараховує лише повністю правильно розв’язаний варіант, тому поріг — 100.
+ * Які пакети SCORM збираються і з якими даними: наразі лише тренажер-матриця кожної практичної з файлом
+ * тренажера (дані й рубрика — як на сторінці практичної). Прохідний бал (`adlcp:masteryscore`) — нижня
+ * межа найвищого рівня рубрики («не менше 90%»), інакше — DEFAULT_MASTERY_PERCENT.
+ * Новий тренажер-калькулятор додає власну функцію специфікації за тим самим контрактом
+ * (див. src/engines/README.md) і приєднує її результат у `scormPackageSpecs`.
  */
 
-export const CALCULATOR_MASTERY_PERCENT = 100;
+export const DEFAULT_MASTERY_PERCENT = 100;
 
 export interface ScormPackageSpec {
   /** Стабільний ідентифікатор пакета: основа назви ZIP та ідентифікаторів маніфесту. */
@@ -31,12 +32,6 @@ export interface ScormPackageSpec {
 }
 
 type Practical = Course['practicals'][number];
-
-const CALCULATOR_KINDS: Readonly<Record<CalculatorKey, Exclude<ScormPackageKind, 'matrix'>>> = {
-  quorum: 'quorum',
-  cumulative: 'cumulative',
-  dividends: 'dividends',
-};
 
 function registryPractical(course: Course, practicalId: string): Practical {
   const practical = course.practicals.find((candidate) => candidate.id === practicalId);
@@ -62,7 +57,7 @@ function matrixSpec(course: Course, file: PracticalFile): ScormPackageSpec {
   const practical = registryPractical(course, file.id);
   const trainer = matrixTrainerOf(file);
   const rubric = matrixCriterion(practical);
-  const masteryPercent = rubric.bands[0]?.minPercent ?? CALCULATOR_MASTERY_PERCENT;
+  const masteryPercent = rubric.bands[0]?.minPercent ?? DEFAULT_MASTERY_PERCENT;
   const cells = trainer.features.reduce((total, feature) => total + feature.cells.length, 0);
   const data: ScormPackageData = {
     kind: 'matrix',
@@ -82,16 +77,16 @@ function matrixSpec(course: Course, file: PracticalFile): ScormPackageSpec {
     companyTasks: trainer.companyTasks.map((task) => ({ ...task, company: typo(task.company), description: typo(task.description), explanation: typo(task.explanation) })),
   };
   return {
-    id: `${practical.id}-matrytsia-modelei`,
+    id: `${practical.id}-matrytsia-zistavlennia`,
     kind: 'matrix',
-    registryId: 'model-matrix',
+    registryId: 'priorities-matrix',
     practicalId: practical.id,
     module: practical.module,
     title: typo(`${practicalLabel(practical.id)}. ${practical.title}`),
     kicker: kickerOf(course, practical),
     lede: typo(practical.goal),
     facts: [
-      typo(`${trainer.features.length} ознак × ${trainer.models.length} моделі = ${cells} формулювань`),
+      typo(`${trainer.features.length} ознак × ${trainer.models.length} стовпців = ${cells} формулювань`),
       typo(`Перша спроба навчальна, оцінюється друга: бал за критерієм «${rubric.title}»`),
       typo(`Зараховано з ${masteryPercent} балів зі 100`),
     ],
@@ -100,29 +95,9 @@ function matrixSpec(course: Course, file: PracticalFile): ScormPackageSpec {
   };
 }
 
-function calculatorSpecs(course: Course): ScormPackageSpec[] {
-  return CALCULATOR_TRAINERS.map((trainer) => {
-    const practical = registryPractical(course, trainer.practicalId);
-    const kind = CALCULATOR_KINDS[trainer.key];
-    return {
-      id: `${practical.id}-${trainer.slug}`,
-      kind,
-      registryId: trainer.registryId,
-      practicalId: practical.id,
-      module: practical.module,
-      title: typo(`${practicalLabel(practical.id)}. Тренажер «${trainer.title}»`),
-      kicker: kickerOf(course, practical),
-      lede: typo(trainer.text),
-      facts: [typo(trainer.formula), typo('Зараховано, коли варіант задачі розв’язано повністю правильно (100 балів)')],
-      masteryPercent: CALCULATOR_MASTERY_PERCENT,
-      data: { kind, activityId: trainer.activityId, masteryPercent: CALCULATOR_MASTERY_PERCENT },
-    };
-  });
-}
-
-/** Пакети в порядку практичних; матриці — лише для практичних із файлом тренажера. */
+/** Пакети в порядку практичних; наразі лише матриці для практичних із файлом тренажера. */
 export function scormPackageSpecs(course: Course, practicals: readonly PracticalFile[]): ScormPackageSpec[] {
   const order = (spec: ScormPackageSpec): number => course.practicals.findIndex((practical) => practical.id === spec.practicalId);
-  const specs = [...practicals.filter((file) => file.trainer.kind === 'model-matrix').map((file) => matrixSpec(course, file)), ...calculatorSpecs(course)];
+  const specs = practicals.filter((file) => file.trainer.kind === 'matching-matrix').map((file) => matrixSpec(course, file));
   return specs.sort((a, b) => order(a) - order(b));
 }

@@ -1,11 +1,23 @@
 import { describe, expect, it } from 'vitest';
-import { at, byId, issuesOf, loadCourse, mutated } from './__fixtures__/course';
+import { at, byId, issuesOf, loadCourse, mutated, type CourseInput } from './__fixtures__/course';
 import { CourseSchema } from './course';
 import { BloomLevelSchema } from './questions';
 
+/** moduleTests тепер необов'язковий у схемі: ця фікстура курсу все ще його має, тому ловимо відсутність явно. */
+const REQUIRES_MODULE_TESTS = 'Ця фікстура курсу має включати grading.moduleTests';
+
+/** Синтетичний, але валідний grading.moduleTests: курс «Операційний менеджмент» його не має (силабус
+ * не передбачає модульних тестів), тому перевірки логіки checkModuleTests вставляють цей блок самі,
+ * а не читають його з реальної фікстури курсу. */
+const SAMPLE_MODULE_TESTS = { questions: 15, timeLimitMinutes: 30, attempts: 1, bankPerModule: 20, bloom: { remember: 5, understand: 5, apply: 4, analyze: 1 } };
+
 describe('course.yaml: assessment data', () => {
-  it('balances module tests 5/5/4/1 out of 15 questions in 30 minutes with one attempt', () => {
+  // Розблокується, якщо силабус коли-небудь запровадить модульні тести: наразі «Операційний
+  // менеджмент» рахує лише практичні, РГР та екзамен — grading.moduleTests відсутній за дизайном
+  // (60/40: відвідуваність 10 + практичні 35 + РГР 15 = 60 поточних, екзамен 40 підсумкових).
+  it.skip('balances module tests 5/5/4/1 out of 15 questions in 30 minutes with one attempt', () => {
     const { moduleTests } = CourseSchema.parse(loadCourse()).grading;
+    if (!moduleTests) throw new Error(REQUIRES_MODULE_TESTS);
     expect(moduleTests).toMatchObject({ questions: 15, timeLimitMinutes: 30, attempts: 1 });
     expect(moduleTests.bloom).toEqual({ remember: 5, understand: 5, apply: 4, analyze: 1 });
   });
@@ -32,6 +44,7 @@ describe('course.yaml: assessment data', () => {
 describe('CourseSchema: module and final tests', () => {
   it('rejects a module test whose Bloom balance does not add up to its question count', () => {
     const wrong = mutated((c) => {
+      c.grading.moduleTests = { ...SAMPLE_MODULE_TESTS, bloom: { ...SAMPLE_MODULE_TESTS.bloom } };
       c.grading.moduleTests.bloom.analyze = 2;
     });
     expect(issuesOf(wrong)).toContainEqual(expect.stringMatching(/Блум.*16.*15/));
@@ -39,10 +52,10 @@ describe('CourseSchema: module and final tests', () => {
 
   it('rejects a module test count that does not match the number of modules', () => {
     const wrong = mutated((c) => {
-      byId(c.grading.categories, 'module-tests').items = 3;
-      byId(c.grading.categories, 'module-tests').pointsPerItem = 8;
+      c.grading.moduleTests = SAMPLE_MODULE_TESTS;
+      c.grading.categories = [...c.grading.categories, { id: 'module-tests', stage: 'current', title: 'Модульні тести', items: 3, pointsPerItem: 8 }];
     });
-    expect(issuesOf(wrong)).toContainEqual(expect.stringMatching(/модульн.*3.*4/));
+    expect(issuesOf(wrong)).toContainEqual(expect.stringMatching(/модульн.*3.*2/));
   });
 
   it('rejects a final test matrix that does not sum to the question count or skips a topic', () => {
@@ -50,10 +63,10 @@ describe('CourseSchema: module and final tests', () => {
       at(c.grading.finalTest.matrix, 0).remember += 1;
     });
     const missingTopic = mutated((c) => {
-      c.grading.finalTest.matrix = c.grading.finalTest.matrix.filter((row) => row.topic !== 't12');
+      c.grading.finalTest.matrix = c.grading.finalTest.matrix.filter((row) => row.topic !== 't08');
     });
     expect(issuesOf(wrongSum)).toContainEqual(expect.stringMatching(/матриц.*41.*40/));
-    expect(issuesOf(missingTopic)).toContainEqual(expect.stringMatching(/t12/));
+    expect(issuesOf(missingTopic)).toContainEqual(expect.stringMatching(/t08/));
   });
 
   it('rejects a matrix whose Bloom shares drift from the target by more than one question', () => {
@@ -83,19 +96,18 @@ describe('CourseSchema: grading categories and targets', () => {
   it('reports a missing gradebook category and a practical count that disagrees with the registry', () => {
     const missing = mutated((c) => {
       c.grading.categories = c.grading.categories.filter((category) => category.id !== 'practicals');
-      byId(c.grading.categories, 'module-tests').pointsPerItem = 12;
     });
     const count = mutated((c) => {
       byId(c.grading.categories, 'practicals').items = 6;
       byId(c.grading.categories, 'practicals').pointsPerItem = 4;
     });
     expect(issuesOf(missing)).toContainEqual(expect.stringMatching(/немає категорії «practicals»/));
-    expect(issuesOf(count)).toContainEqual(expect.stringMatching(/практичних у журналі \(6\).*\(8\)/));
+    expect(issuesOf(count)).toContainEqual(expect.stringMatching(/практичних у журналі \(6\).*\(7\)/));
   });
 
   it('rejects a module bank smaller than the test, target shares that miss 100% and a scale without grade E', () => {
     const smallBank = mutated((c) => {
-      c.grading.moduleTests.bankPerModule = 10;
+      c.grading.moduleTests = { ...SAMPLE_MODULE_TESTS, bankPerModule: 10 };
     });
     const shares = mutated((c) => {
       c.grading.finalTest.targetShare.analyze = 20;
@@ -113,10 +125,10 @@ describe('CourseSchema: rubrics, case project, admission and bonus', () => {
   it('rejects a practical rubric that does not total the practical points', () => {
     const wrong = mutated((c) => {
       const criterion = at(at(c.practicals, 0).rubric, 0);
-      criterion.points = 2;
-      at(criterion.levels, 0).points = 2;
+      criterion.points = 3;
+      at(criterion.levels, 0).points = 3;
     });
-    expect(issuesOf(wrong)).toContainEqual(expect.stringMatching(/p01.*рубрик.*4.*3/));
+    expect(issuesOf(wrong)).toContainEqual(expect.stringMatching(/p01.*рубрик.*6.*5/));
   });
 
   it('rejects rubric levels without a top level equal to the criterion points or without zero', () => {
@@ -133,7 +145,7 @@ describe('CourseSchema: rubrics, case project, admission and bonus', () => {
 
   it('rejects rubric levels above the criterion points and repeated level points or descriptions', () => {
     const above = mutated((c) => {
-      at(at(at(c.practicals, 0).rubric, 0).levels, 1).points = 1.5;
+      at(at(at(c.practicals, 0).rubric, 0).levels, 1).points = 2.5;
     });
     const repeated = mutated((c) => {
       const levels = at(at(c.practicals, 0).rubric, 0).levels;
@@ -152,16 +164,16 @@ describe('CourseSchema: rubrics, case project, admission and bonus', () => {
     expect(issuesOf(duplicate)).toContainEqual(expect.stringMatching(/критері.*повторю/));
   });
 
-  it('rejects a case project rubric that does not total 12 or references an unknown stage', () => {
+  it('rejects a case project rubric that does not total 15 or references an unknown stage', () => {
     const wrongTotal = mutated((c) => {
       const criterion = at(c.grading.caseProject.rubric, 0);
-      criterion.points = 2;
-      at(criterion.levels, 0).points = 2;
+      criterion.points = 3;
+      at(criterion.levels, 0).points = 3;
     });
     const unknownStage = mutated((c) => {
       at(c.grading.caseProject.rubric, 0).stage = 'cp-ghost';
     });
-    expect(issuesOf(wrongTotal)).toContainEqual(expect.stringMatching(/кейс-проєкт.*13.*12/));
+    expect(issuesOf(wrongTotal)).toContainEqual(expect.stringMatching(/кейс-проєкт.*16.*15/));
     expect(issuesOf(unknownStage)).toContainEqual(expect.stringMatching(/cp-ghost/));
   });
 
@@ -188,5 +200,37 @@ describe('CourseSchema: rubrics, case project, admission and bonus', () => {
       at(c.grading.admission.basis, 0).regulation = 'ghost-regulation';
     });
     expect(issuesOf(wrong)).toContainEqual(expect.stringMatching(/ghost-regulation/));
+  });
+});
+
+describe('CourseSchema: courses without module tests (e.g. syllabuses like «Операційний менеджмент»)', () => {
+  /**
+   * Знімає модульні тести з реєстру так, як це робить силабус без них: без тесту, без категорії
+   * журналу «module-tests» і без активностей «module-test» у календарі. Категорію журналу
+   * перейменовує лише за наявності — фікстура course.yaml може вже бути без неї.
+   */
+  function stripModuleTests(c: CourseInput): void {
+    c.grading.moduleTests = undefined;
+    const category = c.grading.categories.find((candidate) => candidate.id === 'module-tests');
+    if (category) {
+      category.id = 'coursework';
+      category.title = 'Самостійна робота';
+    }
+    for (const week of c.calendar.schedule) {
+      week.activities = week.activities.filter((activity) => activity.type !== 'module-test');
+    }
+  }
+
+  it('validates a course whose syllabus has no module tests', () => {
+    const course = mutated(stripModuleTests);
+    expect(issuesOf(course)).toEqual([]);
+  });
+
+  it('rejects a leftover gradebook category «module-tests» when the course has no module tests', () => {
+    const course = mutated((c) => {
+      stripModuleTests(c);
+      c.grading.categories = [...c.grading.categories, { id: 'module-tests', stage: 'current', title: 'Модульні тести', items: 1, pointsPerItem: 1 }];
+    });
+    expect(issuesOf(course)).toContainEqual(expect.stringMatching(/module-tests/));
   });
 });

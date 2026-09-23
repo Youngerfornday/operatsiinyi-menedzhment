@@ -11,37 +11,37 @@ const lecture = () => file('content/modules/m1/t01/lecture.mdx', [
   'id: t01',
   'updatedAt: 2026-09-16',
   '---',
-  "import Fig1 from './fig-01-separation.svg';",
+  "import Fig1 from './fig-01-oee.svg';",
   '',
-  'За позицією НБУ, понад 97 % портфеля — кредити пов’язаним особам; нестача капіталу — 148 млрд грн.',
-  'Без роботи залишаться 1 200 працівників.',
+  'За даними заводу, простій лінії становить понад 97 % робочого часу; втрати потужності — 148 млрд грн.',
+  'Без роботи залишаться 1 200 верстатів.',
 ]);
 
 const topicSources = () => file('content/modules/m1/t01/sources.yaml', [
   'topic: t01',
   'sources:',
-  '  - id: nbu-privatbank-2016',
-  '    title: Брифінг НБУ',
-  '    url: https://example.org/nbu',
+  '  - id: plant-x-2026',
+  '    title: Звіт заводу «Мотордеталь»',
+  '    url: https://example.org/plant',
   "    checkedAt: '2026-09-16'",
 ]);
 
 const registry = {
   ...course,
-  topics: [{ id: 't01', cases: [{ case: 'privatbank' }] }],
+  topics: [{ id: 't01', cases: [{ case: 'plant-x' }] }],
 };
 
 const deck = (slideLines) => file(SLIDES, ['topic: t01', 'slides:', '  - id: title', '    type: title', ...slideLines]);
 
 describe('checkSlides', () => {
-  it('requires sources or lawRef on a slide with a percentage or a sum', () => {
+  it('requires sources or ref on a slide with a percentage or a sum', () => {
     const slides = deck([
       '  - id: numbers',
       '    type: bullets',
       '    title: Цифри',
       '    bullets:',
-      '      - Понад 97 % портфеля — кредити пов’язаним особам',
-      '    notes: За позицією НБУ, нестача капіталу — 148 млрд грн.',
+      '      - Понад 97 % робочого часу — простій лінії',
+      '    notes: За даними заводу, втрати потужності — 148 млрд грн.',
     ]);
     const findings = checkSlides([slides, lecture()], registry);
     expect(findings).toMatchObject([
@@ -55,8 +55,8 @@ describe('checkSlides', () => {
       '  - id: numbers',
       '    type: bullets',
       '    title: Цифри',
-      '    bullets: [Понад 97 % портфеля, Нестача капіталу — 148 млрд грн]',
-      '    sources: [nbu-privatbank-2016]',
+      '    bullets: [Понад 97 % робочого часу, Втрати потужності — 148 млрд грн]',
+      '    sources: [plant-x-2026]',
     ]);
     expect(checkSlides([slides, lecture()], registry)).toEqual([]);
   });
@@ -66,8 +66,8 @@ describe('checkSlides', () => {
       '  - id: numbers',
       '    type: bullets',
       '    title: Цифри',
-      '    bullets: [Нестача капіталу — 155 млрд грн]',
-      '    sources: [nbu-privatbank-2016]',
+      '    bullets: [Втрати потужності — 155 млрд грн]',
+      '    sources: [plant-x-2026]',
     ]);
     const findings = checkSlides([slides, lecture()], registry);
     expect(findings).toMatchObject([{ rule: 'slide-number-lecture', level: 'warning', line: 8 }]);
@@ -75,18 +75,18 @@ describe('checkSlides', () => {
     expect(checkSlides([slides], registry)).toEqual([]);
   });
 
-  it('requires a legal-baseline code in the lawRef of a norm slide', () => {
+  it('requires a baseline code in the ref of a standard slide', () => {
     const slides = deck([
-      '  - id: norm',
-      '    type: norm',
-      '    title: Типи АТ',
-      '    text: АТ бувають лише публічні або приватні.',
-      '    lawRef:',
-      '      act: Закон № 2465-IX',
-      '      article: ст. 6 ч. 1–4',
+      '  - id: standard',
+      '    type: standard',
+      '    title: Контроль виробництва',
+      '    text: Організація контролює виробництво в керованих умовах.',
+      '    ref:',
+      '      source: ISO 9001:2015 / ДСТУ ISO 9001:2015',
+      '      locator: п. 8.5.1',
       "      checkedAt: '2026-09-14'",
     ]);
-    expect(checkSlides([slides], registry)).toMatchObject([{ rule: 'slide-norm-code', level: 'error', line: 11 }]);
+    expect(checkSlides([slides], registry)).toMatchObject([{ rule: 'slide-standard-code', level: 'error', line: 11 }]);
   });
 
   it('accepts only cases of the registry that belong to the topic', () => {
@@ -94,13 +94,13 @@ describe('checkSlides', () => {
       '  - id: case-a',
       '    type: case',
       '    title: Кейс',
-      '    case: privatbank',
+      '    case: plant-x',
       '    facts: [Факт]',
       '    question: Питання?',
       '  - id: case-b',
       '    type: case',
       '    title: Кейс',
-      '    case: toyota',
+      '    case: toyota-tps',
       '    facts: [Факт]',
       '    question: Питання?',
       '  - id: case-c',
@@ -124,7 +124,7 @@ describe('checkSlides', () => {
       '  - id: fig-ok',
       '    type: figure',
       '    title: Схема',
-      '    figure: fig-01-separation.svg',
+      '    figure: fig-01-oee.svg',
       '    caption: Рисунок 1.',
       '  - id: fig-missing',
       '    type: figure',
@@ -143,12 +143,12 @@ describe('checkSlides', () => {
 
 describe('numbers of presentations', () => {
   it('extracts numbers followed by a percent sign or a money unit', () => {
-    expect(numbersWithUnits('Понад 97 % і 151,2 млрд грн, а 1 200 працівників і 2016 р.')).toEqual(['97', '151,2']);
-    expect(numbersWithUnits('Значний пакет — 5% і більше; 3,44 % акцій; 46 тис. компаній')).toEqual(['5', '3,44', '46']);
+    expect(numbersWithUnits('Понад 97 % і 151,2 млрд грн, а 1 200 верстатів і 2026 р.')).toEqual(['97', '151,2']);
+    expect(numbersWithUnits('Значний простій — 5% і більше; 3,44 % браку; 46 тис. деталей')).toEqual(['5', '3,44', '46']);
   });
 
   it('collects every number of the lecture, including grouped thousands', () => {
-    const numbers = lectureNumbers('Звільнення 1 200 працівників; 151,2 млрд грн; 33–36 %.');
+    const numbers = lectureNumbers('Втрати 1 200 верстатів; 151,2 млрд грн; 33–36 %.');
     expect(numbers.has('1200')).toBe(true);
     expect(numbers.has('200')).toBe(true);
     expect(numbers.has('151,2')).toBe(true);
@@ -163,7 +163,7 @@ describe('presentations in other rules', () => {
       '    type: bullets',
       '    title: Цифри',
       '    bullets: [Факт]',
-      '    sources: [nbu-privatbank-2016, ghost-source]',
+      '    sources: [plant-x-2026, ghost-source]',
     ]);
     const findings = checkSourceUsage([topicSources(), slides]);
     expect(findings).toMatchObject([{ rule: 'source-missing', level: 'error', line: 9 }]);
@@ -175,8 +175,8 @@ describe('presentations in other rules', () => {
       '  - id: numbers',
       '    type: bullets',
       '    title: Цифри',
-      '    bullets: [Нестача капіталу — 148 млрд грн]',
-      '    sources: [nbu-privatbank-2016]',
+      '    bullets: [Втрати потужності — 148 млрд грн]',
+      '    sources: [plant-x-2026]',
     ]);
     const findings = lintContent({ files: [slides, lecture(), topicSources()], baseline: baseline(), course: registry, today: '2026-09-17' });
     expect(findings).toEqual([]);

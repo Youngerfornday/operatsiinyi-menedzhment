@@ -1,12 +1,12 @@
 /**
  * Правило 9. Презентації тем (`content/modules/mN/tNN/slides.yaml`).
  * Слайди — стислий переказ лонгріда, тож правило стежить, щоб вони не принесли нічого нового:
- *  — слайд із відсотком чи сумою (у тексті або нотатках) має `sources` або `lawRef` — помилка;
+ *  — слайд із відсотком чи сумою (у тексті або нотатках) має `sources` або `ref` — помилка;
  *  — таке число є і в лонгріді теми — інакше попередження (можливо, новий факт);
- *  — норма має код рядка legal-baseline у `lawRef.article` — помилка;
+ *  — стандарт має код рядка бази в `ref.locator` — помилка;
  *  — кейс є в реєстрі course.yaml і в списку кейсів цієї теми — помилка;
  *  — схема — файл, який імпортує лонгрід теми, — помилка.
- * Існування кодів і дати перевірки норм, номери законів і висячі ID джерел перевіряють загальні правила.
+ * Існування кодів і дати перевірки, висячі ID джерел перевіряють загальні правила.
  */
 import { isSlidesFile } from '../content.mjs';
 import { ERROR, WARNING, makeFinding } from '../finding.mjs';
@@ -16,26 +16,26 @@ import { hasNumericFact } from './numbers.mjs';
 
 export const RULE_NUMBER_SOURCE = 'slide-number-source';
 export const RULE_NUMBER_LECTURE = 'slide-number-lecture';
-export const RULE_NORM_CODE = 'slide-norm-code';
+export const RULE_STANDARD_CODE = 'slide-standard-code';
 export const RULE_CASE = 'slide-case';
 export const RULE_FIGURE = 'slide-figure';
 
-const SOURCE_HINT = 'Додайте до слайда `sources: [id]` з sources.yaml теми (або `lawRef` для норми): кожне число презентації має джерело.';
+const SOURCE_HINT = 'Додайте до слайда `sources: [id]` з sources.yaml теми (або `ref` для стандарту): кожне число презентації має джерело.';
 const LECTURE_HINT = 'Презентація переказує лонгрід: звірте число з lecture.mdx теми. Якщо факт новий — спершу додайте його в лонгрід із джерелом.';
-const NORM_HINT = 'Допишіть у `lawRef.article` код рядка з docs/research/legal-baseline.md, наприклад «ст. 6 ч. 1–4 (AT-01)».';
+const STANDARD_HINT = 'Допишіть у `ref.locator` код рядка з бази, наприклад «п. 8.5.1 (ISO-9001-11)».';
 const CASE_HINT = 'Кейс береться з реєстру cases у course.yaml і має бути в списку `cases` цієї теми.';
 const FIGURE_HINT = 'На слайді — лише схеми лонгріда: файл fig-*.svg з каталогу теми, який імпортує lecture.mdx.';
 
 /** Поля, які не є текстом слайда: ідентифікатори, посилання, файли. */
 const NOT_TEXT_KEYS = new Set(['id', 'type', 'figure', 'case', 'topic']);
-const NOT_TEXT_PATHS = new Set(['sources', 'lawRef']);
+const NOT_TEXT_PATHS = new Set(['sources', 'ref']);
 
 const NUMBER = '\\d+(?:[\\s\\u00a0]\\d{3})*(?:[.,]\\d+)?';
 const NUMBER_WITH_UNIT = new RegExp(`(?<![\\d.,])(${NUMBER})\\s?(?:%|млн|млрд|тис|грн|дол|євро)`, 'giu');
 const ANY_NUMBER = new RegExp(NUMBER, 'gu');
 const PLAIN_NUMBER = /\d+(?:[.,]\d+)?/g;
 
-const compact = (number) => number.replace(/[\s ]/g, '');
+const compact = (number) => number.replace(/[\s ]/g, '');
 
 /** Числа з відсотком або грошовою одиницею: «151,2 млрд грн» → «151,2». */
 export function numbersWithUnits(text) {
@@ -75,11 +75,11 @@ function textUnits(file, node) {
 function numberIssues(file, node, slide, lecture) {
   const units = textUnits(file, node);
   const numeric = units.flatMap((unit) => splitSentences(unit.text).filter(hasNumericFact).map((sentence) => ({ unit, sentence })));
-  const hasSource = (Array.isArray(slide.sources) && slide.sources.length > 0) || slide.lawRef !== undefined;
+  const hasSource = (Array.isArray(slide.sources) && slide.sources.length > 0) || slide.ref !== undefined;
   const missingSource = numeric.length > 0 && !hasSource
     ? [makeFinding({
         file: file.file, line: numeric[0].unit.line, rule: RULE_NUMBER_SOURCE, level: ERROR,
-        message: `Слайд «${slide.id}»: число без джерела — додайте sources або lawRef`,
+        message: `Слайд «${slide.id}»: число без джерела — додайте sources або ref`,
         hint: SOURCE_HINT,
         quote: quote(numeric[0].sentence),
       })]
@@ -96,13 +96,13 @@ function numberIssues(file, node, slide, lecture) {
   return [...missingSource, ...notInLecture];
 }
 
-function normIssues(file, node, slide) {
-  if (slide.type !== 'norm' || codesIn(String(slide.lawRef?.article ?? '')).length > 0) return [];
+function standardIssues(file, node, slide) {
+  if (slide.type !== 'standard' || codesIn(String(slide.ref?.locator ?? '')).length > 0) return [];
   return [makeFinding({
-    file: file.file, line: fieldLine(file, node, 'article'), rule: RULE_NORM_CODE, level: ERROR,
-    message: `Слайд «${slide.id}»: норма без коду рядка legal-baseline у lawRef`,
-    hint: NORM_HINT,
-    quote: quote(String(slide.lawRef?.article ?? '')),
+    file: file.file, line: fieldLine(file, node, 'locator'), rule: RULE_STANDARD_CODE, level: ERROR,
+    message: `Слайд «${slide.id}»: стандарт без коду рядка бази в ref`,
+    hint: STANDARD_HINT,
+    quote: quote(String(slide.ref?.locator ?? '')),
   })];
 }
 
@@ -142,7 +142,7 @@ export function checkSlides(files, course) {
       if (slide === undefined) return [];
       return [
         ...numberIssues(file, node, slide, lecture),
-        ...normIssues(file, node, slide),
+        ...standardIssues(file, node, slide),
         ...caseIssues(file, node, slide, topic, course),
         ...figureIssues(file, node, slide, lecture),
       ];

@@ -6,11 +6,11 @@ const YAML = [
   'questions:',
   '  - id: q1',
   '    stem: >-',
-  '      Довге питання про кворум,',
-  '      у якому згадано Закон № 2465-IX.',
-  '    lawRef:',
-  '      - act: Закон України № 2465-IX',
-  '        article: ст. 40 ч. 1 (AT-26)',
+  '      Довге питання про запаси,',
+  '      у якому згадано формулу EOQ-01.',
+  '    refs:',
+  '      - source: Старченко Г.В. та ін., 2020',
+  '        locator: розділ «Запаси», формула EOQ (EOQ-01)',
   '        checkedAt: 2026-09-15',
   '',
 ].join('\n');
@@ -22,26 +22,26 @@ describe('contentFile (yaml)', () => {
     const stem = file.units.find((unit) => unit.key === 'stem');
     expect(stem.line).toBe(4);
     expect(stem.path).toEqual(['questions', 'stem']);
-    expect(stem.text).toContain('Закон № 2465-IX');
+    expect(stem.text).toContain('EOQ-01');
     expect(file.units.some((unit) => unit.text === 'topic')).toBe(false);
   });
 
   it('gives every value the record it belongs to — the item of the top-level sequence', () => {
-    const article = file.units.find((unit) => unit.key === 'article');
-    expect(article.container).toContain('act: Закон України № 2465-IX');
-    expect(article.container).not.toContain('stem:');
-    expect(article.record).toContain('stem:');
+    const locator = file.units.find((unit) => unit.key === 'locator');
+    expect(locator.container).toContain('source: Старченко Г.В. та ін., 2020');
+    expect(locator.container).not.toContain('stem:');
+    expect(locator.record).toContain('stem:');
   });
 
-  it('exposes maps so that lawRef blocks can be found by their keys', () => {
-    const lawRef = file.maps.find((node) => 'article' in node.keys && 'checkedAt' in node.keys);
-    expect(lawRef.line).toBe(8);
-    expect(lawRef.keys.checkedAt).toBe('2026-09-15');
+  it('exposes maps so that refs blocks can be found by their keys', () => {
+    const ref = file.maps.find((node) => 'locator' in node.keys && 'checkedAt' in node.keys);
+    expect(ref.line).toBe(8);
+    expect(ref.keys.checkedAt).toBe('2026-09-15');
   });
 
   it('refines the line of a mention inside a folded scalar', () => {
     const stem = file.units.find((unit) => unit.key === 'stem');
-    expect(refineLine(file, stem, '№ 2465-IX')).toBe(6);
+    expect(refineLine(file, stem, 'EOQ-01')).toBe(6);
     expect(refineLine(file, stem, 'немає такого тексту')).toBe(stem.line);
   });
 });

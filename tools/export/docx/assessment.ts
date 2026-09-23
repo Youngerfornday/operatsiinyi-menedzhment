@@ -65,9 +65,21 @@ function pointsTable(ctx: DocContext): FileChild[] {
   ];
 }
 
-function testsChildren(ctx: DocContext): FileChild[] {
-  const { moduleTests, finalTest } = ctx.course.grading;
+/** Модульний тест — не обов'язковий: деякі силабуси (напр. «Операційний менеджмент») його не мають. */
+function moduleTestChildren(ctx: DocContext): FileChild[] {
+  const { moduleTests } = ctx.course.grading;
+  if (!moduleTests) return [];
   const bloom = BLOOM_LEVELS.map((level) => `${level.label.toLocaleLowerCase('uk-UA')} — ${moduleTests.bloom[level.key]}`).join(', ');
+  return [
+    para(
+      `Модульний тест (після кожного модуля) — ${moduleTests.questions} випадкових питань з банку модуля (${moduleTests.bankPerModule} питань), ` +
+        `${moduleTests.timeLimitMinutes} хв, спроб — ${moduleTests.attempts}. Розподіл за рівнями Блума: ${bloom}.`,
+    ),
+  ];
+}
+
+function finalTestChildren(ctx: DocContext): FileChild[] {
+  const { finalTest } = ctx.course.grading;
   const matrixRows = finalTest.matrix.map((row): CellContent[] => [
     `Тема ${topicNumber(ctx.course, row.topic)}`,
     ...BLOOM_LEVELS.map((level) => formatNumber(row[level.key])),
@@ -75,10 +87,6 @@ function testsChildren(ctx: DocContext): FileChild[] {
   ]);
   const levelTotals = BLOOM_LEVELS.map((level) => finalTest.matrix.reduce((sum, row) => sum + row[level.key], 0));
   return [
-    para(
-      `Модульний тест (після кожного модуля) — ${moduleTests.questions} випадкових питань з банку модуля (${moduleTests.bankPerModule} питань), ` +
-        `${moduleTests.timeLimitMinutes} хв, спроб — ${moduleTests.attempts}. Розподіл за рівнями Блума: ${bloom}.`,
-    ),
     para(
       `Підсумковий тест — ${finalTest.questions} питань з банку на ${finalTest.bankSize} питань, ${finalTest.timeLimitMinutes} хв, спроб — ${finalTest.attempts}. ` +
         'Питання добираються за матрицею «теми × рівні Блума»:',
@@ -188,14 +196,15 @@ function scaleChildren(ctx: DocContext): FileChild[] {
 }
 
 export function assessmentSection(ctx: DocContext, options: { readonly rubrics: boolean }): DocSection {
-  const { split } = ctx.course.grading;
+  const { split, moduleTests, caseProject } = ctx.course.grading;
+  const testsTitle = moduleTests ? 'Модульні та підсумковий тести' : 'Підсумковий тест';
   const base = [
     {
       title: 'Розподіл балів',
       children: [para(`Максимальна оцінка — 100 балів: поточний контроль — ${formatNumber(split.current)}, підсумковий — ${formatNumber(split.final)}.`), ...pointsTable(ctx)],
     },
-    { title: 'Модульні та підсумковий тести', children: testsChildren(ctx) },
-    { title: 'Кейс-проєкт', children: caseProjectChildren(ctx) },
+    { title: testsTitle, children: [...moduleTestChildren(ctx), ...finalTestChildren(ctx)] },
+    { title: caseProject.title, children: caseProjectChildren(ctx) },
   ];
   const rubrics = options.rubrics ? [{ title: 'Критерії оцінювання практичних робіт', children: practicalRubrics(ctx) }] : [];
   return {

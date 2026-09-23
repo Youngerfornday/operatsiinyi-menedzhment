@@ -7,7 +7,7 @@ import { DOWNLOADS_DIR } from './downloads-items.ts';
  * Архів має кореневу теку, щоб після розпакування файли не розсипалися по каталогу завантажень.
  */
 
-export const REPOSITORY_URL = 'https://github.com/Youngerfornday/korporatyvne-upravlinnia';
+export const REPOSITORY_URL = 'https://github.com/Youngerfornday/operatsiinyi-menedzhment';
 const LICENSE_TEXT = 'Навчальний контент — CC BY-NC-SA 4.0 (https://creativecommons.org/licenses/by-nc-sa/4.0/deed.uk); логотип університету — поза ліцензією.';
 /** PPTX набрано шрифтом сайту; woff2 PowerPoint не читає, тому в пакеті — посилання на офіційну сторінку шрифту. */
 export const OPEN_SANS_URL = 'https://fonts.google.com/specimen/Open+Sans';

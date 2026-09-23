@@ -69,7 +69,8 @@ const BonusSchema = z.object({
 export const GradingSchema = z.object({
   split: z.object({ current: z.number().min(0), final: z.number().min(0) }),
   categories: z.array(GradingCategorySchema).min(1),
-  moduleTests: ModuleTestsSchema,
+  /** Необов'язкові: офіційний силабус може не передбачати модульних тестів (напр. «Операційний менеджмент»). */
+  moduleTests: ModuleTestsSchema.optional(),
   finalTest: FinalTestSchema,
   caseProject: CaseProjectSchema,
   admission: AdmissionSchema,

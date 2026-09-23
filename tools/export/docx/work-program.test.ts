@@ -9,7 +9,7 @@ import { WORK_PROGRAM_SECTION_TITLES, buildWorkProgram } from './work-program.ts
 /** Робоча програма з реального course.yaml: структура розділів, повнота ПРН і тем, суми годин і балів. */
 
 const DATE = new Date('2026-09-17T00:00:00.000Z');
-const SITE_URL = 'https://youngerfornday.github.io/korporatyvne-upravlinnia/';
+const SITE_URL = 'https://youngerfornday.github.io/operatsiinyi-menedzhment/';
 
 let course: Course;
 let docx: Buffer;
@@ -29,7 +29,7 @@ describe('структура робочої програми', () => {
   test('титульна сторінка й розділи йдуть у порядку РПНД з наскрізною нумерацією', () => {
     const texts = view.paragraphs.map((p) => p.text);
     expect(texts).toContain('Робоча програма навчальної дисципліни');
-    expect(texts).toContain('«Корпоративне управління»');
+    expect(texts).toContain('«Операційний менеджмент»');
     const headings = view.paragraphs.filter((p) => p.style === 'Heading1').map((p) => p.text);
     expect(headings).toEqual(WORK_PROGRAM_SECTION_TITLES.map((title, index) => `${index + 1}. ${title}`));
   });
@@ -60,7 +60,7 @@ describe('структура робочої програми', () => {
   });
 
   test('матриця ПРН × теми ставить «+» саме там, де тема формує результат', () => {
-    const matrix = tableWithHeaders(view, ['ПРН', 'Т1', 'Т12']);
+    const matrix = tableWithHeaders(view, ['ПРН', 'Т1', 'Т8']);
     for (const [index, outcome] of course.learningOutcomes.entries()) {
       const row = matrix[index + 1] ?? [];
       const marked = course.topics.filter((_, topicIndex) => row[topicIndex + 1] === '+').map((topic) => topic.id);
@@ -139,7 +139,7 @@ describe('примітки для погодження', () => {
   });
 
   test('дані викладача — плейсхолдер без персональних даних', () => {
-    expect(allText()).toContain('Викладач курсу (дані вносить кафедра)');
+    expect(allText()).toContain(`${course.teacher.name} (дані вносить кафедра)`);
     expect(view.xml.document).not.toMatch(/@[a-z0-9-]+\.[a-z]{2,}/i);
   });
 });

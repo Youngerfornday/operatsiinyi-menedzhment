@@ -2,35 +2,35 @@ import { describe, expect, it } from 'vitest';
 import { LEVELS, levelForXp, levelProgress } from './levels';
 
 describe('LEVELS', () => {
-  it('follows the career ladder and thresholds from DESIGN.md', () => {
+  it('follows the operations-management career ladder and thresholds from DESIGN.md', () => {
     expect(LEVELS.map((level) => [level.title, level.minXp])).toEqual([
-      ['Акціонер', 0],
-      ['Міноритарій', 500],
-      ['Член наглядової ради', 1200],
-      ['Незалежний директор', 2200],
-      ['Голова ради', 3400],
+      ['Стажист дільниці', 0],
+      ['Майстер зміни', 500],
+      ['Начальник дільниці', 1200],
+      ['Начальник виробництва', 2200],
+      ['Директор з операцій', 3400],
     ]);
-    expect(LEVELS.map((level) => level.id)).toEqual(['shareholder', 'minority', 'board-member', 'independent-director', 'chair']);
+    expect(LEVELS.map((level) => level.id)).toEqual(['floor-intern', 'shift-foreman', 'section-chief', 'production-manager', 'operations-director']);
   });
 });
 
 describe('levelForXp', () => {
   it.each([
-    [0, 'Акціонер'],
-    [499, 'Акціонер'],
-    [500, 'Міноритарій'],
-    [1199, 'Міноритарій'],
-    [1200, 'Член наглядової ради'],
-    [2200, 'Незалежний директор'],
-    [3400, 'Голова ради'],
-    [99_999, 'Голова ради'],
+    [0, 'Стажист дільниці'],
+    [499, 'Стажист дільниці'],
+    [500, 'Майстер зміни'],
+    [1199, 'Майстер зміни'],
+    [1200, 'Начальник дільниці'],
+    [2200, 'Начальник виробництва'],
+    [3400, 'Директор з операцій'],
+    [99_999, 'Директор з операцій'],
   ])('%i XP → %s', (xp, title) => {
     expect(levelForXp(xp).title).toBe(title);
   });
 
   it('treats negative or broken XP as zero', () => {
-    expect(levelForXp(-5).title).toBe('Акціонер');
-    expect(levelForXp(Number.NaN).title).toBe('Акціонер');
+    expect(levelForXp(-5).title).toBe('Стажист дільниці');
+    expect(levelForXp(Number.NaN).title).toBe('Стажист дільниці');
   });
 });
 

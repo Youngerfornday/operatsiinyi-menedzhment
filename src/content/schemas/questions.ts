@@ -15,7 +15,7 @@ export { BloomLevelSchema, MOODLE_GRADE_PERCENTS, type BloomLevel } from './ques
  * Префікс canary-рядка контрольних банків. Склеюється під час виконання, щоб жоден файл
  * публічного репозиторію (і зібраний JS) не містив цей рядок цілком: його шукає check:dist.
  */
-export const CONTROL_CANARY_PREFIX = ['KU', 'CONTROL', 'CANARY', ''].join('-');
+export const CONTROL_CANARY_PREFIX = ['OM', 'CONTROL', 'CANARY', ''].join('-');
 
 /** Питання банку — дзеркало типів Moodle XML. Схема однакова для тренувальних і контрольних банків. */
 export const QuestionSchema = z.discriminatedUnion('type', [

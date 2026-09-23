@@ -3,8 +3,8 @@ import type { CourseRegistry } from '../registry.ts';
 /** Стабільний реєстр для снапшотів (незалежний від content/course.yaml, який редагує методист). */
 export const REGISTRY: CourseRegistry = {
   modules: [
-    { id: 'm1', title: 'Основи корпоративного управління' },
-    { id: 'm2', title: 'Органи корпоративного управління' },
+    { id: 'm1', title: 'Основи операційного менеджменту' },
+    { id: 'm2', title: 'Органи операційного менеджменту' },
     { id: 'm3', title: 'Капітал / ринок' },
   ],
   topics: [

@@ -6,12 +6,12 @@ import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
 import { typographyPlugin } from './src/lib/typography/satteri-plugin.ts';
 
-// Живий сайт: https://youngerfornday.github.io/korporatyvne-upravlinnia/
+// Живий сайт: https://youngerfornday.github.io/operatsiinyi-menedzhment/
 // Усі внутрішні посилання будуються через src/lib/url.ts з урахуванням base.
 export default defineConfig({
   output: 'static',
   site: 'https://youngerfornday.github.io',
-  base: '/korporatyvne-upravlinnia',
+  base: '/operatsiinyi-menedzhment',
   trailingSlash: 'always',
   markdown: {
     // Astro 7 рендерить Markdown і MDX через Sätteri; українську типографіку робить наш hast-плагін,

@@ -5,7 +5,7 @@ import { TopicFrontmatterSchema } from './topic';
 
 const lecture = () => ({
   id: 't01',
-  description: 'Чому власники й менеджери мають різні інтереси і як корпоративне управління їх узгоджує.',
+  description: 'Чому власники й менеджери мають різні інтереси і як операційний менеджмент їх узгоджує.',
   learningOutcomes: ['prn01'],
   keyTerms: ['agency-problem'],
   status: 'draft',
@@ -40,8 +40,8 @@ const sources = () => ({
 
 describe('TopicFrontmatterSchema', () => {
   it('accepts a lecture frontmatter and applies defaults', () => {
-    const parsed = TopicFrontmatterSchema.parse({ id: 't02', description: 'Моделі корпоративного управління у світі.', updatedAt: '2026-09-14' });
-    expect(parsed).toMatchObject({ learningOutcomes: [], keyTerms: [], lawRef: [], status: 'draft' });
+    const parsed = TopicFrontmatterSchema.parse({ id: 't02', description: 'Моделі операційного менеджменту у світі.', updatedAt: '2026-09-14' });
+    expect(parsed).toMatchObject({ learningOutcomes: [], keyTerms: [], refs: [], status: 'draft' });
     expect(TopicFrontmatterSchema.safeParse(lecture()).success).toBe(true);
   });
 

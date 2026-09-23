@@ -2,11 +2,10 @@
 import { ERROR } from './finding.mjs';
 
 export const RULE_TITLES = {
-  'law-number': 'Номери законів — лише ті, що є в legal-baseline.md',
-  'law-code': 'Коди норм і статті — як записано в legal-baseline.md',
-  'lawref-consistency': 'Коди норм: узгодженість тексту, слайдів і frontmatter lawRef',
+  'ref-code': 'Коди довідника — лише ті, що є в formula-baseline.md / standards-baseline.md',
+  'ref-consistency': 'Коди довідника: узгодженість тексту, слайдів і frontmatter refs',
   'unconfirmed-zone': 'Заборонена зона: розділ «Не підтверджено»',
-  'checked-date': 'Дати перевірки норм і джерел',
+  'checked-date': 'Дати перевірки кодів і джерел',
   'case-caveat': 'Застереження кейсів (caveat у course.yaml)',
   'source-unused': 'Джерела, на які ніхто не посилається',
   'source-missing': 'Висячі посилання на джерела',
@@ -14,7 +13,7 @@ export const RULE_TITLES = {
   'number-without-source': 'Числа без джерела поруч',
   'slide-number-source': 'Презентації: число на слайді без sources',
   'slide-number-lecture': 'Презентації: числа, яких немає в лонгріді',
-  'slide-norm-code': 'Презентації: норма без коду legal-baseline',
+  'slide-standard-code': 'Презентації: стандарт без коду бази',
   'slide-case': 'Презентації: кейс не з реєстру теми',
   'slide-figure': 'Презентації: схема не з лонгріда теми',
   'selfcheck-answer-position': 'Самоперевірка: розподіл позицій правильних відповідей',

@@ -26,7 +26,7 @@ const catalog = buildCatalog({
   questions: e2eBankQuestions(),
   practicalFiles: [{ id: 'p01' }],
   manifest: fixtureManifest(),
-  url: (path) => `/korporatyvne-upravlinnia/${path}`,
+  url: (path) => `/operatsiinyi-menedzhment/${path}`,
 });
 
 function byId(id: string): Material {
@@ -74,8 +74,8 @@ describe('структура архіву й README', () => {
     const twin = { ...lecture.files[0]!, id: 'twin' };
     const summary = { materials: [lecture], files: [{ material: lecture, file: lecture.files[0]! }, { material: lecture, file: twin }], bytes: 0 };
     expect(archiveEntries(summary).map((e) => e.path)).toEqual([
-      'Модуль 1/Тема 01/Лекція 1. Корпорація і корпоративне управління.pdf',
-      'Модуль 1/Тема 01/Лекція 1. Корпорація і корпоративне управління (2).pdf',
+      'Модуль 1/Тема 01/Лекція 1. Корпорація і операційний менеджмент.pdf',
+      'Модуль 1/Тема 01/Лекція 1. Корпорація і операційний менеджмент (2).pdf',
     ]);
   });
 
@@ -84,19 +84,19 @@ describe('структура архіву й README', () => {
     const entries = archiveEntries(summary);
     const collectedAt = new Date('2026-09-17T21:30:00Z');
     const text = readmeText(entries, {
-      courseTitle: 'Корпоративне управління',
-      sourceUrl: 'https://example.org/korporatyvne-upravlinnia/kabinet/',
+      courseTitle: 'Операційний менеджмент',
+      sourceUrl: 'https://example.org/operatsiinyi-menedzhment/kabinet/',
       collectedAt,
       manifestGeneratedAt: '2026-09-16T09:30:00Z',
       absoluteUrl: (href) => `https://example.org${href}`,
     });
-    expect(text).toContain('Джерело: https://example.org/korporatyvne-upravlinnia/kabinet/');
+    expect(text).toContain('Джерело: https://example.org/operatsiinyi-menedzhment/kabinet/');
     expect(text).toContain('Зібрано: 18.09.2026, 00:30 (Київ)');
     expect(text).toContain('Склад: 2 файли, 1,4\u00A0МБ');
     expect(text).toContain('Курс/Силабус дисципліни.docx');
-    expect(text).toContain('https://example.org/korporatyvne-upravlinnia/downloads/m1/t01/lecture.pdf');
+    expect(text).toContain('https://example.org/operatsiinyi-menedzhment/downloads/m1/t01/lecture.pdf');
     expect(text).toContain('\r\n');
-    expect(archiveFileName(collectedAt)).toBe('korporatyvne-upravlinnia-materialy-2026-09-18.zip');
+    expect(archiveFileName(collectedAt)).toBe('operatsiinyi-menedzhment-materialy-2026-09-18.zip');
     const noManifest = readmeText(entries, { courseTitle: 'К', sourceUrl: 's', collectedAt, manifestGeneratedAt: null, absoluteUrl: (h) => h });
     expect(noManifest).not.toContain('Версія матеріалів');
   });

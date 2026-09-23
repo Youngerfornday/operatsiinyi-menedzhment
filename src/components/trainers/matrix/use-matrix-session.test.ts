@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { applyMatrixCompletion } from './use-matrix-session';
 
-const event = { id: 'trainer:p01-model-matrix:1', type: 'trainer-completed' as const, activityId: 'p01-model-matrix', score: 1 };
+const event = { id: 'trainer:p02-matching-matrix:1', type: 'trainer-completed' as const, activityId: 'p02-matching-matrix', score: 1 };
 const success = { ok: true as const, value: { state: {} as never, duplicate: false, xpGained: 60, newBadges: [], levelBefore: {} as never, levelAfter: {} as never, leveledUp: false } };
 
 describe('applyMatrixCompletion', () => {

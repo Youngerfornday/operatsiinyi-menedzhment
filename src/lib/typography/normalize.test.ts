@@ -142,3 +142,14 @@ describe('splitProtected', () => {
     ]);
   });
 });
+
+describe('позначення стандартів', () => {
+  it('не перетворює дефіс у номері стандарту на тире', () => {
+    expect(normalizeTypography('ISO 22400-1:2014 — огляд')).toContain('ISO 22400-1:2014');
+    expect(normalizeTypography('ДСТУ ISO 9001-1:2015')).toContain('9001-1:2015');
+  });
+
+  it('далі робить тире у звичайному діапазоні', () => {
+    expect(normalizeTypography('обсяг 10-15 відсотків')).toContain('10\u201315');
+  });
+});

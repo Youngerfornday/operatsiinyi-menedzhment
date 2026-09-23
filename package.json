@@ -1,8 +1,8 @@
 {
-  "name": "korporatyvne-upravlinnia",
+  "name": "operatsiinyi-menedzhment",
   "version": "0.1.0",
   "private": true,
-  "description": "Навчальний курс «Корпоративне управління» для бакалаврату: сайт, тренувальні банки питань і пакети для Moodle",
+  "description": "Навчальний курс «Операційний менеджмент» для бакалаврату: сайт, тренувальні банки питань і пакети для Moodle",
   "license": "MIT",
   "type": "module",
   "engines": {
@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "node tools/checks/content-lint.mjs --warn-only && astro check && astro build",
+    "build": "node tools/checks/content-lint.mjs && astro check && astro build",
     "preview": "astro preview",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { PracticalFileSchema, matrixCellCount, matrixIssues, matrixTrainerOf, sourceRefIssues } from './practical';
+import { PracticalFileSchema, calculationTasksOf, matrixCellCount, matrixIssues, matrixTrainerOf, sourceRefIssues } from './practical';
 
 const MODELS = ['anglo-american', 'german'] as const;
 const FEATURES = [
@@ -40,12 +40,12 @@ const feature = (id: string) => ({
 
 const file = () => ({
   id: 'p01',
-  title: 'Матриця моделей корпоративного управління',
+  title: 'Матриця моделей операційного менеджменту',
   intro: 'Зіставте ознаки з моделями.',
   updatedAt: '2026-09-16',
   sources: [source()],
   trainer: {
-    kind: 'model-matrix',
+    kind: 'matching-matrix',
     models: MODELS.map(model),
     features: FEATURES.map(feature),
     companyTasks: [
@@ -133,5 +133,60 @@ describe('PracticalFileSchema', () => {
     const data = file();
     expect(issues({ ...data, trainer: { ...data.trainer, essay: { ...data.trainer.essay, expectations: ['одне'] } } })).not.toEqual([]);
     expect(issues({ ...data, trainer: { ...data.trainer, essay: { ...data.trainer.essay, maxWords: 50 } } })).not.toEqual([]);
+  });
+});
+
+const calculationRef = (locator: string, checkedAt = '2026-09-23') => ({
+  source: 'Stevenson W. J. Operations Management, 2020',
+  locator,
+  checkedAt,
+  url: 'https://openlibrary.org/isbn/9781260575712',
+});
+
+const calculationTask = (id: string, method: string) => ({
+  id,
+  method,
+  title: `Задача ${id}`,
+  formula: 'Продуктивність = Обсяг випуску / Обсяг витрачених ресурсів',
+  ref: calculationRef(`розділ «Productivity» (${id.toUpperCase()})`),
+});
+
+const calculationFile = () => ({
+  id: 'p01',
+  title: 'Операційна функція і продуктивність',
+  intro: 'Розрахуйте показники продуктивності.',
+  updatedAt: '2026-09-23',
+  sources: [source('stevenson-2020')],
+  trainer: {
+    kind: 'calculation-tasks',
+    tasks: [calculationTask('partial-labor', 'partial-productivity'), calculationTask('multifactor', 'multifactor-productivity')],
+    essay: { prompt: 'Поясніть розбіжність показників.', maxWords: 300, expectations: ['Теза', 'Два аргументи'] },
+  },
+});
+
+describe('PracticalFileSchema — calculation-tasks', () => {
+  it('accepts a calculator trainer alongside the matching-matrix kind', () => {
+    const parsed = PracticalFileSchema.parse(calculationFile());
+    expect(calculationTasksOf(parsed).tasks).toHaveLength(2);
+  });
+
+  it('rejects duplicate task ids', () => {
+    const data = calculationFile();
+    const [first] = data.trainer.tasks;
+    expect(
+      issues({ ...data, trainer: { ...data.trainer, tasks: [first!, { ...first!, title: 'Інша назва' }] } }),
+    ).toContainEqual(expect.stringMatching(/Дублікат ID задачі/));
+  });
+
+  it('still requires a ref with source, locator and checkedAt for every task', () => {
+    const data = calculationFile();
+    const [first, ...rest] = data.trainer.tasks;
+    const { ref, ...withoutRef } = first!;
+    expect(issues({ ...data, trainer: { ...data.trainer, tasks: [withoutRef as never, ...rest] } })).not.toEqual([]);
+  });
+
+  it('narrowing to the wrong trainer kind throws', () => {
+    const parsed = PracticalFileSchema.parse(file());
+    expect(() => calculationTasksOf(parsed)).toThrow();
   });
 });

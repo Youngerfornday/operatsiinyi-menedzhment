@@ -17,10 +17,10 @@ function stemText(view: BankQuestionView): string {
 }
 
 describe('bankQuestionView', () => {
-  it('спільні поля: номер, тип, Блум, бал, норма з датою перевірки', () => {
+  it('спільні поля: номер, тип, Блум, бал, джерело з датою перевірки', () => {
     const view = bankQuestionView(questions[0]!, 0);
     expect(view).toMatchObject({ number: 1, typeLabel: 'одиночний вибір', bloomLabel: 'Запам’ятовування', mark: '1 бал' });
-    expect(view.lawRefs[0]).toMatchObject({ article: 'ст. 3', checked: '01.09.2026' });
+    expect(view.refs[0]).toMatchObject({ locator: 'ст. 3', checked: '01.09.2026' });
   });
 
   it('одиночний вибір: правильний варіант позначено, частковий відсоток не показується для 0 і 100', () => {

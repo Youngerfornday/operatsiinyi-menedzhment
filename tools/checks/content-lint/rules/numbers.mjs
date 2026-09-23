@@ -8,14 +8,18 @@ import { WARNING, makeFinding } from '../finding.mjs';
 import { lower, quote, splitSentences } from '../text.mjs';
 
 export const RULE = 'number-without-source';
-const HINT = 'Додайте поруч джерело: `source:` у YAML, код рядка legal-baseline, посилання або зворот «за даними …» — число без джерела не можна перевірити.';
+const HINT = 'Додайте поруч джерело: `source:` у YAML, код рядка бази (formula-baseline / standards-baseline), посилання або зворот «за даними …» — число без джерела не можна перевірити.';
 
 const PERCENT = /\d[\d\s .,]*\s?%/;
 const MONEY = /\d[\d\s .,]*\s*(?:грн|дол\.?|євро|usd|eur|млн|млрд|тис\.?)/i;
 const RATIO = /\b\d{1,4}\s+з\s+\d{1,4}\b/;
-const SOURCE_MARKERS = ['source:', 'alsosources', '#src-', 'http', 'legal-baseline', 'lawref', 'checkedat', 'ref:', 'за даними', 'за позицією', 'за оцінк', 'за словами', 'позиці', 'згідно з', 'відповідно до', 'джерел', 'звіт', 'повідоми', 'оприлюдни', 'назвала', 'встановив', 'ст. ', 'статт'];
-const CODE = /\b[A-Z]{2,4}(?:-[A-Z]{2})?-\d{2}\b/;
-const SKIP_KEYS = new Set(['url', 'id', 'checkedAt', 'updatedAt', 'source']);
+const SOURCE_MARKERS = ['source:', 'alsosources', '#src-', 'http', 'formula-baseline', 'standards-baseline', 'refs', 'checkedat', 'форм.', 'код', 'за даними', 'за позицією', 'за оцінк', 'за словами', 'позиці', 'згідно з', 'відповідно до', 'джерел', 'звіт', 'повідоми', 'оприлюдни', 'назвала', 'встановив'];
+const CODE = /\b[A-Z][A-Z0-9-]*-\d{2}\b/;
+/**
+ * `focus` і `caveat` переказують досьє кейсу: числа в них мають джерело в docs/research/cases.md,
+ * на розділ якого вказує `cases[].ref`, а не в сусідньому абзаці реєстру.
+ */
+const SKIP_KEYS = new Set(['url', 'id', 'checkedAt', 'updatedAt', 'source', 'focus', 'caveat']);
 /**
  * Числа навчального дизайну — не факти із зовнішніх джерел: бали й пороги рубрик, години, схема оцінювання,
  * а також вигадані дані обчислювальних питань (`type: numerical`). Їх правило не чіпає.

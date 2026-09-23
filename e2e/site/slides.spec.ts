@@ -9,7 +9,7 @@ import { expectAllReferencesBased, expectNoHorizontalScroll, expectNoSeriousAxeV
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const DECK = parse(readFileSync(`${ROOT}content/modules/m1/t01/slides.yaml`, 'utf8')) as { slides: Array<{ id: string; type: string }> };
 const COUNT = DECK.slides.length;
-const TOPIC = 'temy/korporatsiia-i-korporatyvne-upravlinnia/';
+const TOPIC = 'temy/operatsiinyi-menedzhment-yak-funktsiia/';
 const SLIDES = `${TOPIC}prezentatsiia/`;
 /** Номер першого слайда кожного з перевірюваних типів (1-based). */
 const numberOf = (type: string) => DECK.slides.findIndex((slide) => slide.type === type) + 1;
@@ -26,7 +26,7 @@ async function openDeck(page: Page, hash = ''): Promise<void> {
 test('рендерить усі слайди теми 1, показує один, посилання з base, без горизонтального скролу, axe без serious', async ({ page }) => {
   await openDeck(page);
   await expect(page.locator('html')).toHaveAttribute('lang', 'uk');
-  await expect(page.getByRole('heading', { level: 1, name: /Корпорація і корпоративне управління/ })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: /Корпорація і операційний менеджмент/ })).toBeVisible();
   await expect(page.locator('[data-slide]')).toHaveCount(COUNT);
   expect(COUNT).toBeGreaterThanOrEqual(22);
   expect(COUNT).toBeLessThanOrEqual(28);
@@ -145,16 +145,16 @@ test('кнопка «Презентація» на сторінці теми в�
   const link = page.locator('[data-topic-slides-link]');
   await expect(link).toHaveText(/Презентація/);
   await link.click();
-  await expect(page).toHaveURL(/temy\/korporatsiia-i-korporatyvne-upravlinnia\/prezentatsiia\/$/);
+  await expect(page).toHaveURL(/temy\/operatsiinyi-menedzhment-yak-funktsiia\/prezentatsiia\/$/);
   await page.locator('[data-slides-back]').click();
-  await expect(page).toHaveURL(/temy\/korporatsiia-i-korporatyvne-upravlinnia\/$/);
+  await expect(page).toHaveURL(/temy\/operatsiinyi-menedzhment-yak-funktsiia\/$/);
 });
 
 test('тема без slides.yaml: ні кнопки, ні сторінки презентації', async ({ page }) => {
-  await page.goto('temy/aktsionery-ta-zahalni-zbory/');
+  await page.goto('temy/operatsiina-diialnist-resursy-protsesy/');
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   await expect(page.locator('[data-topic-slides-link]')).toHaveCount(0);
-  const response = await page.goto('temy/aktsionery-ta-zahalni-zbory/prezentatsiia/');
+  const response = await page.goto('temy/operatsiina-diialnist-resursy-protsesy/prezentatsiia/');
   expect(response?.status()).toBe(404);
 });
 

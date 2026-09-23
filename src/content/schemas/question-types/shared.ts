@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { KebabIdSchema, LawRefSchema, NonEmptyTextSchema, TopicIdSchema, findDuplicates, normalizeText } from '../primitives';
+import { KebabIdSchema, NonEmptyTextSchema, RefSchema, TopicIdSchema, findDuplicates, normalizeText } from '../primitives';
 
 /** Рівень Блума експортується в Moodle як тег питання (випадковий вибір з фільтром за тегом). */
 export const BloomLevelSchema = z.enum(['remember', 'understand', 'apply', 'analyze']);
@@ -30,7 +30,7 @@ export const questionBaseShape = {
   bloom: BloomLevelSchema,
   stem: NonEmptyTextSchema,
   generalFeedback: NonEmptyTextSchema,
-  lawRef: z.array(LawRefSchema).default([]),
+  refs: z.array(RefSchema).default([]),
   defaultMark: z.number().positive().default(1),
 };
 

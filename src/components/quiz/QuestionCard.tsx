@@ -1,4 +1,4 @@
-/** Картка одного питання: стовбур, поле відповіді за типом, вердикт, загальний відгук і норма права. */
+/** Картка одного питання: стовбур, поле відповіді за типом, вердикт, загальний відгук і джерело. */
 import { useEffect, useRef } from 'react';
 import type { LayoutOf, Question, QuestionResponse, QuestionReview, QuizSlot, ResponseOf } from '../../engines/quiz';
 import { reviewQuestion } from '../../engines/quiz';
@@ -118,11 +118,11 @@ export function QuestionCard({ index, total, question, slot, draft, issue, readO
               {review.generalFeedback}
             </div>
           </div>
-          {question.lawRef.length > 0 && (
+          {question.refs.length > 0 && (
             <div className="q-hint" data-show="">
-              <Icon name="scale" className="icon icon-sm" />
+              <Icon name="book" className="icon icon-sm" />
               <span>
-                Норма: {question.lawRef.map((ref) => `${ref.article} ${ref.act}`).join('; ')}.{' '}
+                Джерело: {question.refs.map((ref) => `${ref.locator} ${ref.source}`).join('; ')}.{' '}
                 <a href={topicHref}>
                   Повернутися до теми <Icon name="arrow-r" className="icon icon-sm" />
                 </a>

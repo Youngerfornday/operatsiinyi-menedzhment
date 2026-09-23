@@ -1,4 +1,5 @@
-# Фікстура експорту: модуль 1 (так/ні, відповідність, одиночний вибір зі спецсимволами XML і HTML).
+# Фікстура експорту: модуль 1 (t01–t04) — так/ні, відповідність, одиночний вибір зі спецсимволами XML і
+# HTML, перетягування (ddwtos) і Cloze (multianswer).
 schemaVersion: 1
 kind: training
 module: m1
@@ -17,7 +18,7 @@ questions:
     type: matching
     topic: t02
     bloom: understand
-    stem: Установіть відповідність між моделлю корпоративного управління та її ознакою.
+    stem: Установіть відповідність між моделлю операційного менеджменту та її ознакою.
     generalFeedback: Моделі різняться структурою власності й роллю банків.
     pairs:
       - prompt: Англо-американська
@@ -54,3 +55,100 @@ questions:
       - text: Умову має затвердити НКЦПФР
         fraction: 0
         feedback: НКЦПФР не затверджує статути ТОВ.
+
+  - id: t04-q001
+    type: multichoice
+    topic: t04
+    bloom: remember
+    single: true
+    stem: Який орган є вищим органом акціонерного товариства?
+    generalFeedback: Вищий орган АТ — загальні збори акціонерів.
+    refs:
+      - source: Закон України «Про акціонерні товариства» № 2465-IX
+        locator: ст. 39
+        checkedAt: 2026-09-01
+    answers:
+      - text: Загальні збори акціонерів
+        fraction: 100
+        feedback: Так, це вищий орган товариства.
+      - text: Наглядова рада
+        fraction: 0
+        feedback: Наглядова рада контролює виконавчий орган.
+      - text: Виконавчий орган
+        fraction: 0
+        feedback: Виконавчий орган керує поточною діяльністю.
+
+  - id: t04-q002
+    type: truefalse
+    topic: t04
+    bloom: remember
+    stem: Загальні збори акціонерів скликає наглядова рада.
+    generalFeedback: Скликання зборів — повноваження наглядової ради.
+    refs:
+      - source: Закону України «Про акціонерні товариства» № 2465-IX
+        locator: ст. 48 ч. 1
+        checkedAt: 2026-09-01
+        url: https://zakon.rada.gov.ua/laws/show/2465-20
+    correct: true
+    feedbackTrue: Так, це повноваження наглядової ради.
+    feedbackFalse: Ні, збори скликає наглядова рада.
+
+  - id: t04-q007
+    type: ddwtos
+    topic: t04
+    bloom: understand
+    stem: Кворум загальних зборів — це [[1]] голосуючих акцій, рішення ухвалюють [[2]] голосів, а про [[3]] повідомляють [[3]].
+    generalFeedback: Кворум і більшість для рішення — різні пороги.
+    choices:
+      - text: понад 50%
+        feedback: Поріг кворуму.
+      - text: простою більшістю
+        feedback: Типова більшість для рішення.
+      - text: акціонерів
+        group: 2
+        infinite: true
+        feedback: Повідомлення отримують акціонери.
+      - text: 10%
+        feedback: Такого порогу кворуму немає.
+
+  - id: t04-q008
+    type: multianswer
+    topic: t04
+    bloom: analyze
+    stem: |-
+      Кумулятивне голосування застосовують під час обрання {#1}. Мінімальний пакет для 1 місця з 5 при 600 акціях: {#2}.
+      Орган, що скликає збори: {#3}. Фігурні дужки {у тексті} і знаки ~ # % = не ламають Cloze.
+    generalFeedback: S·k/(N+1)+1 = 600·1/6+1 = 101.
+    subquestions:
+      - kind: multichoice
+        display: vertical
+        shuffle: true
+        answers:
+          - text: членів наглядової ради
+            fraction: 100
+            feedback: Так.
+          - text: аудитора & ревізора
+            fraction: 50
+            feedback: 'Частково: {аудитор} ~ не # обирається %так%.'
+          - text: =корпоративного секретаря
+            fraction: 0
+            feedback: Ні.
+      - kind: numerical
+        weight: 2
+        answers:
+          - value: 101
+            tolerance: 0
+            fraction: 100
+            feedback: Правильно.
+          - value: 100
+            tolerance: 0.5
+            fraction: 50
+            feedback: Забули додати одиницю.
+      - kind: shortanswer
+        answers:
+          - text: наглядова рада
+            fraction: 100
+            feedback: Так, наглядова рада.
+          - text: об’єднання акціонерів*
+            fraction: 0
+            feedback: Ні, це не орган товариства.

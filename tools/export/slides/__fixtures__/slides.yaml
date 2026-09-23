@@ -35,13 +35,13 @@ slides:
     title: Растрова схема
     figure: fig-fixture.svg
     caption: Фікстурна SVG-схема, вставлена як PNG.
-  - id: norm-fixture
-    type: norm
+  - id: standard-fixture
+    type: standard
     title: Нормативний блок
-    text: Норма права для перевірки структури слайда.
-    lawRef:
-      act: Закон України «Про фікстури»
-      article: ст. 1 (FX-01)
+    text: Стандарт для перевірки структури слайда.
+    ref:
+      source: ДСТУ ISO 9001:2015 (фікстура)
+      locator: п. 1 (FX-01)
       checkedAt: '2026-09-17'
     sources: [fixture-source]
   - id: formula-fixture
@@ -52,7 +52,7 @@ slides:
   - id: case-fixture
     type: case
     title: Кейс фікстури
-    case: privatbank
+    case: nova-poshta
     facts: [Перший факт кейсу, Другий факт кейсу]
     question: Який механізм слід перевірити першим?
   - id: quote-fixture

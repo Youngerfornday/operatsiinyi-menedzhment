@@ -51,10 +51,10 @@ export function topicsCountText(done: number, total: number): string {
   return `${done} із ${total} ${word}`;
 }
 
-/** Підпис позиції в курсі під кворумом: «Початок курсу», «Модуль 2 · середина», «Кворум зібрано». */
+/** Підпис позиції в курсі під маршрутом: «Початок курсу», «Модуль 2 · середина», «Маршрут завершено». */
 export function coursePositionText(done: number, total: number, nextNumberInModule: number | null, nextModuleNumber: number | null): string {
   if (done === 0) return 'Початок курсу';
-  if (done >= total || nextModuleNumber === null) return 'Кворум зібрано';
+  if (done >= total || nextModuleNumber === null) return 'Маршрут завершено';
   const stage = nextNumberInModule === 1 ? 'початок' : nextNumberInModule === 2 ? 'середина' : 'кінець';
   return `Модуль ${nextModuleNumber} · ${stage}`;
 }

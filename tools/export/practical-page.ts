@@ -43,27 +43,14 @@ function rubricHtml(practical: Practical): string {
   );
 }
 
-/** Вихідні дані завдань — свої для кожного виду тренажера; відповіді в умови не потрапляють. */
+/** Вихідні дані завдань тренажера; відповіді в умови не потрапляють. Числа й розв’язки калькулятора генеруються в браузері. */
 function trainerDataHtml(trainer: PracticalFile['trainer']): string {
-  if (trainer.kind === 'model-matrix') {
+  if (trainer.kind === 'matching-matrix') {
     const companies = trainer.companyTasks.map((task) => `<li><b>${t(task.company)}.</b> ${t(task.description)}</li>`).join('');
     return `<h3>Компанії для визначення моделі</h3><ol>${companies}</ol>`;
   }
-  const startups = trainer.cases.map((item) => `<li><b>${t(item.title)}.</b> ${t(item.description)}</li>`).join('');
-  const rows = trainer.statistics.points
-    .map((point) => `<tr><th scope="row">${t(point.date.split('-').reverse().join('.'))}</th>${trainer.statistics.forms.map((form) => `<td class="points">${numberFormat.format(point.values[form.key] ?? 0)}</td>`).join('')}</tr>`)
-    .join('');
-  const head = trainer.statistics.forms.map((form) => `<th scope="col" class="points">${t(form.short)}</th>`).join('');
-  const risks = trainer.agreement.risks.map((risk) => `<li><b>${t(risk.risk)}</b> ${t(risk.mustSettle)}</li>`).join('');
-  return (
-    `<h3>${t(trainer.statistics.title)}</h3>` +
-    `<table class="rubric"><thead><tr><th scope="col">Станом на</th>${head}</tr></thead><tbody>${rows}</tbody></table>` +
-    `<p>${t(trainer.statistics.note)}</p>` +
-    '<h3>Стартапи для вибору форми</h3>' +
-    `<ol>${startups}</ol>` +
-    '<h3>Ризики стартапу для корпоративного договору</h3>' +
-    `<ol>${risks}</ol>`
-  );
+  const formulas = trainer.tasks.map((task) => `<li><b>${t(task.title)}.</b> ${t(task.formula)}</li>`).join('');
+  return `<h3>Формули тренажера</h3><ul>${formulas}</ul>`;
 }
 
 function trainerHtml(file: PracticalFile): string {

@@ -5,7 +5,7 @@ exports[`glossaryToMoodleXml > снапшот формату «Імпорт за
 <!-- Записи глосарію для «Імпорт записів» Moodle. Згенеровано tools/export/glossary-xml.ts, не редагуйте вручну. -->
 <GLOSSARY>
   <INFO>
-    <NAME><![CDATA[Глосарій курсу «Корпоративне управління»]]></NAME>
+    <NAME><![CDATA[Глосарій курсу «Операційний менеджмент»]]></NAME>
     <INTRO></INTRO>
     <INTROFORMAT>1</INTROFORMAT>
     <ALLOWDUPLICATEDENTRIES>0</ALLOWDUPLICATEDENTRIES>
