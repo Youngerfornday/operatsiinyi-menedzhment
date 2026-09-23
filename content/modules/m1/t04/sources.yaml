@@ -99,6 +99,16 @@ sources:
     checkedAt: '2026-09-22'
     note: 'Паспортні параметри електросталеплавильного комплексу й забезпечувальних систем (вапняна фабрика, кабельна лінія 330 кВ, переробка металобрухту). Сторінки без дати публікації, незалежного технічного підтвердження немає.'
 
+  - id: interpipe-strike-gmk-2026
+    type: article
+    title: Підприємство «Інтерпайп» у Дніпрі зазнало балістичної атаки
+    publisher: GMK Center
+    year: 2026
+    language: uk
+    url: https://gmk.center/ua/news/pidpriiemstvo-interpajp-v-dnipri-zaznalo-balistichnoi-ataki/
+    checkedAt: '2026-09-22'
+    note: 'Позиція компанії в переказі галузевого видання (2026-09-22): удар по підприємству, загиблі й поранені, пошкодження основного обладнання, зупинка виробництва без названих термінів відновлення.'
+
   - id: boeing-787-delivery-pr
     type: web
     title: Boeing, ANA Complete Contractual Delivery of First 787 Dreamliner
@@ -135,7 +145,7 @@ sources:
     language: en
     url: https://www.aboutamazon.com/news/operations/amazon-million-robots-ai-foundation-model
     checkedAt: '2026-09-22'
-    note: 'Позиція компанії (2025–06): мільйонний робот, система DeepFleet і прискорення переміщення роботів на 10%.'
+    note: 'Позиція компанії (червень 2025 р.): мільйонний робот, система DeepFleet і прискорення переміщення роботів на 10%.'
 
   - id: amazon-injury-report-cnbc
     type: article

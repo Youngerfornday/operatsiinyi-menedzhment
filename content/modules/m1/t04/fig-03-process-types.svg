@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" id="fig-t04-3" class="scheme" viewBox="0 0 640 380" role="img" aria-labelledby="fig-t04-3-title fig-t04-3-desc" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" id="fig-t04-3" class="scheme" viewBox="0 0 640 284" role="img" aria-labelledby="fig-t04-3-title fig-t04-3-desc" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
   <title id="fig-t04-3-title">Рисунок 3. Типи операційних процесів за роллю у створенні продукту</title>
-  <desc id="fig-t04-3-desc">Операційний процес підприємства розгалужується на основні й допоміжні процеси. Основні процеси, виділені карміновим, безпосередньо перетворюють предмет праці на готову продукцію: тут — ланцюжок виплавки й розливання сталі з чотирьох послідовних переділів. Допоміжні процеси не створюють продукт самі, а забезпечують основний: власна вапняна фабрика постачає вапно, власна кабельна лінія — електроенергію, переробка металобрухту готує сировину, ремонтна служба підтримує обладнання. Знизу підпис: зупинка будь-якого допоміжного процесу зрештою зупиняє основний.</desc>
+  <desc id="fig-t04-3-desc">Операційний процес підприємства розгалужується на основні й допоміжні процеси. Основні процеси, виділені карміновим, безпосередньо перетворюють предмет праці на готову продукцію: тут — ланцюжок виплавки й розливання сталі з трьох послідовних переділів. Допоміжні процеси не створюють продукт самі, а забезпечують основний: власна вапняна фабрика постачає вапно, власна кабельна лінія — електроенергію, переробка металобрухту готує сировину. Знизу підпис: зупинка будь-якого допоміжного процесу зрештою зупиняє основний.</desc>
   <style>
     #fig-t04-3 .box { fill: var(--surface, #ffffff); stroke: var(--ink, #0f1c2e); stroke-width: 1.25; }
     #fig-t04-3 .box-owner { fill: var(--surface-tint, #eef4fa); }
@@ -15,6 +15,7 @@
     #fig-t04-3 .exam-t { fill: var(--err-ink, #8f1d14); font-size: 11.5px; font-weight: 600; }
     #fig-t04-3 .refc.exam { stroke: var(--err, #b42318); }
     #fig-t04-3 .refn.exam-n { fill: var(--err-ink, #8f1d14); }
+    #fig-t04-3 .exam-s { fill: var(--err-ink, #8f1d14); font-size: 11px; font-weight: 600; }
   </style>
 
   <defs>
@@ -26,54 +27,58 @@
   <rect class="box box-owner" x="220" y="10" width="200" height="40" rx="6"/>
   <text class="t" x="320" y="35" text-anchor="middle">Операційний процес</text>
 
-  <path class="arrow" d="M280 50 L170 90"/>
-  <path class="arrow" d="M360 50 L470 90"/>
+  <path class="arrow" d="M280 50 L165 94"/>
+  <path class="arrow" d="M360 50 L482 94"/>
 
-  <rect class="box exam" x="70" y="94" width="200" height="40" rx="6"/>
-  <text class="exam-t" x="170" y="119" text-anchor="middle">Основні процеси</text>
+  <rect class="box exam" x="16" y="94" width="298" height="40" rx="6"/>
+  <text class="exam-t" x="165" y="119" text-anchor="middle">Основні процеси</text>
 
-  <rect class="box" x="370" y="94" width="200" height="40" rx="6"/>
-  <text class="t" x="470" y="119" text-anchor="middle">Допоміжні процеси</text>
+  <rect class="box" x="340" y="94" width="284" height="40" rx="6"/>
+  <text class="t" x="482" y="119" text-anchor="middle">Допоміжні процеси</text>
 
-  <path class="arrow" marker-end="url(#fig-t04-3-arr)" d="M170 134 L170 156"/>
+  <path class="arrow" marker-end="url(#fig-t04-3-arr)" d="M165 134 L165 156"/>
 
-  <rect class="box exam" x="24" y="160" width="80" height="46" rx="5"/>
-  <text class="exam-t" x="64" y="180" text-anchor="middle" font-size="10">Електродугова</text>
-  <text class="exam-t" x="64" y="192" text-anchor="middle" font-size="10">піч</text>
+  <rect class="box exam" x="16" y="160" width="90" height="58" rx="5"/>
+  <text class="exam-s" x="61" y="185" text-anchor="middle">Електро-</text>
+  <text class="exam-s" x="61" y="199" text-anchor="middle">дугова піч</text>
 
-  <path class="arrow" marker-end="url(#fig-t04-3-arr)" d="M104 183 L120 183"/>
-  <rect class="box exam" x="124" y="160" width="80" height="46" rx="5"/>
-  <text class="exam-t" x="164" y="180" text-anchor="middle" font-size="10">Піч-ківш,</text>
-  <text class="exam-t" x="164" y="192" text-anchor="middle" font-size="10">вакууматор</text>
+  <path class="arrow" marker-end="url(#fig-t04-3-arr)" d="M106 189 L116 189"/>
+  <rect class="box exam" x="120" y="160" width="90" height="58" rx="5"/>
+  <text class="exam-s" x="165" y="185" text-anchor="middle">Піч-ківш,</text>
+  <text class="exam-s" x="165" y="199" text-anchor="middle">вакууматор</text>
 
-  <path class="arrow" marker-end="url(#fig-t04-3-arr)" d="M204 183 L220 183"/>
-  <rect class="box exam" x="224" y="160" width="80" height="46" rx="5"/>
-  <text class="exam-t" x="264" y="180" text-anchor="middle" font-size="10">Розливання</text>
-  <text class="exam-t" x="264" y="192" text-anchor="middle" font-size="10">на МБЛЗ</text>
+  <path class="arrow" marker-end="url(#fig-t04-3-arr)" d="M210 189 L220 189"/>
+  <rect class="box exam" x="224" y="160" width="90" height="58" rx="5"/>
+  <text class="exam-s" x="269" y="185" text-anchor="middle">Розливання</text>
+  <text class="exam-s" x="269" y="199" text-anchor="middle">на МБЛЗ</text>
 
-  <text class="s" x="164" y="222" text-anchor="middle">виплавка й розливання сталі — предмет праці стає заготовкою</text>
+  <text class="s" x="165" y="236" text-anchor="middle">предмет праці стає заготовкою</text>
 
-  <path class="arrow" marker-end="url(#fig-t04-3-arr)" d="M420 134 L360 156"/>
-  <path class="arrow" marker-end="url(#fig-t04-3-arr)" d="M470 134 L470 156"/>
-  <path class="arrow" marker-end="url(#fig-t04-3-arr)" d="M520 134 L580 156"/>
+  <path class="arrow" marker-end="url(#fig-t04-3-arr)" d="M384 134 L384 156"/>
+  <path class="arrow" marker-end="url(#fig-t04-3-arr)" d="M482 134 L482 156"/>
+  <path class="arrow" marker-end="url(#fig-t04-3-arr)" d="M580 134 L580 156"/>
 
-  <rect class="box" x="300" y="160" width="120" height="46" rx="5"/>
-  <text class="s" x="360" y="180" text-anchor="middle">Вапняна фабрика</text>
-  <text class="s" x="360" y="194" text-anchor="middle">(вапно для печі)</text>
+  <rect class="box" x="340" y="160" width="88" height="58" rx="5"/>
+  <text class="s" x="384" y="178" text-anchor="middle">Вапняна</text>
+  <text class="s" x="384" y="192" text-anchor="middle">фабрика</text>
+  <text class="s" x="384" y="206" text-anchor="middle">(вапно)</text>
 
-  <rect class="box" x="410" y="160" width="120" height="46" rx="5"/>
-  <text class="s" x="470" y="180" text-anchor="middle">Кабельна лінія</text>
-  <text class="s" x="470" y="194" text-anchor="middle">330 кВ (енергія)</text>
+  <rect class="box" x="438" y="160" width="88" height="58" rx="5"/>
+  <text class="s" x="482" y="178" text-anchor="middle">Кабельна</text>
+  <text class="s" x="482" y="192" text-anchor="middle">лінія 330 кВ</text>
+  <text class="s" x="482" y="206" text-anchor="middle">(енергія)</text>
 
-  <rect class="box" x="520" y="160" width="120" height="46" rx="5"/>
-  <text class="s" x="580" y="180" text-anchor="middle">Переробка</text>
-  <text class="s" x="580" y="194" text-anchor="middle">металобрухту</text>
+  <rect class="box" x="536" y="160" width="88" height="58" rx="5"/>
+  <text class="s" x="580" y="178" text-anchor="middle">Переробка</text>
+  <text class="s" x="580" y="192" text-anchor="middle">металобрухту</text>
+  <text class="s" x="580" y="206" text-anchor="middle">(сировина)</text>
 
-  <text class="s" x="470" y="222" text-anchor="middle">ресурси, яких немає в готовій заготовці, але без яких піч не працює</text>
+  <text class="s" x="482" y="236" text-anchor="middle">їхнього внеску не видно в готовій заготовці,</text>
+  <text class="s" x="482" y="250" text-anchor="middle">але без них піч не працює</text>
 
-  <text class="lbl" x="320" y="256" text-anchor="middle">зупинка будь-якого допоміжного процесу рано чи пізно зупиняє основний</text>
+  <text class="lbl" x="320" y="276" text-anchor="middle">зупинка будь-якого допоміжного процесу рано чи пізно зупиняє основний</text>
 
-  <circle class="refc exam" cx="70" cy="94" r="11"/><text class="refn exam-n" x="70" y="98">1</text>
-  <circle class="refc" cx="370" cy="94" r="11"/><text class="refn" x="370" y="98">2</text>
-  <circle class="refc" cx="300" cy="160" r="11"/><text class="refn" x="300" y="164">3</text>
+  <circle class="refc exam" cx="16" cy="94" r="11"/><text class="refn exam-n" x="16" y="98">1</text>
+  <circle class="refc" cx="340" cy="94" r="11"/><text class="refn" x="340" y="98">2</text>
+  <circle class="refc" cx="340" cy="160" r="11"/><text class="refn" x="340" y="164">3</text>
 </svg>

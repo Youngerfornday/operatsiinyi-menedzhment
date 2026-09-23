@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="fig-t04-4" class="scheme" viewBox="0 0 680 300" role="img" aria-labelledby="fig-t04-4-title fig-t04-4-desc" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
   <title id="fig-t04-4-title">Рисунок 4. Тривалість циклу тієї самої партії за трьох видів руху</title>
-  <desc id="fig-t04-4-desc">Три горизontальні смуги показують тривалість виробничого циклу однієї й тієї самої партії з шести деталей і тих самих трьох операцій за різних видів руху. Найдовша смуга — послідовний рух, 42 хвилини. Найкоротша, виділена карміновим, — паралельний рух, 30 хвилин. Середня — паралельно-послідовний рух, 34 хвилини. Внизу шкала в хвилинах з кроком 10.</desc>
+  <desc id="fig-t04-4-desc">Три горизонтальні смуги показують тривалість виробничого циклу однієї й тієї самої партії з шести деталей і тих самих трьох операцій за різних видів руху. Найдовша смуга — послідовний рух, 42 хвилини. Найкоротша, виділена карміновим, — паралельний рух, 30 хвилин. Середня — паралельно-послідовний рух, 34 хвилини. Угорі шкала в хвилинах з кроком 10.</desc>
   <style>
     #fig-t04-4 .box { fill: var(--surface-tint, #eef4fa); stroke: var(--ink, #0f1c2e); stroke-width: 1.25; }
     #fig-t04-4 .box.exam { fill: var(--err-tint, #fbe6e3); stroke: var(--err, #b42318); }
@@ -27,12 +27,12 @@
   <line class="grid" x1="550" y1="46" x2="550" y2="266"/>
   <line class="grid" x1="650" y1="46" x2="650" y2="266"/>
 
-  <text class="s" x="150" y="46" text-anchor="middle">0</text>
-  <text class="s" x="250" y="46" text-anchor="middle">10</text>
-  <text class="s" x="350" y="46" text-anchor="middle">20</text>
-  <text class="s" x="450" y="46" text-anchor="middle">30</text>
-  <text class="s" x="550" y="46" text-anchor="middle">40</text>
-  <text class="s" x="650" y="46" text-anchor="middle">50</text>
+  <text class="s" x="150" y="41" text-anchor="middle">0</text>
+  <text class="s" x="250" y="41" text-anchor="middle">10</text>
+  <text class="s" x="350" y="41" text-anchor="middle">20</text>
+  <text class="s" x="450" y="41" text-anchor="middle">30</text>
+  <text class="s" x="550" y="41" text-anchor="middle">40</text>
+  <text class="s" x="650" y="41" text-anchor="middle">50</text>
 
   <text class="t" x="16" y="82" text-anchor="start">Послідовний</text>
   <rect class="box" x="150" y="60" width="420" height="36" rx="4"/>
