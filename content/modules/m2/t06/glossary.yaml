@@ -15,7 +15,7 @@ terms:
     forms:
       - прогнозування попиту
       - прогнозуванню попиту
-      - прогнозування попитом
+      - прогнозуванням попиту
       - прогноз попиту
       - прогнозу попиту
     seeAlso: [moving-average, exponential-smoothing, forecast-error]

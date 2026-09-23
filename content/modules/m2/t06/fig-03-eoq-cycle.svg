@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="fig-t06-3" class="scheme" viewBox="0 0 640 330" role="img" aria-labelledby="fig-t06-3-title fig-t06-3-desc" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
   <title id="fig-t06-3-title">Рисунок 3. Цикл EOQ: точка замовлення, час постачання і страховий запас</title>
-  <desc id="fig-t06-3-desc">Графік запасу в часі у вигляді пилки. Рівень запасу спадає прямою лінією зверху вниз з постійним нахилом — темпом споживання, доки не досягне нижньої смуги страхового запасу. Горизонтальна пунктирна лінія посередині висоти — точка замовлення ROP. У момент, коли лінія запасу перетинає цю пунктирну лінію, подається нове замовлення; фігурна дужка на осі часу від цього моменту до наступного стрибка лінії вгору підписана «час постачання L». У момент надходження партії рівень запасу різко стрибає вгору до вихідного рівня, і спад повторюється в наступному циклі. Знизу графіка — вузька карминова смуга страхового запасу SS, буфер під точкою замовлення, який лінія запасу в нормі не повинна перетинати.</desc>
+  <desc id="fig-t06-3-desc">Графік запасу в часі у вигляді пилки. Рівень запасу спадає прямою лінією зверху вниз з постійним нахилом — темпом споживання, доки не досягне нижньої смуги страхового запасу. Горизонтальна пунктирна лінія посередині висоти — точка замовлення ROP. У момент, коли лінія запасу перетинає цю пунктирну лінію, подається нове замовлення; фігурна дужка на осі часу від цього моменту до наступного стрибка лінії вгору підписана «час постачання L». У момент надходження партії рівень запасу різко стрибає вгору на розмір партії Q — до максимального запасу SS + Q, і спад повторюється в наступному циклі. Знизу графіка — вузька кармінова смуга страхового запасу SS, буфер під точкою замовлення, який лінія запасу в нормі не повинна перетинати.</desc>
   <style>
     #fig-t06-3 .box { fill: var(--surface, #ffffff); stroke: var(--ink, #0f1c2e); stroke-width: 1.25; }
     #fig-t06-3 .t { fill: var(--ink, #0f1c2e); font-size: 14px; font-weight: 650; }
@@ -34,19 +34,19 @@
   <path class="rop" d="M64 150 L600 150"/>
   <text class="lbl" x="66" y="144">точка замовлення ROP</text>
 
-  <path class="stock" d="M80 60 L240 214 L240 60 L400 214 L400 60 L520 138"/>
+  <path class="stock" d="M80 60 L240 204 L240 60 L400 204 L400 60 L520 168"/>
 
-  <circle class="pt" cx="173" cy="150" r="4"/>
+  <circle class="pt" cx="180" cy="150" r="4"/>
   <circle class="pt" cx="240" cy="60" r="4"/>
 
-  <path class="bracket" d="M173 260 L173 268 L240 268 L240 260"/>
-  <text class="exam-t" x="206" y="284" text-anchor="middle">час постачання L</text>
+  <path class="bracket" d="M180 260 L180 268 L240 268 L240 260"/>
+  <text class="exam-t" x="210" y="290" text-anchor="middle">час постачання L</text>
 
-  <text class="s" x="80" y="48" text-anchor="start">рівень «поповнення до»</text>
-  <text class="s" x="600" y="212" text-anchor="end">страховий запас SS</text>
+  <text class="s" x="80" y="48" text-anchor="start">максимальний запас SS + Q</text>
+  <text class="s" x="596" y="198" text-anchor="end">страховий запас SS</text>
 
   <circle class="refc" cx="80" cy="60" r="11"/><text class="refn" x="80" y="64">1</text>
-  <circle class="refc exam" cx="173" cy="150" r="11"/><text class="refn exam-n" x="173" y="130">2</text>
-  <circle class="refc" cx="206" cy="268" r="11"/><text class="refn" x="206" y="300">3</text>
-  <circle class="refc" cx="600" cy="212" r="11"/><text class="refn" x="600" y="196">4</text>
+  <circle class="refc exam" cx="180" cy="150" r="11"/><text class="refn exam-n" x="180" y="154">2</text>
+  <circle class="refc" cx="210" cy="268" r="11"/><text class="refn" x="210" y="272">3</text>
+  <circle class="refc" cx="612" cy="212" r="11"/><text class="refn" x="612" y="216">4</text>
 </svg>
