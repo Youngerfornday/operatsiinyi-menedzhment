@@ -93,11 +93,20 @@ if (result.ok) { store.save(result.value.state); announce(eventOutcomeText(resul
    `tools/export/scorm/app/data.ts`, функція специфікації в `tools/export/scorm/catalog.ts`, острів-точка входу
    `tools/export/scorm/app/<kind>-entry.tsx` (за зразком `matrix-entry.tsx`).
 
-Активності цієї дисципліни вже зарезервовано в `BADGE_ACTIVITY_IDS`, тренажерів під них ще не написано:
-`little-law`, `production-cycle`, `eoq`, `mrp`,
-`sequencing`, `cpm-pert`, `control-charts`, `process-capability`.
-`productivity` (перший калькулятор дисципліни), `facility-location`, `line-balancing`, `work-measurement`,
-`forecasting`, `aggregate-planning` описано нижче.
+Під кожну активність з `BADGE_ACTIVITY_IDS` уже є тренажер. Тренажери однієї практичної ділять її
+`trainer.tasks`; сторінка практичної рендерить їх через `PracticalCalculationTrainers.tsx` за списком
+`practicals[].trainers` з `course.yaml`, а `model/calculation-methods.test.ts` перевіряє, що кожну задачу
+файлу практичної бере якийсь її тренажер. Новий тренажер практичної — запис у `CALCULATION_TRAINER_COMPONENTS`
+і `CALCULATION_TRAINER_METHODS`.
+
+| Практична | Рушії |
+|---|---|
+| p01 | `productivity/` |
+| p03 | `little-law/` (CAP-04), `production-cycle/` (PC-01…03) |
+| p04 | `facility-location/`, `line-balancing/`, `work-measurement/` |
+| p05 | `forecasting/`, `aggregate-planning/` |
+| p06 | `eoq/` (EOQ-01, 03, 04), `mrp/` (MRP-01…03), `sequencing/` (FCFS, SPT, EDD; SCH-01, 02, 04) |
+| p07 | `cpm-pert/`, `control-charts/`, `process-capability/` |
 
 ## `productivity/` — калькулятор продуктивності операційної системи
 
@@ -162,6 +171,31 @@ const check = checkProductivityTask(variant, { p1: '2,5', p2: '3' });     // mod
   приклади лекції теми 6 (1 060 000 і 995 000 г.о.). Від’ємний залишок запасу — відкладений попит, за який
   щоперіоду нараховується ставка дефіциту; умова варіанта називає це правило прямо. Понаднормового часу
   рушій не рахує (див. `ponytail:` у `calculations.ts`).
+## `cpm-pert/`, `control-charts/`, `process-capability/` — сітьове планування і контроль якості (практична 7)
+
+Три тренажери практичної 7 ділять один контентний файл — `content/practicals/p07.yaml` →
+`trainer.tasks` (`kind: calculation-tasks`); кожен острів фільтрує собі лише відомі йому методи
+(`toCpmPertTaskChoices` / `toControlChartTaskChoices` / `toProcessCapabilityTaskChoices`,
+`src/components/trainers/model/*.ts`) і мовчки ігнорує чужі.
+
+- `cpm-pert/` — прямий і зворотний прохід (PRJ-01, PRJ-02, `computeNetwork`), повний і вільний резерв
+  (PRJ-03, PRJ-09), критичний шлях (PRJ-04); PERT: очікуваний час і дисперсія роботи (PRJ-05, PRJ-06),
+  Z = (D − TE) / σ, округлений до 0,01 як у лекції (PRJ-07), Φ(Z) — наближення Абрамовіца — Стігана
+  (похибка до 7,5·10⁻⁸, `standardNormalCdf`). Директивний строк генератора обирає цільовий Z рівномірно
+  на [−2,5; 2,5] і жорстко обмежує |Z| ≤ 3 (`MAX_ABSOLUTE_Z`), тож строк буває і раніше, і пізніше за TE,
+  а ймовірність не зсідається біля 100%. Топологія мережі фіксована — та сама, що в прикладі лекції
+  теми 7. PRJ-06 визначена лише для ОДНОГО критичного шляху: коли дві гілки мають однакову тривалість,
+  `computeNetwork.countCriticalPaths` рахує їх більше одного, і `computePertProject` повертає Result-
+  помилку `multiple-critical-paths` замість тихого підсумовування дисперсій обох гілок; генератор
+  PERT-варіантів перетягує оцінки, поки не отримає єдиний критичний шлях.
+- `control-charts/` — x̄-R (QC-01, `xbarRLimits`) і p-карта (QC-02, `pChartLimits`, LCL обрізається
+  до 0). Константи A2, D3, D4 для n = 2..10 (`constants.ts`) — стандартна таблиця SPC; базою курсу вони
+  не підтверджені (formula-baseline.md, «Не підтверджено», п. 2), тому острів показує їх в умові варіанта
+  з приміткою про це, а не подає як перевірений факт курсу. Сигнал розладнання буває як вище UCL, так
+  і нижче LCL (коли LCL > 0), а «спокійна» точка — не завжди рівно round(p̄·n).
+- `process-capability/` — Cp (QC-04) і Cpk (QC-05); середнє генератор тримає всередині поля допуску.
+  Додаткове питання «так/ні» — чи процес не центрований (Cpk < Cp) — звіряє лише щойно розраховані
+  індекси між собою, без зовнішніх порогів придатності (1,0, 1,33 тощо).
 
 ## `matrix/` — тренажер-матриця практичних
 

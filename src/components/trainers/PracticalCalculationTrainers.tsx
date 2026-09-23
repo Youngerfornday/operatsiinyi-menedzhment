@@ -6,12 +6,15 @@
 import type { ComponentType } from 'react';
 import type { CalculationTask } from '../../content/schemas/practical';
 import { AggregatePlanningTrainer } from './AggregatePlanningTrainer';
+import { ControlChartsTrainer } from './ControlChartsTrainer';
+import { CpmPertTrainer } from './CpmPertTrainer';
 import { EoqTrainer } from './EoqTrainer';
 import { FacilityLocationTrainer } from './FacilityLocationTrainer';
 import { ForecastingTrainer } from './ForecastingTrainer';
 import { LineBalancingTrainer } from './LineBalancingTrainer';
 import { LittleLawTrainer } from './LittleLawTrainer';
 import { MrpTrainer } from './MrpTrainer';
+import { ProcessCapabilityTrainer } from './ProcessCapabilityTrainer';
 import { ProductionCycleTrainer } from './ProductionCycleTrainer';
 import { ProductivityTrainer } from './ProductivityTrainer';
 import { SequencingTrainer } from './SequencingTrainer';
@@ -33,6 +36,9 @@ export const CALCULATION_TRAINER_COMPONENTS: Readonly<Record<string, TrainerComp
   eoq: EoqTrainer,
   mrp: MrpTrainer,
   sequencing: SequencingTrainer,
+  'cpm-pert': CpmPertTrainer,
+  'control-charts': ControlChartsTrainer,
+  'process-capability': ProcessCapabilityTrainer,
 };
 
 export interface PracticalTrainerHeading {

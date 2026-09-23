@@ -46,7 +46,7 @@ describe('каталог тренажерів', () => {
   );
 
   it('опубліковано практичні з тренажерами', () => {
-    expect(PUBLISHED_PRACTICALS).toEqual(expect.arrayContaining(['p01', 'p02', 'p03', 'p04', 'p05', 'p06']));
+    expect(PUBLISHED_PRACTICALS).toEqual(expect.arrayContaining(['p01', 'p02', 'p03', 'p04', 'p05', 'p06', 'p07']));
   });
 
   it('опубліковані тренажери знаходяться за ID реєстру, невідомі — ні', () => {

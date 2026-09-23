@@ -29,7 +29,7 @@ export interface CalculatorTrainer {
 export const CALCULATOR_TRAINERS: readonly CalculatorTrainer[] = [];
 
 /** Практичні, сторінки яких уже опубліковано (`praktychni/pNN/`). */
-export const PUBLISHED_PRACTICALS: readonly string[] = ['p01', 'p02', 'p03', 'p04', 'p05', 'p06'];
+export const PUBLISHED_PRACTICALS: readonly string[] = ['p01', 'p02', 'p03', 'p04', 'p05', 'p06', 'p07'];
 
 export interface PracticalTrainer {
   readonly practicalId: string;
@@ -175,6 +175,39 @@ export const PRODUCTION_CYCLE_TRAINER = {
   formula: '60 XP — за перший правильно розв’язаний варіант',
 } as const satisfies PracticalTrainer;
 
+export const CPM_PERT_TRAINER = {
+  practicalId: 'p07',
+  registryId: 'cpm-pert',
+  activityId: BADGE_ACTIVITY_IDS.cpmPert,
+  path: 'praktychni/p07/#trenazher-cpm-pert',
+  icon: 'flag',
+  title: 'Сітьовий графік, критичний шлях і PERT',
+  text: 'Побудуйте сітьовий графік, визначте критичний шлях і резерви часу та оцініть імовірність дотримання строку методом PERT. Кожен варіант — нові дані, перевірка одразу показує повний розв’язок.',
+  formula: '60 XP — за перший правильно розв’язаний варіант',
+} as const satisfies PracticalTrainer;
+
+export const CONTROL_CHARTS_TRAINER = {
+  practicalId: 'p07',
+  registryId: 'control-charts',
+  activityId: BADGE_ACTIVITY_IDS.controlCharts,
+  path: 'praktychni/p07/#trenazher-control-charts',
+  icon: 'alert',
+  title: 'Контрольні карти x̄-R і p',
+  text: 'Розрахуйте контрольні межі карт середніх і розмахів та p-карти й визначте, чи сигналізує нова підгрупа про розладнання процесу. Кожен варіант — нові дані, перевірка одразу показує повний розв’язок.',
+  formula: '60 XP — за перший правильно розв’язаний варіант',
+} as const satisfies PracticalTrainer;
+
+export const PROCESS_CAPABILITY_TRAINER = {
+  practicalId: 'p07',
+  registryId: 'process-capability',
+  activityId: BADGE_ACTIVITY_IDS.processCapability,
+  path: 'praktychni/p07/#trenazher-process-capability',
+  icon: 'target',
+  title: 'Придатність процесу Cp, Cpk',
+  text: 'Розрахуйте індекси придатності процесу Cp і Cpk та поясніть, чому високий Cp може не гарантувати високий Cpk. Кожен варіант — нові дані, перевірка одразу показує повний розв’язок.',
+  formula: '60 XP — за перший правильно розв’язаний варіант',
+} as const satisfies PracticalTrainer;
+
 /** Тренажери, що живуть на сторінці практичної (а не на власній сторінці `trenazhery/<slug>/`). */
 export const PRACTICAL_TRAINERS: readonly PracticalTrainer[] = [
   PRODUCTIVITY_TRAINER,
@@ -189,6 +222,9 @@ export const PRACTICAL_TRAINERS: readonly PracticalTrainer[] = [
   SEQUENCING_TRAINER,
   LITTLE_LAW_TRAINER,
   PRODUCTION_CYCLE_TRAINER,
+  CPM_PERT_TRAINER,
+  CONTROL_CHARTS_TRAINER,
+  PROCESS_CAPABILITY_TRAINER,
 ];
 
 export interface HomeTrainerCard {
@@ -227,6 +263,9 @@ export const TRAINER_KIND_LABELS: Readonly<Record<string, string>> = {
   sequencing: 'розрахункові задачі',
   'little-law': 'розрахункові задачі',
   'production-cycle': 'розрахункові задачі',
+  'cpm-pert': 'розрахункові задачі',
+  'control-charts': 'розрахункові задачі',
+  'process-capability': 'розрахункові задачі',
 };
 
 export function trainerKindLabel(registryId: string): string {
