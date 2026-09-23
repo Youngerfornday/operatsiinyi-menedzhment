@@ -49,6 +49,28 @@ sources:
     checkedAt: '2026-09-22'
     note: Основний український підручник курсу; опорне видання для загальної логіки розділу операційної стратегії й місця тактики в управлінні операційною системою.
 
+  - id: skinner-focused-factory-1974
+    type: article
+    title: The Focused Factory
+    authors: [Skinner W.]
+    publisher: Harvard Business Review
+    year: 1974
+    language: en
+    url: https://hbr.org/1974/05/the-focused-factory
+    checkedAt: '2026-09-23'
+    note: 'Джерело концепції «сфокусованого заводу» і «завод у заводі» (plant within a plant): завод, що намагається обслуговувати всі пріоритети одразу, програє заводу, зосередженому на вужчому їх наборі. Сторінка hbr.org платна; заголовок, автор і дата видання перевірені на самій сторінці.'
+
+  - id: hayes-wheelwright-1979
+    type: article
+    title: Link Manufacturing Process and Product Life Cycles
+    authors: [Hayes R. H., Wheelwright S. C.]
+    publisher: Harvard Business Review
+    year: 1979
+    language: en
+    url: https://hbr.org/1979/01/link-manufacturing-process-and-product-life-cycles
+    checkedAt: '2026-09-23'
+    note: 'Джерело матриці «продукт — процес»: зі стандартизацією продукту і зростанням обсягів процес рухається від гнучкого дрібносерійного до стандартизованого потокового. Сторінка hbr.org платна; заголовок, автори (Robert H. Hayes, Steven C. Wheelwright) і дата видання перевірені на самій сторінці.'
+
   # Кейси
   - id: kernel-annual-report-fy2025
     type: report
