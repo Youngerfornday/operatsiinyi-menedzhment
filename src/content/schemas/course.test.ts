@@ -33,14 +33,14 @@ describe('content/course.yaml', () => {
     expect(lectureHours.reduce((sum, h) => sum + h, 0)).toBe(32);
   });
 
-  it('registers 12–22 glossary terms per topic, 115 in total', () => {
+  it('registers 12–22 glossary terms per topic, 116 in total', () => {
     const parsed = CourseSchema.parse(loadCourse());
     for (const topic of parsed.topics) {
       const count = parsed.glossaryTerms.filter((term) => term.topic === topic.id).length;
       expect(count, topic.id).toBeGreaterThanOrEqual(12);
       expect(count, topic.id).toBeLessThanOrEqual(22);
     }
-    expect(parsed.glossaryTerms.length).toBe(115);
+    expect(parsed.glossaryTerms.length).toBe(116);
   });
 });
 

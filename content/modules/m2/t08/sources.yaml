@@ -1,0 +1,226 @@
+# Джерела теми 8. Кожне — з адресою, відкритою на дату checkedAt.
+# Формули — лише з docs/research/formula-baseline.md (коди QC-01, QC-02, QC-04, QC-05, QC-06, COQ-01, COQ-02, PROD-03),
+# пункти стандартів — з docs/research/standards-baseline.md (ISO-9000-01, ISO-9000-02, ISO-9001-04, ISO-9001-07,
+# ISO-9001-11, ISO-9001-12, ISO-9001-13, ISO-9001-16), факти кейсів — з docs/research/cases.md.
+topic: t08
+sources:
+  # Основна література курсу
+  - id: kapinos-babii-2013
+    type: book
+    title: Операційний менеджмент
+    authors: [Капінос Г. І., Бабій І. В.]
+    publisher: Центр учбової літератури
+    year: 2013
+    language: uk
+    url: https://duikt.edu.ua/uploads/l_1479_22227234.pdf
+    checkedAt: '2026-09-23'
+    note: 'Джерело розділу «Управління якістю» розрахункової бази курсу: контрольні карти X̄-R і p (QC-01, QC-02), індекси придатності процесу Cp і Cpk (QC-04, QC-05), витрати на якість і похідні від них показники (QC-06, COQ-01, COQ-02).'
+
+  - id: stevenson-2020-t08
+    type: book
+    title: Operations Management
+    authors: [Stevenson W. J.]
+    publisher: McGraw-Hill Education
+    year: 2020
+    language: en
+    url: https://openlibrary.org/isbn/9781260575712
+    checkedAt: '2026-09-23'
+    note: 'Для теми 8 — джерело індексу зміни продуктивності (PROD-03), застосованого до наслідків поліпшення якості.'
+
+  # Стандарти
+  - id: iso-9000-2015-t08
+    type: standard
+    title: 'ISO 9000:2015 Quality management systems — Fundamentals and vocabulary'
+    publisher: International Organization for Standardization
+    year: 2015
+    language: en
+    url: https://www.en-standard.eu/iso-9000-2015-quality-management-systems-fundamentals-and-vocabulary/
+    checkedAt: '2026-09-23'
+    note: 'Джерело семи принципів управління якістю (ISO-9000-01) і циклу PDCA (ISO-9000-02) у редакції, ідентично прийнятій в Україні як ДСТУ ISO 9000:2015.'
+
+  - id: iso-9001-2015-t08
+    type: standard
+    title: 'ISO 9001:2015 Quality management systems — Requirements'
+    publisher: International Organization for Standardization
+    year: 2015
+    language: en
+    url: https://www.iso.org/standard/62085.html
+    checkedAt: '2026-09-23'
+    note: 'Джерело пунктів про лідерство (ISO-9001-04), цілі у сфері якості (ISO-9001-07), контроль виробництва в керованих умовах (ISO-9001-11), контроль невідповідної продукції (ISO-9001-12), задоволеність замовника (ISO-9001-13) і коригувальні дії (ISO-9001-16) у редакції, ідентично прийнятій в Україні як ДСТУ ISO 9001:2015.'
+
+  # Кейси
+  - id: toyota-production-system-t08
+    type: case
+    title: Toyota Production System
+    publisher: Toyota Motor Corporation
+    language: en
+    url: https://global.toyota/en/company/vision-and-philosophy/production-system/index.html
+    checkedAt: '2026-09-23'
+    note: 'Офіційна сторінка компанії: якісний опис jidoka як «вбудованої якості» — зупинки процесу при відхиленні замість контролю готової продукції. Кількісних виробничих чи якісних метрик сторінка не наводить.'
+
+  - id: ukrposhta-about-t08
+    type: web
+    title: Про Укрпошту
+    publisher: АТ «Укрпошта»
+    language: uk
+    url: https://www.ukrposhta.ua/ua/pro-ukrposhtu
+    checkedAt: '2026-09-23'
+    note: Офіційна сторінка оператора з описом мережі відділень; використано для масштабу операційної системи, що звітує про своєчасність.
+
+  - id: nakaz-1833-2025-t08
+    type: regulation
+    title: Нормативи та нормативні строки пересилання поштових відправлень (наказ Міністерства розвитку громад та територій України від 22.12.2025 № 1833)
+    publisher: Міністерство розвитку громад та територій України
+    year: 2025
+    language: uk
+    url: https://zakon.rada.gov.ua/laws/show/z0019-26
+    checkedAt: '2026-09-23'
+    note: Чинний акт, який встановлює нормативні строки пересилання (85 % Д+3, 97 % Д+5) як державні соціальні стандарти — приклад нормативу якості послуги, заданого ззовні.
+
+  - id: mininfra-ukrposhta-2025-t08
+    type: report
+    title: Як працювала Укрпошта у 2025 році
+    publisher: Міністерство розвитку громад та територій України
+    year: 2025
+    language: uk
+    url: https://mininfra.gov.ua/news/yak-pratsiuvala-ukrposhta-u-2025-rotsi-dlia-liudei-biznesu-ta-veteraniv
+    checkedAt: '2026-09-23'
+    note: Державне джерело річного рівня своєчасної доставки (97–98 %) і підсумків автоматизації сортування; показники потужності ліній у цьому матеріалі походять від компанії й незалежно не аудійовані.
+
+  - id: ukrposhta-automation-delo-2026
+    type: article
+    title: Укрпошта повністю автоматизувала сортування відправлень по Україні та за кордон
+    publisher: Delo.ua
+    year: 2026
+    language: uk
+    url: https://delo.ua/news/ukrposta-povnistyu-avtomatizuvala-sortuvannya-vidpravlen-po-ukrayini-ta-za-kordon-465853/
+    checkedAt: '2026-09-23'
+    note: Переказ заяви компанії від 18.05.2026 про повну автоматизацію сортування; джерело власного показника своєчасності «близько 97,8 %» — позиція компанії без незалежного аудиту.
+
+  - id: ukrposhta-h1-2026
+    type: web
+    title: Укрпошта завершила перше півріччя з прибутком
+    publisher: АТ «Укрпошта»
+    year: 2026
+    language: uk
+    url: https://www.ukrposhta.ua/ua/news/58715-ukrposhta-zavershila-pershe-pivrichchja-z-pributkom
+    checkedAt: '2026-09-23'
+    note: Новина компанії від 10.07.2026; джерело власного показника своєчасності 98,02 % за травень — позиція компанії без незалежного аудиту.
+
+  - id: intel-copy-exactly-1998
+    type: article
+    title: 'The Evolution of Intel''s Copy EXACTLY! Technology Transfer Method'
+    authors: [McDonald C. J.]
+    publisher: Intel Technology Journal
+    year: 1998
+    language: en
+    url: https://www.intel.com/content/dam/www/public/us/en/documents/research/1998-vol02-iss-4-intel-technology-journal.pdf
+    checkedAt: '2026-09-23'
+    note: 'Первинна публікація методу «Copy Exactly!»: чотирирівневе статистичне зіставлення майданчиків і пряма заборона компенсаційних підлаштувань. Кількісних сучасних показників ефекту стаття не наводить.'
+
+  - id: southwest-dot-2023
+    type: report
+    title: 'DOT Penalizes Southwest Airlines $140 Million for 2022 Holiday Meltdown'
+    publisher: U.S. Department of Transportation
+    year: 2023
+    language: en
+    url: https://www.transportation.gov/briefing-room/dot-penalizes-southwest-airlines-140-million-2022-holiday-meltdown
+    checkedAt: '2026-09-23'
+    note: 'Пресреліз регулятора про штраф 140 млн дол. і скасування 16 900 рейсів після колапсу грудня 2022 р. — приклад зовнішніх втрат якості. Сторінка віддає автоматичному клієнту помилку доступу; текст прочитано через текстовий проксі.'
+
+  - id: swapa-senate-testimony-2023
+    type: report
+    title: Written Testimony of Captain Casey Murray, Southwest Airlines Pilots Association
+    publisher: U.S. Senate Committee on Commerce, Science, and Transportation
+    year: 2023
+    language: en
+    url: https://www.commerce.senate.gov/wp-content/uploads/meetings/19F99589-8C0F-4198-BD63-ED8722F2EFBD/Captain%20Casey%20Murray%20Testimony%20Senate%20CST%20Feb2023%20.pdf
+    checkedAt: '2026-09-23'
+    note: 'Письмові свідчення президента профспілки пілотів на слуханні 09.02.2023 — джерело пояснення про дві непов’язані ІТ-системи і ручний розподіл екіпажів до 27.12.2022. Це позиція сторони (профспілки), а не технічний висновок регулятора; сайт Сенату віддає автоматичному клієнту помилку доступу.'
+
+  - id: southwest-10k-2025
+    type: report
+    title: Southwest Airlines Co. Form 10-K за 2025 фінансовий рік
+    publisher: Southwest Airlines Co. / SEC EDGAR
+    year: 2025
+    language: en
+    url: https://www.sec.gov/Archives/edgar/data/92380/000009238026000004/luv-20251231.htm
+    checkedAt: '2026-09-23'
+    note: Регуляторна звітність компанії; використано для опису структурного рішення про уніфікований парк і point-to-point мережу.
+
+  - id: ferrexpo-fy2025-results
+    type: report
+    title: Full Year Financial Results for 2025
+    publisher: Ferrexpo plc
+    year: 2026
+    language: en
+    url: https://ferrexpopstorage.blob.core.windows.net/media/yo2jxkc3/ferrexpo-full-year-financial-results-for-2025-combined-for-website.pdf
+    checkedAt: '2026-09-23'
+    note: Аудований річний звіт — джерело собівартості C1/C4 і показника LTIFR, а також прямого пояснення компанією зовнішніх (нетехнологічних) причин їх зміни.
+
+  - id: interpipesteel-about
+    type: web
+    title: 'Про завод. Інтерпайп Сталь'
+    publisher: ІНТЕРПАЙП СТАЛЬ
+    language: uk
+    url: https://interpipesteel.biz/about/pro-zavod
+    checkedAt: '2026-09-23'
+    note: Сторінка заводу без дати публікації; використано для загального опису підприємства. Незалежного технічного підтвердження паспортних параметрів немає.
+
+  - id: interpipesteel-10-years
+    type: web
+    title: 'ІНТЕРПАЙП СТАЛЬ: 10 років зеленої металургії в Україні'
+    publisher: ІНТЕРПАЙП
+    year: 2022
+    language: uk
+    url: https://interpipesteel.org/en/node/347
+    checkedAt: '2026-09-23'
+    note: Ювілейний реліз компанії — джерело заявлених екологічних показників (викиди CO2 на тонну сталі, скорочення споживання газу) і подвійного позначення обсягу інвестицій.
+
+  - id: gmk-center-interpipe-steel
+    type: article
+    title: 'Профіль підприємства «Інтерпайп Сталь»'
+    publisher: GMK Center
+    language: uk
+    url: https://gmk.center/ua/manufacturer/interpajp-stal-2/
+    checkedAt: '2026-09-23'
+    note: Галузевий аналітичний профіль — вторинне джерело продуктивності праці (1 367 т сталі на працівника) і чисельності персоналу.
+
+  - id: gmk-center-interpipe-strike
+    type: article
+    title: 'Підприємство «Інтерпайп» у Дніпрі зазнало балістичної атаки'
+    publisher: GMK Center
+    year: 2026
+    language: uk
+    url: https://gmk.center/ua/news/pidpriiemstvo-interpajp-v-dnipri-zaznalo-balistichnoi-ataki/
+    checkedAt: '2026-09-23'
+    note: Новина про зупинку виробництва 22.09.2026 у переказі галузевого видання за позицією компанії.
+
+  - id: amazon-robotics-numbers
+    type: web
+    title: 'Amazon deploys its one millionth robot…'
+    publisher: Amazon (aboutamazon.com)
+    language: en
+    url: https://www.aboutamazon.com/news/operations/amazon-million-robots-ai-foundation-model
+    checkedAt: '2026-09-23'
+    note: 'Офіційна сторінка компанії: заявлена кількість роботів, частка замовлень за їх участю і ефект системи DeepFleet.'
+
+  - id: amazon-10k-2025
+    type: report
+    title: Amazon.com, Inc. Form 10-K за 2025 фінансовий рік
+    publisher: Amazon.com, Inc. / SEC EDGAR
+    year: 2025
+    language: en
+    url: https://www.sec.gov/Archives/edgar/data/1018724/000101872426000004/amzn-20251231.htm
+    checkedAt: '2026-09-23'
+    note: Регуляторна звітність; рядок «Fulfillment, data centers, and other» об’єднує площі центрів виконання замовлень і дата-центрів і не є площею складів окремо.
+
+  - id: amazon-injury-cnbc-2023
+    type: article
+    title: 'Amazon workers seriously injured at more than twice the rate of other warehouses, study finds'
+    publisher: CNBC
+    year: 2023
+    language: en
+    url: https://www.cnbc.com/2023/04/12/study-amazon-workers-seriously-hurt-at-twice-rate-of-other-warehouses.html
+    checkedAt: '2026-09-23'
+    note: Матеріал ділового медіа за звітом профспілкової коаліції Strategic Organizing Center, побудованим на даних, які сама компанія подає регулятору OSHA; включає відповідь компанії.
