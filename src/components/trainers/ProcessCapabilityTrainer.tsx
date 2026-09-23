@@ -14,8 +14,9 @@ import {
   toProcessCapabilityTaskChoices,
   type ProcessCapabilityAnswer,
 } from './model/process-capability';
+import type { YesNo } from './model/task-check';
 import { trainerStatusText } from './model/xp-text';
-import { NumberField } from './ui/fields';
+import { NumberField, YesNoField } from './ui/fields';
 import { SourceNotes } from './ui/parts';
 import { TaskShell } from './ui/TaskShell';
 import { useTrainerTask } from './ui/use-trainer-task';
@@ -37,6 +38,7 @@ export function ProcessCapabilityTrainer({ tasks }: ProcessCapabilityTrainerProp
   const { variant } = state;
   const spec = findProcessCapabilityTask(tasks, variant);
   const status = trainerStatusText(state.statusState.state, ACTIVITY_ID);
+  const notCenteredValue = (state.answer[variant.notCentered.id] ?? '') as YesNo;
 
   return (
     <TaskShell
@@ -82,6 +84,14 @@ export function ProcessCapabilityTrainer({ tasks }: ProcessCapabilityTrainerProp
               placeholder="наприклад, 1,39"
             />
           ))}
+          <YesNoField
+            id={`process-capability-${variant.notCentered.id}`}
+            name={variant.notCentered.id}
+            legend={variant.notCentered.label}
+            value={notCenteredValue}
+            onChange={(value) => state.setAnswer({ [variant.notCentered.id]: value })}
+            error={state.errors[variant.notCentered.id]}
+          />
         </>
       }
     />

@@ -15,14 +15,21 @@ describe('createProcessCapabilityVariant', () => {
     expect(() => createProcessCapabilityVariant(createSeededRandom('process-capability:2'), [])).toThrow();
   });
 
-  it('Cpk завжди не більший за Cp', () => {
+  it('Cpk завжди не більший за Cp, а «не центрований» узгоджений з різницею Cp і Cpk', () => {
     const random = createSeededRandom('process-capability:stress');
     const pool = [{ method: 'process-capability' as const }];
-    for (let index = 0; index < 20; index += 1) {
+    let sawCentered = false;
+    let sawNotCentered = false;
+    for (let index = 0; index < 100; index += 1) {
       const variant = createProcessCapabilityVariant(random, pool);
       const cp = variant.answers.find((field) => field.id === 'cp');
       const cpk = variant.answers.find((field) => field.id === 'cpk');
       expect(cp && cpk && cpk.expected).toBeLessThanOrEqual((cp?.expected ?? 0) + 0.02);
+      expect(variant.notCentered.id).toBe('notCentered');
+      if (variant.notCentered.expected) sawNotCentered = true;
+      else sawCentered = true;
     }
+    expect(sawCentered).toBe(true);
+    expect(sawNotCentered).toBe(true);
   });
 });

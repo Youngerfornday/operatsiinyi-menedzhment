@@ -5,4 +5,4 @@
 export { processCapabilityCp, processCapabilityCpk } from './calculations';
 export { PROCESS_CAPABILITY_ERROR_MESSAGES, type ProcessCapabilityError, type ProcessCapabilityErrorCode } from './errors';
 export { createProcessCapabilityVariant, type ProcessCapabilityTaskChoice } from './generator';
-export type { ProcessCapabilityAnswerField, ProcessCapabilityGivenItem, ProcessCapabilityMethod, ProcessCapabilityVariant } from './types';
+export type { ProcessCapabilityAnswerField, ProcessCapabilityGivenItem, ProcessCapabilityMethod, ProcessCapabilitySignalQuestion, ProcessCapabilityVariant } from './types';

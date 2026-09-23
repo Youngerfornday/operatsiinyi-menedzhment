@@ -14,11 +14,20 @@ export interface ProcessCapabilityAnswerField {
   readonly tolerance: number;
 }
 
+/** Питання «так/ні» з очікуваною відповіддю (`checkChoicePart`) — без порогів придатності (1,0, 1,33 тощо). */
+export interface ProcessCapabilitySignalQuestion {
+  readonly id: string;
+  readonly label: string;
+  readonly expected: boolean;
+}
+
 export interface ProcessCapabilityVariant {
   readonly variantId: string;
   readonly method: ProcessCapabilityMethod;
   readonly prompt: string;
   readonly given: readonly ProcessCapabilityGivenItem[];
   readonly answers: readonly ProcessCapabilityAnswerField[];
+  /** «Процес не центрований (Cpk < Cp)?» — порівняння двох щойно розрахованих індексів, без зовнішніх порогів. */
+  readonly notCentered: ProcessCapabilitySignalQuestion;
   readonly solution: readonly string[];
 }

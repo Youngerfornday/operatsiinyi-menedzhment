@@ -7,7 +7,7 @@
 import type { Result } from '../../../engines/shared/result';
 import type { ProcessCapabilityMethod, ProcessCapabilityTaskChoice, ProcessCapabilityVariant } from '../../../engines/process-capability';
 import type { CalculationTask } from '../../../content/schemas/practical';
-import { checkNumberPart, combineParts, type FieldIssues, type TaskCheck } from './task-check';
+import { checkChoicePart, checkNumberPart, combineParts, type FieldIssues, type TaskCheck, type YesNo } from './task-check';
 import { num } from './format';
 
 const PROCESS_CAPABILITY_METHODS: readonly ProcessCapabilityMethod[] = ['process-capability'];
@@ -20,12 +20,17 @@ export function toProcessCapabilityTaskChoices(tasks: readonly CalculationTask[]
   return tasks.filter((task): task is CalculationTask & { method: ProcessCapabilityMethod } => isProcessCapabilityMethod(task.method)).map((task) => ({ method: task.method }));
 }
 
-export type ProcessCapabilityAnswer = Readonly<Record<string, string>>;
+export interface ProcessCapabilityAnswer {
+  readonly [fieldId: string]: string;
+}
 
-export const EMPTY_PROCESS_CAPABILITY_ANSWER: ProcessCapabilityAnswer = {};
+export const EMPTY_PROCESS_CAPABILITY_ANSWER: ProcessCapabilityAnswer = { notCentered: '' };
+
+const NOT_CENTERED_YES = 'не центрований';
+const NOT_CENTERED_NO = 'центрований';
 
 export function checkProcessCapabilityTask(variant: ProcessCapabilityVariant, answer: ProcessCapabilityAnswer): Result<TaskCheck, FieldIssues> {
-  const parts = variant.answers.map((field) =>
+  const numberParts = variant.answers.map((field) =>
     checkNumberPart({
       id: field.id,
       label: field.label,
@@ -35,7 +40,15 @@ export function checkProcessCapabilityTask(variant: ProcessCapabilityVariant, an
       format: (value) => `${num(value)}${field.unit ? ` ${field.unit}` : ''}`,
     }),
   );
-  return combineParts(parts);
+  const notCenteredPart = checkChoicePart({
+    id: variant.notCentered.id,
+    label: variant.notCentered.label,
+    value: (answer[variant.notCentered.id] ?? '') as YesNo,
+    expected: variant.notCentered.expected,
+    yes: NOT_CENTERED_YES,
+    no: NOT_CENTERED_NO,
+  });
+  return combineParts([...numberParts, notCenteredPart]);
 }
 
 export function findProcessCapabilityTask(tasks: readonly CalculationTask[], variant: Pick<ProcessCapabilityVariant, 'method'>): CalculationTask | undefined {

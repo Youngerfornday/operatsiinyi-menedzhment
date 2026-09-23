@@ -49,12 +49,23 @@ export function createProcessCapabilityVariant(random: RandomSource, tasks: read
     { id: 'cp', label: 'Індекс відтворюваності Cp', unit: '', expected: roundTo(cp, 2), tolerance: 0.02 },
     { id: 'cpk', label: 'Індекс придатності Cpk', unit: '', expected: roundTo(cpk, 2), tolerance: 0.02 },
   ];
+  /** Допуск на похибку double при порівнянні щойно порахованих Cp і Cpk, а не поріг придатності. */
+  const EQUALITY_TOLERANCE = 0.005;
+  const isNotCentered = cpk < cp - EQUALITY_TOLERANCE;
   const solution = [
     `Ширина поля допуску: USL − LSL = ${formatNumber(upperLimit)} − ${formatNumber(lowerLimit)} = ${formatNumber(width)} г.`,
     `Cp = (USL − LSL) / (6σ) = ${formatNumber(width)} / (6 · ${formatNumber(sigma)}) ≈ ${formatNumber(cp, { maximumFractionDigits: 3 })} (QC-04).`,
     `Cpk = min[(USL − μ)/(3σ); (μ − LSL)/(3σ)] = min[${formatNumber((upperLimit - mean) / (3 * sigma), { maximumFractionDigits: 3 })}; ${formatNumber((mean - lowerLimit) / (3 * sigma), { maximumFractionDigits: 3 })}] ≈ ${formatNumber(cpk, { maximumFractionDigits: 3 })} (QC-05).`,
-    `Cpk ${cpk < cp - 0.005 ? 'менший за Cp — середнє зсунуте від центру поля допуску' : 'дорівнює Cp — процес точно центрований'}.`,
+    `Cpk ${isNotCentered ? 'менший за Cp — середнє зсунуте від центру поля допуску, процес не центрований' : 'дорівнює Cp — процес точно центрований'}.`,
   ];
   const variantId = `pcv-${Math.floor(random.next() * 1e9).toString(36)}`;
-  return { variantId, method: 'process-capability', prompt: 'Розрахуйте індекси придатності процесу Cp і Cpk (QC-04, QC-05).', given, answers, solution };
+  return {
+    variantId,
+    method: 'process-capability',
+    prompt: 'Розрахуйте індекси придатності процесу Cp і Cpk та визначте, чи центрований процес (QC-04, QC-05).',
+    given,
+    answers,
+    notCentered: { id: 'notCentered', label: 'Процес не центрований (Cpk менший за Cp)', expected: isNotCentered },
+    solution,
+  };
 }

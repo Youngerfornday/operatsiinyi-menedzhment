@@ -24,6 +24,7 @@ function variant(overrides: Partial<ProcessCapabilityVariant> = {}): ProcessCapa
       { id: 'cp', label: 'Cp', unit: '', expected: 1.39, tolerance: 0.02 },
       { id: 'cpk', label: 'Cpk', unit: '', expected: 0.69, tolerance: 0.02 },
     ],
+    notCentered: { id: 'notCentered', label: 'Процес не центрований (Cpk менший за Cp)', expected: true },
     solution: ['крок 1'],
     ...overrides,
   };
@@ -37,16 +38,30 @@ describe('toProcessCapabilityTaskChoices', () => {
 });
 
 describe('checkProcessCapabilityTask', () => {
-  it('вирішено правильно в межах допуску', () => {
-    const result = checkProcessCapabilityTask(variant(), { cp: '1,39', cpk: '0,69' });
+  it('вирішено правильно: числа й відповідь «не центрований» збігаються', () => {
+    const result = checkProcessCapabilityTask(variant(), { cp: '1,39', cpk: '0,69', notCentered: 'yes' });
     expect(result).toMatchObject({ ok: true, value: { solved: true } });
   });
 
   it('неправильний Cpk — solved false', () => {
-    const result = checkProcessCapabilityTask(variant(), { cp: '1,39', cpk: '1,39' });
+    const result = checkProcessCapabilityTask(variant(), { cp: '1,39', cpk: '1,39', notCentered: 'yes' });
     expect(result.ok).toBe(true);
     if (!result.ok) return;
     expect(result.value.solved).toBe(false);
+  });
+
+  it('неправильна відповідь «не центрований» — solved false, хоча числа правильні', () => {
+    const result = checkProcessCapabilityTask(variant(), { cp: '1,39', cpk: '0,69', notCentered: 'no' });
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value.solved).toBe(false);
+  });
+
+  it('не обрано відповідь — помилка з посиланням на поле notCentered', () => {
+    const result = checkProcessCapabilityTask(variant(), { cp: '1,39', cpk: '0,69', notCentered: '' });
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+    expect(result.error.some((issue) => issue.field === 'notCentered')).toBe(true);
   });
 });
 
