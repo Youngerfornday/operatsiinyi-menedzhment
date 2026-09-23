@@ -87,6 +87,26 @@ sources:
     checkedAt: '2026-09-23'
     note: Державне джерело річного рівня своєчасної доставки (97–98 %) і підсумків автоматизації сортування; показники потужності ліній у цьому матеріалі походять від компанії й незалежно не аудійовані.
 
+  - id: ukrposhta-automation-delo-2026
+    type: article
+    title: Укрпошта повністю автоматизувала сортування відправлень по Україні та за кордон
+    publisher: Delo.ua
+    year: 2026
+    language: uk
+    url: https://delo.ua/news/ukrposta-povnistyu-avtomatizuvala-sortuvannya-vidpravlen-po-ukrayini-ta-za-kordon-465853/
+    checkedAt: '2026-09-23'
+    note: Переказ заяви компанії від 18.05.2026 про повну автоматизацію сортування; джерело власного показника своєчасності «близько 97,8 %» — позиція компанії без незалежного аудиту.
+
+  - id: ukrposhta-h1-2026
+    type: web
+    title: Укрпошта завершила перше півріччя з прибутком
+    publisher: АТ «Укрпошта»
+    year: 2026
+    language: uk
+    url: https://www.ukrposhta.ua/ua/news/58715-ukrposhta-zavershila-pershe-pivrichchja-z-pributkom
+    checkedAt: '2026-09-23'
+    note: Новина компанії від 10.07.2026; джерело власного показника своєчасності 98,02 % за травень — позиція компанії без незалежного аудиту.
+
   - id: intel-copy-exactly-1998
     type: article
     title: 'The Evolution of Intel''s Copy EXACTLY! Technology Transfer Method'
@@ -107,6 +127,16 @@ sources:
     url: https://www.transportation.gov/briefing-room/dot-penalizes-southwest-airlines-140-million-2022-holiday-meltdown
     checkedAt: '2026-09-23'
     note: 'Пресреліз регулятора про штраф 140 млн дол. і скасування 16 900 рейсів після колапсу грудня 2022 р. — приклад зовнішніх втрат якості. Сторінка віддає автоматичному клієнту помилку доступу; текст прочитано через текстовий проксі.'
+
+  - id: swapa-senate-testimony-2023
+    type: report
+    title: Written Testimony of Captain Casey Murray, Southwest Airlines Pilots Association
+    publisher: U.S. Senate Committee on Commerce, Science, and Transportation
+    year: 2023
+    language: en
+    url: https://www.commerce.senate.gov/wp-content/uploads/meetings/19F99589-8C0F-4198-BD63-ED8722F2EFBD/Captain%20Casey%20Murray%20Testimony%20Senate%20CST%20Feb2023%20.pdf
+    checkedAt: '2026-09-23'
+    note: 'Письмові свідчення президента профспілки пілотів на слуханні 09.02.2023 — джерело пояснення про дві непов’язані ІТ-системи і ручний розподіл екіпажів до 27.12.2022. Це позиція сторони (профспілки), а не технічний висновок регулятора; сайт Сенату віддає автоматичному клієнту помилку доступу.'
 
   - id: southwest-10k-2025
     type: report

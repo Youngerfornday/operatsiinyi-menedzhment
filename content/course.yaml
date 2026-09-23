@@ -698,6 +698,7 @@ glossaryTerms:
   - { id: acceptance-sampling, topic: t08, term: Вибірковий контроль }
   - { id: pareto-chart, topic: t08, term: Діаграма Парето }
   - { id: ishikawa-diagram, topic: t08, term: Діаграма Ісікави }
+  - { id: qfd, topic: t08, term: Розгортання функції якості }
 
 # Кейси — з docs/research/cases.md; повна фабула розповідається лише в основній темі (primaryTopic),
 # в інших темах кейс подається окремим фокусом. caveat називає те, що першоджерелом не підтверджено.
