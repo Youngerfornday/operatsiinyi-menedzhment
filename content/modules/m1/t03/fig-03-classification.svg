@@ -69,10 +69,10 @@
   <text class="s" x="570" y="186" text-anchor="middle">одиниці</text>
 
   <path class="arrow exam" marker-end="url(#fig-t03-3-arr)" d="M300 224 C 260 246, 240 246, 210 224"/>
-  <text class="exam-t" x="255" y="262" text-anchor="middle">дрібносерійна тяжіє до одиничної</text>
+  <text class="exam-t" x="310" y="262" text-anchor="end">дрібносерійна тяжіє до одиничної</text>
 
   <path class="arrow exam" marker-end="url(#fig-t03-3-arr)" d="M340 224 C 380 246, 400 246, 430 224"/>
-  <text class="exam-t" x="385" y="262" text-anchor="middle">великосерійна тяжіє до масової</text>
+  <text class="exam-t" x="330" y="262">великосерійна тяжіє до масової</text>
 
   <text class="lbl" x="320" y="300" text-anchor="middle">Межі між сусідніми видами умовні: це спектр, а не набір непроникних категорій</text>
 

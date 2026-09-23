@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="fig-t03-4" class="scheme" viewBox="0 0 640 320" role="img" aria-labelledby="fig-t03-4-title fig-t03-4-desc" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
   <title id="fig-t03-4-title">Рисунок 4. Закон Літтла: L = λ · W</title>
-  <desc id="fig-t03-4-desc">Труба, що позначає операційну систему. Зліва стрілка з підписом лямбда входить у трубу — темп надходження одиниць у систему. Усередині труби — кілька крапок, що позначають одиниці, які одночасно перебувають у системі, підписані буквою L — незавершене виробництво. Праворуч стрілка з тим самим темпом лямбда виходить із труби, бо в стійкому стані темп надходження дорівнює темпу виходу. Під трубою фігурною дужкою й підписом W позначено час, за який одна крапка проходить трубу наскрізь — середній час перебування в системі. Унизу підписана формула: L дорівнює лямбда, помножена на W.</desc>
+  <desc id="fig-t03-4-desc">Труба, що позначає операційну систему. Зліва стрілка з підписом лямбда входить у трубу — темп надходження одиниць у систему. Усередині труби — кілька крапок, що позначають одиниці, які одночасно перебувають у системі, підписані буквою L — незавершене виробництво. Праворуч стрілка з тим самим темпом лямбда виходить із труби, бо в стійкому стані темп надходження дорівнює темпу виходу. Під трубою двобічною стрілкою й підписом W позначено час, за який одна крапка проходить трубу наскрізь — середній час перебування в системі. Унизу підписана формула: L дорівнює лямбда, помножена на W.</desc>
   <style>
     #fig-t03-4 .box { fill: var(--surface, #ffffff); stroke: var(--ink, #0f1c2e); stroke-width: 1.25; }
     #fig-t03-4 .pipe { fill: var(--surface-tint, #eef4fa); stroke: var(--ink, #0f1c2e); stroke-width: 1.5; }
@@ -25,32 +25,32 @@
     </marker>
   </defs>
 
-  <text class="s" x="64" y="70" text-anchor="middle">λ</text>
-  <path class="arrow" marker-end="url(#fig-t03-4-arr)" d="M24 90 L96 90"/>
-  <text class="lbl" x="64" y="118" text-anchor="middle">пропускна</text>
-  <text class="lbl" x="64" y="134" text-anchor="middle">здатність</text>
+  <text class="s" x="58" y="76" text-anchor="middle">λ</text>
+  <path class="arrow" marker-end="url(#fig-t03-4-arr)" d="M35 90 L110 90"/>
+  <text class="lbl" x="56" y="118" text-anchor="middle">пропускна</text>
+  <text class="lbl" x="56" y="134" text-anchor="middle">здатність</text>
 
-  <path class="pipe" d="M104 60 L536 60 A30 30 0 0 1 536 120 L104 120 A30 30 0 0 1 104 60 Z"/>
+  <path class="pipe" d="M144 60 L496 60 A30 30 0 0 1 496 120 L144 120 A30 30 0 0 1 144 60 Z"/>
 
   <circle class="unit" cx="180" cy="90" r="7"/>
   <circle class="unit" cx="240" cy="76" r="7"/>
   <circle class="unit" cx="300" cy="102" r="7"/>
   <circle class="unit" cx="360" cy="82" r="7"/>
   <circle class="unit" cx="420" cy="96" r="7"/>
-  <text class="exam-t" x="320" y="146" text-anchor="middle">L — незавершене виробництво: середня кількість одиниць усередині системи</text>
+  <text class="exam-t" x="320" y="158" text-anchor="middle">L — незавершене виробництво: середня кількість одиниць усередині системи</text>
 
-  <text class="s" x="576" y="70" text-anchor="middle">λ</text>
-  <path class="arrow" marker-end="url(#fig-t03-4-arr)" d="M544 90 L616 90"/>
-  <text class="lbl" x="576" y="118" text-anchor="middle">той самий темп</text>
-  <text class="lbl" x="576" y="134" text-anchor="middle">у стійкому стані</text>
+  <text class="s" x="573" y="76" text-anchor="middle">λ</text>
+  <path class="arrow" marker-end="url(#fig-t03-4-arr)" d="M530 90 L616 90"/>
+  <text class="lbl" x="636" y="118" text-anchor="end">той самий темп</text>
+  <text class="lbl" x="636" y="134" text-anchor="end">у стійкому стані</text>
 
-  <path class="arrow" d="M104 190 L536 190" marker-start="url(#fig-t03-4-arr)" marker-end="url(#fig-t03-4-arr)"/>
-  <text class="t" x="320" y="216" text-anchor="middle">W — середній час перебування однієї одиниці в системі</text>
+  <path class="arrow" d="M114 196 L526 196" marker-start="url(#fig-t03-4-arr)" marker-end="url(#fig-t03-4-arr)"/>
+  <text class="t" x="320" y="224" text-anchor="middle">W — середній час перебування однієї одиниці в системі</text>
 
-  <rect class="box" x="180" y="244" width="280" height="56" rx="8"/>
-  <text class="formula" x="320" y="280">L = λ · W</text>
+  <rect class="box" x="180" y="248" width="280" height="56" rx="8"/>
+  <text class="formula" x="320" y="284">L = λ · W</text>
 
   <circle class="refc" cx="24" cy="90" r="11"/><text class="refn" x="24" y="94">1</text>
   <circle class="refc exam" cx="320" cy="90" r="11"/><text class="refn exam-n" x="320" y="94">2</text>
-  <circle class="refc" cx="320" cy="190" r="11"/><text class="refn" x="320" y="194">3</text>
+  <circle class="refc" cx="320" cy="196" r="11"/><text class="refn" x="320" y="200">3</text>
 </svg>

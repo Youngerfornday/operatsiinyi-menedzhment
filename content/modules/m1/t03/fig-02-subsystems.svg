@@ -28,16 +28,16 @@
   <text class="s" x="320" y="76" text-anchor="middle">ухвалює рішення про завантаження,</text>
   <text class="s" x="320" y="94" text-anchor="middle">послідовність і строки робіт</text>
 
-  <text class="s" x="150" y="136" text-anchor="middle">вхід</text>
-  <path class="arrow" marker-end="url(#fig-t03-2-arr)" d="M60 154 L154 154"/>
+  <text class="s" x="128" y="182" text-anchor="middle">вхід</text>
+  <path class="arrow" marker-end="url(#fig-t03-2-arr)" d="M60 190 L196 190"/>
 
   <rect class="box box-owner" x="200" y="144" width="240" height="92" rx="8"/>
   <text class="t" x="320" y="172" text-anchor="middle">Переробна підсистема</text>
   <text class="s" x="320" y="194" text-anchor="middle">безпосередньо перетворює</text>
   <text class="s" x="320" y="212" text-anchor="middle">вхід на кінцевий вихід</text>
 
-  <text class="s" x="500" y="136" text-anchor="middle">вихід</text>
-  <path class="arrow" marker-end="url(#fig-t03-2-arr)" d="M446 190 L560 190"/>
+  <text class="s" x="512" y="182" text-anchor="middle">вихід</text>
+  <path class="arrow" marker-end="url(#fig-t03-2-arr)" d="M444 190 L580 190"/>
 
   <rect class="box" x="200" y="266" width="240" height="82" rx="8"/>
   <text class="t" x="320" y="292" text-anchor="middle">Підсистема забезпечення</text>
@@ -45,15 +45,15 @@
   <text class="s" x="320" y="330" text-anchor="middle">транспорт, інструмент</text>
 
   <path class="arrow" marker-end="url(#fig-t03-2-arr)" d="M280 266 L280 240"/>
-  <text class="lbl" x="160" y="256" text-anchor="middle">обслуговує переробну</text>
+  <text class="lbl" x="288" y="257">обслуговує переробну</text>
 
   <path class="arrow exam" marker-end="url(#fig-t03-2-arr)" d="M300 144 L300 116"/>
-  <text class="exam-t" x="150" y="128" text-anchor="middle">стан, незавершене</text>
-  <text class="exam-t" x="150" y="144" text-anchor="middle">виробництво</text>
+  <text class="exam-t" x="292" y="126" text-anchor="end">стан, незавершене</text>
+  <text class="exam-t" x="292" y="140" text-anchor="end">виробництво</text>
 
   <path class="arrow" marker-end="url(#fig-t03-2-arr)" d="M360 116 L360 144"/>
-  <text class="lbl" x="504" y="128" text-anchor="middle">рішення про</text>
-  <text class="lbl" x="504" y="144" text-anchor="middle">завантаження</text>
+  <text class="lbl" x="368" y="126">рішення про</text>
+  <text class="lbl" x="368" y="140">завантаження</text>
 
   <circle class="refc exam" cx="200" cy="30" r="11"/><text class="refn exam-n" x="200" y="34">3</text>
   <circle class="refc" cx="200" cy="144" r="11"/><text class="refn" x="200" y="148">1</text>
