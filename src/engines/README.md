@@ -70,7 +70,7 @@ if (result.ok) { store.save(result.value.state); announce(eventOutcomeText(resul
   майстер зміни → начальник дільниці → начальник виробництва → директор з операцій. ID мають збігатися з
   `src/lib/player-levels.ts` (статичні заготовки гідруються за `data-level-id`) — цей файл лежить поза `src/engines`
   і оновлюється окремо. `levelProgress(xp)` повертає дані для метра.
-- `BADGES` — 13 бейджів із предикатами над станом: по одному на кожен ID з `BADGE_ACTIVITY_IDS` (тренажери цієї
+- `BADGES` — 15 бейджів із предикатами над станом: по одному на кожен ID з `BADGE_ACTIVITY_IDS` (тренажери цієї
   дисципліни, див. нижче) плюс «Уважний читач» (п'ять прочитаних тем, не прив'язаний до тренажера). Тренажери
   мають надсилати події `trainer-completed` з `activityId` із `BADGE_ACTIVITY_IDS`.
 - Тексти: `formatXp`, `xpGainText`, `nextLevelText`, `levelPositionText`, `badgesEarnedText`, `newBadgesText`, `eventOutcomeText`.
