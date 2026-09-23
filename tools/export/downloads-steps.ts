@@ -245,7 +245,8 @@ async function writeBundle(
   file: string,
   title: string,
   members: readonly DownloadItem[],
-  backup: DownloadItem,
+  /** Відсутня, доки для курсу не зібрано .mbz (course-backup.json, published: false). */
+  backup: DownloadItem | undefined,
 ): Promise<{ file: string; bytes: number }> {
   const folder = file.slice(file.lastIndexOf('/') + 1).replace(/\.zip$/, '');
   const readme = readmeText({ course: ctx.sources.course, title, members, siteUrl: ctx.siteUrl, generatedAt: ctx.sources.date, backup });
