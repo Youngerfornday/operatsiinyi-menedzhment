@@ -94,8 +94,35 @@ if (result.ok) { store.save(result.value.state); announce(eventOutcomeText(resul
    `tools/export/scorm/app/<kind>-entry.tsx` (за зразком `matrix-entry.tsx`).
 
 Активності цієї дисципліни вже зарезервовано в `BADGE_ACTIVITY_IDS`, тренажерів під них ще не написано:
-`productivity`, `little-law`, `production-cycle`, `line-balancing`, `forecasting`, `eoq`, `mrp`,
+`little-law`, `production-cycle`, `line-balancing`, `forecasting`, `eoq`, `mrp`,
 `aggregate-planning`, `sequencing`, `cpm-pert`, `control-charts`, `process-capability`.
+`productivity` (перший калькулятор дисципліни) описано нижче.
+
+## `productivity/` — калькулятор продуктивності операційної системи
+
+Еталонний приклад тренажера «Задача» (не матриці): дані — `content/practicals/p01.yaml` →
+`trainer.tasks` (список типів розрахунку з формулою, посиланням на formula-baseline і, для часткової
+продуктивності, назвою ресурсу). Схема контенту — дискримінований варіант `calculation-tasks`
+(`src/content/schemas/practical.ts`), реюзабельний для інших калькуляторів: `method` — вільний рядок,
+який трактує лише конкретний тренажер, тому рушій сам звіряє його з відомими собі методами
+(`toProductivityTaskChoices`, `src/components/trainers/model/productivity.ts`) і кидає помилку на
+невідомий — контентна помилка, а не тиха відмова.
+
+```ts
+const variant = createProductivityVariant(random, [{ method: 'partial-productivity', resource: 'labor' }, { method: 'capacity-usage' }]);
+// variant.given — вихідні дані для фабули, variant.answers — поля з expected/tolerance, variant.solution — розбір
+const check = checkProductivityTask(variant, { p1: '2,5', p2: '3' });     // model/productivity.ts: checkNumberPart + combineParts на answers
+```
+
+- `partialProductivity`, `multifactorProductivity`, `productivityIndex`, `capacityUsage`, `capacityEfficiency` —
+  формули PROD-01, PROD-02, PROD-03, CAP-01, CAP-02; усі повертають `Result` з кодом (`negative-value`,
+  `non-positive-denominator`, `empty-resources`, `period-mismatch`).
+- `createProductivityVariant(random, tasks)` — один варіант на випадково обраний метод із переданого пулу;
+  числа підбираються «в охайний, але не очевидний результат» (ратіо конструюється назад від чистого
+  дробу), а не навпаки, тож розв’язок завжди рахується без нескінченних дробів.
+- React-острів `ProductivityTrainer.tsx` на каркасі `ui/TaskShell.tsx` + `ui/use-trainer-task.ts` — це і є
+  контракт «Як додати тренажер» вище, застосований уперше; наступні 11 калькуляторів повторюють ту саму
+  форму (свій `src/engines/<name>/`, свій `model/<name>.ts`, свій React-острів, свій варіант схеми).
 
 ## `matrix/` — тренажер-матриця практичних
 

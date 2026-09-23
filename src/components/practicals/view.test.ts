@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { matrixConditionNote, practicalSections, practicalXpChip } from './view';
+import { calculationConditionNote, matrixConditionNote, practicalSections, practicalXpChip } from './view';
 
 describe('practicalSections', () => {
   it('keeps the shared sections around the trainer ones', () => {
@@ -12,16 +12,24 @@ describe('practicalSections', () => {
   });
 
   it('never repeats an anchor', () => {
-    for (const kind of ['matching-matrix'] as const) {
+    for (const kind of ['matching-matrix', 'calculation-tasks'] as const) {
       const ids = practicalSections(kind).map((section) => section.id);
       expect(new Set(ids).size).toBe(ids.length);
     }
+  });
+
+  it('gives the calculator trainer its own single section before essay and rubric', () => {
+    expect(practicalSections('calculation-tasks').map((section) => section.id)).toEqual(['meta', 'umova', 'trenazher', 'ese', 'rubryka', 'dani']);
   });
 });
 
 describe('practicalXpChip', () => {
   it('names the matrix in the chip of the matrix practical', () => {
     expect(practicalXpChip('matching-matrix')).toContain('матрицю');
+  });
+
+  it('falls back to a generic task chip for the calculator trainer', () => {
+    expect(practicalXpChip('calculation-tasks')).toBe('до 60 XP за задачі тренажера');
   });
 });
 
@@ -35,5 +43,11 @@ describe('matrixConditionNote', () => {
   it('says the second attempt is the graded one', () => {
     const note = matrixConditionNote({ features: 8, models: 3, cells: 24, rubricTitle: 'Критерій' });
     expect(note).toContain('оцінюється друга');
+  });
+});
+
+describe('calculationConditionNote', () => {
+  it('names the number of task types', () => {
+    expect(calculationConditionNote(7)).toContain('7 типів задач');
   });
 });

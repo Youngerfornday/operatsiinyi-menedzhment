@@ -3,7 +3,7 @@
  * обсяг тренажера в умові. Чисті функції — сторінка лише підставляє числа зі свого файлу даних.
  */
 
-export type PracticalTrainerKind = 'matching-matrix';
+export type PracticalTrainerKind = 'matching-matrix' | 'calculation-tasks';
 
 export interface PracticalSection {
   readonly id: string;
@@ -25,10 +25,12 @@ const TRAINER_SECTIONS: Readonly<Record<PracticalTrainerKind, readonly Practical
     { id: 'trenazher', label: 'Тренажер-матриця' },
     { id: 'kompanii', label: 'Визначте модель компанії' },
   ],
+  'calculation-tasks': [{ id: 'trenazher', label: 'Тренажер: розрахункові задачі' }],
 };
 
 const DATA_SECTION: Readonly<Record<PracticalTrainerKind, PracticalSection>> = {
   'matching-matrix': { id: 'dani', label: 'Дані, формули й джерела' },
+  'calculation-tasks': { id: 'dani', label: 'Дані, формули й джерела' },
 };
 
 export function practicalSections(kind: PracticalTrainerKind): readonly PracticalSection[] {
@@ -48,4 +50,8 @@ export interface MatrixNoteInput {
 
 export function matrixConditionNote({ features, models, cells, rubricTitle }: MatrixNoteInput): string {
   return `У тренажері — ${features} ознак × ${models} моделі = ${cells} формулювань. Перша спроба навчальна, оцінюється друга: бал за критерієм «${rubricTitle}» рубрики нижче.`;
+}
+
+export function calculationConditionNote(taskCount: number): string {
+  return `У тренажері — ${taskCount} типів задач за формулами нижче. Кожен варіант дає нові дані; перевірка одразу показує повний розв’язок. Спроб необмежено, бал за критерієм рубрики визначає викладач за поданим розв’язком.`;
 }

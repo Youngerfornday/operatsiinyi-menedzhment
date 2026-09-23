@@ -1,15 +1,25 @@
 ---
-/** Формула або розрахунок: слот не проходить через типографіку (плагін пропускає компонент Formula). */
+/**
+ * Формула або розрахунок: слот не проходить через типографіку (плагін пропускає компонент Formula).
+ * `code` — рядок docs/research/formula-baseline.md: читач бачить, за чим звіряти формулу,
+ * а лінт звіряє код з базою (правило ref-codes).
+ */
 interface Props {
   label?: string;
   note?: string;
+  code?: string;
 }
 
-const { label, note } = Astro.props;
+const { label, note, code } = Astro.props;
 ---
 
-<div class="formula" role="figure" aria-label={label ? `Формула: ${label}` : 'Формула'} data-typography="off">
-  {label && <span class="formula-label">{label}</span>}
+<div class="formula" role="figure" aria-label={label ? `Формула: ${label}` : 'Формула'} data-typography="off" data-formula-code={code}>
+  {(label || code) && (
+    <span class="formula-head">
+      {label && <span class="formula-label">{label}</span>}
+      {code && <code class="formula-code" title="Рядок бази формул">{code}</code>}
+    </span>
+  )}
   <span class="formula-body num"><slot /></span>
   {note && <span class="formula-note">{note}</span>}
 </div>

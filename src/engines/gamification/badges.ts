@@ -44,9 +44,9 @@ export const BADGES: readonly BadgeDefinition[] = Object.freeze([
   {
     id: 'produktyvnist-dilianky',
     title: 'Продуктивність дільниці',
-    condition: 'Розрахуйте продуктивність праці дільниці без жодної помилки',
-    achievement: 'Розрахували продуктивність праці дільниці без жодної помилки',
-    topic: null,
+    condition: 'Розрахуйте показник продуктивності операційної системи в тренажері без жодної помилки',
+    achievement: 'Розрахували показник продуктивності операційної системи без жодної помилки',
+    topic: 't01',
     isEarned: flawless(BADGE_ACTIVITY_IDS.productivity),
   },
   {

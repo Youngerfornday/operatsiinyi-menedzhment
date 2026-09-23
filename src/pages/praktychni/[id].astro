@@ -2,7 +2,8 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import MatrixReference from '../../components/practicals/MatrixReference.astro';
 import MatrixSections from '../../components/practicals/MatrixSections.astro';
-import { matrixConditionNote, practicalSections, practicalXpChip } from '../../components/practicals/view';
+import { calculationConditionNote, matrixConditionNote, practicalSections, practicalXpChip } from '../../components/practicals/view';
+import { ProductivityTrainer } from '../../components/trainers/ProductivityTrainer';
 import { practicalLabel } from '../../components/trainers/catalog';
 import Crumbs from '../../components/site/Crumbs.astro';
 import Icon from '../../components/site/Icon.astro';
@@ -85,7 +86,9 @@ const toc = practicalSections(trainer.kind);
 const conditionNote =
   matrixData !== null && trainer.kind === 'matching-matrix'
     ? matrixConditionNote({ features: trainer.features.length, models: trainer.models.length, cells: matrixData.cellCount, rubricTitle: matrixData.rubric.title })
-    : '';
+    : trainer.kind === 'calculation-tasks'
+      ? calculationConditionNote(trainer.tasks.length)
+      : '';
 
 const bandLines =
   matrixData === null
@@ -168,6 +171,25 @@ const essayNote =
           ) : null
         }
 
+        {
+          trainer.kind === 'calculation-tasks' ? (
+            <section class="prac-section" id="trenazher" aria-labelledby="trenazher-title">
+              <h2 id="trenazher-title">Тренажер: розрахункові задачі</h2>
+              <ProductivityTrainer client:only="react" tasks={trainer.tasks}>
+                <div slot="fallback" class="quiz-pending" aria-busy="true">
+                  <div class="card">
+                    <Icon name="clock" size="lg" />
+                    <div>
+                      <p class="h3">Тренажер завантажується</p>
+                      <p class="muted">{typo('Дані генеруються у вашому браузері. Якщо цей напис не зникає, увімкніть JavaScript.')}</p>
+                    </div>
+                  </div>
+                </div>
+              </ProductivityTrainer>
+            </section>
+          ) : null
+        }
+
         <section class="prac-section essay" id="ese" aria-labelledby="ese-title">
           <h2 id="ese-title">Есе</h2>
           <p class="essay-prompt">{typo(trainer.essay.prompt)}</p>
@@ -227,6 +249,28 @@ const essayNote =
           {
             matrixData !== null && trainer.kind === 'matching-matrix' ? (
               <MatrixReference models={trainer.models} />
+            ) : null
+          }
+          {
+            trainer.kind === 'calculation-tasks' ? (
+              <>
+                <h3 class="h4">Формули тренажера</h3>
+                <ul class="data-list">
+                  {trainer.tasks.map((task) => (
+                    <li>
+                      <b>{typo(task.title)}.</b> <span data-typography="off">{task.formula}</span>
+                      <span class="src-meta">
+                        {task.ref.url ? (
+                          <a href={task.ref.url} target="_blank" rel="noopener">{task.ref.source} <Icon name="external" size="sm" /></a>
+                        ) : (
+                          <span>{task.ref.source}</span>
+                        )}
+                        <span class="verified">перевірено {formatDate(task.ref.checkedAt)}</span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </>
             ) : null
           }
           <h3 class="h4">Дані для практичної</h3>

@@ -3,6 +3,7 @@
  * ID активностей прогресу (збігаються з BADGE_ACTIVITY_IDS рушія геймифікації) і зв’язок з реєстром
  * course.yaml → practicals[].trainers.
  */
+import { BADGE_ACTIVITY_IDS } from '../../engines/gamification';
 import { matrixActivityId } from '../../engines/matrix';
 
 export interface CalculatorTrainer {
@@ -27,8 +28,8 @@ export interface CalculatorTrainer {
  */
 export const CALCULATOR_TRAINERS: readonly CalculatorTrainer[] = [];
 
-/** Практичні, сторінки яких уже опубліковано (`praktychni/pNN/`). Порожньо, доки контент не готовий. */
-export const PUBLISHED_PRACTICALS: readonly string[] = [];
+/** Практичні, сторінки яких уже опубліковано (`praktychni/pNN/`). */
+export const PUBLISHED_PRACTICALS: readonly string[] = ['p01'];
 
 export interface PracticalTrainer {
   readonly practicalId: string;
@@ -42,6 +43,17 @@ export interface PracticalTrainer {
   readonly formula: string;
 }
 
+export const PRODUCTIVITY_TRAINER = {
+  practicalId: 'p01',
+  registryId: 'productivity',
+  activityId: BADGE_ACTIVITY_IDS.productivity,
+  path: 'praktychni/p01/#trenazher',
+  icon: 'calc',
+  title: 'Продуктивність операційної системи',
+  text: 'Розрахуйте часткову й багатофакторну продуктивність, індекс її зміни та використання й ефективність потужності. Кожен варіант — нові дані, перевірка одразу показує повний розв’язок.',
+  formula: 'До 60 XP — по одному разу за кожен тип задачі',
+} as const satisfies PracticalTrainer;
+
 export const MATRIX_TRAINER = {
   practicalId: 'p02',
   registryId: 'priorities-matrix',
@@ -54,10 +66,11 @@ export const MATRIX_TRAINER = {
 } as const satisfies PracticalTrainer;
 
 /** Тренажери, що живуть на сторінці практичної (а не на власній сторінці `trenazhery/<slug>/`). */
-export const PRACTICAL_TRAINERS: readonly PracticalTrainer[] = [MATRIX_TRAINER];
+export const PRACTICAL_TRAINERS: readonly PracticalTrainer[] = [PRODUCTIVITY_TRAINER, MATRIX_TRAINER];
 
 /** Людські назви тренажерів з реєстру course.yaml. */
 export const TRAINER_KIND_LABELS: Readonly<Record<string, string>> = {
+  productivity: 'розрахункові задачі',
   'priorities-matrix': 'матриця зіставлення',
 };
 

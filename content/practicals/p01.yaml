@@ -1,0 +1,123 @@
+# Дані тренажера практичної 1. Реєстр (мета, результати, рубрика, ПРН, дані статистики) — у course.yaml.
+# Формули — лише з docs/research/formula-baseline.md (коди PROD-01, PROD-02, PROD-03, CAP-01, CAP-02).
+id: p01
+title: Операційна функція підприємства і вимірювання продуктивності
+intro: >-
+  У тренажері розрахуйте показники продуктивності операційної системи за завданнями нижче: часткову
+  продуктивність за працею, матеріалами й енергією, багатофакторну продуктивність, індекс її зміни та
+  використання й ефективність виробничої потужності. Кожен варіант генерує нові дані; після перевірки
+  тренажер показує повний розв'язок за формулою. XP нараховується лише за перший правильно розв'язаний
+  варіант кожного типу задачі — до 60 XP за тренажер загалом.
+status: review
+updatedAt: '2026-09-23'
+sources:
+  - id: stevenson-2020
+    type: book
+    title: Operations Management
+    authors: [Stevenson W. J.]
+    publisher: McGraw-Hill Education
+    year: 2020
+    language: en
+    url: https://openlibrary.org/isbn/9781260575712
+    checkedAt: '2026-09-22'
+    note: 'Джерело розрізнення часткової, багатофакторної продуктивності й індексу її зміни (PROD-01, PROD-02, PROD-03).'
+
+  - id: starchenko-kalinko-kosach-2020
+    type: book
+    title: Операційний менеджмент
+    authors: [Старченко Г. В., Калінько І. В., Косач І. А.]
+    publisher: Кондор
+    year: 2020
+    language: uk
+    url: https://scholar.google.com/citations?user=9UX4QTYAAAAJ&hl=uk
+    checkedAt: '2026-09-22'
+    note: 'Джерело коефіцієнта використання потужності (CAP-01) і ефективності використання потужності (CAP-02).'
+
+trainer:
+  kind: calculation-tasks
+  tasks:
+    - id: partial-labor
+      method: partial-productivity
+      resource: labor
+      title: Часткова продуктивність за працею
+      formula: 'Продуктивність = Обсяг випуску / Людино-години'
+      ref:
+        source: 'Stevenson W. J. Operations Management, 2020'
+        locator: 'розділ «Competitiveness, Strategy, and Productivity», підрозділ Productivity, часткова продуктивність за працею (PROD-01)'
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9781260575712
+
+    - id: partial-materials
+      method: partial-productivity
+      resource: materials
+      title: Часткова продуктивність за матеріалами
+      formula: 'Продуктивність = Обсяг випуску / Кілограми матеріалів'
+      ref:
+        source: 'Stevenson W. J. Operations Management, 2020'
+        locator: 'розділ «Competitiveness, Strategy, and Productivity», підрозділ Productivity, часткова продуктивність за матеріалами (PROD-01)'
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9781260575712
+
+    - id: partial-energy
+      method: partial-productivity
+      resource: energy
+      title: Часткова продуктивність за енергією
+      formula: 'Продуктивність = Обсяг випуску / Кіловат-години'
+      ref:
+        source: 'Stevenson W. J. Operations Management, 2020'
+        locator: 'розділ «Competitiveness, Strategy, and Productivity», підрозділ Productivity, часткова продуктивність за енергією (PROD-01)'
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9781260575712
+
+    - id: multifactor
+      method: multifactor-productivity
+      title: Багатофакторна продуктивність
+      formula: 'Продуктивність = Обсяг випуску / (Праця + Матеріали + Енергія + Утримання обладнання)'
+      ref:
+        source: 'Stevenson W. J. Operations Management, 2020'
+        locator: 'розділ «Competitiveness, Strategy, and Productivity», підрозділ Productivity, багатофакторна продуктивність (PROD-02)'
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9781260575712
+
+    - id: productivity-index
+      method: productivity-index
+      title: Індекс зміни продуктивності
+      formula: 'I = Продуктивність поточного періоду / Продуктивність базового періоду · 100 %'
+      ref:
+        source: 'Stevenson W. J. Operations Management, 2020'
+        locator: 'розділ «Competitiveness, Strategy, and Productivity», підрозділ Productivity, індекс зміни продуктивності (PROD-03)'
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9781260575712
+
+    - id: capacity-usage
+      method: capacity-usage
+      title: Коефіцієнт використання потужності
+      formula: 'Використання = Фактичний випуск / Проєктна потужність · 100 %'
+      ref:
+        source: 'Старченко Г.В., Калінько І.В., Косач І.А. Операційний менеджмент, 2020'
+        locator: 'розділ «Виробнича потужність», коефіцієнт використання потужності (CAP-01)'
+        checkedAt: '2026-09-22'
+        url: https://scholar.google.com/citations?user=9UX4QTYAAAAJ&hl=uk
+
+    - id: capacity-efficiency
+      method: capacity-efficiency
+      title: Ефективність використання потужності
+      formula: 'Ефективність = Фактичний випуск / Ефективна потужність · 100 %'
+      ref:
+        source: 'Старченко Г.В., Калінько І.В., Косач І.А. Операційний менеджмент, 2020'
+        locator: 'розділ «Виробнича потужність», ефективність використання потужності (CAP-02)'
+        checkedAt: '2026-09-22'
+        url: https://scholar.google.com/citations?user=9UX4QTYAAAAJ&hl=uk
+
+  essay:
+    prompt: >-
+      Поясніть, чому зростання продуктивності за працею в тренажері може супроводжуватися падінням
+      багатофакторної продуктивності, і назвіть два управлінські рішення, що дають такий ефект.
+    maxWords: 300
+    expectations:
+      - 'Названо конкретну причину розбіжності: зекономлений ресурс (наприклад, праця) замінено іншим, який теж входить до знаменника багатофакторного показника.'
+      - 'Наведено щонайменше два управлінські рішення з таким ефектом (наприклад, автоматизація дільниці, перехід на дорожче обладнання чи енергоємнішу технологію).'
+      - 'Пояснення спирається на власний розрахунок із тренажера, а не переказує визначення часткової й багатофакторної продуктивності.'
+    hints:
+      - 'Порівняйте, у скільки разів зросли випуск і сумарні витрати ресурсів: якщо витрати зросли швидше за випуск — багатофакторна продуктивність падає, навіть коли часткова за одним ресурсом зростає.'
+      - 'Перегляньте розділ лекції «Продуктивність операційної системи: часткова, багатофакторна, загальна» — приклад цеху з новою напівавтоматичною лінією.'

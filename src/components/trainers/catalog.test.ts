@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { createEmptyProgress } from '../../engines/progress';
-import { CALCULATOR_TRAINERS, MATRIX_TRAINER, PRACTICAL_TRAINERS, practicalLabel, practicalPath, publishedTrainer, topicTrainerActivityIds, trainerKindLabel } from './catalog';
+import { CALCULATOR_TRAINERS, MATRIX_TRAINER, PRACTICAL_TRAINERS, PRODUCTIVITY_TRAINER, PUBLISHED_PRACTICALS, practicalLabel, practicalPath, publishedTrainer, topicTrainerActivityIds, trainerKindLabel } from './catalog';
 import { practicumNote, practicumProgress } from './practicum-progress';
 
 const PRACTICALS = [
@@ -13,13 +13,19 @@ describe('каталог тренажерів', () => {
     expect(CALCULATOR_TRAINERS).toEqual([]);
   });
 
-  it('матриця моделей — єдиний тренажер на сторінці практичної, і в неї є ID активності', () => {
+  it('продуктивність і матриця моделей живуть на сторінці практичної, і в обох є ID активності', () => {
     expect(MATRIX_TRAINER.activityId).toBe('p02-matching-matrix');
-    expect(PRACTICAL_TRAINERS).toEqual([MATRIX_TRAINER]);
+    expect(PRODUCTIVITY_TRAINER.activityId).toBe('productivity');
+    expect(PRACTICAL_TRAINERS).toEqual([PRODUCTIVITY_TRAINER, MATRIX_TRAINER]);
+  });
+
+  it('практична p01 опублікована', () => {
+    expect(PUBLISHED_PRACTICALS).toContain('p01');
   });
 
   it('опубліковані тренажери знаходяться за ID реєстру, неопубліковані — ні', () => {
     expect(publishedTrainer('priorities-matrix')).toMatchObject({ path: 'praktychni/p02/#trenazher', activityId: 'p02-matching-matrix' });
+    expect(publishedTrainer('productivity')).toMatchObject({ path: 'praktychni/p01/#trenazher', activityId: 'productivity' });
     expect(publishedTrainer('forecasting')).toBeNull();
   });
 
@@ -29,6 +35,7 @@ describe('каталог тренажерів', () => {
   });
 
   it('підписи й шляхи', () => {
+    expect(trainerKindLabel('productivity')).toBe('розрахункові задачі');
     expect(trainerKindLabel('priorities-matrix')).toBe('матриця зіставлення');
     expect(trainerKindLabel('unknown-kind')).toBe('unknown-kind');
     expect(trainerKindLabel('toString')).toBe('toString');
