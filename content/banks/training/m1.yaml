@@ -423,9 +423,10 @@ questions:
       5,2 / 4,0 · 100% = 130,0%: поточна продуктивність становить 130% від базової, тобто зросла на 30
       відсоткових пунктів понад базовий рівень.
     refs:
-      - source: Stevenson W. J. Operations Management, 2020
-        locator: розділ «Competitiveness, Strategy, and Productivity», індекс зміни продуктивності (PROD-03)
+      - source: Капінос Г.І., Бабій І.В. Операційний менеджмент, 2013
+        locator: розділ 9, п. 9.1, с. 248, динамічний індекс продуктивності (PROD-03)
         checkedAt: '2026-09-23'
+        url: https://duikt.edu.ua/uploads/l_1479_22227234.pdf
     answers:
       - value: 130.0
         tolerance: 0.1
@@ -462,14 +463,14 @@ questions:
       з'їдені плановими зупинками і поза впливом менеджера, а решта 2 000 між ефективною потужністю й
       фактом — це те, за що він справді відповідає.
     refs:
-      - source: Старченко Г.В., Калінько І.В., Косач І.А. Операційний менеджмент, 2020
-        locator: розділ «Виробнича потужність», коефіцієнт використання потужності (CAP-01)
-        checkedAt: '2026-09-22'
-        url: https://scholar.google.com/citations?user=9UX4QTYAAAAJ&hl=uk
-      - source: Старченко Г.В., Калінько І.В., Косач І.А. Операційний менеджмент, 2020
-        locator: розділ «Виробнича потужність», ефективність використання потужності (CAP-02)
-        checkedAt: '2026-09-22'
-        url: https://scholar.google.com/citations?user=9UX4QTYAAAAJ&hl=uk
+      - source: Heizer J., Render B., Munson C. Operations Management, 2016
+        locator: Supplement 7 «Capacity and Constraint Management», підрозділ «Design and Effective Capacity», коефіцієнт використання потужності (CAP-01)
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9780134163512
+      - source: Heizer J., Render B., Munson C. Operations Management, 2016
+        locator: Supplement 7 «Capacity and Constraint Management», підрозділ «Design and Effective Capacity», ефективність використання потужності (CAP-02)
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9780134163512
     subquestions:
       - kind: numerical
         answers:
@@ -525,10 +526,9 @@ questions:
       без додаткової інформації про вартість чи технічну можливість підвищення не має єдиної відповіді на
       користь однієї складової.
     refs:
-      - source: Гевко І. Операційний менеджмент, 2017
-        locator: розділ «Продуктивність операційної системи», загальна ефективність обладнання (CAP-03)
-        checkedAt: '2026-09-22'
-        url: https://elartu.tntu.edu.ua/handle/lib/21300
+      - source: ISO 22400-2:2014
+        locator: KPI «OEE index», загальна ефективність обладнання (CAP-03)
+        checkedAt: '2026-09-23'
     answers:
       - text: Підняти доступність, бо позаплановий простій коштує найдорожче
         fraction: 0
