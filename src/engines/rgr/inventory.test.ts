@@ -20,7 +20,7 @@ describe('createInventory', () => {
       expect(inventory.holdingCostPerUnitPerYear).toBeGreaterThan(0);
       expect(inventory.leadTimeDays).toBeGreaterThan(0);
       expect(inventory.averageDailyDemand).toBeGreaterThan(0);
-      expect(inventory.dailyDemandStdDev).toBeGreaterThan(0);
+      expect(inventory.leadTimeDemandStdDev).toBeGreaterThan(0);
       expect(knownServiceLevels).toContain(inventory.serviceLevelPercent);
       expect(inventory.zValue).toBeGreaterThan(0);
     }

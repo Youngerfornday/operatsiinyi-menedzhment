@@ -8,7 +8,10 @@ import type { CapabilityData, ControlChartData, ControlSubgroup, GivenSection, P
  */
 const SUBGROUP_SIZE = 5;
 const SUBGROUP_COUNT = 10;
-/** Табличні константи X̄-R карти для n = 5 (стандартна таблиця SPC, Heizer, Render, Munson, 2016). */
+/**
+ * Табличні константи X̄-R карти для n = 5 — загальновідома стандартна таблиця коефіцієнтів контрольних
+ * карт, не звірена з підручником викладача (formula-baseline.md, «Не підтверджено», п. 2; як у практичній 7).
+ */
 const A2_FOR_N5 = 0.577;
 const D3_FOR_N5 = 0;
 const D4_FOR_N5 = 2.114;
@@ -64,7 +67,10 @@ export function createStage4(random: RandomSource, stage1: Stage1Data): Stage4Da
       title: 'Контрольна карта X̄-R (10 підгруп по 5 вимірювань, мм)',
       rows: [
         ...controlChart.subgroups.map((subgroup) => ({ label: `Підгрупа ${subgroup.index}`, value: subgroup.measurements.map((value) => formatNumber(value, { minimumFractionDigits: 1, maximumFractionDigits: 1 })).join(' / ') })),
-        { label: 'Табличні константи (n = 5)', value: `A2 = ${formatNumber(controlChart.a2)}, D3 = ${formatNumber(controlChart.d3)}, D4 = ${formatNumber(controlChart.d4)}` },
+        {
+          label: 'Табличні константи (n = 5)',
+          value: `A2 = ${formatNumber(controlChart.a2)}, D3 = ${formatNumber(controlChart.d3)}, D4 = ${formatNumber(controlChart.d4)} — за стандартною таблицею коефіцієнтів контрольних карт (не звірено з підручником викладача)`,
+        },
       ],
     },
     {

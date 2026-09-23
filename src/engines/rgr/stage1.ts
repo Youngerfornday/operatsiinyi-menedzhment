@@ -29,7 +29,7 @@ export function createStage1(random: RandomSource): Stage1Data {
         { label: 'Дільниця', value: facility.section },
         { label: 'Продукція', value: `${facility.product} (${facility.unit})` },
         { label: 'Тип підприємства', value: facility.enterpriseTypeLabel },
-        { label: 'Номенклатура продукції дільниці', value: `${formatNumber(itemCount)} найменування(нь)` },
+        { label: 'Номенклатура продукції дільниці', value: `${formatNumber(itemCount)} найменування` },
         { label: 'Середньомісячний обсяг випуску (базовий період)', value: `${formatNumber(baselineMonthlyDemand)} ${facility.unit}` },
         { label: 'Типовий розмір партії запуску', value: `${formatNumber(typicalBatchSize)} ${facility.unit}` },
       ],

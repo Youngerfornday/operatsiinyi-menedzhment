@@ -20,8 +20,21 @@ const ACTIVITY_TEMPLATE: ReadonlyArray<{ readonly id: string; readonly name: str
 const MIN_DURATION_DAYS = 2;
 const MAX_DURATION_DAYS = 10;
 
+/**
+ * Дві паралельні гілки шаблону (A→B→D→F і A→C→E→F) за рівної тривалості дали б два критичні шляхи
+ * й неоднозначну відповідь; тоді тривалість E зсувається на 1 день (детерміновано, у межах діапазону).
+ */
+function breakParallelTie(durations: ReadonlyMap<string, number>): ReadonlyMap<string, number> {
+  const of = (id: string) => durations.get(id) ?? 0;
+  if (of('B') + of('D') !== of('C') + of('E')) return durations;
+  const e = of('E');
+  return new Map([...durations, ['E', e < MAX_DURATION_DAYS ? e + 1 : e - 1]]);
+}
+
 export function createNetwork(random: RandomSource): NetworkActivity[] {
-  return ACTIVITY_TEMPLATE.map((activity) => ({ ...activity, durationDays: randomInt(random, MIN_DURATION_DAYS, MAX_DURATION_DAYS) }));
+  const drawn = new Map(ACTIVITY_TEMPLATE.map((activity) => [activity.id, randomInt(random, MIN_DURATION_DAYS, MAX_DURATION_DAYS)] as const));
+  const durations = breakParallelTie(drawn);
+  return ACTIVITY_TEMPLATE.map((activity) => ({ ...activity, durationDays: durations.get(activity.id) ?? MIN_DURATION_DAYS }));
 }
 
 export interface CpmActivityResult {

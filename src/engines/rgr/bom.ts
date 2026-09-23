@@ -23,6 +23,24 @@ export function createBom(random: RandomSource): BomItem[] {
   }));
 }
 
+/**
+ * Сумарний (найдовший) строк постачання від кінцевого виробу до найнижчої деталі. Перша потреба в
+ * готовому виробі ставиться на тиждень після нього, щоб розвертання «партія за партією» ніколи не
+ * вимагало запуску замовлення до тижня 1 (та сама умова, що й у тренажері MRP практичної 6).
+ */
+export function cumulativeLeadTimeWeeks(bom: readonly BomItem[]): number {
+  const pathFrom = (item: BomItem): number => {
+    const children = bom.filter((candidate) => candidate.parentId === item.id);
+    return item.leadTimeWeeks + (children.length === 0 ? 0 : Math.max(...children.map(pathFrom)));
+  };
+  const roots = bom.filter((item) => item.parentId === null);
+  return roots.length === 0 ? 0 : Math.max(...roots.map(pathFrom));
+}
+
+export function masterScheduleFirstWeek(bom: readonly BomItem[]): number {
+  return cumulativeLeadTimeWeeks(bom) + 1;
+}
+
 const WEEKS = 6;
 const WEEKLY_ROUNDING = 10;
 

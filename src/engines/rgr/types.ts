@@ -62,6 +62,8 @@ export interface Stage2Data {
   /** Ваги від найновішого періоду до найдавнішого, сума = 1. */
   readonly weightedWeights: readonly number[];
   readonly exponentialAlpha: number;
+  /** Початковий прогноз експоненційного згладжування F1 = D1 (як у лекції теми 6). */
+  readonly initialExponentialForecast: number;
   readonly capacity: Stage2Capacity;
   readonly aggregatePlan: Stage2AggregatePlan;
   readonly sections: readonly GivenSection[];
@@ -72,8 +74,11 @@ export interface InventoryData {
   readonly orderingCost: number;
   readonly holdingCostPerUnitPerYear: number;
   readonly leadTimeDays: number;
+  /** Робочих днів на рік: annualDemand = averageDailyDemand · workingDaysPerYear. */
+  readonly workingDaysPerYear: number;
   readonly averageDailyDemand: number;
-  readonly dailyDemandStdDev: number;
+  /** σ_dLT з EOQ-04 — дається готовим, щоб не вимагати формул поза базою. */
+  readonly leadTimeDemandStdDev: number;
   readonly serviceLevelPercent: number;
   readonly zValue: number;
 }
@@ -97,6 +102,9 @@ export interface NetworkActivity {
 
 export interface Stage3Data {
   readonly inventory: InventoryData;
+  /** Тиждень першої потреби в готовому виробі: > сумарного строку постачання, тож MRP не вимагає запуску до тижня 1. */
+  readonly masterScheduleFirstWeek: number;
+  /** Потреба в готовому виробі з тижня masterScheduleFirstWeek поспіль. */
   readonly masterScheduleWeeks: readonly number[];
   readonly bom: readonly BomItem[];
   readonly network: readonly NetworkActivity[];
