@@ -3,11 +3,8 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import MatrixReference from '../../components/practicals/MatrixReference.astro';
 import MatrixSections from '../../components/practicals/MatrixSections.astro';
 import { calculationConditionNote, matrixConditionNote, practicalSections, practicalXpChip } from '../../components/practicals/view';
-import { FacilityLocationTrainer } from '../../components/trainers/FacilityLocationTrainer';
-import { LineBalancingTrainer } from '../../components/trainers/LineBalancingTrainer';
-import { ProductivityTrainer } from '../../components/trainers/ProductivityTrainer';
-import { WorkMeasurementTrainer } from '../../components/trainers/WorkMeasurementTrainer';
-import { practicalLabel } from '../../components/trainers/catalog';
+import { PracticalCalculationTrainers } from '../../components/trainers/PracticalCalculationTrainers';
+import { PRACTICAL_TRAINERS, practicalLabel } from '../../components/trainers/catalog';
 import Crumbs from '../../components/site/Crumbs.astro';
 import Icon from '../../components/site/Icon.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -42,6 +39,11 @@ const { course, modules, topics } = await loadCourseData();
 const practical = course.practicals.find((candidate) => candidate.id === file.id);
 if (!practical) throw new Error(`Практичної ${file.id} немає в реєстрі course.yaml`);
 const module = modules.find((candidate) => candidate.id === practical.module);
+const trainerHeadings = practical.trainers.map((registryId) => {
+  const known = PRACTICAL_TRAINERS.find((candidate) => candidate.registryId === registryId);
+  if (!known) throw new Error(`Тренажера ${registryId} практичної ${practical.id} немає в catalog.ts`);
+  return { registryId, title: known.title };
+});
 if (!module) throw new Error(`Модуль практичної ${file.id} не знайдено`);
 const practicalTopics = practical.topics.map((id) => topics.find((topic) => topic.id === id)).filter((topic) => topic !== undefined);
 
@@ -178,60 +180,17 @@ const essayNote =
           trainer.kind === 'calculation-tasks' ? (
             <section class="prac-section" id="trenazher" aria-labelledby="trenazher-title">
               <h2 id="trenazher-title">Тренажер: розрахункові задачі</h2>
-              {
-                practical.id === 'p04' ? (
-                  <>
-                    <h3 class="h4" id="trenazher-facility-location">Вибір місця розташування</h3>
-                    <FacilityLocationTrainer client:only="react" tasks={trainer.tasks}>
-                      <div slot="fallback" class="quiz-pending" aria-busy="true">
-                        <div class="card">
-                          <Icon name="clock" size="lg" />
-                          <div>
-                            <p class="h3">Тренажер завантажується</p>
-                            <p class="muted">{typo('Дані генеруються у вашому браузері. Якщо цей напис не зникає, увімкніть JavaScript.')}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </FacilityLocationTrainer>
-                    <h3 class="h4" id="trenazher-line-balancing">Балансування потокової лінії</h3>
-                    <LineBalancingTrainer client:only="react" tasks={trainer.tasks}>
-                      <div slot="fallback" class="quiz-pending" aria-busy="true">
-                        <div class="card">
-                          <Icon name="clock" size="lg" />
-                          <div>
-                            <p class="h3">Тренажер завантажується</p>
-                            <p class="muted">{typo('Дані генеруються у вашому браузері. Якщо цей напис не зникає, увімкніть JavaScript.')}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </LineBalancingTrainer>
-                    <h3 class="h4" id="trenazher-work-measurement">Нормування праці</h3>
-                    <WorkMeasurementTrainer client:only="react" tasks={trainer.tasks}>
-                      <div slot="fallback" class="quiz-pending" aria-busy="true">
-                        <div class="card">
-                          <Icon name="clock" size="lg" />
-                          <div>
-                            <p class="h3">Тренажер завантажується</p>
-                            <p class="muted">{typo('Дані генеруються у вашому браузері. Якщо цей напис не зникає, увімкніть JavaScript.')}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </WorkMeasurementTrainer>
-                  </>
-                ) : (
-                  <ProductivityTrainer client:only="react" tasks={trainer.tasks}>
-                    <div slot="fallback" class="quiz-pending" aria-busy="true">
-                      <div class="card">
-                        <Icon name="clock" size="lg" />
-                        <div>
-                          <p class="h3">Тренажер завантажується</p>
-                          <p class="muted">{typo('Дані генеруються у вашому браузері. Якщо цей напис не зникає, увімкніть JavaScript.')}</p>
-                        </div>
-                      </div>
+              <PracticalCalculationTrainers client:only="react" tasks={trainer.tasks} trainers={trainerHeadings}>
+                <div slot="fallback" class="quiz-pending" aria-busy="true">
+                  <div class="card">
+                    <Icon name="clock" size="lg" />
+                    <div>
+                      <p class="h3">Тренажер завантажується</p>
+                      <p class="muted">{typo('Дані генеруються у вашому браузері. Якщо цей напис не зникає, увімкніть JavaScript.')}</p>
                     </div>
-                  </ProductivityTrainer>
-                )
-              }
+                  </div>
+                </div>
+              </PracticalCalculationTrainers>
             </section>
           ) : null
         }

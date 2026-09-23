@@ -29,7 +29,7 @@ export interface CalculatorTrainer {
 export const CALCULATOR_TRAINERS: readonly CalculatorTrainer[] = [];
 
 /** Практичні, сторінки яких уже опубліковано (`praktychni/pNN/`). */
-export const PUBLISHED_PRACTICALS: readonly string[] = ['p01', 'p02', 'p04'];
+export const PUBLISHED_PRACTICALS: readonly string[] = ['p01', 'p02', 'p04', 'p05'];
 
 export interface PracticalTrainer {
   readonly practicalId: string;
@@ -51,7 +51,7 @@ export const PRODUCTIVITY_TRAINER = {
   icon: 'calc',
   title: 'Продуктивність операційної системи',
   text: 'Розрахуйте часткову й багатофакторну продуктивність, індекс її зміни та використання й ефективність потужності. Кожен варіант — нові дані, перевірка одразу показує повний розв’язок.',
-  formula: 'До 60 XP — по одному разу за кожен тип задачі',
+  formula: '60 XP — за перший правильно розв’язаний варіант',
 } as const satisfies PracticalTrainer;
 
 export const MATRIX_TRAINER = {
@@ -73,7 +73,7 @@ export const FACILITY_LOCATION_TRAINER = {
   icon: 'target',
   title: 'Вибір місця розташування',
   text: 'Оберіть майданчик методом вагових коефіцієнтів і перевірте результат методом центру ваги. Кожен варіант — нові дані, перевірка одразу показує повний розв’язок.',
-  formula: 'До 60 XP — по одному разу за кожен метод',
+  formula: '60 XP — за перший правильно розв’язаний варіант',
 } as const satisfies PracticalTrainer;
 
 export const LINE_BALANCING_TRAINER = {
@@ -84,7 +84,7 @@ export const LINE_BALANCING_TRAINER = {
   icon: 'layers',
   title: 'Балансування потокової лінії',
   text: 'Визначте такт лінії, мінімальну й фактичну кількість робочих станцій та ефективність балансування за правилом найбільшої кількості наступних завдань.',
-  formula: 'До 60 XP — за правильно розв’язаний варіант',
+  formula: '60 XP — за перший правильно розв’язаний варіант',
 } as const satisfies PracticalTrainer;
 
 export const WORK_MEASUREMENT_TRAINER = {
@@ -95,7 +95,29 @@ export const WORK_MEASUREMENT_TRAINER = {
   icon: 'clock',
   title: 'Нормування праці',
   text: 'За хронометражними даними розрахуйте штучний і штучно-калькуляційний час та норму виробітку за зміну.',
-  formula: 'До 60 XP — за правильно розв’язаний варіант',
+  formula: '60 XP — за перший правильно розв’язаний варіант',
+} as const satisfies PracticalTrainer;
+
+export const FORECASTING_TRAINER = {
+  practicalId: 'p05',
+  registryId: 'forecasting',
+  activityId: BADGE_ACTIVITY_IDS.forecasting,
+  path: 'praktychni/p05/#trenazher-forecasting',
+  icon: 'flag',
+  title: 'Прогнозування попиту',
+  text: 'Розрахуйте прогноз попиту простою й зваженою ковзною середньою та експоненційним згладжуванням, оцініть точність через MAD, MSE і MAPE. Кожен варіант — нові дані, перевірка одразу показує повний розв’язок.',
+  formula: '60 XP — за перший правильно розв’язаний варіант',
+} as const satisfies PracticalTrainer;
+
+export const AGGREGATE_PLANNING_TRAINER = {
+  practicalId: 'p05',
+  registryId: 'aggregate-planning',
+  activityId: BADGE_ACTIVITY_IDS.aggregatePlanning,
+  path: 'praktychni/p05/#trenazher-aggregate-planning',
+  icon: 'list',
+  title: 'Агрегатне планування',
+  text: 'Складіть агрегатний план на шість періодів за стратегією погоні за попитом і за стратегією рівномірного виробництва та порівняйте їх за сумарними витратами (регулярна оплата, найм, звільнення, зберігання запасу, дефіцит).',
+  formula: '60 XP — за перший правильно розв’язаний варіант',
 } as const satisfies PracticalTrainer;
 
 /** Тренажери, що живуть на сторінці практичної (а не на власній сторінці `trenazhery/<slug>/`). */
@@ -105,6 +127,8 @@ export const PRACTICAL_TRAINERS: readonly PracticalTrainer[] = [
   FACILITY_LOCATION_TRAINER,
   LINE_BALANCING_TRAINER,
   WORK_MEASUREMENT_TRAINER,
+  FORECASTING_TRAINER,
+  AGGREGATE_PLANNING_TRAINER,
 ];
 
 export interface HomeTrainerCard {
@@ -136,6 +160,8 @@ export const TRAINER_KIND_LABELS: Readonly<Record<string, string>> = {
   'facility-location': 'розрахункові задачі',
   'line-balancing': 'розрахункові задачі',
   'work-measurement': 'розрахункові задачі',
+  forecasting: 'розрахункові задачі',
+  'aggregate-planning': 'розрахункові задачі',
 };
 
 export function trainerKindLabel(registryId: string): string {

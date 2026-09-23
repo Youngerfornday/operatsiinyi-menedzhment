@@ -15,7 +15,7 @@ import { num } from './format';
  * практичних), тому список методів, які насправді вміє рушій продуктивності, звіряється тут — під час
  * побудови пулу задач острова, а не всередині схеми.
  */
-const PRODUCTIVITY_METHODS: readonly ProductivityMethod[] = ['partial-productivity', 'multifactor-productivity', 'productivity-index', 'capacity-usage', 'capacity-efficiency'];
+export const PRODUCTIVITY_METHODS: readonly ProductivityMethod[] = ['partial-productivity', 'multifactor-productivity', 'productivity-index', 'capacity-usage', 'capacity-efficiency'];
 
 function isProductivityMethod(value: string): value is ProductivityMethod {
   return (PRODUCTIVITY_METHODS as readonly string[]).includes(value);

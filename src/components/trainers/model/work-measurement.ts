@@ -11,7 +11,7 @@ import type { CalculationTask } from '../../../content/schemas/practical';
 import { checkNumberPart, combineParts, type FieldIssues, type TaskCheck } from './task-check';
 import { num } from './format';
 
-const WORK_MEASUREMENT_METHODS: readonly WorkMeasurementMethod[] = ['time-standard'];
+export const WORK_MEASUREMENT_METHODS: readonly WorkMeasurementMethod[] = ['time-standard'];
 
 function isWorkMeasurementMethod(value: string): value is WorkMeasurementMethod {
   return (WORK_MEASUREMENT_METHODS as readonly string[]).includes(value);

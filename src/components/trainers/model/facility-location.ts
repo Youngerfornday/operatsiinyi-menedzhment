@@ -15,7 +15,7 @@ import type { CalculationTask } from '../../../content/schemas/practical';
 import { checkChoicePart, checkNumberPart, combineParts, type FieldIssues, type TaskCheck, type YesNo } from './task-check';
 import { num } from './format';
 
-const FACILITY_LOCATION_METHODS: readonly FacilityLocationMethod[] = ['factor-rating', 'center-of-gravity'];
+export const FACILITY_LOCATION_METHODS: readonly FacilityLocationMethod[] = ['factor-rating', 'center-of-gravity'];
 
 function isFacilityLocationMethod(value: string): value is FacilityLocationMethod {
   return (FACILITY_LOCATION_METHODS as readonly string[]).includes(value);

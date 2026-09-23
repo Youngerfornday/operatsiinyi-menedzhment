@@ -3,12 +3,14 @@ import type { ReactNode } from 'react';
 import { formatDate } from '../../../lib/course-data-pure';
 import { Icon } from '../../quiz/Icon';
 import type { TaskCheck } from '../model/task-check';
+import { useTaskHeadingLevel } from './heading-level';
 
 export function Steps({ title, steps, name }: { readonly title: string; readonly steps: readonly string[]; readonly name: string }) {
+  const Heading = `h${useTaskHeadingLevel() + 1}` as 'h4' | 'h5';
   if (steps.length === 0) return null;
   return (
     <div className="steps" data-steps={name}>
-      <h4 className="steps-title">{title}</h4>
+      <Heading className="steps-title">{title}</Heading>
       <ol className="steps-list">
         {steps.map((step, index) => (
           <li key={index} className="num">

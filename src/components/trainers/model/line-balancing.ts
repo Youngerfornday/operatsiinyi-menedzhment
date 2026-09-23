@@ -11,7 +11,7 @@ import type { CalculationTask } from '../../../content/schemas/practical';
 import { checkNumberPart, combineParts, type FieldIssues, type TaskCheck } from './task-check';
 import { num } from './format';
 
-const LINE_BALANCING_METHODS: readonly LineBalancingMethod[] = ['line-balance'];
+export const LINE_BALANCING_METHODS: readonly LineBalancingMethod[] = ['line-balance'];
 
 function isLineBalancingMethod(value: string): value is LineBalancingMethod {
   return (LINE_BALANCING_METHODS as readonly string[]).includes(value);
