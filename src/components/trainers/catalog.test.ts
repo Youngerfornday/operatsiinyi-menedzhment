@@ -16,12 +16,22 @@ describe('каталог тренажерів', () => {
   it('продуктивність і матриця моделей живуть на сторінці практичної, і в обох є ID активності', () => {
     expect(MATRIX_TRAINER.activityId).toBe('p02-matching-matrix');
     expect(PRODUCTIVITY_TRAINER.activityId).toBe('productivity');
-    expect(PRACTICAL_TRAINERS).toEqual([PRODUCTIVITY_TRAINER, MATRIX_TRAINER]);
+    expect(PRACTICAL_TRAINERS).toEqual(expect.arrayContaining([PRODUCTIVITY_TRAINER, MATRIX_TRAINER]));
   });
 
-  it('практичні p01 і p02 опубліковані', () => {
+  it('практичні p01, p02 і p07 опубліковані', () => {
     expect(PUBLISHED_PRACTICALS).toContain('p01');
     expect(PUBLISHED_PRACTICALS).toContain('p02');
+    expect(PUBLISHED_PRACTICALS).toContain('p07');
+  });
+
+  it('практична p07 має три тренажери-калькулятори з ID активностей рушія геймифікації', () => {
+    const p07Trainers = PRACTICAL_TRAINERS.filter((trainer) => trainer.practicalId === 'p07');
+    expect(p07Trainers.map((trainer) => trainer.registryId).sort()).toEqual(['control-charts', 'cpm-pert', 'process-capability']);
+    expect(p07Trainers.map((trainer) => trainer.activityId).sort()).toEqual(['control-charts', 'cpm-pert', 'process-capability']);
+    for (const trainer of p07Trainers) {
+      expect(publishedTrainer(trainer.registryId)).toMatchObject({ path: `praktychni/p07/#trenazher-${trainer.registryId}` });
+    }
   });
 
   it('опубліковані тренажери знаходяться за ID реєстру, неопубліковані — ні', () => {
