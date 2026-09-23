@@ -2,7 +2,7 @@
  * Навігація сайту. Розділи без сторінки показуються як «незабаром», а не як биті посилання.
  * `teacher` — сторінки для викладача (кабінет, інструкція Moodle): пункту меню немає, у шапці активний вид «Викладач».
  */
-export type NavId = 'course' | 'topics' | 'tests' | 'trainers' | 'cards' | 'teacher';
+export type NavId = 'course' | 'topics' | 'tests' | 'trainers' | 'cards' | 'rgr' | 'teacher';
 
 export interface NavItem {
   readonly id: NavId;
@@ -17,6 +17,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
   { id: 'tests', label: 'Тести', path: 'testy/' },
   { id: 'trainers', label: 'Тренажери', path: 'trenazhery/' },
   { id: 'cards', label: 'Картки' },
+  { id: 'rgr', label: 'РГР', path: 'rgr/' },
 ];
 
 /** Кабінет викладача: матеріали, матриця ПРН × теми, режим вивантаження. */

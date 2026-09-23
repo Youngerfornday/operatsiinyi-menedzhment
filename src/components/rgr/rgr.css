@@ -1,0 +1,28 @@
+/* Методичка РГР: список вимог, формули етапів і острів пошуку варіанта. */
+.rgr-list { display: grid; gap: var(--s-2); padding-left: 1.1em; }
+.rgr-stage-doc { margin-bottom: var(--s-5); }
+.rgr-stage-doc h3 { display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap; }
+.rgr-formula-grid { display: grid; gap: var(--s-3); grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); margin-top: var(--s-3); }
+
+/* Острів методички РГР: форма пошуку варіанта і таблиці вихідних даних чотирьох етапів. */
+.rgr-form { display: grid; gap: var(--s-2); margin: var(--s-5) 0; }
+.rgr-form label { font-weight: 650; }
+.rgr-form-row { display: flex; gap: var(--s-3); flex-wrap: wrap; align-items: center; }
+.rgr-form-row input { flex: 1 1 16rem; min-width: 0; padding: var(--s-2) var(--s-3); border: 1px solid var(--line); border-radius: var(--r-2); background: var(--surface); color: var(--ink); font: inherit; }
+.rgr-form-row input[aria-invalid='true'] { border-color: var(--danger, #c0392b); }
+.rgr-error { color: var(--danger, #c0392b); font-size: var(--text-sm); margin: 0; }
+
+.rgr-result { display: grid; gap: var(--s-5); margin-top: var(--s-5); }
+.rgr-result-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3); flex-wrap: wrap; }
+.rgr-print-title { display: none; }
+
+.rgr-stage { display: grid; gap: var(--s-3); }
+.rgr-section { padding: var(--s-4); display: grid; gap: var(--s-2); }
+.rgr-section .kv { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.rgr-section .kv dt { overflow-wrap: anywhere; }
+.rgr-section .kv dd { overflow-wrap: anywhere; }
+
+@media (max-width: 640px) {
+  .rgr-section .kv { grid-template-columns: 1fr; }
+  .rgr-section .kv dd { margin-bottom: var(--s-2); }
+}
