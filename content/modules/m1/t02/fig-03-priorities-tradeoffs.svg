@@ -32,7 +32,7 @@
   <text class="t" x="520" y="206" text-anchor="middle">Час виконання</text>
   <text class="s" x="520" y="224" text-anchor="middle">швидкість і надійність</text>
 
-  <rect class="box exam" x="235" y="340" width="170" height="60" rx="6"/>
+  <rect class="box exam" x="220" y="340" width="200" height="60" rx="6"/>
   <text class="exam-t" x="320" y="366" text-anchor="middle">Гнучкість</text>
   <text class="s" x="320" y="384" text-anchor="middle">асортимент і зміна продукту</text>
 
@@ -43,5 +43,5 @@
   <circle class="refc" cx="235" cy="20" r="11"/><text class="refn" x="235" y="24">1</text>
   <circle class="refc" cx="35" cy="180" r="11"/><text class="refn" x="35" y="184">2</text>
   <circle class="refc" cx="605" cy="180" r="11"/><text class="refn" x="605" y="184">3</text>
-  <circle class="refc exam" cx="235" cy="400" r="11"/><text class="refn exam-n" x="235" y="404">4</text>
+  <circle class="refc exam" cx="220" cy="400" r="11"/><text class="refn exam-n" x="220" y="404">4</text>
 </svg>

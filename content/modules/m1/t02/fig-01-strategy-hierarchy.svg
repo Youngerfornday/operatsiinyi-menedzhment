@@ -55,6 +55,6 @@
 
   <circle class="refc" cx="16" cy="38" r="11"/><text class="refn" x="16" y="42">1</text>
   <circle class="refc" cx="16" cy="100" r="11"/><text class="refn" x="16" y="104">2</text>
-  <circle class="refc exam" cx="230" cy="100" r="11"/><text class="refn exam-n" x="230" y="104">3</text>
+  <circle class="refc exam" cx="16" cy="210" r="11"/><text class="refn exam-n" x="16" y="214">3</text>
   <circle class="refc" cx="16" cy="344" r="11"/><text class="refn" x="16" y="348">4</text>
 </svg>

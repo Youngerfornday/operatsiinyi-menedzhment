@@ -60,6 +60,16 @@ sources:
     checkedAt: '2026-09-22'
     note: 'Аудований річний звіт: потужності трьох стадій ланцюга (елеватори, олієекстракційні заводи, портові термінали) — джерело кейсу про вертикальну інтеграцію. Дані сайту компанії станом на 2026-09-22 розходяться зі звітом — використано лише цифри звіту.'
 
+  - id: kernel-crushing-plant-2017
+    type: article
+    title: Kernel will construct oilseed crushing plant in Western Ukraine
+    publisher: Latifundist.com (передрук офіційного пресрелізу)
+    year: 2017
+    language: en
+    url: https://latifundist.com/en/novosti/37412-kernel-postroit-mez-za-130-mln-v-hmelnitskoj-oblasti
+    checkedAt: '2026-09-22'
+    note: 'Пресреліз 2017-10-12: оголошення заводу в Хмельницькій області потужністю 1 млн т на рік з інвестицією близько 130 млн дол. Позиція компанії; дата фактичного запуску заводу не підтверджена.'
+
   - id: ferrexpo-fy2025-results
     type: report
     title: 'Ferrexpo plc. Full Year Financial Results for 2025'
@@ -79,6 +89,45 @@ sources:
     url: https://www.inditex.com/itxcomweb/gp/en/press/news-detail/b870d5ec-6b7e-491d-b38e-340cd69036df/fy2025-results
     checkedAt: '2026-09-22'
     note: 'Офіційні річні результати (2026-03-11, звітний період завершився 2026-01-31): 900 млн євро на рік інвестицій у логістичні потужності, продажі, капітальні витрати. Сторінка поширених запитань компанії (без дати) — джерело даних про постачальників і час доставки; цифри не датовані конкретним звітним роком.'
+
+  - id: ferrexpo-1q2026-production
+    type: report
+    title: 'Ferrexpo plc. Production Report for 1Q 2026'
+    publisher: Ferrexpo plc
+    year: 2026
+    language: en
+    url: https://ferrexpopstorage.blob.core.windows.net/media/3sulnpsd/ferrexpo-production-report-1q-2026-15-04.pdf
+    checkedAt: '2026-09-22'
+    note: 'Виробничий звіт від 2026-04-15: працює одна з чотирьох ліній окомкування, продукцію постачають європейським клієнтам власним вагонним парком.'
+
+  - id: interfax-ferrexpo-halt-2026
+    type: article
+    title: Ferrexpo halts iron ore output over threat to Ukrainian ports
+    publisher: Інтерфакс-Україна
+    year: 2026
+    language: en
+    url: https://en.interfax.com.ua/news/economic/1190828.html
+    checkedAt: '2026-09-22'
+    note: 'Повідомлення від 2026-08-05 з переказом офіційної заяви компанії про зупинку видобутку й виробництва. Вторинне джерело.'
+
+  - id: interfax-ferrexpo-resume-2026
+    type: article
+    title: Ferrexpo resumes production
+    publisher: Інтерфакс-Україна
+    year: 2026
+    language: en
+    url: https://en.interfax.com.ua/news/economic/1199811.html
+    checkedAt: '2026-09-22'
+    note: 'Повідомлення від 2026-09-07: виробництво відновлено лише на одній лінії окомкування. Вторинне джерело з цитуванням офіційної заяви.'
+
+  - id: inditex-faq
+    type: web
+    title: Inditex. Frequent Questions
+    publisher: Industria de Diseño Textil, S.A. (Inditex)
+    language: en
+    url: https://www.inditex.com/itxcomweb/es/en/press/frequent-questions
+    checkedAt: '2026-09-22'
+    note: 'Сторінка без дати: половина виробників кінцевого продукту поруч зі штаб-квартирою, 36–48 годин від розподільчого центру до магазину, постачання двічі на тиждень. Цифри не можна впевнено віднести до конкретного звітного року.'
 
   - id: southwest-10k-2025
     type: report
