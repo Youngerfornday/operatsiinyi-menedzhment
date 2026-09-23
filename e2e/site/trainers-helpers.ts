@@ -5,10 +5,12 @@ import { parse } from 'yaml';
 import { normalizeTypography } from '../../src/lib/typography/normalize';
 
 /**
- * Помічники E2E тренажерів. Правильні відповіді матриці П1 беруться з content/practicals/p01.yaml
- * (та сама типографіка, що на сторінці), тож тест не залежить від порядку перемішування.
+ * Помічники E2E тренажерів. Тренажер-матриця (пріоритети × рішення) живе на практичній 2; правильні
+ * відповіді беруться з content/practicals/p02.yaml (та сама типографіка, що на сторінці), тож тест не
+ * залежить від порядку перемішування.
  */
-export const P01_PATH = 'praktychni/p01/';
+export const MATRIX_PRACTICAL_PATH = 'praktychni/p02/';
+export const MATRIX_CONTENT_FILE = fileURLToPath(new URL('../../content/practicals/p02.yaml', import.meta.url));
 export const MODELS_PER_FEATURE = 4;
 
 interface Cell {
@@ -25,14 +27,13 @@ interface PracticalYaml {
 
 const flat = (text: string) => text.replace(/\s+/g, ' ').trim();
 
-function loadP01(): PracticalYaml {
-  const file = fileURLToPath(new URL('../../content/practicals/p01.yaml', import.meta.url));
-  return parse(readFileSync(file, 'utf8')) as PracticalYaml;
+function loadMatrixPractical(): PracticalYaml {
+  return parse(readFileSync(MATRIX_CONTENT_FILE, 'utf8')) as PracticalYaml;
 }
 
 /** Формулювання (як на сторінці) → назва правильної моделі; і список усіх назв моделей. */
 export function matrixAnswers(): { readonly answers: ReadonlyMap<string, string>; readonly models: readonly string[] } {
-  const { trainer } = loadP01();
+  const { trainer } = loadMatrixPractical();
   const titles = new Map(trainer.models.map((model) => [model.id, flat(normalizeTypography(model.title))]));
   const answers = new Map(
     trainer.features.flatMap((feature) => feature.cells.map((cell) => [flat(normalizeTypography(cell.statement)), titles.get(cell.model) ?? ''] as const)),
@@ -40,9 +41,9 @@ export function matrixAnswers(): { readonly answers: ReadonlyMap<string, string>
   return { answers, models: [...titles.values()] };
 }
 
-/** Кількість ознак і формулювань матриці П1 — з даних, бо контент матриці ще може зростати. */
+/** Кількість ознак і формулювань матриці — з даних, бо контент матриці ще може зростати. */
 export function matrixTotals(): { readonly features: number; readonly items: number } {
-  const { trainer } = loadP01();
+  const { trainer } = loadMatrixPractical();
   return { features: trainer.features.length, items: trainer.features.reduce((sum, feature) => sum + feature.cells.length, 0) };
 }
 
@@ -88,29 +89,4 @@ export async function openTaskMode(page: Page): Promise<void> {
 /** Число у форматі поля: кома як десятковий знак. */
 export function uk(value: number): string {
   return String(value).replace('.', ',');
-}
-
-/** Ряд ЄДРПОУ практичної 2: числа для перевірки відповідей задачі на динаміку. */
-interface LegalFormYaml {
-  readonly trainer: {
-    readonly criteria: readonly { readonly id: string }[];
-    readonly forms: readonly { readonly id: string; readonly short: string }[];
-    readonly statistics: { readonly points: readonly { readonly date: string; readonly generation: string; readonly values: Readonly<Record<string, number>> }[] };
-  };
-}
-
-export const P02_PATH = 'praktychni/p02/';
-
-export function loadP02(): LegalFormYaml['trainer'] {
-  const file = fileURLToPath(new URL('../../content/practicals/p02.yaml', import.meta.url));
-  return (parse(readFileSync(file, 'utf8')) as LegalFormYaml).trainer;
-}
-
-/** Покоління таблиці ЄДРПОУ за датою: поділ ПАТ/ПрАТ порівнюють лише в межах одного покоління. */
-export function registryGeneration(date: string): string {
-  return loadP02().statistics.points.find((point) => point.date === date)?.generation ?? '';
-}
-
-export function registryValue(date: string, formKey: string): number {
-  return loadP02().statistics.points.find((point) => point.date === date)?.values[formKey] ?? 0;
 }
