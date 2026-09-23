@@ -33,16 +33,21 @@ function maskKeepingLines(text) {
   return text.replace(/[^\n]/g, '·');
 }
 
-/** JSX-тег → пробіли, але рядкові значення атрибутів (title="…") лишаються для перевірки. */
+/**
+ * JSX-тег → крапки, але рядкові значення атрибутів (title="…") лишаються для перевірки.
+ * Крапки, а не пробіли: інакше пробіл, що лишився від тега (наприклад, довжина `</Term>`), зливається із
+ * сусіднім реальним пробілом перед тире («…Термін</Term> — далі») і лінт бачить хибне «зайве» тире —
+ * той самий клас бага, що й для коду та виразів (maskKeepingLines вище).
+ */
 function blankTagKeepingAttributeValues(tag) {
   let result = '';
   let last = 0;
   for (const match of tag.matchAll(JSX_ATTRIBUTE_VALUE)) {
     const valueStart = match.index + 2;
-    result += blankKeepingLines(tag.slice(last, valueStart)) + match[1];
+    result += maskKeepingLines(tag.slice(last, valueStart)) + match[1];
     last = valueStart + match[1].length;
   }
-  return result + blankKeepingLines(tag.slice(last));
+  return result + maskKeepingLines(tag.slice(last));
 }
 
 /** Порівнює рядок з нормалізованим; повертає знахідку або null. */

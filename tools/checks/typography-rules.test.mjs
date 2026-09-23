@@ -94,6 +94,11 @@ describe('lintMdx', () => {
     expect(prose).not.toContain('Formula');
     expect(prose).toContain('Кворум - S');
   });
+
+  it('does not flag a dash right after a closing JSX tag as extra whitespace (blanked tag length must not merge with the real space before the dash)', () => {
+    const withDash = ['<Term id="corp">Корпорація</Term> — юридична особа.'].join('\n');
+    expect(lintMdx(withDash)).toEqual([]);
+  });
 });
 
 describe('formatFindings', () => {
