@@ -30,9 +30,12 @@ export function pieceRateTime(pieceTimeValue: number, setupTime: number, batchSi
   return ok(pieceTimeValue + setupTime / batchSize);
 }
 
+/** Запас на похибку double: 450 / 6,250000000000001 = 71,999…, хоча точна частка — рівно 72. */
+const FLOAT_SLACK = 1e-9;
+
 /** WM-04: Нвир = Тзм / Тшт.к. Округлення вниз — дробового виробу наприкінці зміни не існує. */
 export function outputRate(shiftFund: number, pieceRateTimeValue: number): WorkMeasurementResult<number> {
   if (!(shiftFund > 0)) return fail('non-positive-denominator');
   if (!(pieceRateTimeValue > 0)) return fail('non-positive-value');
-  return ok(Math.floor(shiftFund / pieceRateTimeValue));
+  return ok(Math.floor(shiftFund / pieceRateTimeValue + FLOAT_SLACK));
 }

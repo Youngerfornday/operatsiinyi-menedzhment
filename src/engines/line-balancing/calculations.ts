@@ -15,12 +15,15 @@ export function taktTime(availableTime: number, demand: number): LineBalancingRe
   return ok(availableTime / demand);
 }
 
+/** Запас на похибку double: 0,1 + 0,1 + 0,1 = 0,30000000000000004, і ⌈0,3 / 0,1⌉ без запасу дало б 4. */
+const FLOAT_SLACK = 1e-9;
+
 /** LB-01: Nmin = ⌈Σtᵢ / C⌉. */
 export function minimumStations(operationTimes: readonly number[], cycleTime: number): LineBalancingResult<number> {
   const validated = validateOperations(operationTimes, cycleTime);
   if (!validated.ok) return validated;
   const total = operationTimes.reduce((sum, time) => sum + time, 0);
-  return ok(Math.ceil(total / cycleTime));
+  return ok(Math.ceil(total / cycleTime - FLOAT_SLACK));
 }
 
 function validateOperations(operationTimes: readonly number[], cycleTime: number): LineBalancingResult<true> {

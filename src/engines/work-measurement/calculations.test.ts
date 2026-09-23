@@ -52,6 +52,11 @@ describe('outputRate (WM-04)', () => {
     expect(outputRate(480, 4.63)).toEqual({ ok: true, value: 103 });
   });
 
+  it('ціла частка не губиться через похибку double: 450 / 6,25 = 72, а не 71', () => {
+    // Тшт.к = 5,75 + 15 / 30 рахується в double як 6,250000000000001, і 450 / Тшт.к виходить 71,999…
+    expect(outputRate(450, 5.750000000000001 + 15 / 30)).toEqual({ ok: true, value: 72 });
+  });
+
   it('відхиляє недодатний змінний фонд і недодатний штучно-калькуляційний час', () => {
     expect(outputRate(0, 4.63)).toMatchObject({ ok: false, error: { code: 'non-positive-denominator' } });
     expect(outputRate(480, 0)).toMatchObject({ ok: false, error: { code: 'non-positive-value' } });

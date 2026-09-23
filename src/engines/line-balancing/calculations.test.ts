@@ -34,6 +34,11 @@ describe('minimumStations (LB-01)', () => {
     expect(minimumStations(OPERATION_TIMES, CYCLE)).toEqual({ ok: true, value: 5 });
   });
 
+  it('ціла частка не округлюється зайвий раз вгору через похибку double: 3 · 0,1 при такті 0,1 — 3 станції', () => {
+    // 0,1 + 0,1 + 0,1 у double — 0,30000000000000004, і частка 3,0000000000000004 без запасу дала б 4.
+    expect(minimumStations([0.1, 0.1, 0.1], 0.1)).toEqual({ ok: true, value: 3 });
+  });
+
   it('відхиляє порожній список операцій і операцію, довшу за такт', () => {
     expect(minimumStations([], CYCLE)).toMatchObject({ ok: false, error: { code: 'empty-operations' } });
     expect(minimumStations([10, 70], CYCLE)).toMatchObject({ ok: false, error: { code: 'operation-exceeds-cycle' } });
