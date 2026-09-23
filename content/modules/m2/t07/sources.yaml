@@ -1,0 +1,87 @@
+# Джерела теми 7. Кожне — з адресою, відкритою на дату checkedAt.
+# Формули — лише з docs/research/formula-baseline.md (коди PRJ-01..PRJ-09), факти кейсів — з
+# docs/research/cases.md (розділ «Тема 7. Управління проектами»).
+topic: t07
+sources:
+  # Основна література курсу
+  - id: omelianenko-osokina-2016
+    type: book
+    title: 'Операційний менеджмент: презентаційний курс'
+    authors: [Омельяненко Т. В., Осокіна А. В.]
+    publisher: КНЕУ
+    year: 2016
+    language: uk
+    url: https://kneu.edu.ua/get_file/8945/.pdf
+    checkedAt: '2026-09-22'
+    note: 'Основне джерело розділу «Управління проєктами»: метод критичного шляху (PRJ-01…PRJ-04, PRJ-09), метод PERT (PRJ-05…PRJ-07) і стиснення проєкту (PRJ-08).'
+
+  - id: heizer-render-munson-2016
+    type: book
+    title: 'Operations Management: Sustainability and Supply Chain Management'
+    authors: [Heizer J., Render B., Munson C.]
+    publisher: Pearson
+    year: 2016
+    language: en
+    url: https://openlibrary.org/isbn/9780134163512
+    checkedAt: '2026-09-22'
+    note: Класичний західний підручник з окремим розділом «Project Management»; джерело загальних ознак проекту, порівняння CPM і PERT та огляду програмного забезпечення управління проєктами.
+
+  # Кейси
+  - id: ukrzaliznytsia-bridge-2023
+    type: report
+    title: Укрзалізниця відновила третину залізничних мостів, зруйнованих з початку повномасштабної війни
+    publisher: Укрінформ
+    year: 2023
+    language: uk
+    url: https://www.ukrinform.ua/rubric-vidbudova/3694542-ukrzaliznica-vidnovila-tretinu-zaliznicnih-mostiv-zrujnovanih-z-pocatku-povnomasstabnoi-vijni.html
+    checkedAt: '2026-09-22'
+    note: 'Офіційна цитата голови правління Укрзалізниці: близько 70 пошкоджених мостів, третина відновлена, капітальний ремонт мосту через Ірпінь завершено, рух відновлено обома коліями.'
+
+  - id: ukrzaliznytsia-bridge-interfax-2023
+    type: report
+    title: Матеріал про відновлення руху через міст на р. Ірпінь
+    publisher: Інтерфакс-Україна
+    year: 2023
+    language: uk
+    url: https://interfax.com.ua/news/economic/903364.html
+    checkedAt: '2026-09-22'
+    note: 'Вторинне джерело: фази відбудови мосту через Ірпінь із датами — тимчасове відновлення руху (травень 2022), капітальні роботи (з липня 2022), рух непарною колією (кінець листопада 2022), повне завершення і парна колія (кінець березня 2023).'
+
+  - id: mininfra-ukrposhta-2025
+    type: report
+    title: Як працювала Укрпошта у 2025 році
+    publisher: Міністерство розвитку громад та територій України
+    year: 2025
+    language: uk
+    url: https://mininfra.gov.ua/news/yak-pratsiuvala-ukrposhta-u-2025-rotsi-dlia-liudei-biznesu-ta-veteraniv
+    checkedAt: '2026-09-22'
+    note: 'Державне джерело: у 2025 році Укрпошта завершила автоматизацію сортувальних потужностей; за 22 місяці збудовано 24 логістичні центри.'
+
+  - id: ukrposhta-automation-delo-2026
+    type: web
+    title: Укрпошта повністю автоматизувала сортування відправлень по Україні та за кордон
+    publisher: Delo.ua
+    year: 2026
+    language: uk
+    url: https://delo.ua/news/ukrposta-povnistyu-avtomatizuvala-sortuvannya-vidpravlen-po-ukrayini-ta-za-kordon-465853/
+    checkedAt: '2026-09-22'
+    note: 'Позиція компанії: увесь проєкт автоматизації реалізовано за 37 місяців власним коштом. Дата повної автоматизації (18.05.2026) розходиться з датою в державному джерелі (2025 р.) — імовірно, це різні етапи.'
+
+  - id: boeing-787-delivery-2011
+    type: case
+    title: 'Boeing, ANA Complete Contractual Delivery of First 787 Dreamliner'
+    publisher: Boeing
+    year: 2011
+    language: en
+    url: https://boeing.mediaroom.com/2011-09-25-Boeing-ANA-Complete-Contractual-Delivery-of-First-787-Dreamliner
+    checkedAt: '2026-09-22'
+    note: 'Офіційний пресреліз: факт передачі першого літака 787 замовнику 25.09.2011. Пресреліз не описує самі затримки — хронологію зсувів графіка джерело не підтверджує.'
+
+  - id: boeing-787-wikipedia
+    type: web
+    title: 'Boeing 787 Dreamliner'
+    publisher: Wikipedia
+    language: en
+    url: https://en.wikipedia.org/wiki/Boeing_787_Dreamliner
+    checkedAt: '2026-09-22'
+    note: 'Вторинне джерело: перший політ 15.12.2009 (близько два роки пізніше початкового плану 2007 р.); перша поставка — вересень 2011 р. (близько 40 місяців пізніше плану травня 2008 р.). Точний відсоток аутсорсингу планера — оспорювана цифра, у лекції не наводиться як факт.'
