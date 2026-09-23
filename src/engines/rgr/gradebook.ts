@@ -45,9 +45,9 @@ const LEADING_ZEROS = /^0+(?=\d)/;
 
 export const GRADEBOOK_ERROR_MESSAGES: Readonly<Record<GradebookErrorCode, string>> = {
   empty: 'Уведіть номер залікової книжки.',
-  'invalid-format': 'Уведіть лише цифри номера, без літер серії.',
+  'invalid-format': 'Номер має містити лише цифри; пробіли й тире допускаються як роздільники.',
   'too-short': 'Номер закороткий: уведіть повний номер залікової книжки, а не дві останні цифри.',
-  'too-long': `Номер задовгий: у залікової книжки не буває понад ${MAX_DIGITS} цифр.`,
+  'too-long': 'Номер задовгий: перевірте, чи це номер залікової книжки.',
 };
 
 function fail(code: GradebookErrorCode): Result<GradebookNumber, GradebookError> {
