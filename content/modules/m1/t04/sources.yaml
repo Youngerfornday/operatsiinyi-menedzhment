@@ -1,0 +1,148 @@
+# Джерела теми 4. Кожне — з адресою, відкритою на дату checkedAt.
+# Формули — лише з docs/research/formula-baseline.md (коди PC-01, PC-02, PC-03), факти кейсів —
+# з docs/research/cases.md (ferrexpo, interpipe-steel, boeing-787, amazon-fulfillment).
+topic: t04
+sources:
+  # Основна література курсу
+  - id: hevko-2017
+    type: book
+    title: 'Операційний (виробничий) менеджмент: конспект лекцій'
+    authors: [Гевко І. Б.]
+    publisher: ТНТУ імені Івана Пулюя
+    year: 2017
+    language: uk
+    url: https://elartu.tntu.edu.ua/handle/lib/21300
+    checkedAt: '2026-09-23'
+    note: 'Джерело розділу «Виробничий цикл»: послідовний, паралельний і паралельно-послідовний рух партії деталей (PC-01, PC-02, PC-03).'
+
+  - id: starchenko-kalinko-kosach-2020
+    type: book
+    title: Операційний менеджмент
+    authors: [Старченко Г. В., Калінько І. В., Косач І. А.]
+    publisher: Кондор
+    year: 2020
+    language: uk
+    url: https://scholar.google.com/citations?user=9UX4QTYAAAAJ&hl=uk
+    checkedAt: '2026-09-23'
+    note: 'Опорний підручник курсу для складу операційної діяльності: ресурси, операційний процес, результати.'
+
+  - id: kushniruk-2017
+    type: book
+    title: 'Операційний менеджмент: опорний конспект лекцій'
+    authors: [Кушнірук В. С.]
+    publisher: МНАУ
+    year: 2017
+    language: uk
+    url: https://dspace.mnau.edu.ua/jspui/handle/123456789/2078
+    checkedAt: '2026-09-23'
+    note: Джерело переліку принципів організації операційних процесів — пропорційності, безперервності, паралельності, прямоточності, ритмічності.
+
+  - id: omelianenko-osokina-2016
+    type: book
+    title: 'Операційний менеджмент: презентаційний курс'
+    authors: [Омельяненко Т. В., Осокіна А. В.]
+    publisher: КНЕУ
+    year: 2016
+    language: uk
+    url: https://kneu.edu.ua/get_file/8945/.pdf
+    checkedAt: '2026-09-23'
+    note: Джерело категорійного апарату теми — операційний процес, типи процесів за роллю у створенні продукту.
+
+  - id: slack-brandon-jones-2021
+    type: book
+    title: Operations and Process Management
+    authors: [Slack N., Brandon-Jones A.]
+    publisher: Pearson Education
+    year: 2021
+    language: en
+    url: https://openlibrary.org/isbn/9781292350103
+    checkedAt: '2026-09-23'
+    note: Джерело класифікації типів процесів за характером потоку та форм спеціалізації дільниць.
+
+  - id: heizer-render-munson-2016
+    type: book
+    title: 'Operations Management: Sustainability and Supply Chain Management'
+    authors: [Heizer J., Render B., Munson C.]
+    publisher: Pearson
+    year: 2016
+    language: en
+    url: https://openlibrary.org/isbn/9780134163512
+    checkedAt: '2026-09-23'
+    note: Джерело трактування предметної й технологічної спеціалізації дільниць (product layout / process layout) в організації процесу в просторі.
+
+  # Кейси
+  - id: ferrexpo-poltava-operations
+    type: web
+    title: 'Poltava Mining — операції Ferrexpo'
+    publisher: Ferrexpo plc
+    language: en
+    url: https://www.ferrexpo.com/what-we-do/operations/poltava/
+    checkedAt: '2026-09-22'
+    note: 'Опис переділу: руда 25–30% Fe → концентрат 65%+ Fe → окатиші 65–67% Fe. Дані сторінки датовано 2021 р. і не оновлювалися.'
+
+  - id: ferrexpo-fy2025-results
+    type: report
+    title: Full Year Financial Results for 2025
+    publisher: Ferrexpo plc
+    year: 2026
+    language: en
+    url: https://ferrexpopstorage.blob.core.windows.net/media/yo2jxkc3/ferrexpo-full-year-financial-results-for-2025-combined-for-website.pdf
+    checkedAt: '2026-09-22'
+    note: Аудований річний звіт — товарне виробництво, виручка й собівартість окатишів і концентрату за 2025 р.
+
+  - id: interpipe-steel-plant-pages
+    type: web
+    title: 'Інтерпайп Сталь: сторінки «Про завод» та суміжні розділи /about/'
+    publisher: ІНТЕРПАЙП СТАЛЬ
+    language: uk
+    url: https://interpipesteel.biz/about/pro-zavod
+    checkedAt: '2026-09-22'
+    note: 'Паспортні параметри електросталеплавильного комплексу й забезпечувальних систем (вапняна фабрика, кабельна лінія 330 кВ, переробка металобрухту). Сторінки без дати публікації, незалежного технічного підтвердження немає.'
+
+  - id: boeing-787-delivery-pr
+    type: web
+    title: Boeing, ANA Complete Contractual Delivery of First 787 Dreamliner
+    publisher: Boeing
+    year: 2011
+    language: en
+    url: https://boeing.mediaroom.com/2011-09-25-Boeing-ANA-Complete-Contractual-Delivery-of-First-787-Dreamliner
+    checkedAt: '2026-09-22'
+    note: 'Офіційний пресреліз (2011-09-25): факт передачі першого літака. Опису затримок програми не містить.'
+
+  - id: boeing-787-wikipedia
+    type: web
+    title: Boeing 787 Dreamliner
+    publisher: Wikipedia
+    language: en
+    url: https://en.wikipedia.org/wiki/Boeing_787_Dreamliner
+    checkedAt: '2026-09-22'
+    note: 'Вторинне джерело: хронологія зсувів графіка 2007–2011 рр. і частка аутсорсингу партнерів першого рівня. Не звірено з першоджерелом.'
+
+  - id: amazon-robotics-facts
+    type: web
+    title: 'Bots by the numbers: facts and figures about robotics at Amazon'
+    publisher: Amazon
+    language: en
+    url: https://www.aboutamazon.co.uk/news/innovation/bots-by-the-numbers-facts-and-figures-about-robotics-at-amazon
+    checkedAt: '2026-09-22'
+    note: 'Позиція компанії: типи роботів (Hercules, Pegasus, Proteus, Vulcan), 300+ центрів виконання замовлень, 75% замовлень за участю роботів. Дати публікації на сторінці немає.'
+
+  - id: amazon-million-robots
+    type: web
+    title: Amazon deploys its one millionth robot
+    publisher: Amazon
+    year: 2025
+    language: en
+    url: https://www.aboutamazon.com/news/operations/amazon-million-robots-ai-foundation-model
+    checkedAt: '2026-09-22'
+    note: 'Позиція компанії (2025–06): мільйонний робот, система DeepFleet і прискорення переміщення роботів на 10%.'
+
+  - id: amazon-injury-report-cnbc
+    type: article
+    title: Amazon workers seriously injured at more than twice the rate of other warehouses, study finds
+    publisher: CNBC
+    year: 2023
+    language: en
+    url: https://www.cnbc.com/2023/04/12/study-amazon-workers-seriously-hurt-at-twice-rate-of-other-warehouses.html
+    checkedAt: '2026-09-22'
+    note: 'Незалежний переказ звіту профспілкової коаліції за даними, які Amazon сама подає до OSHA: 6,6 серйозних травм на 100 працівників проти 3,2 на інших складах (2022 р.). Компанія методику оспорює.'

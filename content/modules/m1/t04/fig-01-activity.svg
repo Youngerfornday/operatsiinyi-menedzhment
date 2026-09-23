@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="fig-t04-1" class="scheme" viewBox="0 0 640 360" role="img" aria-labelledby="fig-t04-1-title fig-t04-1-desc" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+  <title id="fig-t04-1-title">Рисунок 1. Операційна діяльність: ресурси, процес і результати</title>
+  <desc id="fig-t04-1-desc">Зліва — ресурси операційної діяльності: матеріали, праця, енергія, інформація. Посередині — операційний процес як ланцюжок з трьох переділів; вихід кожного переділу є входом наступного, і результат можна виміряти на кожному з них. Справа — результати: основний (готова продукція) і другорядні (відходи, тепло, інформація про процес). Угорі фігурна дужка позначає, що всі три частини разом і становлять операційну діяльність підприємства.</desc>
+  <style>
+    #fig-t04-1 .box { fill: var(--surface, #ffffff); stroke: var(--ink, #0f1c2e); stroke-width: 1.25; }
+    #fig-t04-1 .box-owner { fill: var(--surface-tint, #eef4fa); }
+    #fig-t04-1 .t { fill: var(--ink, #0f1c2e); font-size: 14px; font-weight: 650; }
+    #fig-t04-1 .s { fill: var(--ink-2, #445570); font-size: 11.5px; }
+    #fig-t04-1 .lbl { fill: var(--ink-2, #445570); font-size: 11.5px; }
+    #fig-t04-1 .arrow { stroke: var(--ink-2, #445570); stroke-width: 1.25; fill: none; }
+    #fig-t04-1 .arrow-head { fill: var(--ink-2, #445570); }
+    #fig-t04-1 .refc { fill: var(--surface, #ffffff); stroke: var(--ink, #0f1c2e); stroke-width: 1.25; }
+    #fig-t04-1 .refn { fill: var(--ink, #0f1c2e); font-size: 11.5px; font-weight: 700; text-anchor: middle; }
+    #fig-t04-1 .exam { stroke: var(--err, #b42318); }
+    #fig-t04-1 .exam-t { fill: var(--err-ink, #8f1d14); font-size: 12px; font-weight: 600; }
+    #fig-t04-1 .refc.exam { stroke: var(--err, #b42318); }
+    #fig-t04-1 .refn.exam-n { fill: var(--err-ink, #8f1d14); }
+    #fig-t04-1 .brace { stroke: var(--ink-2, #445570); stroke-width: 1.25; fill: none; }
+  </style>
+
+  <defs>
+    <marker id="fig-t04-1-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="arrow-head" d="M0 0 10 5 0 10z"/>
+    </marker>
+  </defs>
+
+  <path class="brace" d="M16 30 C16 16, 624 16, 624 30"/>
+  <text class="t" x="320" y="14" text-anchor="middle">Операційна діяльність підприємства</text>
+
+  <rect class="box" x="16" y="58" width="140" height="216" rx="6"/>
+  <text class="t" x="86" y="82" text-anchor="middle">Ресурси</text>
+  <text class="s" x="86" y="112" text-anchor="middle">матеріали</text>
+  <text class="s" x="86" y="142" text-anchor="middle">праця</text>
+  <text class="s" x="86" y="172" text-anchor="middle">енергія</text>
+  <text class="s" x="86" y="202" text-anchor="middle">інформація</text>
+  <text class="s" x="86" y="246" text-anchor="middle">(вхід операційної</text>
+  <text class="s" x="86" y="262" text-anchor="middle">системи)</text>
+
+  <path class="arrow" marker-end="url(#fig-t04-1-arr)" d="M156 166 L188 166"/>
+
+  <rect class="box exam" x="192" y="110" width="90" height="112" rx="6"/>
+  <text class="exam-t" x="237" y="140" text-anchor="middle">Переділ 1</text>
+  <text class="s" x="237" y="160" text-anchor="middle">операція</text>
+  <text class="s" x="237" y="176" text-anchor="middle">над предметом</text>
+  <text class="s" x="237" y="192" text-anchor="middle">праці</text>
+
+  <path class="arrow" marker-end="url(#fig-t04-1-arr)" d="M282 166 L308 166"/>
+  <text class="lbl" x="295" y="150" text-anchor="middle">вихід = вхід</text>
+
+  <rect class="box" x="312" y="110" width="90" height="112" rx="6"/>
+  <text class="t" x="357" y="140" text-anchor="middle">Переділ 2</text>
+  <text class="s" x="357" y="160" text-anchor="middle">операція</text>
+  <text class="s" x="357" y="176" text-anchor="middle">над предметом</text>
+  <text class="s" x="357" y="192" text-anchor="middle">праці</text>
+
+  <path class="arrow" marker-end="url(#fig-t04-1-arr)" d="M402 166 L428 166"/>
+  <text class="lbl" x="415" y="150" text-anchor="middle">вихід = вхід</text>
+
+  <rect class="box" x="432" y="110" width="90" height="112" rx="6"/>
+  <text class="t" x="477" y="140" text-anchor="middle">Переділ 3</text>
+  <text class="s" x="477" y="160" text-anchor="middle">операція</text>
+  <text class="s" x="477" y="176" text-anchor="middle">над предметом</text>
+  <text class="s" x="477" y="192" text-anchor="middle">праці</text>
+
+  <text class="lbl" x="357" y="244" text-anchor="middle">операційний процес: результат вимірний на кожному переділі</text>
+
+  <path class="arrow" marker-end="url(#fig-t04-1-arr)" d="M522 166 L550 166"/>
+
+  <rect class="box" x="554" y="58" width="70" height="100" rx="6"/>
+  <text class="t" x="589" y="80" text-anchor="middle">Основний</text>
+  <text class="t" x="589" y="96" text-anchor="middle">результат</text>
+  <text class="s" x="589" y="118" text-anchor="middle">готова</text>
+  <text class="s" x="589" y="134" text-anchor="middle">продукція</text>
+
+  <rect class="box" x="554" y="174" width="70" height="100" rx="6"/>
+  <text class="t" x="589" y="196" text-anchor="middle">Другорядні</text>
+  <text class="t" x="589" y="212" text-anchor="middle">результати</text>
+  <text class="s" x="589" y="234" text-anchor="middle">відходи,</text>
+  <text class="s" x="589" y="250" text-anchor="middle">тепло, дані</text>
+
+  <text class="lbl" x="320" y="300" text-anchor="middle">ресурси, процес і результати нерозривні: без ресурсу процес не почнеться,</text>
+  <text class="lbl" x="320" y="318" text-anchor="middle">без процесу ресурс не стане результатом, а результат без процесу неможливо виміряти</text>
+
+  <circle class="refc" cx="16" cy="58" r="11"/><text class="refn" x="16" y="62">1</text>
+  <circle class="refc exam" cx="192" cy="110" r="11"/><text class="refn exam-n" x="192" y="114">2</text>
+  <circle class="refc" cx="308" cy="110" r="11"/><text class="refn" x="308" y="114">3</text>
+  <circle class="refc" cx="554" cy="58" r="11"/><text class="refn" x="554" y="62">4</text>
+  <circle class="refc" cx="554" cy="174" r="11"/><text class="refn" x="554" y="178">5</text>
+</svg>
