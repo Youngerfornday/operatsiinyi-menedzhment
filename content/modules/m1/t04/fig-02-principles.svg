@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="fig-t04-2" class="scheme" viewBox="0 0 640 228" role="img" aria-labelledby="fig-t04-2-title fig-t04-2-desc" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+  <title id="fig-t04-2-title">Рисунок 2. П’ять принципів організації операційного процесу</title>
+  <desc id="fig-t04-2-desc">Уздовж єдиної лінії потоку розміщено п'ять станцій, по одній на кожен принцип. Перша — пропорційність: дві нерівні за висотою смуги показують неузгоджену пропускну здатність суміжних ланок. Друга — безперервність: лінія потоку розірвана, розрив позначено червоним хрестиком. Третя, виділена карміновим, — паралельність: дві однакові стрілки виконуються одночасно. Четверта — прямоточність: ламаний шлях перекреслено забороняючим знаком, під ним — короткий прямий шлях. П’ята — ритмічність: чотири однакові за висотою стовпчики показують рівномірний випуск за рівні проміжки часу.</desc>
+  <style>
+    #fig-t04-2 .box { fill: var(--surface, #ffffff); stroke: var(--ink, #0f1c2e); stroke-width: 1.25; }
+    #fig-t04-2 .t { fill: var(--ink, #0f1c2e); font-size: 13px; font-weight: 650; }
+    #fig-t04-2 .s { fill: var(--ink-2, #445570); font-size: 11px; }
+    #fig-t04-2 .lbl { fill: var(--ink-2, #445570); font-size: 11.5px; }
+    #fig-t04-2 .flow { stroke: var(--ink-2, #445570); stroke-width: 1.5; fill: none; }
+    #fig-t04-2 .arrow { stroke: var(--ink-2, #445570); stroke-width: 1.25; fill: none; }
+    #fig-t04-2 .arrow-head { fill: var(--ink-2, #445570); }
+    #fig-t04-2 .glyph { fill: var(--ink-2, #445570); stroke: var(--ink-2, #445570); stroke-width: 1.5; }
+    #fig-t04-2 .bad { stroke: var(--err, #b42318); fill: var(--err, #b42318); }
+    #fig-t04-2 .bad-ring { stroke: var(--err, #b42318); fill: none; stroke-width: 2; }
+    #fig-t04-2 .refc { fill: var(--surface, #ffffff); stroke: var(--ink, #0f1c2e); stroke-width: 1.25; }
+    #fig-t04-2 .refn { fill: var(--ink, #0f1c2e); font-size: 11.5px; font-weight: 700; text-anchor: middle; }
+    #fig-t04-2 .exam { stroke: var(--err, #b42318); }
+    #fig-t04-2 .exam-t { fill: var(--err-ink, #8f1d14); font-size: 13px; font-weight: 650; }
+    #fig-t04-2 .refc.exam { stroke: var(--err, #b42318); }
+    #fig-t04-2 .refn.exam-n { fill: var(--err-ink, #8f1d14); }
+  </style>
+
+  <defs>
+    <marker id="fig-t04-2-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path class="arrow-head" d="M0 0 10 5 0 10z"/>
+    </marker>
+  </defs>
+
+  <g transform="translate(0 -80)">
+  <line class="flow" x1="24" y1="220" x2="616" y2="220" marker-end="url(#fig-t04-2-arr)"/>
+  <text class="lbl" x="320" y="250" text-anchor="middle">рух предмета праці операційним процесом</text>
+
+  <!-- 1 Пропорційність -->
+  <text class="t" x="70" y="112" text-anchor="middle">Пропорційність</text>
+  <rect class="box" x="52" y="188" width="14" height="20" rx="1"/>
+  <rect class="box" x="74" y="168" width="14" height="40" rx="1"/>
+  <line class="arrow" x1="52" y1="168" x2="88" y2="168" stroke-dasharray="3 2"/>
+  <circle class="bad" cx="59" cy="178" r="3"/>
+  <text class="s" x="70" y="134" text-anchor="middle">суміжні ланки</text>
+  <text class="s" x="70" y="148" text-anchor="middle">не узгоджені</text>
+
+  <!-- 2 Безперервність -->
+  <text class="t" x="192" y="112" text-anchor="middle">Безперервність</text>
+  <line class="flow" x1="158" y1="188" x2="180" y2="188"/>
+  <line class="flow" x1="204" y1="188" x2="226" y2="188"/>
+  <line class="bad" x1="185" y1="182" x2="199" y2="194" stroke-width="2.5"/>
+  <line class="bad" x1="199" y1="182" x2="185" y2="194" stroke-width="2.5"/>
+  <text class="s" x="192" y="134" text-anchor="middle">перерва в русі</text>
+  <text class="s" x="192" y="148" text-anchor="middle">предмета праці</text>
+
+  <!-- 3 Паралельність (екзаменаційний акцент) -->
+  <text class="exam-t" x="320" y="112" text-anchor="middle">Паралельність</text>
+  <line class="arrow exam" x1="288" y1="178" x2="352" y2="178" marker-end="url(#fig-t04-2-arr)"/>
+  <line class="arrow exam" x1="288" y1="198" x2="352" y2="198" marker-end="url(#fig-t04-2-arr)"/>
+  <text class="s" x="320" y="134" text-anchor="middle">частини процесу —</text>
+  <text class="s" x="320" y="148" text-anchor="middle">одночасно</text>
+
+  <!-- 4 Прямоточність -->
+  <text class="t" x="446" y="112" text-anchor="middle">Прямоточність</text>
+  <path class="flow" d="M420 193 L434 173 L448 193 L462 173 L472 163"/>
+  <circle class="bad-ring" cx="446" cy="178" r="17"/>
+  <line class="bad" x1="434" y1="166" x2="458" y2="190" stroke-width="2"/>
+  <line class="arrow" x1="420" y1="204" x2="472" y2="204" marker-end="url(#fig-t04-2-arr)"/>
+  <text class="s" x="446" y="134" text-anchor="middle">без зворотних</text>
+  <text class="s" x="446" y="148" text-anchor="middle">переміщень</text>
+
+  <!-- 5 Ритмічність -->
+  <text class="t" x="568" y="112" text-anchor="middle">Ритмічність</text>
+  <rect class="box" x="538" y="180" width="10" height="20"/>
+  <rect class="box" x="552" y="180" width="10" height="20"/>
+  <rect class="box" x="566" y="180" width="10" height="20"/>
+  <rect class="box" x="580" y="180" width="10" height="20"/>
+  <text class="s" x="568" y="134" text-anchor="middle">рівний випуск —</text>
+  <text class="s" x="568" y="148" text-anchor="middle">рівний проміжок</text>
+
+  <circle class="refc" cx="24" cy="220" r="11"/><text class="refn" x="24" y="224">1</text>
+  <circle class="refc" cx="158" cy="220" r="11"/><text class="refn" x="158" y="224">2</text>
+  <circle class="refc exam" cx="288" cy="220" r="11"/><text class="refn exam-n" x="288" y="224">3</text>
+  <circle class="refc" cx="420" cy="220" r="11"/><text class="refn" x="420" y="224">4</text>
+  <circle class="refc" cx="538" cy="220" r="11"/><text class="refn" x="538" y="224">5</text>
+
+  <text class="lbl" x="320" y="280" text-anchor="middle">принципи суперечать один одному: безперервність вимагає запасу перед робочим місцем,</text>
+  <text class="lbl" x="320" y="296" text-anchor="middle">а скорочення запасу заради ощадливості послаблює безперервність</text>
+  </g>
+</svg>
