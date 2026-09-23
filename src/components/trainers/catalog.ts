@@ -29,7 +29,7 @@ export interface CalculatorTrainer {
 export const CALCULATOR_TRAINERS: readonly CalculatorTrainer[] = [];
 
 /** Практичні, сторінки яких уже опубліковано (`praktychni/pNN/`). */
-export const PUBLISHED_PRACTICALS: readonly string[] = ['p01'];
+export const PUBLISHED_PRACTICALS: readonly string[] = ['p01', 'p02'];
 
 export interface PracticalTrainer {
   readonly practicalId: string;

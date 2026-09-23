@@ -1,25 +1,30 @@
-import { existsSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import { existsSync, readFileSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
+import { parse } from 'yaml';
+import { CALCULATOR_TRAINERS, PRACTICAL_TRAINERS, PUBLISHED_PRACTICALS } from '../../src/components/trainers/catalog';
 import { REQUIRED_KEY_FEATURES } from '../../src/engines/matrix';
 import { expectNoHorizontalScroll, expectNoSeriousAxeViolations } from './helpers';
-import { P01_PATH, answerCurrentFeature, chip, matrix, matrixTotals } from './trainers-helpers';
+import { MATRIX_CONTENT_FILE, MATRIX_PRACTICAL_PATH, answerCurrentFeature, chip, matrix, matrixTotals } from './trainers-helpers';
 
 /**
- * E2E-покриття тренажерів, що лишились після переходу на «Операційний менеджмент»: тренажер-матриця
- * (єдиний, що пережив зачистку) і каталоги — тренажери, практичні, головна. Калькулятори (кворум,
- * кумулятивне голосування, дивіденди) і вибір форми бізнесу видалені разом з контентом корпоративного
- * управління; нові калькулятори цієї дисципліни ще не написані (`CALCULATOR_TRAINERS` порожній) —
- * для них тестів поки немає.
+ * E2E-покриття тренажерів «Операційного менеджменту»: тренажер-матриця пріоритетів і рішень на практичній 2
+ * і каталоги — тренажери, практичні, головна (дані каталогів — з src/components/trainers/catalog.ts і
+ * course.yaml, тож тести не застарівають з кожною новою практичною). Тренажер продуктивності практичної 1
+ * тут не покрито; калькуляторів з власною сторінкою ще немає (`CALCULATOR_TRAINERS` порожній).
  */
 
-const P01_CONTENT_FILE = fileURLToPath(new URL('../../content/practicals/p01.yaml', import.meta.url));
-const hasP01Content = existsSync(P01_CONTENT_FILE);
+const hasMatrixContent = existsSync(MATRIX_CONTENT_FILE);
+const COURSE_FILE = new URL('../../content/course.yaml', import.meta.url);
 
-test.describe('практична 1: тренажер-матриця', () => {
-  // Дані матриці ще не написані для цієї дисципліни (content/practicals/p01.yaml). Тест лишається
-  // content-driven (matrixTotals/matrixAnswers читають той самий файл) — запрацює сам, щойно файл з’явиться.
-  test.skip(!hasP01Content, 'content/practicals/p01.yaml ще не опубліковано');
+/** Кількість практичних у реєстрі course.yaml — сторінка «Практичні» показує кожну. */
+function practicalCount(): number {
+  const course = parse(readFileSync(COURSE_FILE, 'utf8')) as { readonly practicals: readonly unknown[] };
+  return course.practicals.length;
+}
+
+test.describe('практична 2: тренажер-матриця пріоритетів', () => {
+  // Тест content-driven: matrixTotals/matrixAnswers читають content/practicals/p02.yaml.
+  test.skip(!hasMatrixContent, 'content/practicals/p02.yaml ще не опубліковано');
   test.setTimeout(150_000);
 
   test('навчальна спроба з розбором → оцінювана без розбору → бал за рубрикою і XP, що зберігаються після перезавантаження', async ({ page }) => {
@@ -28,7 +33,7 @@ test.describe('практична 1: тренажер-матриця', () => {
     const GRADED_RIGHT = MATRIX_ITEMS - GRADED_WRONG;
     const GRADED_XP = Math.round((60 * GRADED_RIGHT) / MATRIX_ITEMS);
 
-    await page.goto(P01_PATH);
+    await page.goto(MATRIX_PRACTICAL_PATH);
     await expect(matrix(page)).toHaveAttribute('data-stage', 'learning');
     await expect(chip(page)).toHaveAttribute('data-xp', '0');
 
@@ -78,11 +83,11 @@ test.describe('практична 1: тренажер-матриця', () => {
     await expect(matrix(page)).toHaveAttribute('data-practice', '');
 
     await page.goto('profil/');
-    await expect(page.locator('[data-map-topic="t01"] [data-practicum-state]')).toHaveAttribute('data-practicum-state', 'done');
+    await expect(page.locator('[data-map-topic="t02"] [data-practicum-state]')).toHaveAttribute('data-practicum-state', 'done');
   });
 
   test('клавіатура: перевірка без відповідей показує помилку рушія; перетягування картки на модель — альтернатива списку', async ({ page, isMobile }) => {
-    await page.goto(P01_PATH);
+    await page.goto(MATRIX_PRACTICAL_PATH);
     const firstSelect = matrix(page).locator('[data-matrix-card] select').first();
     if (!isMobile) {
       // Зони моделей і перша картка в одному екрані: перетягування без прокручування посеред жесту.
@@ -113,7 +118,7 @@ test.describe('практична 1: тренажер-матриця', () => {
   });
 
   test('завдання «визнач модель»: помилка без вибору, розбір ключових ознак після перевірки', async ({ page }) => {
-    await page.goto(P01_PATH);
+    await page.goto(MATRIX_PRACTICAL_PATH);
     const task = page.locator('[data-company]').first();
     await task.locator('[data-company-check]').click();
     await expect(task.locator('[data-field-error]')).toContainText('Оберіть модель');
@@ -126,7 +131,7 @@ test.describe('практична 1: тренажер-матриця', () => {
   });
 
   test('сторінка практичної: рубрика, есе з підказками, дані; axe без serious і без горизонтального скролу', async ({ page }) => {
-    await page.goto(P01_PATH);
+    await page.goto(MATRIX_PRACTICAL_PATH);
     expect(await page.locator('table.rubric tbody tr').count()).toBeGreaterThan(0);
     await expect(page.locator('#ese .essay-prompt')).not.toBeEmpty();
     const hints = page.locator('[data-essay-hints]');
@@ -142,28 +147,33 @@ test.describe('практична 1: тренажер-матриця', () => {
   });
 });
 
-test.describe('каталоги й інтеграція: тренажери і практичні готуються', () => {
-  test('головна: розділ тренажерів порожній, доки не додано перший калькулятор дисципліни', async ({ page }) => {
+test.describe('каталоги й інтеграція: тренажери практичних і статус практичних', () => {
+  test('головна: розділ тренажерів показує тренажери опублікованих практичних', async ({ page }) => {
     await page.goto('');
     const cards = page.locator('[data-trainers] [data-trainer]');
-    await expect(cards).toHaveCount(0);
-    await expect(page.locator('[data-trainers]')).toBeVisible();
+    await expect(cards).toHaveCount(PRACTICAL_TRAINERS.length + CALCULATOR_TRAINERS.length);
+    for (const trainer of PRACTICAL_TRAINERS) {
+      await expect(page.locator(`[data-trainers] [data-trainer="${trainer.registryId}"]`)).toBeVisible();
+    }
   });
 
-  test('тренажери: лише матриця моделей у каталозі', async ({ page }) => {
+  test('тренажери: у каталозі тренажери опублікованих практичних', async ({ page }) => {
     await page.goto('trenazhery/');
-    const cards = page.locator('[data-trainer-card]');
-    await expect(cards).toHaveCount(1);
+    await expect(page.locator('[data-trainer-card]')).toHaveCount(PRACTICAL_TRAINERS.length + CALCULATOR_TRAINERS.length);
     await expect(page.locator('[data-trainer-card="priorities-matrix"]')).toBeVisible();
+    await expect(page.locator('[data-trainer-card="productivity"]')).toBeVisible();
     await expectNoHorizontalScroll(page);
     await expectNoSeriousAxeViolations(page);
   });
 
-  test('практичні: усі готуються, жодна ще не опублікована', async ({ page }) => {
+  test('практичні: опубліковані позначено, решта готуються', async ({ page }) => {
     await page.goto('praktychni/');
-    await expect(page.locator('[data-practical]')).toHaveCount(8);
-    await expect(page.locator('[data-practical][data-status="published"]')).toHaveCount(0);
-    await expect(page.locator('[data-practical] .soon').first()).toContainText('готується');
+    await expect(page.locator('[data-practical]')).toHaveCount(practicalCount());
+    await expect(page.locator('[data-practical][data-status="published"]')).toHaveCount(PUBLISHED_PRACTICALS.length);
+    for (const id of PUBLISHED_PRACTICALS) {
+      await expect(page.locator(`[data-practical="${id}"]`)).toHaveAttribute('data-status', 'published');
+    }
+    await expect(page.locator('[data-practical][data-status="pending"] .soon').first()).toContainText('готується');
     await expectNoHorizontalScroll(page);
     await expectNoSeriousAxeViolations(page);
   });

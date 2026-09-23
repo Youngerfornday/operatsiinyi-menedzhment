@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="fig-t02-4" class="scheme" viewBox="0 0 640 360" role="img" aria-labelledby="fig-t02-4-title fig-t02-4-desc" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+  <title id="fig-t02-4-title">Рисунок 4. Життєвий цикл продукту і зміна операційної стратегії</title>
+  <desc id="fig-t02-4-desc">Крива обсягу продажів у формі літери S зліва направо з п’ятьма підписаними ділянками: зародження, зростання, зрілість, насичення, спад. Перша ділянка виділена карміновим. Під кожною ділянкою — короткий підпис характеру процесу: зародження — гнучкий процес; зростання — технічні новинки в продукті; зрілість — модифікації виробу; насичення — скорочення витрат і перехід до потокового процесу; спад — наявна інфраструктура без нових вкладень. Пунктирна крива, зсунута праворуч від суцільної, позначає паралельний життєвий цикл процесу, що відстає в часі, — застереження, що розбіжність двох циклів шкодить конкурентоспроможності.</desc>
+  <style>
+    #fig-t02-4 .box { fill: var(--surface, #ffffff); stroke: var(--ink, #0f1c2e); stroke-width: 1.25; }
+    #fig-t02-4 .t { fill: var(--ink, #0f1c2e); font-size: 12.5px; font-weight: 650; }
+    #fig-t02-4 .s { fill: var(--ink-2, #445570); font-size: 9.5px; }
+    #fig-t02-4 .lbl { fill: var(--ink-2, #445570); font-size: 12px; }
+    #fig-t02-4 .axis { stroke: var(--ink-2, #445570); stroke-width: 1.25; fill: none; }
+    #fig-t02-4 .curve { stroke: var(--ink, #0f1c2e); stroke-width: 2; fill: none; }
+    #fig-t02-4 .curve2 { stroke: var(--ink-2, #445570); stroke-width: 1.5; fill: none; stroke-dasharray: 5 4; }
+    #fig-t02-4 .divider { stroke: var(--ink-2, #445570); stroke-width: 1; stroke-dasharray: 3 3; opacity: 0.6; }
+    #fig-t02-4 .arrow-head { fill: var(--ink-2, #445570); }
+    #fig-t02-4 .refc { fill: var(--surface, #ffffff); stroke: var(--ink, #0f1c2e); stroke-width: 1.25; }
+    #fig-t02-4 .refn { fill: var(--ink, #0f1c2e); font-size: 11px; font-weight: 700; text-anchor: middle; }
+    #fig-t02-4 .exam-t { fill: var(--err-ink, #8f1d14); font-size: 12.5px; font-weight: 650; }
+    #fig-t02-4 .refc.exam { stroke: var(--err, #b42318); }
+    #fig-t02-4 .refn.exam-n { fill: var(--err-ink, #8f1d14); }
+  </style>
+
+  <defs>
+    <marker id="fig-t02-4-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="arrow-head" d="M0 0 10 5 0 10z"/>
+    </marker>
+  </defs>
+
+  <path class="axis" marker-end="url(#fig-t02-4-arr)" d="M40 280 L612 280"/>
+  <text class="lbl" x="600" y="300" text-anchor="end">час</text>
+  <path class="axis" marker-end="url(#fig-t02-4-arr)" d="M40 280 L40 42"/>
+  <text class="lbl" x="48" y="46" text-anchor="start">обсяг продажів</text>
+
+  <line class="divider" x1="155" y1="50" x2="155" y2="280"/>
+  <line class="divider" x1="269" y1="50" x2="269" y2="280"/>
+  <line class="divider" x1="383" y1="50" x2="383" y2="280"/>
+  <line class="divider" x1="498" y1="50" x2="498" y2="280"/>
+
+  <path class="curve2" d="M90 274 C 130 268, 160 260, 185 252 C 220 234, 260 162, 299 122 C 330 102, 370 90, 413 87 C 450 85, 490 84, 528 84 C 560 92, 600 132, 615 172"/>
+  <path class="curve" d="M60 272 C 100 266, 130 258, 155 250 C 190 232, 230 160, 269 120 C 300 100, 340 88, 383 85 C 420 83, 460 82, 498 82 C 530 90, 570 130, 610 170"/>
+
+  <text class="t exam-t" x="98" y="316" text-anchor="middle">Зародження</text>
+  <text class="s" x="98" y="330" text-anchor="middle">гнучкий процес</text>
+
+  <text class="t" x="212" y="316" text-anchor="middle">Зростання</text>
+  <text class="s" x="212" y="330" text-anchor="middle">технічні новинки</text>
+
+  <text class="t" x="326" y="316" text-anchor="middle">Зрілість</text>
+  <text class="s" x="326" y="330" text-anchor="middle">модифікації виробу</text>
+
+  <text class="t" x="441" y="316" text-anchor="middle">Насичення</text>
+  <text class="s" x="441" y="330" text-anchor="middle">скорочення витрат</text>
+
+  <text class="t" x="555" y="316" text-anchor="middle">Спад</text>
+  <text class="s" x="555" y="330" text-anchor="middle">наявна інфраструктура</text>
+
+  <circle class="refc exam" cx="60" cy="272" r="11"/><text class="refn exam-n" x="60" y="276">1</text>
+  <circle class="refc" cx="155" cy="250" r="11"/><text class="refn" x="155" y="254">2</text>
+  <circle class="refc" cx="269" cy="120" r="11"/><text class="refn" x="269" y="124">3</text>
+  <circle class="refc" cx="383" cy="85" r="11"/><text class="refn" x="383" y="89">4</text>
+  <circle class="refc" cx="498" cy="82" r="11"/><text class="refn" x="498" y="86">5</text>
+</svg>
