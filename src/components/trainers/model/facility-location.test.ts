@@ -13,30 +13,59 @@ function variant(overrides: Partial<FacilityLocationVariant> = {}): FacilityLoca
       { id: 'siteA', label: 'Майданчик А', unit: 'бала', expected: 71.5, tolerance: 0.05 },
       { id: 'siteB', label: 'Майданчик Б', unit: 'бала', expected: 76.25, tolerance: 0.05 },
     ],
+    choice: { id: 'better', label: 'Який майданчик кращий?', yes: 'Майданчик А', no: 'Майданчик Б', expected: false },
     solution: ['крок 1'],
     ...overrides,
   };
 }
 
 describe('checkFacilityLocationTask', () => {
-  it('вирішено правильно в межах допуску', () => {
-    const result = checkFacilityLocationTask(variant(), { siteA: '71,5', siteB: '76,25' });
+  it('вирішено правильно в межах допуску, разом із полем вибору', () => {
+    const result = checkFacilityLocationTask(variant(), { siteA: '71,5', siteB: '76,25', better: 'no' });
     expect(result).toMatchObject({ ok: true, value: { solved: true } });
   });
 
   it('неправильна відповідь одного з майданчиків: solved false', () => {
-    const result = checkFacilityLocationTask(variant(), { siteA: '71,5', siteB: '10' });
+    const result = checkFacilityLocationTask(variant(), { siteA: '71,5', siteB: '10', better: 'no' });
     expect(result.ok).toBe(true);
     if (!result.ok) return;
     expect(result.value.solved).toBe(false);
-    expect(result.value.parts.map((part) => part.correct)).toEqual([true, false]);
+    expect(result.value.parts.map((part) => part.correct)).toEqual([true, false, true]);
+  });
+
+  it('правильні бали, але неправильний вибір кращого майданчика: solved false', () => {
+    const result = checkFacilityLocationTask(variant(), { siteA: '71,5', siteB: '76,25', better: 'yes' });
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value.solved).toBe(false);
+    expect(result.value.parts.map((part) => part.correct)).toEqual([true, true, false]);
   });
 
   it('порожнє чи нечислове поле — помилка з посиланням на поле', () => {
-    const result = checkFacilityLocationTask(variant(), { siteA: '', siteB: '76,25' });
+    const result = checkFacilityLocationTask(variant(), { siteA: '', siteB: '76,25', better: 'no' });
     expect(result.ok).toBe(false);
     if (result.ok) return;
     expect(result.error[0]?.field).toBe('siteA');
+  });
+
+  it('невибраний варіант вибору — помилка з посиланням на поле', () => {
+    const result = checkFacilityLocationTask(variant(), { siteA: '71,5', siteB: '76,25', better: '' });
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+    expect(result.error[0]?.field).toBe('better');
+  });
+
+  it('center-of-gravity без choice — перевіряються лише числові поля', () => {
+    const cog = variant({
+      method: 'center-of-gravity',
+      answers: [
+        { id: 'x', label: 'x*', unit: 'км', expected: 48.75, tolerance: 0.05 },
+        { id: 'y', label: 'y*', unit: 'км', expected: 45.625, tolerance: 0.05 },
+      ],
+      choice: undefined,
+    });
+    const result = checkFacilityLocationTask(cog, { x: '48,75', y: '45,625' });
+    expect(result).toMatchObject({ ok: true, value: { solved: true } });
   });
 });
 

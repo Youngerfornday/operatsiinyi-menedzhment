@@ -12,7 +12,7 @@
 import type { Result } from '../../../engines/shared/result';
 import type { FacilityLocationMethod, FacilityLocationTaskChoice, FacilityLocationVariant } from '../../../engines/facility-location';
 import type { CalculationTask } from '../../../content/schemas/practical';
-import { checkNumberPart, combineParts, type FieldIssues, type TaskCheck } from './task-check';
+import { checkChoicePart, checkNumberPart, combineParts, type FieldIssues, type TaskCheck, type YesNo } from './task-check';
 import { num } from './format';
 
 const FACILITY_LOCATION_METHODS: readonly FacilityLocationMethod[] = ['factor-rating', 'center-of-gravity'];
@@ -31,7 +31,7 @@ export type FacilityLocationAnswer = Readonly<Record<string, string>>;
 export const EMPTY_FACILITY_LOCATION_ANSWER: FacilityLocationAnswer = {};
 
 export function checkFacilityLocationTask(variant: FacilityLocationVariant, answer: FacilityLocationAnswer): Result<TaskCheck, FieldIssues> {
-  const parts = variant.answers.map((field) =>
+  const numberParts = variant.answers.map((field) =>
     checkNumberPart({
       id: field.id,
       label: field.label,
@@ -41,7 +41,11 @@ export function checkFacilityLocationTask(variant: FacilityLocationVariant, answ
       format: (value) => `${num(value)} ${field.unit}`,
     }),
   );
-  return combineParts(parts);
+  const choice = variant.choice;
+  const choicePart = choice
+    ? [checkChoicePart({ id: choice.id, label: choice.label, value: (answer[choice.id] as YesNo | undefined) ?? '', expected: choice.expected, yes: choice.yes, no: choice.no })]
+    : [];
+  return combineParts([...numberParts, ...choicePart]);
 }
 
 /** Задача контенту, з якої згенеровано варіант: та сама `method`. */

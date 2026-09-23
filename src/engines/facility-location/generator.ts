@@ -7,7 +7,7 @@
 import { pickOne, randomInt, shuffled, type RandomSource } from '../shared/random';
 import { formatNumber } from '../shared/number-format';
 import { centerOfGravity, factorRatingScore } from './calculations';
-import type { FacilityLocationAnswerField, FacilityLocationGivenItem, FacilityLocationMethod, FacilityLocationVariant } from './types';
+import type { FacilityLocationAnswerField, FacilityLocationChoiceField, FacilityLocationGivenItem, FacilityLocationMethod, FacilityLocationVariant } from './types';
 
 function unwrap<T>(result: { readonly ok: true; readonly value: T } | { readonly ok: false; readonly error: unknown }): T {
   if (!result.ok) throw new Error('Генератор розміщення зібрав невалідні дані для рушія формул');
@@ -40,11 +40,29 @@ const WEIGHT_SETS: readonly (readonly [number, number, number])[] = [
 
 const SITE_LABELS = ['Майданчик А', 'Майданчик Б'] as const;
 
+/** Скільки разів перетягувати оцінки, поки бали двох майданчиків не розійдуться (відсів — рідкісна нічия). */
+const MAX_DRAWS = 50;
+
+function drawScoresBySite(random: RandomSource, factorCount: number): number[][] {
+  return SITE_LABELS.map(() => Array.from({ length: factorCount }, () => randomInt(random, 8, 20) * 5));
+}
+
+/** Нічия (рівні бали) не дає однозначної відповіді на «який майданчик кращий» — перетягуємо оцінки. */
+function drawDecisiveScores(random: RandomSource, weights: readonly number[], factorCount: number): { readonly scoresBySite: readonly number[][]; readonly scores: readonly number[] } {
+  let scoresBySite = drawScoresBySite(random, factorCount);
+  let scores = scoresBySite.map((siteScores) => unwrap(factorRatingScore(weights, siteScores)));
+  for (let draw = 1; draw < MAX_DRAWS && Math.abs(scores[0]! - scores[1]!) < 1e-9; draw += 1) {
+    scoresBySite = drawScoresBySite(random, factorCount);
+    scores = scoresBySite.map((siteScores) => unwrap(factorRatingScore(weights, siteScores)));
+  }
+  return { scoresBySite, scores };
+}
+
 function factorRatingVariant(random: RandomSource, variantId: string): FacilityLocationVariant {
   const factors = shuffled(FACTOR_NAMES, random).slice(0, 3);
   const weightSet = pickOne(WEIGHT_SETS, random);
   const weights = weightSet.map((hundredths) => hundredths / 100);
-  const scoresBySite = SITE_LABELS.map(() => factors.map(() => randomInt(random, 8, 20) * 5));
+  const { scoresBySite, scores } = drawDecisiveScores(random, weights, factors.length);
 
   const given: FacilityLocationGivenItem[] = [
     ...factors.map((factor, index) => ({ label: `Вага фактора «${factor}»`, value: weight2(weights[index] as number) })),
@@ -56,7 +74,6 @@ function factorRatingVariant(random: RandomSource, variantId: string): FacilityL
     ),
   ];
 
-  const scores = scoresBySite.map((scores) => unwrap(factorRatingScore(weights, scores)));
   const answers: FacilityLocationAnswerField[] = SITE_LABELS.map((site, index) => ({
     id: index === 0 ? 'siteA' : 'siteB',
     label: `Сумарний бал, ${site}`,
@@ -65,18 +82,31 @@ function factorRatingVariant(random: RandomSource, variantId: string): FacilityL
     tolerance: 0.05,
   }));
 
-  const solution = SITE_LABELS.map((site, siteIndex) => {
-    const terms = factors.map((_, factorIndex) => `${weight2(weights[factorIndex] as number)} · ${formatNumber(scoresBySite[siteIndex]![factorIndex] as number)}`);
-    const products = factors.map((_, factorIndex) => formatNumber((weights[factorIndex] as number) * (scoresBySite[siteIndex]![factorIndex] as number), { maximumFractionDigits: 2 }));
-    return `${site}: ${terms.join(' + ')} = ${products.join(' + ')} = ${formatNumber(scores[siteIndex] as number, { maximumFractionDigits: 2 })} бала.`;
-  });
+  const betterIsSiteA = (scores[0] as number) > (scores[1] as number);
+  const choice: FacilityLocationChoiceField = {
+    id: 'better',
+    label: 'Який майданчик набирає більше балів за сумою зважених оцінок?',
+    yes: SITE_LABELS[0],
+    no: SITE_LABELS[1],
+    expected: betterIsSiteA,
+  };
+
+  const solution = [
+    ...SITE_LABELS.map((site, siteIndex) => {
+      const terms = factors.map((_, factorIndex) => `${weight2(weights[factorIndex] as number)} · ${formatNumber(scoresBySite[siteIndex]![factorIndex] as number)}`);
+      const products = factors.map((_, factorIndex) => formatNumber((weights[factorIndex] as number) * (scoresBySite[siteIndex]![factorIndex] as number), { maximumFractionDigits: 2 }));
+      return `${site}: ${terms.join(' + ')} = ${products.join(' + ')} = ${formatNumber(scores[siteIndex] as number, { maximumFractionDigits: 2 })} бала.`;
+    }),
+    `${betterIsSiteA ? SITE_LABELS[0] : SITE_LABELS[1]} набирає більше балів (${formatNumber(Math.max(scores[0]!, scores[1]!), { maximumFractionDigits: 2 })} проти ${formatNumber(Math.min(scores[0]!, scores[1]!), { maximumFractionDigits: 2 })}).`,
+  ];
 
   return {
     variantId,
     method: 'factor-rating',
-    prompt: 'Метод вагових коефіцієнтів: розрахуйте сумарний бал кожного майданчика (LOC-01) і оберіть кращий.',
+    prompt: 'Метод вагових коефіцієнтів: розрахуйте сумарний бал кожного майданчика (LOC-01) і визначте, який із них набирає більше балів.',
     given,
     answers,
+    choice,
     solution,
   };
 }

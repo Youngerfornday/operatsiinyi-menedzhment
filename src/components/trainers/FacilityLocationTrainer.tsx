@@ -14,8 +14,9 @@ import {
   toFacilityLocationTaskChoices,
   type FacilityLocationAnswer,
 } from './model/facility-location';
+import type { YesNo } from './model/task-check';
 import { trainerStatusText } from './model/xp-text';
-import { NumberField } from './ui/fields';
+import { NumberField, YesNoField } from './ui/fields';
 import { SourceNotes } from './ui/parts';
 import { TaskShell } from './ui/TaskShell';
 import { useTrainerTask } from './ui/use-trainer-task';
@@ -82,6 +83,16 @@ export function FacilityLocationTrainer({ tasks }: FacilityLocationTrainerProps)
               placeholder="наприклад, 71,5"
             />
           ))}
+          {variant.choice && (
+            <YesNoField
+              id={`facility-location-${variant.choice.id}`}
+              name={variant.choice.id}
+              legend={`${variant.choice.label} (${variant.choice.yes} — «так», ${variant.choice.no} — «ні»)`}
+              value={(state.answer[variant.choice.id] as YesNo | undefined) ?? ''}
+              onChange={(value) => state.setAnswer({ [variant.choice!.id]: value })}
+              error={state.errors[variant.choice.id]}
+            />
+          )}
         </>
       }
     />

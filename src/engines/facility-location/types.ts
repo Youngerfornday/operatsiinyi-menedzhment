@@ -19,6 +19,18 @@ export interface FacilityLocationAnswerField {
   readonly tolerance: number;
 }
 
+/**
+ * Поле вибору «який варіант кращий» (лише для `factor-rating`): рушій гарантує, що бали двох
+ * майданчиків завжди різні, тож відповідь однозначна — «нічия» варіанту не буває.
+ */
+export interface FacilityLocationChoiceField {
+  readonly id: string;
+  readonly label: string;
+  readonly yes: string;
+  readonly no: string;
+  readonly expected: boolean;
+}
+
 export interface FacilityLocationVariant {
   readonly variantId: string;
   readonly method: FacilityLocationMethod;
@@ -26,6 +38,8 @@ export interface FacilityLocationVariant {
   readonly prompt: string;
   readonly given: readonly FacilityLocationGivenItem[];
   readonly answers: readonly FacilityLocationAnswerField[];
+  /** Присутнє лише для `factor-rating` — `center-of-gravity` не порівнює варіанти. */
+  readonly choice?: FacilityLocationChoiceField;
   /** Кроки розв’язку для розбору після перевірки. */
   readonly solution: readonly string[];
 }

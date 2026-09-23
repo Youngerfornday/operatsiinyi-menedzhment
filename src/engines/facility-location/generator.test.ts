@@ -64,4 +64,21 @@ describe('createFacilityLocationVariant', () => {
       expect(variant.answers[1]!.expected).toBeCloseTo(expected.y, 6);
     }
   });
+
+  it('factor-rating: завжди дає поле вибору кращого майданчика без нічиїх', () => {
+    for (let seed = 0; seed < 200; seed += 1) {
+      const variant = createFacilityLocationVariant(createSeededRandom(`choice:${seed}`), [{ method: 'factor-rating' }]);
+      if (variant.method !== 'factor-rating') throw new Error('unexpected method');
+      expect(variant.choice).toBeDefined();
+      const scoreA = variant.answers[0]!.expected;
+      const scoreB = variant.answers[1]!.expected;
+      expect(Math.abs(scoreA - scoreB)).toBeGreaterThan(0);
+      expect(variant.choice!.expected).toBe(scoreA > scoreB);
+    }
+  });
+
+  it('center-of-gravity: поля вибору кращого варіанту немає', () => {
+    const variant = createFacilityLocationVariant(createSeededRandom('cog:choice'), [{ method: 'center-of-gravity' }]);
+    expect(variant.choice).toBeUndefined();
+  });
 });
