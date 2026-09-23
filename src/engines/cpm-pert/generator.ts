@@ -41,18 +41,18 @@ function cpmVariant(random: RandomSource, variantId: string): CpmPertVariant {
   const probe = byId.get(FLOAT_PROBE_ID);
   if (!probe) throw new Error(`Генератор сітьового планування: роботу ${FLOAT_PROBE_ID} не знайдено в розкладі`);
 
-  const given = activitiesTable(TOPOLOGY.map((row) => ({ ...row, value: `${formatNumber(durations.get(row.id) as number)} тижнів` })));
+  const given = activitiesTable(TOPOLOGY.map((row) => ({ ...row, value: `${formatNumber(durations.get(row.id) as number)} тиж.` })));
   const answers: CpmPertAnswerField[] = [
-    { id: 'duration', label: 'Тривалість проекту (критичний шлях)', unit: 'тижнів', expected: network.projectDuration, tolerance: 0 },
-    { id: 'float', label: `Повний резерв роботи ${FLOAT_PROBE_ID}`, unit: 'тижнів', expected: probe.totalFloat, tolerance: 0 },
+    { id: 'duration', label: 'Тривалість проекту (критичний шлях)', unit: 'тиж.', expected: network.projectDuration, tolerance: 0 },
+    { id: 'float', label: `Повний резерв роботи ${FLOAT_PROBE_ID}`, unit: 'тиж.', expected: probe.totalFloat, tolerance: 0 },
   ];
   const branchA = ['A', 'B', 'D', 'F', 'G'].reduce((sum, id) => sum + (durations.get(id) as number), 0);
   const branchB = ['A', 'C', 'E', 'F', 'G'].reduce((sum, id) => sum + (durations.get(id) as number), 0);
   const solution = [
-    `Гілка A–B–D–F–G: ${['A', 'B', 'D', 'F', 'G'].map((id) => durations.get(id)).join(' + ')} = ${formatNumber(branchA)} тижнів.`,
-    `Гілка A–C–E–F–G: ${['A', 'C', 'E', 'F', 'G'].map((id) => durations.get(id)).join(' + ')} = ${formatNumber(branchB)} тижнів.`,
-    `Критичний шлях — довша гілка: ${formatNumber(network.projectDuration)} тижнів (PRJ-01, PRJ-04).`,
-    `Повний резерв роботи ${FLOAT_PROBE_ID}: LS − ES = ${formatNumber(probe.lateStart)} − ${formatNumber(probe.earlyStart)} = ${formatNumber(probe.totalFloat)} тижнів (PRJ-02, PRJ-03).`,
+    `Гілка A–B–D–F–G: ${['A', 'B', 'D', 'F', 'G'].map((id) => durations.get(id)).join(' + ')} = ${formatNumber(branchA)} тиж.`,
+    `Гілка A–C–E–F–G: ${['A', 'C', 'E', 'F', 'G'].map((id) => durations.get(id)).join(' + ')} = ${formatNumber(branchB)} тиж.`,
+    `Критичний шлях — довша гілка: ${formatNumber(network.projectDuration)} тиж. (PRJ-01, PRJ-04).`,
+    `Повний резерв роботи ${FLOAT_PROBE_ID}: LS − ES = ${formatNumber(probe.lateStart)} − ${formatNumber(probe.earlyStart)} = ${formatNumber(probe.totalFloat)} тиж. (PRJ-02, PRJ-03).`,
   ];
   return { variantId, method: 'cpm-critical-path', prompt: 'Побудуйте сітьовий графік за переліком робіт, визначте критичний шлях і повний резерв зазначеної роботи (PRJ-01..04).', given, answers, solution };
 }
@@ -96,18 +96,18 @@ function pertVariant(random: RandomSource, variantId: string): CpmPertVariant {
 
   const given = activitiesTable(TOPOLOGY.map((row) => {
     const estimate = estimates.find((candidate) => candidate.id === row.id) as PertEstimate;
-    return { ...row, value: `o=${formatNumber(estimate.optimistic)}, m=${formatNumber(estimate.mostLikely)}, p=${formatNumber(estimate.pessimistic)} тижнів` };
+    return { ...row, value: `o=${formatNumber(estimate.optimistic)}, m=${formatNumber(estimate.mostLikely)}, p=${formatNumber(estimate.pessimistic)} тиж.` };
   }));
-  given.push({ label: 'Директивний строк проекту D', value: `${formatNumber(directiveDeadline)} тижнів` });
+  given.push({ label: 'Директивний строк проекту D', value: `${formatNumber(directiveDeadline)} тиж.` });
 
   const answers: CpmPertAnswerField[] = [
-    { id: 'expected', label: 'Очікувана тривалість проекту TE', unit: 'тижнів', expected: roundTo(project.expectedDuration, 2), tolerance: 0.05 },
+    { id: 'expected', label: 'Очікувана тривалість проекту TE', unit: 'тиж.', expected: roundTo(project.expectedDuration, 2), tolerance: 0.05 },
     { id: 'probability', label: 'Імовірність дотримання строку D', unit: '%', expected: roundTo(probability * 100, 1), tolerance: 0.5 },
   ];
   const criticalActivities = project.activities.filter((activity) => project.network.criticalPath.includes(activity.id));
   const solution = [
-    ...criticalActivities.map((activity) => `te(${activity.id}) = (o + 4m + p) / 6 = ${formatNumber(activity.expectedTime, { maximumFractionDigits: 3 })} тижнів (PRJ-05).`),
-    `Критичний шлях за te: ${project.network.criticalPath.join('–')}, TE = ${formatNumber(project.expectedDuration, { maximumFractionDigits: 3 })} тижнів.`,
+    ...criticalActivities.map((activity) => `te(${activity.id}) = (o + 4m + p) / 6 = ${formatNumber(activity.expectedTime, { maximumFractionDigits: 3 })} тиж. (PRJ-05).`),
+    `Критичний шлях за te: ${project.network.criticalPath.join('–')}, TE = ${formatNumber(project.expectedDuration, { maximumFractionDigits: 3 })} тиж.`,
     `Дисперсія проекту (сума дисперсій робіт критичного шляху): σ² = ${formatNumber(project.variance, { maximumFractionDigits: 3 })} (PRJ-06); σ ≈ ${formatNumber(project.sigma, { maximumFractionDigits: 3 })} тижня.`,
     `Z = (D − TE) / σ = (${formatNumber(directiveDeadline)} − ${formatNumber(project.expectedDuration, { maximumFractionDigits: 2 })}) / ${formatNumber(project.sigma, { maximumFractionDigits: 3 })} ≈ ${formatNumber(z)} (PRJ-07).`,
     `За таблицею нормального розподілу Φ(${formatNumber(z)}) ≈ ${formatPercent(probability)}.`,
