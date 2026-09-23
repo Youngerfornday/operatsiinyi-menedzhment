@@ -69,6 +69,31 @@ describe('createLittleLawVariant', () => {
     }
   });
 
+  it('числівник узгоджено з одиницею у даних і розв’язку («162 замовлення», «81 пацієнт», «5 діб»)', () => {
+    const wrong = [
+      /(?:^|[^\d,])(?:\d*[02-9])?[1-4] (?:замовлень|пацієнтів)(?! за)/,
+      /(?:^|[^\d,])(?:\d*1)?[1-4] пацієнт(?:и|ів)? за/,
+      /(?:^|[^\d,])\d*(?:[05-9]|1[0-4]) (?:доби|години)/,
+      /(?:^|[^\d,])(?:\d*[02-9])?1 (?:доби|години|пацієнти|пацієнтів)/,
+    ];
+    for (const unknown of ALL_UNKNOWNS) {
+      for (let seed = 0; seed < 300; seed += 1) {
+        const variant = createLittleLawVariant(createSeededRandom(`agree:${unknown}:${seed}`), [{ method: 'little-law', unknown }]);
+        const texts = [...variant.given.map((item) => item.value), ...variant.solution];
+        for (const text of texts) {
+          for (const pattern of wrong) expect(text.replace(/ /g, '')).not.toMatch(pattern);
+        }
+      }
+    }
+  });
+
+  it('фабула стоїть у місцевому відмінку: «У цеху» / «У приймальному відділенні лікарні»', () => {
+    for (let seed = 0; seed < 40; seed += 1) {
+      const variant = createLittleLawVariant(createSeededRandom(`place:${seed}`), ALL_TASKS);
+      expect(variant.prompt).toMatch(/(?:У цеху|У приймальному відділенні лікарні) в середньому:$/);
+    }
+  });
+
   it('дані завжди невід’ємні й генератор не кидає винятків для жодного unknown', () => {
     for (const unknown of ALL_UNKNOWNS) {
       for (let seed = 0; seed < 15; seed += 1) {

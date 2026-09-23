@@ -13,6 +13,7 @@ import type { LittleLawMethod, LittleLawUnknown, LittleLawVariant } from '../../
 import type { CalculationTask } from '../../../content/schemas/practical';
 import { checkNumberPart, combineParts, type FieldIssues, type TaskCheck } from './task-check';
 import { num } from './format';
+import { pluralUk } from '../../../lib/plural';
 
 /**
  * Схема контенту тримає `method` вільним рядком, тому список методів, які насправді вміє рушій закону
@@ -55,7 +56,7 @@ export function checkLittleLawTask(variant: LittleLawVariant, answer: LittleLawA
       text: answer[field.id] ?? '',
       expected: field.expected,
       tolerance: field.tolerance,
-      format: (value) => `${num(value)} ${field.unit}`,
+      format: (value) => (field.unitForms ? pluralUk(value, field.unitForms) : `${num(value)} ${field.unit}`),
     }),
   );
   return combineParts(parts);
