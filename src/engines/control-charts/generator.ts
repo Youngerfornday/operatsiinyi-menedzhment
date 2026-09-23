@@ -8,8 +8,11 @@
 import { pickOne, randomInt, type RandomSource } from '../shared/random';
 import { formatNumber, formatPercent, roundTo } from '../shared/number-format';
 import { pChartLimits, xbarRLimits } from './calculations';
-import { MAX_SUBGROUP_SIZE, MIN_SUBGROUP_SIZE } from './constants';
+import { MAX_SUBGROUP_SIZE, MIN_SUBGROUP_SIZE, xbarRConstantsFor } from './constants';
 import type { ControlChartAnswerField, ControlChartGivenItem, ControlChartMethod, ControlChartVariant } from './types';
+
+/** Джерело A2/D3/D4 — стандартна таблиця коефіцієнтів контрольних карт, не звірена з підручником курсу (constants.ts). */
+const CONSTANTS_NOTE = 'за стандартною таблицею коефіцієнтів контрольних карт (не звірено з підручником викладача)';
 
 function unwrap<T>(result: { readonly ok: true; readonly value: T } | { readonly ok: false; readonly error: unknown }): T {
   if (!result.ok) throw new Error('Генератор контрольних карт зібрав невалідні дані для рушія');
@@ -23,18 +26,28 @@ function xbarRVariant(random: RandomSource, variantId: string): ControlChartVari
   const grandMean = randomInt(random, 480, 520) / 10;
   const meanRange = randomInt(random, 5, 20) / 10;
   const limits = unwrap(xbarRLimits(grandMean, meanRange, subgroupSize));
+  const constants = xbarRConstantsFor(subgroupSize);
+  if (!constants) throw new Error(`Генератор контрольних карт: немає констант A2/D3/D4 для n = ${subgroupSize}`);
 
   const halfWidth = limits.upperXbar - grandMean;
   const isOutOfControl = random.next() < 0.5;
+  const goesBelow = isOutOfControl && random.next() < 0.5;
+  const magnitude = Math.max(0.1, halfWidth) * (randomInt(random, 2, 6) / 10);
   const probeMean = isOutOfControl
-    ? roundTo(limits.upperXbar + Math.max(0.1, halfWidth) * (randomInt(random, 2, 6) / 10), 2)
+    ? goesBelow
+      ? roundTo(limits.lowerXbar - magnitude, 2)
+      : roundTo(limits.upperXbar + magnitude, 2)
     : roundTo(grandMean + halfWidth * (randomInt(random, -6, 6) / 10), 2);
+  const signalReason = !isOutOfControl ? 'у межах карти' : goesBelow ? 'нижче LCLx̄' : 'вище UCLx̄';
 
   const given: ControlChartGivenItem[] = [
     { label: 'Розмір підгрупи n', value: `${formatNumber(subgroupSize)}` },
     { label: 'Кількість підгруп', value: `${formatNumber(SUBGROUP_COUNT)}` },
     { label: 'Середнє середніх підгруп X̿', value: `${formatNumber(grandMean, { maximumFractionDigits: 2 })} мм` },
     { label: 'Середній розмах R̄', value: `${formatNumber(meanRange, { maximumFractionDigits: 2 })} мм` },
+    { label: `Коефіцієнт A2 (n = ${subgroupSize}, ${CONSTANTS_NOTE})`, value: formatNumber(constants.a2, { maximumFractionDigits: 3 }) },
+    { label: `Коефіцієнт D3 (n = ${subgroupSize}, ${CONSTANTS_NOTE})`, value: formatNumber(constants.d3, { maximumFractionDigits: 3 }) },
+    { label: `Коефіцієнт D4 (n = ${subgroupSize}, ${CONSTANTS_NOTE})`, value: formatNumber(constants.d4, { maximumFractionDigits: 3 }) },
     { label: `Середнє нової підгрупи №${SUBGROUP_COUNT + 1}`, value: `${formatNumber(probeMean, { maximumFractionDigits: 2 })} мм` },
   ];
   const answers: ControlChartAnswerField[] = [
@@ -44,10 +57,10 @@ function xbarRVariant(random: RandomSource, variantId: string): ControlChartVari
     { id: 'lclr', label: 'Нижня контрольна межа карти розмахів LCLR', unit: 'мм', expected: roundTo(limits.lowerRange, 3), tolerance: 0.02 },
   ];
   const solution = [
-    `UCLx̄ = X̿ + A2·R̄ = ${formatNumber(grandMean)} + A2·${formatNumber(meanRange)} = ${formatNumber(limits.upperXbar, { maximumFractionDigits: 3 })} мм (QC-01).`,
-    `LCLx̄ = X̿ − A2·R̄ = ${formatNumber(limits.lowerXbar, { maximumFractionDigits: 3 })} мм.`,
-    `UCLR = D4·R̄ = ${formatNumber(limits.upperRange, { maximumFractionDigits: 3 })} мм; LCLR = D3·R̄ = ${formatNumber(limits.lowerRange, { maximumFractionDigits: 3 })} мм.`,
-    `Підгрупа №${SUBGROUP_COUNT + 1}: X̄ = ${formatNumber(probeMean)} мм ${isOutOfControl ? 'вище UCLx̄' : 'у межах карти'} — ${isOutOfControl ? 'сигнал особливої причини' : 'сигналу немає'}.`,
+    `UCLx̄ = X̿ + A2·R̄ = ${formatNumber(grandMean)} + ${formatNumber(constants.a2, { maximumFractionDigits: 3 })}·${formatNumber(meanRange)} = ${formatNumber(limits.upperXbar, { maximumFractionDigits: 3 })} мм (QC-01).`,
+    `LCLx̄ = X̿ − A2·R̄ = ${formatNumber(grandMean)} − ${formatNumber(constants.a2, { maximumFractionDigits: 3 })}·${formatNumber(meanRange)} = ${formatNumber(limits.lowerXbar, { maximumFractionDigits: 3 })} мм.`,
+    `UCLR = D4·R̄ = ${formatNumber(constants.d4, { maximumFractionDigits: 3 })}·${formatNumber(meanRange)} = ${formatNumber(limits.upperRange, { maximumFractionDigits: 3 })} мм; LCLR = D3·R̄ = ${formatNumber(constants.d3, { maximumFractionDigits: 3 })}·${formatNumber(meanRange)} = ${formatNumber(limits.lowerRange, { maximumFractionDigits: 3 })} мм.`,
+    `Підгрупа №${SUBGROUP_COUNT + 1}: X̄ = ${formatNumber(probeMean)} мм ${signalReason} — ${isOutOfControl ? 'сигнал особливої причини' : 'сигналу немає'}.`,
   ];
   return {
     variantId,
@@ -68,8 +81,24 @@ function pChartVariant(random: RandomSource, variantId: string): ControlChartVar
   const limits = unwrap(pChartLimits(meanProportion, subgroupSize));
 
   const isOutOfControl = random.next() < 0.5;
-  const upperCount = Math.ceil(limits.upper * subgroupSize);
-  const probeDefectives = isOutOfControl ? Math.min(subgroupSize, upperCount + randomInt(random, 1, 3)) : Math.max(0, Math.round(meanProportion * subgroupSize));
+  const canGoBelow = limits.lower > 0;
+  const goesBelow = isOutOfControl && canGoBelow && random.next() < 0.5;
+  let probeDefectives: number;
+  let signalReason: string;
+  if (isOutOfControl && goesBelow) {
+    const lowerCount = Math.floor(limits.lower * subgroupSize);
+    probeDefectives = Math.max(0, lowerCount - randomInt(random, 1, 3));
+    signalReason = 'нижче LCLp';
+  } else if (isOutOfControl) {
+    const upperCount = Math.ceil(limits.upper * subgroupSize);
+    probeDefectives = Math.min(subgroupSize, upperCount + randomInt(random, 1, 3));
+    signalReason = 'вище UCLp';
+  } else {
+    const centerCount = meanProportion * subgroupSize;
+    const bandHalfWidth = limits.upper * subgroupSize - centerCount;
+    probeDefectives = Math.min(subgroupSize, Math.max(0, Math.round(centerCount + bandHalfWidth * (randomInt(random, -6, 6) / 10))));
+    signalReason = 'у межах карти';
+  }
   const probeProportion = probeDefectives / subgroupSize;
 
   const given: ControlChartGivenItem[] = [
@@ -86,7 +115,7 @@ function pChartVariant(random: RandomSource, variantId: string): ControlChartVar
     `p̄ = ${formatNumber(defectiveTotal)} / ${formatNumber(totalInspected)} = ${formatPercent(meanProportion)}.`,
     `UCLp = p̄ + 3√(p̄(1 − p̄)/n) = ${formatPercent(limits.upper)} (QC-02).`,
     `LCLp = p̄ − 3√(p̄(1 − p̄)/n) = ${formatPercent(limits.lower)}${limits.lower === 0 ? ' (обрізано до 0, бо частка не може бути від’ємною)' : ''}.`,
-    `Підгрупа №${SUBGROUP_COUNT + 1}: частка дефектних ${formatPercent(probeProportion)} ${isOutOfControl ? 'вище UCLp' : 'у межах карти'} — ${isOutOfControl ? 'сигнал особливої причини' : 'сигналу немає'}.`,
+    `Підгрупа №${SUBGROUP_COUNT + 1}: частка дефектних ${formatPercent(probeProportion)} ${signalReason} — ${isOutOfControl ? 'сигнал особливої причини' : 'сигналу немає'}.`,
   ];
   return {
     variantId,
