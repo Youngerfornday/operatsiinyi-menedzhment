@@ -1169,9 +1169,10 @@ questions:
       Стандартне відхилення: √(0,05 · 0,95 / 80) ≈ 0,0244. UCLp = 0,05 + 3 · 0,0244 ≈ 0,1231, тобто
       12,3 %.
     refs:
-      - source: Капінос Г.І., Бабій І.В. Операційний менеджмент, 2013
-        locator: розділ «Управління якістю», статистичний контроль процесів (QC-02)
-        checkedAt: '2026-09-22'
+      - source: Heizer J., Render B., Munson C. Operations Management, 2016
+        locator: Supplement 6 «Statistical Process Control», підрозділ «Control Charts for Attributes», p-chart (QC-02)
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9780134163512
     answers:
       - value: 12.3
         tolerance: 0.1
@@ -1207,9 +1208,10 @@ questions:
       Cp = (USL − LSL) / (6σ) (QC-04). Ширина поля допуску: 210 − 190 = 20. Cp = 20 / (6 · 2,5) =
       20 / 15 ≈ 1,33.
     refs:
-      - source: Капінос Г.І., Бабій І.В. Операційний менеджмент, 2013
-        locator: розділ «Управління якістю», придатність процесу (QC-04)
-        checkedAt: '2026-09-22'
+      - source: Heizer J., Render B., Munson C. Operations Management, 2016
+        locator: Supplement 6 «Statistical Process Control», підрозділ «Process Capability», Process Capability Ratio (Cp) (QC-04)
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9780134163512
     answers:
       - value: 1.33
         tolerance: 0.01
@@ -1239,9 +1241,10 @@ questions:
       Cpk = min[(USL − μ)/(3σ); (μ − LSL)/(3σ)] (QC-05). (210 − 204)/(3 · 2,5) = 6/7,5 = 0,8;
       (204 − 190)/(3 · 2,5) = 14/7,5 ≈ 1,87. Менше з двох значень: Cpk = 0,8.
     refs:
-      - source: Капінос Г.І., Бабій І.В. Операційний менеджмент, 2013
-        locator: розділ «Управління якістю», придатність процесу (QC-05)
-        checkedAt: '2026-09-22'
+      - source: Heizer J., Render B., Munson C. Operations Management, 2016
+        locator: Supplement 6 «Statistical Process Control», підрозділ «Process Capability», Process Capability Index (Cpk) (QC-05)
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9780134163512
     answers:
       - value: 0.8
         tolerance: 0.01
@@ -1278,12 +1281,14 @@ questions:
       (QC-06). Частка у виручці: 4 000 000 / 20 000 000 · 100% = 20,0% (COQ-01). Частка зовнішніх
       втрат: 1 400 000 / 4 000 000 · 100% = 35,0% (COQ-02).
     refs:
-      - source: Капінос Г.І., Бабій І.В. Операційний менеджмент, 2013
-        locator: розділ «Управління якістю», економіка якості, частка витрат на якість у виручці (COQ-01)
+      - source: Heizer J., Render B., Munson C. Operations Management, 2016
+        locator: розділ 6 «Managing Quality», підрозділ «Cost of Quality (COQ)», похідний показник — частка суми чотирьох категорій витрат на якість у виручці (COQ-01)
         checkedAt: '2026-09-23'
-      - source: Капінос Г.І., Бабій І.В. Операційний менеджмент, 2013
-        locator: розділ «Управління якістю», економіка якості, структура витрат на якість (COQ-02)
+        url: https://openlibrary.org/isbn/9780134163512
+      - source: Heizer J., Render B., Munson C. Operations Management, 2016
+        locator: розділ 6 «Managing Quality», підрозділ «Cost of Quality (COQ)», похідний показник — частка однієї з чотирьох категорій у сумі витрат на якість (COQ-02)
         checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9780134163512
     subquestions:
       - kind: numerical
         answers:

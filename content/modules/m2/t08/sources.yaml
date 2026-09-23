@@ -7,25 +7,25 @@ sources:
   # Основна література курсу
   - id: kapinos-babii-2013
     type: book
-    title: Операційний менеджмент
+    title: 'Операційний менеджмент: навчальний посібник'
     authors: [Капінос Г. І., Бабій І. В.]
     publisher: Центр учбової літератури
     year: 2013
     language: uk
     url: https://duikt.edu.ua/uploads/l_1479_22227234.pdf
     checkedAt: '2026-09-23'
-    note: 'Джерело розділу «Управління якістю» розрахункової бази курсу: контрольні карти X̄-R і p (QC-01, QC-02), індекси придатності процесу Cp і Cpk (QC-04, QC-05), витрати на якість і похідні від них показники (QC-06, COQ-01, COQ-02).'
+    note: 'Для теми 8 — джерело індексу зміни продуктивності (PROD-03, розділ 9, п. 9.1, с. 248), застосованого до наслідків поліпшення якості, і загального категорійного апарату управління якістю. Формул контрольних карт, індексів придатності й витрат на якість у виданні немає (аудит бази 2026-09-23).'
 
-  - id: stevenson-2020-t08
+  - id: heizer-render-munson-2016
     type: book
-    title: Operations Management
-    authors: [Stevenson W. J.]
-    publisher: McGraw-Hill Education
-    year: 2020
+    title: 'Operations Management: Sustainability and Supply Chain Management'
+    authors: [Heizer J., Render B., Munson C.]
+    publisher: Pearson
+    year: 2016
     language: en
-    url: https://openlibrary.org/isbn/9781260575712
+    url: https://openlibrary.org/isbn/9780134163512
     checkedAt: '2026-09-23'
-    note: 'Для теми 8 — джерело індексу зміни продуктивності (PROD-03), застосованого до наслідків поліпшення якості.'
+    note: 'Джерело розрахункової частини теми: контрольні карти X̄-R і p та індекси придатності процесу Cp і Cpk — Supplement 6 «Statistical Process Control» (QC-01, QC-02, QC-04, QC-05); чотири категорії витрат на якість і похідні від них частки — розділ 6 «Managing Quality», підрозділ «Cost of Quality (COQ)» (QC-06, COQ-01, COQ-02).'
 
   # Стандарти
   - id: iso-9000-2015-t08
