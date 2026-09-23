@@ -29,7 +29,7 @@ export interface CalculatorTrainer {
 export const CALCULATOR_TRAINERS: readonly CalculatorTrainer[] = [];
 
 /** Практичні, сторінки яких уже опубліковано (`praktychni/pNN/`). */
-export const PUBLISHED_PRACTICALS: readonly string[] = ['p01', 'p02'];
+export const PUBLISHED_PRACTICALS: readonly string[] = ['p01', 'p02', 'p06'];
 
 export interface PracticalTrainer {
   readonly practicalId: string;
@@ -65,8 +65,41 @@ export const MATRIX_TRAINER = {
   formula: 'Не менше 90 % зіставлень — 2 бали',
 } as const satisfies PracticalTrainer;
 
+export const EOQ_TRAINER = {
+  practicalId: 'p06',
+  registryId: 'eoq',
+  activityId: BADGE_ACTIVITY_IDS.eoq,
+  path: 'praktychni/p06/#trenazher-eoq',
+  icon: 'target',
+  title: 'Економічний розмір замовлення (EOQ)',
+  text: 'Розрахуйте оптимальний розмір замовлення, точку замовлення зі страховим запасом і чутливість сумарних витрат до відхилення розміру замовлення від оптимуму.',
+  formula: 'До 60 XP — по одному разу за кожен тип задачі',
+} as const satisfies PracticalTrainer;
+
+export const MRP_TRAINER = {
+  practicalId: 'p06',
+  registryId: 'mrp',
+  activityId: BADGE_ACTIVITY_IDS.mrp,
+  path: 'praktychni/p06/#trenazher-mrp',
+  icon: 'layers',
+  title: 'Планування потреби в матеріалах (MRP)',
+  text: 'Виконайте розвертання триярусної специфікації виробу: визначте брутто- і нетто-потребу на кожному рівні та період запуску замовлення з урахуванням часу постачання.',
+  formula: 'До 60 XP — за правильне розгортання специфікації',
+} as const satisfies PracticalTrainer;
+
+export const SEQUENCING_TRAINER = {
+  practicalId: 'p06',
+  registryId: 'sequencing',
+  activityId: BADGE_ACTIVITY_IDS.sequencing,
+  path: 'praktychni/p06/#trenazher-sequencing',
+  icon: 'clock',
+  title: 'Черговість робіт',
+  text: 'Упорядкуйте шість робіт за правилом SPT або EDD і порівняйте середній час проходження й середнє запізнення.',
+  formula: 'До 60 XP — по одному разу за кожне правило',
+} as const satisfies PracticalTrainer;
+
 /** Тренажери, що живуть на сторінці практичної (а не на власній сторінці `trenazhery/<slug>/`). */
-export const PRACTICAL_TRAINERS: readonly PracticalTrainer[] = [PRODUCTIVITY_TRAINER, MATRIX_TRAINER];
+export const PRACTICAL_TRAINERS: readonly PracticalTrainer[] = [PRODUCTIVITY_TRAINER, MATRIX_TRAINER, EOQ_TRAINER, MRP_TRAINER, SEQUENCING_TRAINER];
 
 export interface HomeTrainerCard {
   readonly key: string;
@@ -94,6 +127,9 @@ export function homeTrainerCards(): readonly HomeTrainerCard[] {
 export const TRAINER_KIND_LABELS: Readonly<Record<string, string>> = {
   productivity: 'розрахункові задачі',
   'priorities-matrix': 'матриця зіставлення',
+  eoq: 'розрахункові задачі',
+  mrp: 'розрахункові задачі',
+  sequencing: 'розрахункові задачі',
 };
 
 export function trainerKindLabel(registryId: string): string {

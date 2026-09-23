@@ -1,6 +1,21 @@
 import { describe, expect, it } from 'vitest';
 import { createEmptyProgress } from '../../engines/progress';
-import { CALCULATOR_TRAINERS, homeTrainerCards, MATRIX_TRAINER, PRACTICAL_TRAINERS, PRODUCTIVITY_TRAINER, PUBLISHED_PRACTICALS, practicalLabel, practicalPath, publishedTrainer, topicTrainerActivityIds, trainerKindLabel } from './catalog';
+import {
+  CALCULATOR_TRAINERS,
+  EOQ_TRAINER,
+  homeTrainerCards,
+  MATRIX_TRAINER,
+  MRP_TRAINER,
+  PRACTICAL_TRAINERS,
+  PRODUCTIVITY_TRAINER,
+  PUBLISHED_PRACTICALS,
+  SEQUENCING_TRAINER,
+  practicalLabel,
+  practicalPath,
+  publishedTrainer,
+  topicTrainerActivityIds,
+  trainerKindLabel,
+} from './catalog';
 import { practicumNote, practicumProgress } from './practicum-progress';
 
 const PRACTICALS = [
@@ -16,17 +31,29 @@ describe('каталог тренажерів', () => {
   it('продуктивність і матриця моделей живуть на сторінці практичної, і в обох є ID активності', () => {
     expect(MATRIX_TRAINER.activityId).toBe('p02-matching-matrix');
     expect(PRODUCTIVITY_TRAINER.activityId).toBe('productivity');
-    expect(PRACTICAL_TRAINERS).toEqual([PRODUCTIVITY_TRAINER, MATRIX_TRAINER]);
+    expect(PRACTICAL_TRAINERS).toEqual([PRODUCTIVITY_TRAINER, MATRIX_TRAINER, EOQ_TRAINER, MRP_TRAINER, SEQUENCING_TRAINER]);
   });
 
-  it('практичні p01 і p02 опубліковані', () => {
+  it('усі три тренажери практичної 6 мають ID активності й ведуть на її сторінку', () => {
+    for (const trainer of [EOQ_TRAINER, MRP_TRAINER, SEQUENCING_TRAINER]) {
+      expect(trainer.practicalId).toBe('p06');
+      expect(trainer.path.startsWith('praktychni/p06/#trenazher-')).toBe(true);
+    }
+    expect(EOQ_TRAINER.activityId).toBe('eoq');
+    expect(MRP_TRAINER.activityId).toBe('mrp');
+    expect(SEQUENCING_TRAINER.activityId).toBe('sequencing');
+  });
+
+  it('практичні p01, p02 і p06 опубліковані', () => {
     expect(PUBLISHED_PRACTICALS).toContain('p01');
     expect(PUBLISHED_PRACTICALS).toContain('p02');
+    expect(PUBLISHED_PRACTICALS).toContain('p06');
   });
 
   it('опубліковані тренажери знаходяться за ID реєстру, неопубліковані — ні', () => {
     expect(publishedTrainer('priorities-matrix')).toMatchObject({ path: 'praktychni/p02/#trenazher', activityId: 'p02-matching-matrix' });
     expect(publishedTrainer('productivity')).toMatchObject({ path: 'praktychni/p01/#trenazher', activityId: 'productivity' });
+    expect(publishedTrainer('eoq')).toMatchObject({ path: 'praktychni/p06/#trenazher-eoq', activityId: 'eoq' });
     expect(publishedTrainer('forecasting')).toBeNull();
   });
 
@@ -71,6 +98,9 @@ describe('homeTrainerCards', () => {
     expect(cards.length).toBeGreaterThan(0);
     expect(cards.map((card) => card.key)).toContain('productivity');
     expect(cards.map((card) => card.key)).toContain('priorities-matrix');
+    expect(cards.map((card) => card.key)).toContain('eoq');
+    expect(cards.map((card) => card.key)).toContain('mrp');
+    expect(cards.map((card) => card.key)).toContain('sequencing');
     expect(cards.every((card) => card.path !== '' && card.title !== '')).toBe(true);
   });
 });
