@@ -33,12 +33,20 @@ const DATA_SECTION: Readonly<Record<PracticalTrainerKind, PracticalSection>> = {
   'calculation-tasks': { id: 'dani', label: 'Дані, формули й джерела' },
 };
 
-export function practicalSections(kind: PracticalTrainerKind): readonly PracticalSection[] {
-  return [...COMMON_HEAD, ...TRAINER_SECTIONS[kind], ...COMMON_TAIL, DATA_SECTION[kind]];
+/**
+ * Практична з калькулятором може мати кілька тренажерів на одній сторінці (наприклад, p03 — закон
+ * Літтла й тривалість циклу): кожен отримує власний якір і пункт змісту. Без параметра — стара поведінка
+ * (один спільний якір `trenazher`), тож практичні з одним тренажером (p01) не змінюються.
+ */
+export function practicalSections(kind: PracticalTrainerKind, calculatorTrainers?: readonly PracticalSection[]): readonly PracticalSection[] {
+  const trainerSections = kind === 'calculation-tasks' && calculatorTrainers && calculatorTrainers.length > 0 ? calculatorTrainers : TRAINER_SECTIONS[kind];
+  return [...COMMON_HEAD, ...trainerSections, ...COMMON_TAIL, DATA_SECTION[kind]];
 }
 
-export function practicalXpChip(kind: PracticalTrainerKind): string {
-  return kind === 'matching-matrix' ? 'до 60 XP за матрицю' : 'до 60 XP за задачі тренажера';
+export function practicalXpChip(kind: PracticalTrainerKind, trainerCount = 1): string {
+  if (kind === 'matching-matrix') return 'до 60 XP за матрицю';
+  const max = 60 * Math.max(1, trainerCount);
+  return `до ${max} XP за задачі тренажера`;
 }
 
 export interface MatrixNoteInput {

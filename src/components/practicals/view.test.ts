@@ -21,6 +21,22 @@ describe('practicalSections', () => {
   it('gives the calculator trainer its own single section before essay and rubric', () => {
     expect(practicalSections('calculation-tasks').map((section) => section.id)).toEqual(['meta', 'umova', 'trenazher', 'ese', 'rubryka', 'dani']);
   });
+
+  it('gives each calculator trainer its own section when a practical has several (p03)', () => {
+    const trainers = [
+      { id: 'trenazher-little-law', label: 'Тренажер: закон Літтла' },
+      { id: 'trenazher-production-cycle', label: 'Тренажер: тривалість виробничого циклу' },
+    ];
+    expect(practicalSections('calculation-tasks', trainers).map((section) => section.id)).toEqual([
+      'meta',
+      'umova',
+      'trenazher-little-law',
+      'trenazher-production-cycle',
+      'ese',
+      'rubryka',
+      'dani',
+    ]);
+  });
 });
 
 describe('practicalXpChip', () => {
@@ -30,6 +46,10 @@ describe('practicalXpChip', () => {
 
   it('falls back to a generic task chip for the calculator trainer', () => {
     expect(practicalXpChip('calculation-tasks')).toBe('до 60 XP за задачі тренажера');
+  });
+
+  it('multiplies the XP by the number of calculator trainers on the page (p03 has two)', () => {
+    expect(practicalXpChip('calculation-tasks', 2)).toBe('до 120 XP за задачі тренажера');
   });
 });
 

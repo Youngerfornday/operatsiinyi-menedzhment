@@ -29,7 +29,7 @@ export interface CalculatorTrainer {
 export const CALCULATOR_TRAINERS: readonly CalculatorTrainer[] = [];
 
 /** Практичні, сторінки яких уже опубліковано (`praktychni/pNN/`). */
-export const PUBLISHED_PRACTICALS: readonly string[] = ['p01', 'p02'];
+export const PUBLISHED_PRACTICALS: readonly string[] = ['p01', 'p02', 'p03'];
 
 export interface PracticalTrainer {
   readonly practicalId: string;
@@ -65,8 +65,30 @@ export const MATRIX_TRAINER = {
   formula: 'Не менше 90 % зіставлень — 2 бали',
 } as const satisfies PracticalTrainer;
 
+export const LITTLE_LAW_TRAINER = {
+  practicalId: 'p03',
+  registryId: 'little-law',
+  activityId: BADGE_ACTIVITY_IDS.littleLaw,
+  path: 'praktychni/p03/#trenazher-little-law',
+  icon: 'calc',
+  title: 'Закон Літтла',
+  text: 'За двома відомими величинами — незавершеним виробництвом, пропускною здатністю чи середнім часом перебування в системі — знайдіть третю (CAP-04).',
+  formula: 'До 60 XP — по одному разу за кожен тип задачі',
+} as const satisfies PracticalTrainer;
+
+export const PRODUCTION_CYCLE_TRAINER = {
+  practicalId: 'p03',
+  registryId: 'production-cycle',
+  activityId: BADGE_ACTIVITY_IDS.productionCycle,
+  path: 'praktychni/p03/#trenazher-production-cycle',
+  icon: 'clock',
+  title: 'Тривалість виробничого циклу',
+  text: 'Розрахуйте тривалість циклу партії деталей при послідовному, паралельному й паралельно-послідовному русі (PC-01, PC-02, PC-03).',
+  formula: 'До 60 XP — за кожен новий варіант маршруту',
+} as const satisfies PracticalTrainer;
+
 /** Тренажери, що живуть на сторінці практичної (а не на власній сторінці `trenazhery/<slug>/`). */
-export const PRACTICAL_TRAINERS: readonly PracticalTrainer[] = [PRODUCTIVITY_TRAINER, MATRIX_TRAINER];
+export const PRACTICAL_TRAINERS: readonly PracticalTrainer[] = [PRODUCTIVITY_TRAINER, MATRIX_TRAINER, LITTLE_LAW_TRAINER, PRODUCTION_CYCLE_TRAINER];
 
 export interface HomeTrainerCard {
   readonly key: string;
@@ -94,6 +116,8 @@ export function homeTrainerCards(): readonly HomeTrainerCard[] {
 export const TRAINER_KIND_LABELS: Readonly<Record<string, string>> = {
   productivity: 'розрахункові задачі',
   'priorities-matrix': 'матриця зіставлення',
+  'little-law': 'розрахункові задачі',
+  'production-cycle': 'розрахункові задачі',
 };
 
 export function trainerKindLabel(registryId: string): string {

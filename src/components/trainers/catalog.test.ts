@@ -1,6 +1,20 @@
 import { describe, expect, it } from 'vitest';
 import { createEmptyProgress } from '../../engines/progress';
-import { CALCULATOR_TRAINERS, homeTrainerCards, MATRIX_TRAINER, PRACTICAL_TRAINERS, PRODUCTIVITY_TRAINER, PUBLISHED_PRACTICALS, practicalLabel, practicalPath, publishedTrainer, topicTrainerActivityIds, trainerKindLabel } from './catalog';
+import {
+  CALCULATOR_TRAINERS,
+  homeTrainerCards,
+  LITTLE_LAW_TRAINER,
+  MATRIX_TRAINER,
+  PRACTICAL_TRAINERS,
+  PRODUCTION_CYCLE_TRAINER,
+  PRODUCTIVITY_TRAINER,
+  PUBLISHED_PRACTICALS,
+  practicalLabel,
+  practicalPath,
+  publishedTrainer,
+  topicTrainerActivityIds,
+  trainerKindLabel,
+} from './catalog';
 import { practicumNote, practicumProgress } from './practicum-progress';
 
 const PRACTICALS = [
@@ -16,17 +30,22 @@ describe('каталог тренажерів', () => {
   it('продуктивність і матриця моделей живуть на сторінці практичної, і в обох є ID активності', () => {
     expect(MATRIX_TRAINER.activityId).toBe('p02-matching-matrix');
     expect(PRODUCTIVITY_TRAINER.activityId).toBe('productivity');
-    expect(PRACTICAL_TRAINERS).toEqual([PRODUCTIVITY_TRAINER, MATRIX_TRAINER]);
+    expect(LITTLE_LAW_TRAINER.activityId).toBe('little-law');
+    expect(PRODUCTION_CYCLE_TRAINER.activityId).toBe('production-cycle');
+    expect(PRACTICAL_TRAINERS).toEqual([PRODUCTIVITY_TRAINER, MATRIX_TRAINER, LITTLE_LAW_TRAINER, PRODUCTION_CYCLE_TRAINER]);
   });
 
-  it('практичні p01 і p02 опубліковані', () => {
+  it('практичні p01, p02 і p03 опубліковані', () => {
     expect(PUBLISHED_PRACTICALS).toContain('p01');
     expect(PUBLISHED_PRACTICALS).toContain('p02');
+    expect(PUBLISHED_PRACTICALS).toContain('p03');
   });
 
   it('опубліковані тренажери знаходяться за ID реєстру, неопубліковані — ні', () => {
     expect(publishedTrainer('priorities-matrix')).toMatchObject({ path: 'praktychni/p02/#trenazher', activityId: 'p02-matching-matrix' });
     expect(publishedTrainer('productivity')).toMatchObject({ path: 'praktychni/p01/#trenazher', activityId: 'productivity' });
+    expect(publishedTrainer('little-law')).toMatchObject({ path: 'praktychni/p03/#trenazher-little-law', activityId: 'little-law' });
+    expect(publishedTrainer('production-cycle')).toMatchObject({ path: 'praktychni/p03/#trenazher-production-cycle', activityId: 'production-cycle' });
     expect(publishedTrainer('forecasting')).toBeNull();
   });
 
