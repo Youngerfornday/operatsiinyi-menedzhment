@@ -2,6 +2,7 @@
 import { useEffect, useRef, type SubmitEvent, type ReactNode } from 'react';
 import { Icon } from '../../quiz/Icon';
 import type { FieldIssues, TaskCheck } from '../model/task-check';
+import { useTaskHeadingLevel } from './heading-level';
 import { CheckParts, Steps } from './parts';
 
 export interface TaskShellProps {
@@ -18,6 +19,9 @@ export interface TaskShellProps {
 }
 
 export function TaskShell({ prefix, number, fabula, fields, check, solution, outcomeText, status, onSubmit, onNext }: TaskShellProps) {
+  const level = useTaskHeadingLevel();
+  const TaskHeading = `h${level}` as const;
+  const VerdictHeading = `h${level + 1}` as 'h4' | 'h5';
   const headingRef = useRef<HTMLHeadingElement>(null);
   const verdictRef = useRef<HTMLHeadingElement>(null);
   const firstRender = useRef(true);
@@ -40,7 +44,7 @@ export function TaskShell({ prefix, number, fabula, fields, check, solution, out
     const first = issues[0];
     if (first) {
       requestAnimationFrame(() => {
-        const field = document.querySelector<HTMLElement>(`#${prefix}-task [data-field="${first.field}"] input`);
+        const field = document.querySelector<HTMLElement>(`#${prefix}-task [data-field="${first.field}"] :is(input, select)`);
         field?.focus();
       });
     }
@@ -49,9 +53,9 @@ export function TaskShell({ prefix, number, fabula, fields, check, solution, out
   return (
     <div className="ttask" id={`${prefix}-task`} data-task data-variant-number={number}>
       <div className="ttask-head">
-        <h3 className="h4" tabIndex={-1} ref={headingRef} data-task-heading>
+        <TaskHeading className="h4" tabIndex={-1} ref={headingRef} data-task-heading>
           Варіант {number}
-        </h3>
+        </TaskHeading>
         <p className="faint small" data-trainer-status>
           {status}
         </p>
@@ -77,10 +81,10 @@ export function TaskShell({ prefix, number, fabula, fields, check, solution, out
 
       {check && (
         <section className={`ttask-result ${check.solved ? 'is-ok' : 'is-err'}`} aria-labelledby={`${prefix}-verdict`} data-task-result data-solved={check.solved}>
-          <h4 className="tverdict-title" id={`${prefix}-verdict`} tabIndex={-1} ref={verdictRef}>
+          <VerdictHeading className="tverdict-title" id={`${prefix}-verdict`} tabIndex={-1} ref={verdictRef}>
             <Icon name={check.solved ? 'check' : 'x'} className="icon" />
             {check.solved ? 'Правильно' : 'Неправильно'}
-          </h4>
+          </VerdictHeading>
           <CheckParts check={check} />
           <p className="summary-xp" role="status" data-task-outcome data-solved={check.solved}>
             <Icon name="hex" className="icon summary-hex" />

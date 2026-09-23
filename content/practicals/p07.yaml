@@ -1,0 +1,114 @@
+# Дані тренажера практичної 7. Реєстр (мета, результати, рубрика, ПРН, дані статистики) — у course.yaml.
+# Формули — лише з docs/research/formula-baseline.md (коди PRJ-01..07, PRJ-09, QC-01, QC-02, QC-04, QC-05).
+# PRJ-08 (стиснення проекту) у тренажері не рахується — лишається задачею самостійної роботи (СРС).
+id: p07
+title: Сітьове планування проекту і статистичний контроль якості
+intro: >-
+  У тренажері — три калькулятори теми 7 і теми 8. Перший будує сітьовий графік, знаходить критичний
+  шлях і резерви часу та оцінює ймовірність дотримання строку методом PERT. Другий розраховує контрольні
+  межі карт середніх і розмахів (x̄-R) та карти частки дефектних одиниць (p-карта) і визначає, чи
+  сигналізує нова підгрупа про розладнання процесу. Третій розраховує індекси придатності процесу Cp і
+  Cpk. Кожен варіант генерує нові дані; після перевірки тренажер показує повний розв’язок за формулою.
+  XP нараховується лише за перший правильно розв’язаний варіант кожного типу задачі — до 60 XP за
+  кожен з трьох калькуляторів.
+status: review
+updatedAt: '2026-09-23'
+sources:
+  - id: kapinos-babii-2013
+    type: book
+    title: 'Операційний менеджмент: навчальний посібник'
+    authors: [Капінос Г. І., Бабій І. В.]
+    publisher: Центр учбової літератури
+    year: 2013
+    language: uk
+    url: https://duikt.edu.ua/uploads/l_1479_22227234.pdf
+    checkedAt: '2026-09-23'
+    note: 'Джерело раннього/пізнього старту, резерву часу й критичного шляху (PRJ-01..04): розділ 10, п. 10.11 «Методи сітьового планування. Техніка управління проектами методом критичного шляху (СРМ)», с. 307–308.'
+
+  - id: hevko-2017
+    type: book
+    title: 'Операційний (виробничий) менеджмент: конспект лекцій'
+    authors: [Гевко І.]
+    publisher: ТНТУ
+    year: 2017
+    language: uk
+    url: https://elartu.tntu.edu.ua/handle/lib/21300
+    checkedAt: '2026-09-23'
+    note: 'Джерело очікуваного часу, дисперсії й імовірності дотримання строку методом PERT (PRJ-05..07): тема 14 «Управління проектами», п. 14.3 «Сіткове планування та управління», с. 124–125.'
+
+  - id: heizer-render-munson-2016
+    type: book
+    title: 'Operations Management: Sustainability and Supply Chain Management'
+    authors: [Heizer J., Render B., Munson C.]
+    publisher: Pearson
+    year: 2016
+    language: en
+    url: https://openlibrary.org/isbn/9780134163512
+    checkedAt: '2026-09-23'
+    note: 'Джерело контрольних карт x̄-R і p (QC-01, QC-02) та індексів придатності процесу Cp і Cpk (QC-04, QC-05): Supplement 6 «Statistical Process Control».'
+
+trainer:
+  kind: calculation-tasks
+  tasks:
+    - id: critical-path
+      method: cpm-critical-path
+      title: Критичний шлях і резерви часу
+      formula: 'ES = max(EF попередників); EF = ES + t; LF = min(LS наступників); LS = LF − t; Повний резерв = LS − ES; Вільний резерв = min(ES наступників) − EF'
+      ref:
+        source: 'Капінос Г.І., Бабій І.В. Операційний менеджмент, 2013'
+        locator: 'розділ 10, п. 10.11 «Методи сітьового планування. Техніка управління проектами методом критичного шляху (СРМ)», с. 307–308, ранні й пізні строки, повний і вільний резерв часу, критичний шлях (PRJ-01, PRJ-02, PRJ-03, PRJ-04, PRJ-09)'
+        checkedAt: '2026-09-23'
+        url: https://duikt.edu.ua/uploads/l_1479_22227234.pdf
+
+    - id: pert-probability
+      method: pert-probability
+      title: Очікуваний строк і ймовірність дотримання (PERT)
+      formula: 'te = (o + 4m + p) / 6; σ² = ((p − o) / 6)²; Z = (D − TE) / σ'
+      ref:
+        source: 'Гевко І. Операційний менеджмент, 2017'
+        locator: 'тема 14 «Управління проектами», п. 14.3 «Сіткове планування та управління», с. 124–125, очікувана тривалість, дисперсія й імовірність дотримання строку (PRJ-05, PRJ-06, PRJ-07)'
+        checkedAt: '2026-09-23'
+        url: https://elartu.tntu.edu.ua/handle/lib/21300
+
+    - id: xbar-r-chart
+      method: xbar-r-chart
+      title: Контрольна карта середніх і розмахів (x̄-R)
+      formula: 'UCLx̄ = X̿ + A2·R̄; LCLx̄ = X̿ − A2·R̄; UCLR = D4·R̄; LCLR = D3·R̄'
+      ref:
+        source: 'Heizer J., Render B., Munson C. Operations Management, 2016'
+        locator: 'Supplement 6 «Statistical Process Control», підрозділи «Setting Mean Chart Limits (x̄-Charts)» і «Setting Range Chart Limits (R-Charts)» (QC-01)'
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9780134163512
+
+    - id: p-chart
+      method: p-chart
+      title: Карта частки дефектних одиниць (p-карта)
+      formula: 'UCLp = p̄ + 3√(p̄(1 − p̄)/n); LCLp = p̄ − 3√(p̄(1 − p̄)/n)'
+      ref:
+        source: 'Heizer J., Render B., Munson C. Operations Management, 2016'
+        locator: 'Supplement 6 «Statistical Process Control», підрозділ «Control Charts for Attributes», p-chart (QC-02)'
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9780134163512
+
+    - id: process-capability
+      method: process-capability
+      title: Індекси придатності процесу Cp і Cpk
+      formula: 'Cp = (USL − LSL) / (6σ); Cpk = min[(USL − μ)/(3σ); (μ − LSL)/(3σ)]'
+      ref:
+        source: 'Heizer J., Render B., Munson C. Operations Management, 2016'
+        locator: 'Supplement 6 «Statistical Process Control», підрозділ «Process Capability», Process Capability Ratio (Cp) і Process Capability Index (Cpk) (QC-04, QC-05)'
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9780134163512
+
+  essay:
+    prompt: >-
+      Поясніть, чому процес із високим індексом Cp може мати низький індекс Cpk, і назвіть управлінську
+      дію, яка підвищує Cpk без зміни розкиду процесу (σ).
+    maxWords: 300
+    expectations:
+      - 'Пояснено, що Cp залежить лише від ширини поля допуску й розкиду процесу, а Cpk додатково враховує зміщення середнього відносно поля допуску.'
+      - 'Названо конкретну управлінську дію, що підвищує Cpk без зміни σ, — центрування процесу (переналаштування обладнання так, щоб середнє збіглося із серединою поля допуску).'
+      - 'Пояснення спирається на власний розрахунок із тренажера, а не переказує визначення індексів.'
+    hints:
+      - 'Порівняйте формули Cp (QC-04) і Cpk (QC-05): у Cpk замість половини поля допуску стоїть менша з двох відстаней від середнього до найближчої межі.'
+      - 'Перегляньте розділ лекції теми 8 «Придатність процесу: індекси Cp і Cpk» — приклад двох процесів фасування з однаковим Cp і різним Cpk.'

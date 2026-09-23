@@ -1,0 +1,93 @@
+# Дані тренажерів практичної 4. Реєстр (мета, результати, рубрика, ПРН, дані статистики) — у course.yaml.
+# Три тренажери практичної (facility-location, line-balancing, work-measurement) ділять один список
+# `trainer.tasks`: кожен острів фільтрує собі лише відомий метод (src/components/trainers/model/*.ts).
+# Формули — лише з docs/research/formula-baseline.md (коди LOC-01, LOC-02, CAP-05, LB-01, LB-02, LB-05, WM-01…04).
+id: p04
+title: Проектування операційної системи — розміщення, балансування лінії, нормування праці
+intro: >-
+  У тренажері розв’яжіть три задачі проектування операційної системи: оберіть майданчик методом
+  вагових коефіцієнтів і методом центру ваги, збалансуйте потокову лінію під заданий такт і
+  розрахуйте норму часу й норму виробітку за хронометражними даними. Кожен варіант генерує нові
+  дані; після перевірки тренажер показує повний розв’язок за формулою. XP нараховується лише за
+  перший правильно розв’язаний варіант кожного тренажера — до 60 XP за кожен із трьох.
+status: review
+updatedAt: '2026-09-23'
+sources:
+  - id: heizer-render-munson-2016
+    type: book
+    title: 'Operations Management: Sustainability and Supply Chain Management'
+    authors: [Heizer J., Render B., Munson C.]
+    publisher: Pearson
+    year: 2016
+    language: en
+    url: https://openlibrary.org/isbn/9780134163512
+    checkedAt: '2026-09-23'
+    note: 'Джерело методу вагових коефіцієнтів (LOC-01), методу центру ваги (LOC-02) і правила найбільшої кількості наступних завдань (LB-05): розділ 8 «Location Strategies», розділ 9 «Layout Strategies».'
+
+  - id: kapinos-babii-2013
+    type: book
+    title: 'Операційний менеджмент: навчальний посібник'
+    authors: [Капінос Г. І., Бабій І. В.]
+    publisher: Центр учбової літератури
+    year: 2013
+    language: uk
+    url: https://duikt.edu.ua/uploads/l_1479_22227234.pdf
+    checkedAt: '2026-09-23'
+    note: 'Джерело норми виробітку (WM-04): розділ 10, п. 10.10 «Хронометраж», с. 306.'
+
+trainer:
+  kind: calculation-tasks
+  tasks:
+    - id: factor-rating
+      method: factor-rating
+      title: Метод вагових коефіцієнтів
+      formula: 'Бал варіанта = Σ (вага фактора × оцінка варіанта за фактором)'
+      ref:
+        source: 'Heizer J., Render B., Munson C. Operations Management, 2016'
+        locator: 'розділ 8 «Location Strategies», підрозділ «The Factor-Rating Method» (LOC-01)'
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9780134163512
+
+    - id: center-of-gravity
+      method: center-of-gravity
+      title: Метод центру ваги
+      formula: 'x* = Σ(Qᵢ·xᵢ) / ΣQᵢ; y* = Σ(Qᵢ·yᵢ) / ΣQᵢ'
+      ref:
+        source: 'Heizer J., Render B., Munson C. Operations Management, 2016'
+        locator: 'розділ 8 «Location Strategies», підрозділ «Center-of-Gravity Method» (LOC-02)'
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9780134163512
+
+    - id: line-balance
+      method: line-balance
+      title: Балансування потокової лінії за тактом
+      formula: 'Такт = Доступний час / Попит; Nmin = ⌈Σtᵢ / C⌉; Ефективність = Σtᵢ / (N · C) · 100 %'
+      ref:
+        source: 'Heizer J., Render B., Munson C. Operations Management, 2016'
+        locator: 'розділ 9 «Layout Strategies», підрозділ «Assembly-Line Balancing», евристика «most following tasks» (LB-05)'
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9780134163512
+
+    - id: time-standard
+      method: time-standard
+      title: Норма часу й норма виробітку
+      formula: 'Тшт = Топ + Тобсл + Твідп; Тшт.к = Тшт + Тпз / n; Нвир = Тзм / Тшт.к'
+      ref:
+        source: 'Капінос Г.І., Бабій І.В. Операційний менеджмент, 2013'
+        locator: 'розділ 10, п. 10.10 «Хронометраж», с. 306, норма виробітку Нвир = Тзм / tшт.к (визначення — п. 6.3.2, с. 194) (WM-04)'
+        checkedAt: '2026-09-23'
+        url: https://duikt.edu.ua/uploads/l_1479_22227234.pdf
+
+  essay:
+    prompt: >-
+      Поясніть, чому метод вагових коефіцієнтів і метод центру ваги можуть рекомендувати різні
+      майданчики для того самого рішення, і яке рішення ви обрали б для розміщення нового складу за
+      даними свого варіанта тренажера.
+    maxWords: 300
+    expectations:
+      - 'Названо конкретну причину можливої розбіжності: метод вагових коефіцієнтів враховує якісні фактори (кадри, інфраструктуру, оподаткування), а метод центру ваги мінімізує лише транспортну відстань до відомих точок.'
+      - 'Наведено власний розрахунок із тренажера (бали обох майданчиків або координати точки) як підставу висновку, а не переказ визначень методів.'
+      - 'Сформульовано остаточну рекомендацію з поясненням, який метод або їх поєднання визначило вибір.'
+    hints:
+      - 'Перегляньте розділ лекції «Два методи відповідають на різні питання»: методом центру ваги окреслюють область пошуку, методом вагових коефіцієнтів обирають конкретний майданчик усередині неї.'
+      - 'Якщо результати двох методів вашого варіанта не суперечать одне одному, поясніть чому — це також змістовна відповідь.'

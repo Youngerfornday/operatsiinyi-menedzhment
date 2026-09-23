@@ -12,6 +12,7 @@ const PAGES = [
   { name: 'тест теми 1 (фікстурний банк)', path: 'testy/operatsiinyi-menedzhment-yak-funktsiia/', heading: /Тренувальний тест · Тема 1/ },
   { name: 'тест-заглушка', path: 'testy/operatsiina-diialnist-resursy-protsesy/', heading: /Тренувальний тест · Тема 4/ },
   { name: 'профіль', path: 'profil/', heading: 'Стажист дільниці' },
+  { name: 'РГР', path: 'rgr/', heading: /Операційний план дільниці підприємства/ },
 ] as const;
 
 for (const item of PAGES) {
@@ -25,6 +26,21 @@ for (const item of PAGES) {
     await expectNoSeriousAxeViolations(page);
   });
 }
+
+test('РГР: номер залікової → варіант за двома останніми цифрами; помилка формату оголошується', async ({ page }) => {
+  await page.goto('rgr/');
+  const input = page.getByLabel('Номер залікової книжки');
+  await input.fill('20-40-1267');
+  await page.getByRole('button', { name: 'Показати варіант' }).click();
+  await expect(page.getByRole('heading', { level: 3, name: 'Варіант 67' })).toBeFocused();
+  await expect(page.locator('.rgr-stage')).toHaveCount(4);
+  await expectNoSeriousAxeViolations(page);
+
+  await input.fill('20A1');
+  await page.getByRole('button', { name: 'Показати варіант' }).click();
+  await expect(page.getByRole('alert')).toContainText('лише цифри');
+  await expect(input).toHaveAttribute('aria-invalid', 'true');
+});
 
 test('головна: лічильники з реєстру, маршрутна карта з 2 модулів і 8 тем, маршрут 0 із 8', async ({ page }) => {
   await page.goto('');

@@ -70,7 +70,7 @@ if (result.ok) { store.save(result.value.state); announce(eventOutcomeText(resul
   майстер зміни → начальник дільниці → начальник виробництва → директор з операцій. ID мають збігатися з
   `src/lib/player-levels.ts` (статичні заготовки гідруються за `data-level-id`) — цей файл лежить поза `src/engines`
   і оновлюється окремо. `levelProgress(xp)` повертає дані для метра.
-- `BADGES` — 13 бейджів із предикатами над станом: по одному на кожен ID з `BADGE_ACTIVITY_IDS` (тренажери цієї
+- `BADGES` — 15 бейджів із предикатами над станом: по одному на кожен ID з `BADGE_ACTIVITY_IDS` (тренажери цієї
   дисципліни, див. нижче) плюс «Уважний читач» (п'ять прочитаних тем, не прив'язаний до тренажера). Тренажери
   мають надсилати події `trainer-completed` з `activityId` із `BADGE_ACTIVITY_IDS`.
 - Тексти: `formatXp`, `xpGainText`, `nextLevelText`, `levelPositionText`, `badgesEarnedText`, `newBadgesText`, `eventOutcomeText`.
@@ -93,10 +93,20 @@ if (result.ok) { store.save(result.value.state); announce(eventOutcomeText(resul
    `tools/export/scorm/app/data.ts`, функція специфікації в `tools/export/scorm/catalog.ts`, острів-точка входу
    `tools/export/scorm/app/<kind>-entry.tsx` (за зразком `matrix-entry.tsx`).
 
-Активності цієї дисципліни вже зарезервовано в `BADGE_ACTIVITY_IDS`, тренажерів під них ще не написано:
-`little-law`, `production-cycle`, `line-balancing`, `forecasting`, `eoq`, `mrp`,
-`aggregate-planning`, `sequencing`, `cpm-pert`, `control-charts`, `process-capability`.
-`productivity` (перший калькулятор дисципліни) описано нижче.
+Під кожну активність з `BADGE_ACTIVITY_IDS` уже є тренажер. Тренажери однієї практичної ділять її
+`trainer.tasks`; сторінка практичної рендерить їх через `PracticalCalculationTrainers.tsx` за списком
+`practicals[].trainers` з `course.yaml`, а `model/calculation-methods.test.ts` перевіряє, що кожну задачу
+файлу практичної бере якийсь її тренажер. Новий тренажер практичної — запис у `CALCULATION_TRAINER_COMPONENTS`
+і `CALCULATION_TRAINER_METHODS`.
+
+| Практична | Рушії |
+|---|---|
+| p01 | `productivity/` |
+| p03 | `little-law/` (CAP-04), `production-cycle/` (PC-01…03) |
+| p04 | `facility-location/`, `line-balancing/`, `work-measurement/` |
+| p05 | `forecasting/`, `aggregate-planning/` |
+| p06 | `eoq/` (EOQ-01, 03, 04), `mrp/` (MRP-01…03), `sequencing/` (FCFS, SPT, EDD; SCH-01, 02, 04) |
+| p07 | `cpm-pert/`, `control-charts/`, `process-capability/` |
 
 ## `productivity/` — калькулятор продуктивності операційної системи
 
@@ -123,6 +133,69 @@ const check = checkProductivityTask(variant, { p1: '2,5', p2: '3' });     // mod
 - React-острів `ProductivityTrainer.tsx` на каркасі `ui/TaskShell.tsx` + `ui/use-trainer-task.ts` — це і є
   контракт «Як додати тренажер» вище, застосований уперше; наступні 11 калькуляторів повторюють ту саму
   форму (свій `src/engines/<name>/`, свій `model/<name>.ts`, свій React-острів, свій варіант схеми).
+
+## `facility-location/`, `line-balancing/`, `work-measurement/` — проектування операційної системи (практична 4)
+
+Три тренажери практичної 4 ділять один контентний файл — `content/practicals/p04.yaml` →
+`trainer.tasks` (`kind: calculation-tasks`), — бо схема контенту (`src/content/schemas/practical.ts`)
+дозволяє лише один `trainer` на файл практичної. Кожен острів фільтрує собі лише відомі йому методи
+через `.filter()` (`toFacilityLocationTaskChoices` / `toLineBalancingTaskChoices` /
+`toWorkMeasurementTaskChoices`, `src/components/trainers/model/*.ts`) і мовчки ігнорує чужі — на
+відміну від `toProductivityTaskChoices`, який кидає помилку на невідомий метод, бо володіє файлом
+практичної одноосібно. Порожній результат фільтра для власного пулу — і так упіймає `createXVariant`
+(«Пул задач … порожній»).
+
+- `facility-location/` — метод вагових коефіцієнтів (LOC-01, `factorRatingScore`) і метод центру ваги
+  (LOC-02, `centerOfGravity`); `createFacilityLocationVariant` обирає один із двох методів на варіант.
+- `line-balancing/` — такт (CAP-05, `taktTime`), мінімальна кількість станцій (LB-01, `minimumStations`),
+  закріплення операцій за станціями (LB-05, `assignStationsSequential` — для простого послідовного
+  ланцюга без розгалужень правило «найбільша кількість наступних завдань» зводиться до жадібного
+  заповнення станцій у незмінному порядку, що дослівно відтворює приклад лекції), ефективність, втрати
+  на простій і абсолютний час простою (LB-02..04). Генератор підбирає такт і попит так, щоб такт завжди
+  виходив цілим числом секунд (`cleanTaktInputs`, через НСД із 60).
+- `work-measurement/` — ланцюжок WM-01 → WM-02 → WM-03 → WM-04: оперативний, штучний і
+  штучно-калькуляційний час і норма виробітку (`outputRate` округлює вниз — дробового виробу
+  наприкінці зміни не існує).
+## `forecasting/`, `aggregate-planning/` — прогнозування й агрегатне планування (практична 5)
+
+Обидва тренажери практичної 5 ділять `content/practicals/p05.yaml` → `trainer.tasks`; кожен острів
+фільтрує собі відомі методи (`toForecastingTaskChoices` / `toAggregatePlanningTaskChoices`,
+`src/components/trainers/model/*.ts`) і мовчки пропускає чужі — як у практичних 3 і 4.
+
+- `forecasting/` — проста й зважена ковзна середня (FC-01, FC-02; ваги впорядковано від найдавнішого
+  періоду до найближчого, найбільша — в останнього), експоненційне згладжування (FC-03, один крок від
+  заданого Ft−1; `exponentialSmoothingSeries` відтворює ряд лекції від F1 = D1), MAD, MSE, MAPE (FC-04…06,
+  MAPE у відсотках, за тими самими періодами, де є прогноз).
+- `aggregate-planning/` — стратегії погоні й рівномірного виробництва (AGG-01, AGG-02) через штат =
+  випуск / продуктивність і сумарні витрати плану (AGG-03, `evaluatePlan`) — тим самим методом, що й
+  приклади лекції теми 6 (1 060 000 і 995 000 г.о.). Від’ємний залишок запасу — відкладений попит, за який
+  щоперіоду нараховується ставка дефіциту; умова варіанта називає це правило прямо. Понаднормового часу
+  рушій не рахує (див. `ponytail:` у `calculations.ts`).
+## `cpm-pert/`, `control-charts/`, `process-capability/` — сітьове планування і контроль якості (практична 7)
+
+Три тренажери практичної 7 ділять один контентний файл — `content/practicals/p07.yaml` →
+`trainer.tasks` (`kind: calculation-tasks`); кожен острів фільтрує собі лише відомі йому методи
+(`toCpmPertTaskChoices` / `toControlChartTaskChoices` / `toProcessCapabilityTaskChoices`,
+`src/components/trainers/model/*.ts`) і мовчки ігнорує чужі.
+
+- `cpm-pert/` — прямий і зворотний прохід (PRJ-01, PRJ-02, `computeNetwork`), повний і вільний резерв
+  (PRJ-03, PRJ-09), критичний шлях (PRJ-04); PERT: очікуваний час і дисперсія роботи (PRJ-05, PRJ-06),
+  Z = (D − TE) / σ, округлений до 0,01 як у лекції (PRJ-07), Φ(Z) — наближення Абрамовіца — Стігана
+  (похибка до 7,5·10⁻⁸, `standardNormalCdf`). Директивний строк генератора обирає цільовий Z рівномірно
+  на [−2,5; 2,5] і жорстко обмежує |Z| ≤ 3 (`MAX_ABSOLUTE_Z`), тож строк буває і раніше, і пізніше за TE,
+  а ймовірність не зсідається біля 100%. Топологія мережі фіксована — та сама, що в прикладі лекції
+  теми 7. PRJ-06 визначена лише для ОДНОГО критичного шляху: коли дві гілки мають однакову тривалість,
+  `computeNetwork.countCriticalPaths` рахує їх більше одного, і `computePertProject` повертає Result-
+  помилку `multiple-critical-paths` замість тихого підсумовування дисперсій обох гілок; генератор
+  PERT-варіантів перетягує оцінки, поки не отримає єдиний критичний шлях.
+- `control-charts/` — x̄-R (QC-01, `xbarRLimits`) і p-карта (QC-02, `pChartLimits`, LCL обрізається
+  до 0). Константи A2, D3, D4 для n = 2..10 (`constants.ts`) — стандартна таблиця SPC; базою курсу вони
+  не підтверджені (formula-baseline.md, «Не підтверджено», п. 2), тому острів показує їх в умові варіанта
+  з приміткою про це, а не подає як перевірений факт курсу. Сигнал розладнання буває як вище UCL, так
+  і нижче LCL (коли LCL > 0), а «спокійна» точка — не завжди рівно round(p̄·n).
+- `process-capability/` — Cp (QC-04) і Cpk (QC-05); середнє генератор тримає всередині поля допуску.
+  Додаткове питання «так/ні» — чи процес не центрований (Cpk < Cp) — звіряє лише щойно розраховані
+  індекси між собою, без зовнішніх порогів придатності (1,0, 1,33 тощо).
 
 ## `matrix/` — тренажер-матриця практичних
 

@@ -9,8 +9,9 @@ import { MATRIX_CONTENT_FILE, MATRIX_PRACTICAL_PATH, answerCurrentFeature, chip,
 /**
  * E2E-покриття тренажерів «Операційного менеджменту»: тренажер-матриця пріоритетів і рішень на практичній 2
  * і каталоги — тренажери, практичні, головна (дані каталогів — з src/components/trainers/catalog.ts і
- * course.yaml, тож тести не застарівають з кожною новою практичною). Тренажер продуктивності практичної 1
- * тут не покрито; калькуляторів з власною сторінкою ще немає (`CALCULATOR_TRAINERS` порожній).
+ * course.yaml, тож тести не застарівають з кожною новою практичною). Розрахункові тренажери практичних
+ * перевірено на рівні «варіант показано, порожня відповідь не перевіряється»; розрахунки покривають
+ * юніт-тести рушіїв. Калькуляторів з власною сторінкою ще немає (`CALCULATOR_TRAINERS` порожній).
  */
 
 const hasMatrixContent = existsSync(MATRIX_CONTENT_FILE);
@@ -173,8 +174,38 @@ test.describe('каталоги й інтеграція: тренажери пр
     for (const id of PUBLISHED_PRACTICALS) {
       await expect(page.locator(`[data-practical="${id}"]`)).toHaveAttribute('data-status', 'published');
     }
-    await expect(page.locator('[data-practical][data-status="pending"] .soon').first()).toContainText('готується');
+    const pending = page.locator('[data-practical][data-status="pending"]');
+    if ((await pending.count()) > 0) await expect(pending.locator('.soon').first()).toContainText('готується');
     await expectNoHorizontalScroll(page);
     await expectNoSeriousAxeViolations(page);
   });
+});
+
+/** Практичні з розрахунковими задачами: `practicals[].trainers` без матриці. */
+function calculationPracticals(): readonly { readonly id: string; readonly trainers: readonly string[] }[] {
+  const course = parse(readFileSync(COURSE_FILE, 'utf8')) as { readonly practicals: readonly { readonly id: string; readonly trainers: readonly string[] }[] };
+  return course.practicals.filter((practical) => PUBLISHED_PRACTICALS.includes(practical.id) && !practical.trainers.includes('priorities-matrix'));
+}
+
+test.describe('практичні з розрахунковими задачами: усі тренажери на сторінці', () => {
+  for (const practical of calculationPracticals()) {
+    test(`${practical.id}: кожен тренажер показує варіант і перевіряє порожню відповідь`, async ({ page }) => {
+      const errors: string[] = [];
+      page.on('pageerror', (error) => errors.push(error.message));
+      await page.goto(`praktychni/${practical.id}/`);
+      const tasks = page.locator('#trenazher [data-task]');
+      await expect(tasks).toHaveCount(practical.trainers.length);
+      if (practical.trainers.length > 1) {
+        for (const registryId of practical.trainers) await expect(page.locator(`#trenazher-${registryId}`)).toBeVisible();
+      }
+      for (const task of await tasks.all()) {
+        await expect(task.locator('[data-task-heading]')).toContainText('Варіант 1');
+        await task.locator('[data-task-check]').click();
+        await expect(task.locator('[data-task-result]')).toHaveCount(0);
+      }
+      expect(errors).toEqual([]);
+      await expectNoHorizontalScroll(page);
+      await expectNoSeriousAxeViolations(page);
+    });
+  }
 });

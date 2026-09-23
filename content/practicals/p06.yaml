@@ -1,0 +1,169 @@
+# Дані трьох тренажерів практичної 6. Реєстр (мета, результати, рубрика, ПРН, дані закупівель) — у course.yaml.
+# Три тренажери практичної (eoq, mrp, sequencing) ділять один список `trainer.tasks`: кожен острів
+# фільтрує собі лише відомий метод (src/components/trainers/model/*.ts), не кидаючи помилку на чужі.
+# Формули — лише з docs/research/formula-baseline.md (коди EOQ-01, EOQ-03, EOQ-04, MRP-01, MRP-02, MRP-03, SCH-01, SCH-02, SCH-04);
+# FCFS — базова черговість без сортування з лекції теми 6 (приклад SCH-01), окремого коду в базі не має.
+id: p06
+title: Управління запасами і планування потреби в матеріалах
+intro: >-
+  Практична складається з трьох незалежних тренажерів. У тренажері EOQ розрахуйте оптимальний розмір
+  замовлення, точку замовлення зі страховим запасом і чутливість сумарних витрат до відхилення розміру
+  замовлення від оптимуму. У тренажері MRP виконайте розгортання триярусної специфікації виробу:
+  визначте брутто- і нетто-потребу на кожному рівні та період запуску замовлення з урахуванням часу
+  постачання. У тренажері черговості впорядкуйте шість робіт за правилом FCFS, SPT чи EDD і розрахуйте
+  середній час проходження, середнє запізнення й завантаження. Кожен варіант генерує нові дані; після перевірки
+  тренажер показує повний розв’язок. XP нараховується лише за перший правильно розв’язаний варіант
+  кожного типу задачі — до 60 XP за кожен із трьох тренажерів.
+status: review
+updatedAt: '2026-09-23'
+sources:
+  - id: kapinos-babii-2013
+    type: book
+    title: 'Операційний менеджмент: навчальний посібник'
+    authors: [Капінос Г. І., Бабій І. В.]
+    publisher: Центр учбової літератури
+    year: 2013
+    language: uk
+    url: https://duikt.edu.ua/uploads/l_1479_22227234.pdf
+    checkedAt: '2026-09-23'
+    note: 'Джерело оптимального розміру замовлення, точки замовлення і страхового запасу (EOQ-01, EOQ-03, EOQ-04): розділ 6.2.4 «Системи управління запасами при незалежному попиті», с. 170–171 і 175–176.'
+
+  - id: heizer-render-munson-2016
+    type: book
+    title: 'Operations Management: Sustainability and Supply Chain Management'
+    authors: [Heizer J., Render B., Munson C.]
+    publisher: Pearson
+    year: 2016
+    language: en
+    url: https://openlibrary.org/isbn/9780134163512
+    checkedAt: '2026-09-23'
+    note: 'Джерело нетто-потреби MRP (MRP-02), правил пріоритетів FCFS, SPT та EDD (SCH-01, SCH-02) і завантаження (SCH-04): розділ 14 «Material Requirements Planning (MRP) and ERP» і розділ 15 «Short-Term Scheduling».'
+
+  - id: hevko-2017
+    type: book
+    title: 'Операційний (виробничий) менеджмент: конспект лекцій'
+    authors: [Гевко І. Б.]
+    publisher: ТНТУ імені Івана Пулюя
+    year: 2017
+    language: uk
+    url: https://elartu.tntu.edu.ua/handle/lib/21300
+    checkedAt: '2026-09-23'
+    note: 'Джерело брутто-потреби і розміру партії «партія за партією» в MRP (MRP-01, MRP-03): тема 12 «Планування потреби в матеріалах і ресурсах», п. 12.1, с. 109–112.'
+
+trainer:
+  kind: calculation-tasks
+  tasks:
+    - id: eoq
+      method: eoq
+      title: Оптимальний розмір замовлення (EOQ)
+      formula: 'Q* = √(2DS / H)'
+      ref:
+        source: 'Капінос Г.І., Бабій І.В. Операційний менеджмент, 2013'
+        locator: 'розділ 6.2.4 «Системи управління запасами при незалежному попиті», с. 170–171, оптимальний розмір замовлення Qopt (EOQ-01)'
+        checkedAt: '2026-09-23'
+        url: https://duikt.edu.ua/uploads/l_1479_22227234.pdf
+
+    - id: reorder-point
+      method: reorder-point
+      title: Точка замовлення зі страховим запасом
+      formula: 'ROP = d̄ · L; SS = z · σ_dLT; Точка замовлення = ROP + SS'
+      ref:
+        source: 'Капінос Г.І., Бабій І.В. Операційний менеджмент, 2013'
+        locator: 'розділ 6.2.4 «Системи управління запасами при незалежному попиті», с. 171 і 175–176, точка замовлення та страховий запас (EOQ-03, EOQ-04)'
+        checkedAt: '2026-09-23'
+        url: https://duikt.edu.ua/uploads/l_1479_22227234.pdf
+
+    - id: cost-sensitivity
+      method: cost-sensitivity
+      title: Чутливість сумарних витрат до розміру замовлення
+      formula: 'Витрати(Q) = (D/Q)·S + (Q/2)·H'
+      ref:
+        source: 'Капінос Г.І., Бабій І.В. Операційний менеджмент, 2013'
+        locator: 'розділ 6.2.4 «Системи управління запасами при незалежному попиті», с. 170–171, оптимальний розмір замовлення Qopt (EOQ-01)'
+        checkedAt: '2026-09-23'
+        url: https://duikt.edu.ua/uploads/l_1479_22227234.pdf
+
+    - id: gross-requirement
+      method: gross-requirement
+      title: Брутто-потреба
+      formula: 'Брутто = MPS або планове замовлення батьківського рівня × норма витрати'
+      ref:
+        source: 'Гевко І. Операційний менеджмент, 2017'
+        locator: 'тема 12 «Планування потреби в матеріалах і ресурсах», п. 12.1 «Модель потреби залежних запасів», с. 109–110, повна потреба (MRP-01)'
+        checkedAt: '2026-09-23'
+        url: https://elartu.tntu.edu.ua/handle/lib/21300
+
+    - id: net-requirement
+      method: net-requirement
+      title: Нетто-потреба
+      formula: 'Нетто = Брутто + Резервування − (Наявний запас + Заплановані надходження); від’ємне значення прирівнюється до нуля'
+      ref:
+        source: 'Heizer J., Render B., Munson C. Operations Management, 2016'
+        locator: 'розділ 14 «Material Requirements Planning (MRP) and ERP», підрозділ «MRP Structure», net requirements (MRP-02)'
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9780134163512
+
+    - id: lot-for-lot
+      method: lot-for-lot
+      title: Розмір партії «партія за партією» (lot-for-lot)
+      formula: 'Qзамовлення = Нетто-потреба періоду'
+      ref:
+        source: 'Гевко І. Операційний менеджмент, 2017'
+        locator: 'тема 12 «Планування потреби в матеріалах і ресурсах», п. 12.1 «Модель потреби залежних запасів», с. 111–112, «партія за партією» (MRP-03)'
+        checkedAt: '2026-09-23'
+        url: https://elartu.tntu.edu.ua/handle/lib/21300
+
+    - id: fcfs
+      method: fcfs
+      title: Черговість за порядком надходження (FCFS)
+      formula: 'Завдання виконують у порядку надходження, без сортування'
+      ref:
+        source: 'Heizer J., Render B., Munson C. Operations Management, 2016'
+        locator: 'розділ 15 «Short-Term Scheduling», підрозділ «Priority Rules for Sequencing Jobs», SPT (SCH-01)'
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9780134163512
+
+    - id: spt
+      method: spt
+      title: Правило SPT (найкоротша операція першою)
+      formula: 'Сортування завдань за зростанням тривалості обробки'
+      ref:
+        source: 'Heizer J., Render B., Munson C. Operations Management, 2016'
+        locator: 'розділ 15 «Short-Term Scheduling», підрозділ «Priority Rules for Sequencing Jobs», SPT (SCH-01)'
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9780134163512
+
+    - id: edd
+      method: edd
+      title: Правило EDD (найближчий строк першим)
+      formula: 'Сортування завдань за зростанням директивного строку'
+      ref:
+        source: 'Heizer J., Render B., Munson C. Operations Management, 2016'
+        locator: 'розділ 15 «Short-Term Scheduling», підрозділ «Priority Rules for Sequencing Jobs», EDD (SCH-02)'
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9780134163512
+
+    - id: utilization
+      method: utilization
+      title: Завантаження робочого місця
+      formula: 'Завантаження = Сумарний час обробки / Сумарний час проходження · 100%'
+      ref:
+        source: 'Heizer J., Render B., Munson C. Operations Management, 2016'
+        locator: 'розділ 15 «Short-Term Scheduling», підрозділ «Priority Rules for Sequencing Jobs», utilization metric (SCH-04)'
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9780134163512
+
+  essay:
+    prompt: >-
+      Використовуючи розрахунок чутливості витрат із тренажера EOQ, поясніть, чому сумарні витрати
+      зростають і при зменшенні, і при збільшенні розміру замовлення відносно EOQ, і який саме доданок
+      формули (витрати на оформлення чи витрати на зберігання) відповідає за зростання в кожен бік.
+      Наведіть конкретні числа зі свого варіанта.
+    maxWords: 300
+    expectations:
+      - 'Наведено сумарні витрати зі свого варіанта тренажера при 0,8·Q*, Q* і 1,2·Q* і показано, що мінімум справді в Q*.'
+      - 'Пояснено, що при Q менше EOQ зростають витрати на оформлення (частіші замовлення), а при Q більше EOQ — витрати на зберігання (більший середній запас).'
+      - 'Висновок спирається на власний розрахунок, а не переказує визначення EOQ без чисел.'
+    hints:
+      - 'У точці мінімуму (EOQ) витрати на оформлення й витрати на зберігання рівні між собою — це і є ознака оптимуму, яку можна перевірити на своїх числах.'
+      - 'Перегляньте розділ лекції «Управління запасами» — приклад із розрахунком EOQ на 600 шт., де обидві складові витрат дають по 5400 грошових одиниць.'

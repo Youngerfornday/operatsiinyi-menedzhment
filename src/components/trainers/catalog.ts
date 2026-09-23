@@ -29,7 +29,7 @@ export interface CalculatorTrainer {
 export const CALCULATOR_TRAINERS: readonly CalculatorTrainer[] = [];
 
 /** Практичні, сторінки яких уже опубліковано (`praktychni/pNN/`). */
-export const PUBLISHED_PRACTICALS: readonly string[] = ['p01', 'p02'];
+export const PUBLISHED_PRACTICALS: readonly string[] = ['p01', 'p02', 'p03', 'p04', 'p05', 'p06', 'p07'];
 
 export interface PracticalTrainer {
   readonly practicalId: string;
@@ -51,7 +51,7 @@ export const PRODUCTIVITY_TRAINER = {
   icon: 'calc',
   title: 'Продуктивність операційної системи',
   text: 'Розрахуйте часткову й багатофакторну продуктивність, індекс її зміни та використання й ефективність потужності. Кожен варіант — нові дані, перевірка одразу показує повний розв’язок.',
-  formula: 'До 60 XP — по одному разу за кожен тип задачі',
+  formula: '60 XP — за перший правильно розв’язаний варіант',
 } as const satisfies PracticalTrainer;
 
 export const MATRIX_TRAINER = {
@@ -65,8 +65,167 @@ export const MATRIX_TRAINER = {
   formula: 'Не менше 90 % зіставлень — 2 бали',
 } as const satisfies PracticalTrainer;
 
+export const FACILITY_LOCATION_TRAINER = {
+  practicalId: 'p04',
+  registryId: 'facility-location',
+  activityId: BADGE_ACTIVITY_IDS.facilityLocation,
+  path: 'praktychni/p04/#trenazher-facility-location',
+  icon: 'target',
+  title: 'Вибір місця розташування',
+  text: 'Оберіть майданчик методом вагових коефіцієнтів і перевірте результат методом центру ваги. Кожен варіант — нові дані, перевірка одразу показує повний розв’язок.',
+  formula: '60 XP — за перший правильно розв’язаний варіант',
+} as const satisfies PracticalTrainer;
+
+export const LINE_BALANCING_TRAINER = {
+  practicalId: 'p04',
+  registryId: 'line-balancing',
+  activityId: BADGE_ACTIVITY_IDS.lineBalancing,
+  path: 'praktychni/p04/#trenazher-line-balancing',
+  icon: 'layers',
+  title: 'Балансування потокової лінії',
+  text: 'Визначте такт лінії, мінімальну й фактичну кількість робочих станцій та ефективність балансування за правилом найбільшої кількості наступних завдань.',
+  formula: '60 XP — за перший правильно розв’язаний варіант',
+} as const satisfies PracticalTrainer;
+
+export const WORK_MEASUREMENT_TRAINER = {
+  practicalId: 'p04',
+  registryId: 'work-measurement',
+  activityId: BADGE_ACTIVITY_IDS.workMeasurement,
+  path: 'praktychni/p04/#trenazher-work-measurement',
+  icon: 'clock',
+  title: 'Нормування праці',
+  text: 'За хронометражними даними розрахуйте штучний і штучно-калькуляційний час та норму виробітку за зміну.',
+  formula: '60 XP — за перший правильно розв’язаний варіант',
+} as const satisfies PracticalTrainer;
+
+export const FORECASTING_TRAINER = {
+  practicalId: 'p05',
+  registryId: 'forecasting',
+  activityId: BADGE_ACTIVITY_IDS.forecasting,
+  path: 'praktychni/p05/#trenazher-forecasting',
+  icon: 'flag',
+  title: 'Прогнозування попиту',
+  text: 'Розрахуйте прогноз попиту простою й зваженою ковзною середньою та експоненційним згладжуванням, оцініть точність через MAD, MSE і MAPE. Кожен варіант — нові дані, перевірка одразу показує повний розв’язок.',
+  formula: '60 XP — за перший правильно розв’язаний варіант',
+} as const satisfies PracticalTrainer;
+
+export const AGGREGATE_PLANNING_TRAINER = {
+  practicalId: 'p05',
+  registryId: 'aggregate-planning',
+  activityId: BADGE_ACTIVITY_IDS.aggregatePlanning,
+  path: 'praktychni/p05/#trenazher-aggregate-planning',
+  icon: 'list',
+  title: 'Агрегатне планування',
+  text: 'Складіть агрегатний план на шість періодів за стратегією погоні за попитом і за стратегією рівномірного виробництва та порівняйте їх за сумарними витратами (регулярна оплата, найм, звільнення, зберігання запасу, дефіцит).',
+  formula: '60 XP — за перший правильно розв’язаний варіант',
+} as const satisfies PracticalTrainer;
+
+export const EOQ_TRAINER = {
+  practicalId: 'p06',
+  registryId: 'eoq',
+  activityId: BADGE_ACTIVITY_IDS.eoq,
+  path: 'praktychni/p06/#trenazher-eoq',
+  icon: 'target',
+  title: 'Економічний розмір замовлення (EOQ)',
+  text: 'Розрахуйте оптимальний розмір замовлення, точку замовлення зі страховим запасом і чутливість сумарних витрат до відхилення розміру замовлення від оптимуму.',
+  formula: '60 XP — за перший правильно розв’язаний варіант',
+} as const satisfies PracticalTrainer;
+
+export const MRP_TRAINER = {
+  practicalId: 'p06',
+  registryId: 'mrp',
+  activityId: BADGE_ACTIVITY_IDS.mrp,
+  path: 'praktychni/p06/#trenazher-mrp',
+  icon: 'layers',
+  title: 'Планування потреби в матеріалах (MRP)',
+  text: 'Виконайте розгортання триярусної специфікації виробу: визначте брутто- і нетто-потребу на кожному рівні та період запуску замовлення з урахуванням часу постачання.',
+  formula: '60 XP — за перший правильно розв’язаний варіант',
+} as const satisfies PracticalTrainer;
+
+export const SEQUENCING_TRAINER = {
+  practicalId: 'p06',
+  registryId: 'sequencing',
+  activityId: BADGE_ACTIVITY_IDS.sequencing,
+  path: 'praktychni/p06/#trenazher-sequencing',
+  icon: 'clock',
+  title: 'Черговість робіт',
+  text: 'Упорядкуйте шість робіт за правилом FCFS, SPT чи EDD і розрахуйте середній час проходження, середнє запізнення й завантаження.',
+  formula: '60 XP — за перший правильно розв’язаний варіант',
+} as const satisfies PracticalTrainer;
+
+export const LITTLE_LAW_TRAINER = {
+  practicalId: 'p03',
+  registryId: 'little-law',
+  activityId: BADGE_ACTIVITY_IDS.littleLaw,
+  path: 'praktychni/p03/#trenazher-little-law',
+  icon: 'calc',
+  title: 'Закон Літтла',
+  text: 'За двома відомими величинами — незавершеним виробництвом, пропускною здатністю чи середнім часом перебування в системі — знайдіть третю (CAP-04).',
+  formula: '60 XP — за перший правильно розв’язаний варіант',
+} as const satisfies PracticalTrainer;
+
+export const PRODUCTION_CYCLE_TRAINER = {
+  practicalId: 'p03',
+  registryId: 'production-cycle',
+  activityId: BADGE_ACTIVITY_IDS.productionCycle,
+  path: 'praktychni/p03/#trenazher-production-cycle',
+  icon: 'clock',
+  title: 'Тривалість виробничого циклу',
+  text: 'Розрахуйте тривалість циклу партії деталей при послідовному, паралельному й паралельно-послідовному русі (PC-01, PC-02, PC-03).',
+  formula: '60 XP — за перший правильно розв’язаний варіант',
+} as const satisfies PracticalTrainer;
+
+export const CPM_PERT_TRAINER = {
+  practicalId: 'p07',
+  registryId: 'cpm-pert',
+  activityId: BADGE_ACTIVITY_IDS.cpmPert,
+  path: 'praktychni/p07/#trenazher-cpm-pert',
+  icon: 'flag',
+  title: 'Сітьовий графік, критичний шлях і PERT',
+  text: 'Побудуйте сітьовий графік, визначте критичний шлях і резерви часу та оцініть імовірність дотримання строку методом PERT. Кожен варіант — нові дані, перевірка одразу показує повний розв’язок.',
+  formula: '60 XP — за перший правильно розв’язаний варіант',
+} as const satisfies PracticalTrainer;
+
+export const CONTROL_CHARTS_TRAINER = {
+  practicalId: 'p07',
+  registryId: 'control-charts',
+  activityId: BADGE_ACTIVITY_IDS.controlCharts,
+  path: 'praktychni/p07/#trenazher-control-charts',
+  icon: 'alert',
+  title: 'Контрольні карти x̄-R і p',
+  text: 'Розрахуйте контрольні межі карт середніх і розмахів та p-карти й визначте, чи сигналізує нова підгрупа про розладнання процесу. Кожен варіант — нові дані, перевірка одразу показує повний розв’язок.',
+  formula: '60 XP — за перший правильно розв’язаний варіант',
+} as const satisfies PracticalTrainer;
+
+export const PROCESS_CAPABILITY_TRAINER = {
+  practicalId: 'p07',
+  registryId: 'process-capability',
+  activityId: BADGE_ACTIVITY_IDS.processCapability,
+  path: 'praktychni/p07/#trenazher-process-capability',
+  icon: 'target',
+  title: 'Придатність процесу Cp, Cpk',
+  text: 'Розрахуйте індекси придатності процесу Cp і Cpk та поясніть, чому високий Cp може не гарантувати високий Cpk. Кожен варіант — нові дані, перевірка одразу показує повний розв’язок.',
+  formula: '60 XP — за перший правильно розв’язаний варіант',
+} as const satisfies PracticalTrainer;
+
 /** Тренажери, що живуть на сторінці практичної (а не на власній сторінці `trenazhery/<slug>/`). */
-export const PRACTICAL_TRAINERS: readonly PracticalTrainer[] = [PRODUCTIVITY_TRAINER, MATRIX_TRAINER];
+export const PRACTICAL_TRAINERS: readonly PracticalTrainer[] = [
+  PRODUCTIVITY_TRAINER,
+  MATRIX_TRAINER,
+  FACILITY_LOCATION_TRAINER,
+  LINE_BALANCING_TRAINER,
+  WORK_MEASUREMENT_TRAINER,
+  FORECASTING_TRAINER,
+  AGGREGATE_PLANNING_TRAINER,
+  EOQ_TRAINER,
+  MRP_TRAINER,
+  SEQUENCING_TRAINER,
+  LITTLE_LAW_TRAINER,
+  PRODUCTION_CYCLE_TRAINER,
+  CPM_PERT_TRAINER,
+  CONTROL_CHARTS_TRAINER,
+  PROCESS_CAPABILITY_TRAINER,
+];
 
 export interface HomeTrainerCard {
   readonly key: string;
@@ -94,6 +253,19 @@ export function homeTrainerCards(): readonly HomeTrainerCard[] {
 export const TRAINER_KIND_LABELS: Readonly<Record<string, string>> = {
   productivity: 'розрахункові задачі',
   'priorities-matrix': 'матриця зіставлення',
+  'facility-location': 'розрахункові задачі',
+  'line-balancing': 'розрахункові задачі',
+  'work-measurement': 'розрахункові задачі',
+  forecasting: 'розрахункові задачі',
+  'aggregate-planning': 'розрахункові задачі',
+  eoq: 'розрахункові задачі',
+  mrp: 'розрахункові задачі',
+  sequencing: 'розрахункові задачі',
+  'little-law': 'розрахункові задачі',
+  'production-cycle': 'розрахункові задачі',
+  'cpm-pert': 'розрахункові задачі',
+  'control-charts': 'розрахункові задачі',
+  'process-capability': 'розрахункові задачі',
 };
 
 export function trainerKindLabel(registryId: string): string {
