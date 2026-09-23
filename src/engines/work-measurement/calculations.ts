@@ -24,6 +24,7 @@ export function pieceTime(operativeTimeValue: number, serviceShare: number, rest
 
 /** WM-03: Тшт.к = Тшт + Тпз / n. */
 export function pieceRateTime(pieceTimeValue: number, setupTime: number, batchSize: number): WorkMeasurementResult<number> {
+  if (!Number.isFinite(pieceTimeValue) || !Number.isFinite(setupTime) || !Number.isFinite(batchSize)) return fail('non-finite-value');
   if (!(pieceTimeValue > 0)) return fail('non-positive-value');
   if (setupTime < 0) return fail('negative-value');
   if (!(batchSize > 0)) return fail('non-positive-denominator');

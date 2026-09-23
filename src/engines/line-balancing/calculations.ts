@@ -59,8 +59,9 @@ export function assignStationsSequential(operationTimes: readonly number[], cycl
 
 /** LB-02: Ефективність = Σtᵢ / (N · C) · 100%. */
 export function lineBalancingEfficiency(operationTimes: readonly number[], stationCount: number, cycleTime: number): LineBalancingResult<number> {
-  if (!(stationCount > 0) || !(cycleTime > 0)) return fail('non-positive-denominator');
-  if (operationTimes.length === 0) return fail('empty-operations');
+  const validated = validateOperations(operationTimes, cycleTime);
+  if (!validated.ok) return validated;
+  if (!(stationCount > 0)) return fail('non-positive-denominator');
   const total = operationTimes.reduce((sum, time) => sum + time, 0);
   return ok((total / (stationCount * cycleTime)) * 100);
 }
@@ -72,7 +73,9 @@ export function balanceDelay(efficiencyPercent: number): number {
 
 /** LB-04: Тпростою = N · C − Σtᵢ. */
 export function idleTimePerCycle(operationTimes: readonly number[], stationCount: number, cycleTime: number): LineBalancingResult<number> {
-  if (!(stationCount > 0) || !(cycleTime > 0)) return fail('non-positive-denominator');
+  const validated = validateOperations(operationTimes, cycleTime);
+  if (!validated.ok) return validated;
+  if (!(stationCount > 0)) return fail('non-positive-denominator');
   const total = operationTimes.reduce((sum, time) => sum + time, 0);
   return ok(stationCount * cycleTime - total);
 }

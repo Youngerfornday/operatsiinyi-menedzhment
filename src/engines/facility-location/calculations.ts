@@ -21,6 +21,7 @@ export interface Point {
 export function factorRatingScore(weights: readonly number[], scores: readonly number[]): FacilityLocationResult<number> {
   if (weights.length === 0 || scores.length === 0) return fail('empty-factors');
   if (weights.length !== scores.length) return fail('length-mismatch');
+  if (weights.some((weight) => !Number.isFinite(weight)) || scores.some((score) => !Number.isFinite(score))) return fail('non-finite-value');
   if (weights.some((weight) => weight < 0) || scores.some((score) => score < 0)) return fail('negative-value');
   const total = weights.reduce((sum, weight, index) => sum + weight * (scores[index] as number), 0);
   return ok(total);

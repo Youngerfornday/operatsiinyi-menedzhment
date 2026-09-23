@@ -26,6 +26,11 @@ describe('factorRatingScore (LOC-01)', () => {
     expect(factorRatingScore([-0.5, 1.5], [80, 20])).toMatchObject({ ok: false, error: { code: 'negative-value' } });
     expect(factorRatingScore([0.5, 0.5], [-10, 20])).toMatchObject({ ok: false, error: { code: 'negative-value' } });
   });
+
+  it('відхиляє NaN і нескінченність у вазі чи оцінці', () => {
+    expect(factorRatingScore([Number.NaN, 0.5], [80, 20])).toMatchObject({ ok: false, error: { code: 'non-finite-value' } });
+    expect(factorRatingScore([0.5, 0.5], [Number.POSITIVE_INFINITY, 20])).toMatchObject({ ok: false, error: { code: 'non-finite-value' } });
+  });
 });
 
 describe('centerOfGravity (LOC-02)', () => {

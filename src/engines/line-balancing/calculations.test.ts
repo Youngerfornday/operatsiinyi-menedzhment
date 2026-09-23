@@ -79,4 +79,14 @@ describe('lineBalancingEfficiency / balanceDelay / idleTimePerCycle (LB-02, LB-0
     expect(lineBalancingEfficiency(OPERATION_TIMES, 0, CYCLE)).toMatchObject({ ok: false, error: { code: 'non-positive-denominator' } });
     expect(idleTimePerCycle(OPERATION_TIMES, 6, 0)).toMatchObject({ ok: false, error: { code: 'non-positive-denominator' } });
   });
+
+  it('ефективність і простій відхиляють порожній список операцій', () => {
+    expect(lineBalancingEfficiency([], 6, CYCLE)).toMatchObject({ ok: false, error: { code: 'empty-operations' } });
+    expect(idleTimePerCycle([], 6, CYCLE)).toMatchObject({ ok: false, error: { code: 'empty-operations' } });
+  });
+
+  it('ефективність і простій відхиляють від’ємний час операції', () => {
+    expect(lineBalancingEfficiency([10, -5], 6, CYCLE)).toMatchObject({ ok: false, error: { code: 'non-positive-value' } });
+    expect(idleTimePerCycle([10, -5], 6, CYCLE)).toMatchObject({ ok: false, error: { code: 'non-positive-value' } });
+  });
 });

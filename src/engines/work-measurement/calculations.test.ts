@@ -45,6 +45,12 @@ describe('pieceRateTime (WM-03)', () => {
     expect(pieceRateTime(4.18, -1, 40)).toMatchObject({ ok: false, error: { code: 'negative-value' } });
     expect(pieceRateTime(4.18, 18, 0)).toMatchObject({ ok: false, error: { code: 'non-positive-denominator' } });
   });
+
+  it('відхиляє NaN і нескінченність у будь-якому параметрі', () => {
+    expect(pieceRateTime(Number.NaN, 18, 40)).toMatchObject({ ok: false, error: { code: 'non-finite-value' } });
+    expect(pieceRateTime(4.18, Number.POSITIVE_INFINITY, 40)).toMatchObject({ ok: false, error: { code: 'non-finite-value' } });
+    expect(pieceRateTime(4.18, 18, Number.NaN)).toMatchObject({ ok: false, error: { code: 'non-finite-value' } });
+  });
 });
 
 describe('outputRate (WM-04)', () => {
