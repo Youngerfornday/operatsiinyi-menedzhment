@@ -698,10 +698,10 @@ questions:
       Q* = √(2DS / H) (EOQ-01). Тут 2DS = 2 · 1800 · 225 = 810 000; 810 000 / 9 = 90 000;
       √90 000 = 300 шт.
     refs:
-      - source: Старченко Г.В., Калінько І.В., Косач І.А. Операційний менеджмент, 2020
-        locator: розділ «Управління запасами», формула EOQ (EOQ-01)
-        checkedAt: '2026-09-22'
-        url: https://scholar.google.com/citations?user=9UX4QTYAAAAJ&hl=uk
+      - source: Капінос Г.І., Бабій І.В. Операційний менеджмент, 2013
+        locator: розділ 6.2.4 «Системи управління запасами при незалежному попиті», с. 170–171, оптимальний розмір замовлення Qopt (EOQ-01)
+        checkedAt: '2026-09-23'
+        url: https://duikt.edu.ua/uploads/l_1479_22227234.pdf
     answers:
       - value: 300
         tolerance: 0.5
@@ -731,10 +731,10 @@ questions:
       MAD = (1/n) · Σ|Dt − Ft| (FC-04). Похибки: 50−45=5; 60−55=5; 55−58=−3; 65−60=5. Модулі:
       5, 5, 3, 5; сума 18; MAD = 18/4 = 4,5 шт.
     refs:
-      - source: Капінос Г.І., Бабій І.В. Операційний менеджмент, 2013
-        locator: розділ «Прогнозування», середнє абсолютне відхилення (FC-04)
-        checkedAt: '2026-09-22'
-        url: https://scholar.google.com.ua/citations?user=wK61tZYAAAAJ&hl=ru
+      - source: Гевко І. Операційний менеджмент, 2017
+        locator: тема 9 «Прогнозування в операційному менеджменті», п. 9.3 «Методи часових серій», с. 96, середнє абсолютне відхилення (САВ) (FC-04)
+        checkedAt: '2026-09-23'
+        url: https://elartu.tntu.edu.ua/handle/lib/21300
     answers:
       - value: 4.5
         tolerance: 0.05
@@ -767,13 +767,13 @@ questions:
       кожне значення окремо.
     refs:
       - source: Капінос Г.І., Бабій І.В. Операційний менеджмент, 2013
-        locator: розділ «Управління запасами», точка замовлення (EOQ-03)
-        checkedAt: '2026-09-22'
-        url: https://scholar.google.com.ua/citations?user=wK61tZYAAAAJ&hl=ru
+        locator: розділ 6.2.4 «Системи управління запасами при незалежному попиті», с. 171, точка повторного замовлення R = dav · L (EOQ-03)
+        checkedAt: '2026-09-23'
+        url: https://duikt.edu.ua/uploads/l_1479_22227234.pdf
       - source: Капінос Г.І., Бабій І.В. Операційний менеджмент, 2013
-        locator: розділ «Управління запасами», страховий запас (EOQ-04)
-        checkedAt: '2026-09-22'
-        url: https://scholar.google.com.ua/citations?user=wK61tZYAAAAJ&hl=ru
+        locator: розділ 6.2.4 «Системи управління запасами при незалежному попиті», с. 175–176, резервний запас z · σL (EOQ-04)
+        checkedAt: '2026-09-23'
+        url: https://duikt.edu.ua/uploads/l_1479_22227234.pdf
     subquestions:
       - kind: numerical
         answers:
@@ -816,10 +816,10 @@ questions:
       Правило SPT (SCH-01) сортує завдання за зростанням тривалості: 2, 3, 4, 5. Моменти завершення:
       2, 5, 9, 14. Середній час виконання = (2+5+9+14)/4 = 30/4 = 7,5 дня.
     refs:
-      - source: Капінос Г.І., Бабій І.В. Операційний менеджмент, 2013
-        locator: розділ «Оперативне управління виробництвом», правило SPT (SCH-01)
-        checkedAt: '2026-09-22'
-        url: https://scholar.google.com.ua/citations?user=wK61tZYAAAAJ&hl=ru
+      - source: Heizer J., Render B., Munson C. Operations Management, 2016
+        locator: розділ 15 «Short-Term Scheduling», підрозділ «Priority Rules for Sequencing Jobs», SPT (SCH-01)
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9780134163512
     answers:
       - value: 7.5
         tolerance: 0.05
