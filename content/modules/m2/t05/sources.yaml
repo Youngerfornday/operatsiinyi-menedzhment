@@ -1,0 +1,189 @@
+# Джерела теми 5. Кожне — з адресою, відкритою на дату checkedAt.
+# Формули — лише з docs/research/formula-baseline.md (коди CAP-05, LOC-01, LOC-02, LB-01…LB-05, WM-01…WM-04),
+# факти кейсів — з docs/research/cases.md.
+topic: t05
+sources:
+  # Основна література курсу
+  - id: heizer-render-munson-2016
+    type: book
+    title: 'Operations Management: Sustainability and Supply Chain Management'
+    authors: [Heizer J., Render B., Munson C.]
+    publisher: Pearson
+    year: 2016
+    language: en
+    url: https://openlibrary.org/isbn/9780134163512
+    checkedAt: '2026-09-23'
+    note: 'Джерело методу вагових коефіцієнтів і методу центру ваги (розділ «Location Strategies», LOC-01, LOC-02) та розширень балансування лінії (розділ «Layout Strategies», LB-04, LB-05).'
+
+  - id: hevko-2017
+    type: book
+    title: 'Операційний (виробничий) менеджмент: конспект лекцій'
+    authors: [Гевко І. Б.]
+    publisher: ТНТУ імені Івана Пулюя
+    year: 2017
+    language: uk
+    url: https://elartu.tntu.edu.ua/handle/lib/21300
+    checkedAt: '2026-09-22'
+    note: 'Джерело часу такту (CAP-05) і базового балансування лінії — мінімальної кількості станцій, ефективності та втрат на простій (LB-01, LB-02, LB-03).'
+
+  - id: kapinos-babii-2013
+    type: book
+    title: Операційний менеджмент
+    authors: [Капінос Г. І., Бабій І. В.]
+    publisher: Центр учбової літератури
+    year: 2013
+    language: uk
+    url: http://books.zntu.edu.ua/book_info.pl?id=316307
+    checkedAt: '2026-09-23'
+    note: 'Розділ «Управління трудовими процесами та нормування праці»: визначення норми часу й норми виробітку, класифікація затрат робочого часу, штучно-калькуляційний час (WM-01…WM-03); розрахунок норми виробітку — розділ «Методичні рекомендації до розв’язку типових завдань», підрозділ «Хронометраж» (WM-04). Адреса — бібліотечний запис видання (ISBN 978-617-673-205-1).'
+
+  - id: kushniruk-2017
+    type: book
+    title: 'Операційний менеджмент: опорний конспект лекцій'
+    authors: [Кушнірук В. С.]
+    publisher: МНАУ
+    year: 2017
+    language: uk
+    url: https://dspace.mnau.edu.ua/jspui/handle/123456789/2078
+    checkedAt: '2026-09-22'
+    note: 'Розділ «Виробничі потужності, їх розташування та процес проектування підприємства»: фактори макро- і мікрорівня вибору місця розташування, етапи проектування підприємства.'
+
+  # Кейси
+  - id: nakaz-959-2013
+    type: regulation
+    title: Нормативи розвитку та розміщення у містах і сільській місцевості мережі об’єктів поштового зв’язку та поштових скриньок національного оператора (наказ Мінінфраструктури від 28.11.2013 № 959)
+    publisher: Міністерство інфраструктури України
+    year: 2013
+    language: uk
+    url: https://www.ukrposhta.ua/ua/rozmishchennia-merezhi-obiektiv-poshtovoho-zviazku-natsionalnoho-operatora
+    checkedAt: '2026-09-22'
+    note: Нормативна формула розміщення відділень у сільській місцевості й нормативи чисельності населення на відділення в містах; чинність поточної редакції окремо в реєстрі не звірялася.
+
+  - id: nova-poshta-terminal-2021
+    type: web
+    title: 'Термінал «Нової пошти» сортує до 50 000 посилок на годину'
+    publisher: Forbes.ua
+    year: 2021
+    language: uk
+    url: https://forbes.ua/company/nova-poshta-terminal-16042021-1387
+    checkedAt: '2026-09-22'
+    note: 'Екскурсійні матеріали для преси: компонування сортувального терміналу (трирівнева конвеєрна система), площа, інвестиції, норма операції сканування. Позиція компанії, без незалежного аудиту.'
+
+  - id: kernel-annual-report-fy2025
+    type: report
+    title: Kernel Holding S.A. Annual Report and Accounts for the year ended 30 June 2025
+    publisher: Kernel Holding S.A.
+    year: 2025
+    language: en
+    url: https://www.kernel.ua/wp-content/uploads/2025/10/FY2025_Kernel_Annual_Report.pdf
+    checkedAt: '2026-09-22'
+    note: Аудований річний звіт — потужність переробки, фактичний обсяг переробки й коефіцієнт використання потужностей олієекстракційних заводів.
+
+  - id: ajax-second-plant-2020
+    type: case
+    title: Ajax Systems відкрили другий завод у Києві
+    publisher: Ajax Systems
+    year: 2020
+    language: uk
+    url: https://ajax.systems/blog/second-plant-in-kyiv/
+    checkedAt: '2026-09-22'
+    note: 'Корпоративний блог: перше рішення про розміщення другого майданчика, підпорядковане бізнес-цілі. Заява приватної компанії без аудованої звітності.'
+
+  - id: ajax-plant-turkey-2023
+    type: case
+    title: Ajax plant in Turkey
+    publisher: Ajax Systems
+    year: 2023
+    language: en
+    url: https://ajax.systems/blog/ajax-plant-in-turkey/
+    checkedAt: '2026-09-22'
+    note: 'Корпоративний блог: критерії вибору локації в Туреччині, названі засновником, площа й заявлена потужність заводу. Заява приватної компанії без аудованої звітності.'
+
+  - id: ajax-2025-summary
+    type: web
+    title: Як Ajax Systems у 2025 році масштабувала безпеку на глобальному рівні
+    publisher: Digitalstate.gov.ua
+    year: 2026
+    language: uk
+    url: https://digitalstate.gov.ua/news/tech/iak-ajax-systems-2025-rotsi-masshtabuvala-bezpeku-na-hlobalnomu-rivni
+    checkedAt: '2026-09-22'
+    note: Вторинний переказ підсумків 2025 року за річним звітом компанії — четвертий завод (В’єтнам) і кількість робочих місць у перший рік.
+
+  - id: inditex-fy2025-results
+    type: report
+    title: FY2025 Results
+    publisher: Inditex
+    year: 2026
+    language: en
+    url: https://www.inditex.com/itxcomweb/gp/en/press/news-detail/b870d5ec-6b7e-491d-b38e-340cd69036df/fy2025-results
+    checkedAt: '2026-09-22'
+    note: Офіційний пресреліз за фінансовий рік, що завершився 31.01.2026 — інвестиція 900 млн євро на рік у логістичні потужності.
+
+  - id: inditex-frequent-questions
+    type: web
+    title: Frequent Questions
+    publisher: Inditex
+    language: en
+    url: https://www.inditex.com/itxcomweb/es/en/press/frequent-questions
+    checkedAt: '2026-09-22'
+    note: 'Недатована офіційна сторінка: частка фінальних виробників поруч зі штаб-квартирою, частота розподілу товару. Дату, до якої належать цифри, точно встановити не можна.'
+
+  - id: interpipe-steel-about
+    type: web
+    title: 'Про завод; Електродугова піч; Двопозиційна установка піч-ківш; Вакууматор; Машини безперервного лиття заготовки'
+    publisher: ІНТЕРПАЙП СТАЛЬ
+    language: uk
+    url: https://interpipesteel.biz/about/pro-zavod
+    checkedAt: '2026-09-22'
+    note: 'Паспортні параметри комплексу з власного сайту заводу, сторінки без дати публікації; незалежного технічного підтвердження немає.'
+
+  - id: interpipe-steel-attack-2026
+    type: article
+    title: Підприємство «Інтерпайп» у Дніпрі зазнало балістичної атаки
+    publisher: GMK Center
+    year: 2026
+    language: uk
+    url: https://gmk.center/ua/news/pidpriiemstvo-interpajp-v-dnipri-zaznalo-balistichnoi-ataki/
+    checkedAt: '2026-09-22'
+    note: Зупинка виробництва після удару в ніч на 22.09.2026 р.; термінів відновлення компанія на дату перевірки не називала.
+
+  - id: tesla-q1-2018-letter
+    type: report
+    title: Q1 2018 Update (лист акціонерам)
+    publisher: Tesla, Inc.
+    year: 2018
+    language: en
+    url: https://www.sec.gov/Archives/edgar/data/1318605/000156459018010306/tsla-ex991_7.htm
+    checkedAt: '2026-09-22'
+    note: 'Форма 8-K, Exhibit 99.1 (2018-05-02): визнання «надмірної автоматизації» і тимчасове повернення частини лінії до напівавтоматичного режиму.'
+
+  - id: tesla-q2-2018-update
+    type: report
+    title: Q2 2018 Vehicle Production and Deliveries
+    publisher: Tesla, Inc.
+    year: 2018
+    language: en
+    url: https://www.sec.gov/Archives/edgar/data/0001318605/000156459018016465/tsla-ex991_6.htm
+    checkedAt: '2026-09-22'
+    note: 'Форма 8-K, Exhibit 99.1: запуск лінії GA4 і її частка у випуску Model 3, а також квартальні обсяги виробництва 2017–2018 рр.'
+
+  - id: southwest-10k-2025
+    type: report
+    title: Form 10-K за 2025 фінансовий рік
+    publisher: Southwest Airlines Co.
+    year: 2026
+    language: en
+    url: https://www.sec.gov/Archives/edgar/data/92380/000009238026000004/luv-20251231.htm
+    checkedAt: '2026-09-22'
+    note: 'Point-to-point проти hub-and-spoke, уніфікований парк Boeing 737, скорочення часу розвороту як ініціатива 2025 р.; точного часу розвороту в хвилинах документ не наводить.'
+
+  - id: intel-copy-exactly-1998
+    type: article
+    title: 'The Evolution of Intel''s Copy EXACTLY! Technology Transfer Method (Intel Technology Journal, Vol. 2, Issue 4, Q4 1998)'
+    authors: [McDonald C. J.]
+    publisher: Intel Corporation
+    year: 1998
+    language: en
+    url: https://www.intel.com/content/dam/www/public/us/en/documents/research/1998-vol02-iss-4-intel-technology-journal.pdf
+    checkedAt: '2026-09-22'
+    note: Первинна публікація методу Copy EXACTLY!; чотирирівневе зіставлення майданчиків і заборона компенсаційних підлаштувань.

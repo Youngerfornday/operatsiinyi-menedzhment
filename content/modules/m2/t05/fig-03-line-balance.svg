@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="fig-t05-3" class="scheme" viewBox="0 0 640 340" role="img" aria-labelledby="fig-t05-3-title fig-t05-3-desc" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+  <title id="fig-t05-3-title">Рисунок 3. Баланс лінії з восьми операцій під такт 60 секунд</title>
+  <desc id="fig-t05-3-desc">Стовпчикова діаграма шести станцій. Над стовпчиками горизонтальна пунктирна лінія такту на позначці 60 секунд. Стовпчик другої станції сягає лінії такту точно і виділений карміновим як станція з нульовим простоєм. Решта стовпчиків нижчі за лінію такту, різниця між стовпчиком і лінією такту — простій станції.</desc>
+  <style>
+    #fig-t05-3 .bar { fill: var(--surface-tint, #eef4fa); stroke: var(--ink, #0f1c2e); stroke-width: 1.25; }
+    #fig-t05-3 .bar.exam { fill: var(--err-tint, #fbeae7); stroke: var(--err, #b42318); }
+    #fig-t05-3 .axis { stroke: var(--ink, #0f1c2e); stroke-width: 1.25; }
+    #fig-t05-3 .takt { stroke: var(--err, #b42318); stroke-width: 1.5; stroke-dasharray: 6 4; }
+    #fig-t05-3 .t { fill: var(--ink, #0f1c2e); font-size: 13px; font-weight: 650; }
+    #fig-t05-3 .s { fill: var(--ink-2, #445570); font-size: 11.5px; }
+    #fig-t05-3 .exam-t { fill: var(--err-ink, #8f1d14); font-size: 11.5px; font-weight: 650; }
+    #fig-t05-3 .lbl { fill: var(--ink-2, #445570); font-size: 12px; }
+    #fig-t05-3 .refc { fill: var(--surface, #ffffff); stroke: var(--ink, #0f1c2e); stroke-width: 1.25; }
+    #fig-t05-3 .refn { fill: var(--ink, #0f1c2e); font-size: 11.5px; font-weight: 700; text-anchor: middle; }
+    #fig-t05-3 .refc.exam { stroke: var(--err, #b42318); }
+    #fig-t05-3 .refn.exam-n { fill: var(--err-ink, #8f1d14); }
+  </style>
+
+  <line class="axis" x1="40" y1="280" x2="600" y2="280"/>
+  <line class="takt" x1="40" y1="64" x2="600" y2="64"/>
+  <text class="exam-t" x="606" y="68">такт 60 с</text>
+
+  <rect class="bar" x="65" y="136" width="60" height="144"/>
+  <text class="s" x="95" y="128" text-anchor="middle">40 с</text>
+  <text class="lbl" x="95" y="298" text-anchor="middle">Ст. 1</text>
+
+  <rect class="bar exam" x="155" y="64" width="60" height="216"/>
+  <text class="exam-t" x="185" y="56" text-anchor="middle">60 с</text>
+  <text class="lbl" x="185" y="298" text-anchor="middle">Ст. 2</text>
+
+  <rect class="bar" x="245" y="118" width="60" height="162"/>
+  <text class="s" x="275" y="110" text-anchor="middle">45 с</text>
+  <text class="lbl" x="275" y="298" text-anchor="middle">Ст. 3</text>
+
+  <rect class="bar" x="335" y="100" width="60" height="180"/>
+  <text class="s" x="365" y="92" text-anchor="middle">50 с</text>
+  <text class="lbl" x="365" y="298" text-anchor="middle">Ст. 4</text>
+
+  <rect class="bar" x="425" y="143" width="60" height="137"/>
+  <text class="s" x="455" y="135" text-anchor="middle">38 с</text>
+  <text class="lbl" x="455" y="298" text-anchor="middle">Ст. 5</text>
+
+  <rect class="bar" x="515" y="183" width="60" height="97"/>
+  <text class="s" x="545" y="175" text-anchor="middle">27 с</text>
+  <text class="lbl" x="545" y="298" text-anchor="middle">Ст. 6</text>
+
+  <text class="t" x="320" y="320" text-anchor="middle">кожен стовпчик — сумарний час операцій, закріплених за станцією</text>
+
+  <circle class="refc" cx="40" cy="64" r="11"/><text class="refn" x="40" y="68">1</text>
+  <circle class="refc exam" cx="185" cy="64" r="11"/><text class="refn exam-n" x="185" y="68">2</text>
+  <circle class="refc" cx="275" cy="118" r="11"/><text class="refn" x="275" y="122">3</text>
+  <circle class="refc" cx="545" cy="183" r="11"/><text class="refn" x="545" y="187">4</text>
+</svg>

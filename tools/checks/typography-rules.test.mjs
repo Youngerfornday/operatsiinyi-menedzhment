@@ -116,6 +116,14 @@ describe('lintMdx', () => {
     const findings = lintMdx(['Текст.', '<Callout title="Назва - з дефісом">Тіло</Callout>'].join('\n'));
     expect(findings).toEqual([{ line: 2, actual: 'Назва - з дефісом', expected: 'Назва — з дефісом' }]);
   });
+
+  it('does not flag a term definition dash as an extra space run (masked </Term> is not a real space)', () => {
+    // Регресія: closing-тег безпосередньо перед " — " раніше маскувався пробілами, тож
+    // «пробіл(и) стертого тега» + реальний пробіл перед тире зливались і хибно спрацьовувало
+    // правило згортання пробілів навколо тире (SPACED_DASH у src/lib/typography/normalize.ts).
+    const termSource = '<Term id="x">Термін</Term> — це визначення.';
+    expect(lintMdx(termSource)).toEqual([]);
+  });
 });
 
 describe('formatFindings', () => {
