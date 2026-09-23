@@ -1,9 +1,14 @@
 /**
  * Генератор варіантів тренажера тривалості виробничого циклу: один варіант — маршрут із 3–4 операцій
  * (норма часу й кількість робочих місць кожної), розмір партії n і транспортна партія p, що ділить n
- * без залишку («охайні, але не очевидні» дані — часи цілі, Ci здебільшого 1, зрідка 2 при парному
- * часі операції). Відповідь — усі три тривалості циклу (PC-01, PC-02, PC-03) за один виклик рушія
- * формул (`calculations.ts`), як у розібраному прикладі лекції (content/modules/m1/t04/lecture.mdx).
+ * без залишку («охайні, але не очевидні» дані — часи цілі, Ci здебільшого 1, зрідка 2). Відповідь —
+ * усі три тривалості циклу (PC-01, PC-02, PC-03) за один виклик рушія формул (`calculations.ts`), як
+ * у розібраному прикладі лекції (content/modules/m1/t04/lecture.mdx).
+ *
+ * Норми часу операцій завжди мають форму «яму» — спадають до внутрішньої (не крайньої) операції,
+ * тоді зростають, як у прикладі лекції (2, 1, 4 хв): для такої форми Tпар < Tзм строго (доведення —
+ * generator.test.ts), а не лише Tпар ≤ Tзм. Монотонна чи «горбом» послідовність давала б Tпар = Tзм
+ * (немає різниці між рухами) майже в половині варіантів — така форма умисно виключена побудовою.
  */
 import { randomInt, type RandomSource } from '../shared/random';
 import { formatNumber } from '../shared/number-format';
@@ -18,19 +23,39 @@ function unwrap<T>(result: { readonly ok: true; readonly value: T } | { readonly
 const MIN_OPERATIONS = 3;
 const MAX_OPERATIONS = 4;
 const TWO_WORKPLACES_CHANCE = 4; // 1 шанс із 4
+const VALLEY_MIN = 1;
+const VALLEY_MAX = 2;
+const SLOPE_STEP_MIN = 1;
+const SLOPE_STEP_MAX = 3;
 
-function randomOperation(random: RandomSource): CycleOperation {
-  const twoWorkplaces = randomInt(random, 1, TWO_WORKPLACES_CHANCE) === 1;
-  if (twoWorkplaces) {
-    const halfTime = randomInt(random, 1, 4);
-    return { time: 2 * halfTime, workplaces: 2 };
+/**
+ * Норми часу (ti/Ci) із суворою «ямою»: спадають до внутрішньої операції valleyIndex (не першої й не
+ * останньої), тоді зростають. Гарантує min(rates[0], rates[last]) > rates[valleyIndex], а тому й
+ * Tпар < Tзм для будь-якого розміру партії й транспортної партії (доведення в коментарі вище).
+ */
+function randomValleyRates(random: RandomSource, count: number): number[] {
+  const valleyIndex = randomInt(random, 1, count - 2);
+  const rates = new Array<number>(count);
+  rates[valleyIndex] = randomInt(random, VALLEY_MIN, VALLEY_MAX);
+  for (let index = valleyIndex - 1; index >= 0; index -= 1) {
+    rates[index] = rates[index + 1]! + randomInt(random, SLOPE_STEP_MIN, SLOPE_STEP_MAX);
   }
-  return { time: randomInt(random, 1, 8), workplaces: 1 };
+  for (let index = valleyIndex + 1; index < count; index += 1) {
+    rates[index] = rates[index - 1]! + randomInt(random, SLOPE_STEP_MIN, SLOPE_STEP_MAX);
+  }
+  return rates;
+}
+
+/** Втілює норму часу (ti/Ci) в операцію: зрідка два робочих місця (t = rate·2), інакше одне (t = rate). */
+function operationFromRate(random: RandomSource, rate: number): CycleOperation {
+  const twoWorkplaces = randomInt(random, 1, TWO_WORKPLACES_CHANCE) === 1;
+  return twoWorkplaces ? { time: rate * 2, workplaces: 2 } : { time: rate, workplaces: 1 };
 }
 
 function randomOperations(random: RandomSource): CycleOperation[] {
   const count = randomInt(random, MIN_OPERATIONS, MAX_OPERATIONS);
-  return Array.from({ length: count }, () => randomOperation(random));
+  const rates = randomValleyRates(random, count);
+  return rates.map((rate) => operationFromRate(random, rate));
 }
 
 const OPERATION_NAMES = ['перша', 'друга', 'третя', 'четверта'] as const;

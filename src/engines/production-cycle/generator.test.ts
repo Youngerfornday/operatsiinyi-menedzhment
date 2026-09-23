@@ -101,4 +101,29 @@ describe('createProductionCycleVariant', () => {
       expect(operations.length).toBeLessThanOrEqual(4);
     }
   });
+
+  it('Tпар < Tзм щонайменше у 80% варіантів на 1000 seed (як у прикладі лекції: 30 проти 34)', () => {
+    const SEED_COUNT = 1000;
+    const MIN_STRICT_SHARE = 0.8;
+    let strict = 0;
+    for (let seed = 0; seed < SEED_COUNT; seed += 1) {
+      const variant = createProductionCycleVariant(createSeededRandom(`strict:${seed}`), TASKS);
+      const parallel = variant.answers.find((field) => field.id === 'parallel')!.expected;
+      const mixed = variant.answers.find((field) => field.id === 'mixed')!.expected;
+      if (parallel < mixed - 1e-9) strict += 1;
+    }
+    expect(strict / SEED_COUNT).toBeGreaterThanOrEqual(MIN_STRICT_SHARE);
+  });
+
+  it('норми часу операцій завжди мають форму «яму»: спадають до внутрішньої операції, тоді зростають', () => {
+    for (let seed = 0; seed < 200; seed += 1) {
+      const variant = createProductionCycleVariant(createSeededRandom(`valley:${seed}`), TASKS);
+      const rates = operationsFromGiven(variant).map((operation) => operation.time / operation.workplaces);
+      const minIndex = rates.indexOf(Math.min(...rates));
+      expect(minIndex).toBeGreaterThan(0);
+      expect(minIndex).toBeLessThan(rates.length - 1);
+      for (let index = 1; index <= minIndex; index += 1) expect(rates[index]!).toBeLessThan(rates[index - 1]!);
+      for (let index = minIndex + 1; index < rates.length; index += 1) expect(rates[index]!).toBeGreaterThan(rates[index - 1]!);
+    }
+  });
 });
