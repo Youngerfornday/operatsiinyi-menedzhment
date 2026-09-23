@@ -156,11 +156,12 @@ foreach (om_value($plan['gradebook'], 'categories', []) as $category) {
         }
         $items[] = $modules[$ref];
     }
-    if ($items === []) {
+    $manualitems = om_value($category, 'manualItems', []);
+    if ($items === [] && $manualitems === []) {
         $report->warn("Журнал оцінок: категорія «{$category['name']}» лишилася б порожньою — пропущено");
         continue;
     }
-    $categories[] = ['name' => $category['name'], 'weight' => $category['weight'], 'items' => $items];
+    $categories[] = ['name' => $category['name'], 'weight' => $category['weight'], 'items' => $items, 'manual' => $manualitems];
 }
 $report->step('журнал оцінок', fn() => om_setup_gradebook($course, $categories, $report));
 $result['gradebook'] = om_gradebook_state($course);

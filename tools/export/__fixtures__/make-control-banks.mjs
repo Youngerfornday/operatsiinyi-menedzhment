@@ -16,7 +16,7 @@ import { fileURLToPath } from 'node:url';
 import { parse, stringify } from 'yaml';
 
 const SOURCE = fileURLToPath(new URL('./banks/', import.meta.url));
-const CANARY = `${['KU', 'CONTROL', 'CANARY', ''].join('-')}fixture`;
+const CANARY = `${['OM', 'CONTROL', 'CANARY', ''].join('-')}fixture`;
 
 const target = process.argv[2];
 if (!target) {

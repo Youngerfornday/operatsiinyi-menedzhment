@@ -8,6 +8,7 @@ require_once($CFG->dirroot . '/course/lib.php');
 require_once($CFG->dirroot . '/mod/book/locallib.php');
 require_once($CFG->dirroot . '/mod/book/tool/importhtml/locallib.php');
 require_once($CFG->dirroot . '/grade/grading/lib.php');
+require_once($CFG->dirroot . '/mod/scorm/locallib.php');
 
 /**
  * Створює курс за планом, видаливши попередній курс із тим самим коротким іменем.

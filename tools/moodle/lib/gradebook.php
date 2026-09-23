@@ -11,7 +11,8 @@ require_once($CFG->libdir . '/grade/grade_item.php');
  * Налаштовує журнал: «Середнє зважене» на рівні курсу, підсумок 0..100, порожні оцінки рахуються як 0
  * (накопичувальна 100-бальна шкала університету). Кожна категорія має явну вагу; вага 0 виводить її з підсумку.
  *
- * @param array $categories [['name' => ..., 'weight' => ..., 'items' => [[modname, instanceid], ...]], ...]
+ * @param array $categories [['name' => ..., 'weight' => ..., 'items' => [[modname, instanceid], ...],
+ *                          'manual' => [['name' => ..., 'max' => ...], ...]], ...] — manual: ручні оцінки викладача
  * @return array звіт по категоріях
  */
 function om_setup_gradebook(stdClass $course, array $categories, om_report $report): array {
@@ -54,6 +55,19 @@ function om_setup_gradebook(stdClass $course, array $categories, om_report $repo
                 continue;
             }
             $item->set_parent($category->id);
+            $moved += 1;
+        }
+        foreach ($spec['manual'] ?? [] as $manual) {
+            $item = new grade_item([
+                'courseid' => $course->id,
+                'categoryid' => $category->id,
+                'itemtype' => 'manual',
+                'itemname' => $manual['name'],
+                'gradetype' => GRADE_TYPE_VALUE,
+                'grademax' => (float)$manual['max'],
+                'grademin' => 0,
+            ], false);
+            $item->insert();
             $moved += 1;
         }
         $result[$spec['name']] = ['id' => (int)$category->id, 'weight' => (float)$spec['weight'], 'items' => $moved];
