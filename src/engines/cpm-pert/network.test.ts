@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { computeNetwork } from './network';
+import { computeNetwork, countCriticalPaths } from './network';
 import type { Activity } from './types';
 
 /**
@@ -85,5 +85,32 @@ describe('computeNetwork (PRJ-01..04, PRJ-09)', () => {
       { id: 'B', duration: 1, predecessors: ['A'] },
     ];
     expect(computeNetwork(activities)).toMatchObject({ ok: false, error: { code: 'cycle-detected' } });
+  });
+});
+
+describe('countCriticalPaths', () => {
+  it('одна гілка критична (наскрізний приклад лекції) — рівно один критичний шлях', () => {
+    const result = computeNetwork(LECTURE_ACTIVITIES);
+    expect(result.ok && countCriticalPaths(LECTURE_ACTIVITIES, result.value)).toBe(1);
+  });
+
+  it('дві гілки однакової тривалості, що сходяться в спільну роботу, — два критичні шляхи', () => {
+    const tied: Activity[] = [
+      { id: 'A', duration: 2, predecessors: [] },
+      { id: 'B', duration: 3, predecessors: ['A'] },
+      { id: 'C', duration: 3, predecessors: ['A'] },
+      { id: 'D', duration: 2, predecessors: ['B'] },
+      { id: 'E', duration: 2, predecessors: ['C'] },
+      { id: 'F', duration: 1, predecessors: ['D', 'E'] },
+      { id: 'G', duration: 1, predecessors: ['F'] },
+    ];
+    const result = computeNetwork(tied);
+    expect(result.ok && countCriticalPaths(tied, result.value)).toBe(2);
+  });
+
+  it('одна робота — один критичний шлях', () => {
+    const single: Activity[] = [{ id: 'A', duration: 3, predecessors: [] }];
+    const result = computeNetwork(single);
+    expect(result.ok && countCriticalPaths(single, result.value)).toBe(1);
   });
 });

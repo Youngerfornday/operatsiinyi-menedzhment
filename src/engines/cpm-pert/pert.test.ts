@@ -43,6 +43,22 @@ describe('computePertProject', () => {
     expect(result.ok && result.value.variance).toBeCloseTo(2.111, 3);
   });
 
+  it('відхиляє мережу з двома критичними шляхами однакової тривалості (multiple-critical-paths)', () => {
+    // Гілка A-B-D-F-G (2+3+2+1+1=9) і гілка A-C-E-F-G (2+3+2+1+1=9) мають однакову тривалість —
+    // критичних шляхів два, а PRJ-06 визначена лише для одного; вибір бази не містить.
+    const tied: PertEstimate[] = [
+      { id: 'A', optimistic: 2, mostLikely: 2, pessimistic: 2, predecessors: [] },
+      { id: 'B', optimistic: 3, mostLikely: 3, pessimistic: 3, predecessors: ['A'] },
+      { id: 'C', optimistic: 3, mostLikely: 3, pessimistic: 3, predecessors: ['A'] },
+      { id: 'D', optimistic: 2, mostLikely: 2, pessimistic: 2, predecessors: ['B'] },
+      { id: 'E', optimistic: 2, mostLikely: 2, pessimistic: 2, predecessors: ['C'] },
+      { id: 'F', optimistic: 1, mostLikely: 1, pessimistic: 1, predecessors: ['D', 'E'] },
+      { id: 'G', optimistic: 1, mostLikely: 1, pessimistic: 1, predecessors: ['F'] },
+    ];
+
+    expect(computePertProject(tied)).toMatchObject({ ok: false, error: { code: 'multiple-critical-paths' } });
+  });
+
   it('відхиляє невалідні оцінки (p < m)', () => {
     const invalid: PertEstimate[] = [{ id: 'A', optimistic: 1, mostLikely: 5, pessimistic: 3, predecessors: [] }];
     expect(computePertProject(invalid)).toMatchObject({ ok: false, error: { code: 'invalid-pert-estimates' } });

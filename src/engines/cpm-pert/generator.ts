@@ -41,10 +41,15 @@ function cpmVariant(random: RandomSource, variantId: string): CpmPertVariant {
   const probe = byId.get(FLOAT_PROBE_ID);
   if (!probe) throw new Error(`Генератор сітьового планування: роботу ${FLOAT_PROBE_ID} не знайдено в розкладі`);
 
+  const successorRow = TOPOLOGY.find((row) => row.predecessors.includes(FLOAT_PROBE_ID));
+  const successorSchedule = successorRow ? byId.get(successorRow.id) : undefined;
+  if (!successorRow || !successorSchedule) throw new Error(`Генератор сітьового планування: наступника роботи ${FLOAT_PROBE_ID} не знайдено`);
+
   const given = activitiesTable(TOPOLOGY.map((row) => ({ ...row, value: `${formatNumber(durations.get(row.id) as number)} тиж.` })));
   const answers: CpmPertAnswerField[] = [
     { id: 'duration', label: 'Тривалість проекту (критичний шлях)', unit: 'тиж.', expected: network.projectDuration, tolerance: 0 },
     { id: 'float', label: `Повний резерв роботи ${FLOAT_PROBE_ID}`, unit: 'тиж.', expected: probe.totalFloat, tolerance: 0 },
+    { id: 'freeFloat', label: `Вільний резерв роботи ${FLOAT_PROBE_ID}`, unit: 'тиж.', expected: probe.freeFloat, tolerance: 0 },
   ];
   const branchA = ['A', 'B', 'D', 'F', 'G'].reduce((sum, id) => sum + (durations.get(id) as number), 0);
   const branchB = ['A', 'C', 'E', 'F', 'G'].reduce((sum, id) => sum + (durations.get(id) as number), 0);
@@ -53,14 +58,40 @@ function cpmVariant(random: RandomSource, variantId: string): CpmPertVariant {
     `Гілка A–C–E–F–G: ${['A', 'C', 'E', 'F', 'G'].map((id) => durations.get(id)).join(' + ')} = ${formatNumber(branchB)} тиж.`,
     `Критичний шлях — довша гілка: ${formatNumber(network.projectDuration)} тиж. (PRJ-01, PRJ-04).`,
     `Повний резерв роботи ${FLOAT_PROBE_ID}: LS − ES = ${formatNumber(probe.lateStart)} − ${formatNumber(probe.earlyStart)} = ${formatNumber(probe.totalFloat)} тиж. (PRJ-02, PRJ-03).`,
+    `Вільний резерв роботи ${FLOAT_PROBE_ID}: ES(${successorRow.id}) − EF(${FLOAT_PROBE_ID}) = ${formatNumber(successorSchedule.earlyStart)} − ${formatNumber(probe.earlyFinish)} = ${formatNumber(probe.freeFloat)} тиж. (PRJ-09).`,
   ];
-  return { variantId, method: 'cpm-critical-path', prompt: 'Побудуйте сітьовий графік за переліком робіт, визначте критичний шлях і повний резерв зазначеної роботи (PRJ-01..04).', given, answers, solution };
+  return {
+    variantId,
+    method: 'cpm-critical-path',
+    prompt: 'Побудуйте сітьовий графік за переліком робіт, визначте критичний шлях, повний і вільний резерв зазначеної роботи (PRJ-01..04, PRJ-09).',
+    given,
+    answers,
+    solution,
+  };
 }
-
-const DEADLINE_MARGIN_WEEKS: readonly [number, number] = [1, 4];
 
 /** Скільки разів перетягувати оцінки, поки гілки за te не розійдуться; на практиці вистачає однієї-двох спроб. */
 const MAX_PERT_DRAWS = 50;
+
+/** Цільовий Z у кроці 0,1: від −2,5 до 2,5 σ, тож директивний строк буває і раніше, і пізніше за TE. */
+const TARGET_Z_TENTHS: readonly [number, number] = [-25, 25];
+/** Жорстка межа |Z| ≤ 3 — навіть якщо округлення директивного строку до цілого тижня зсунуло Z сильніше за задум (мала σ). */
+const MAX_ABSOLUTE_Z = 3;
+
+/**
+ * Директивний строк проекту: цільовий Z обирається рівномірно на [−2,5; 2,5], а не лише «пізніше за TE»,
+ * тож імовірність дотримання строку не зсідається біля 100% і трапляється як вище, так і нижче 50%.
+ * Округлення до цілого тижня може змістити фактичний Z від цільового; `MAX_ABSOLUTE_Z` — жорстка межа
+ * поверх цього зсуву.
+ */
+function pickDirectiveDeadline(random: RandomSource, expectedDuration: number, sigma: number): number {
+  const targetZ = randomInt(random, TARGET_Z_TENTHS[0], TARGET_Z_TENTHS[1]) / 10;
+  let deadline = roundTo(expectedDuration + targetZ * sigma, 0);
+  while (Math.abs((deadline - expectedDuration) / sigma) > MAX_ABSOLUTE_Z) {
+    deadline += deadline > expectedDuration ? -1 : 1;
+  }
+  return deadline;
+}
 
 function drawPertEstimates(random: RandomSource): PertEstimate[] {
   return TOPOLOGY.map((row) => {
@@ -71,26 +102,25 @@ function drawPertEstimates(random: RandomSource): PertEstimate[] {
   });
 }
 
-/** Кожна гілка мережі (A–B–D–F–G чи A–C–E–F–G) має п’ять робіт; більше критичних робіт — дві гілки рівні. */
-const SINGLE_PATH_LENGTH = 5;
-
 /**
  * Оцінки з рівно одним критичним шляхом за te. Коли обидві гілки мають однакову очікувану тривалість,
- * критичних шляхів два, а PRJ-06 визначає дисперсію проекту лише для одного критичного шляху; правила
- * вибору між рівними шляхами база не містить, тож такий варіант студентові не показуємо.
+ * `computePertProject` повертає `multiple-critical-paths` (PRJ-06 визначена лише для одного критичного
+ * шляху, а правила вибору між рівними шляхами база не містить) — такий варіант студентові не показуємо,
+ * а перетягуємо оцінки ще раз.
  */
 function pertEstimatesWithSinglePath(random: RandomSource): { readonly estimates: PertEstimate[]; readonly project: PertProjectResult } {
   for (let attempt = 0; attempt < MAX_PERT_DRAWS; attempt += 1) {
     const estimates = drawPertEstimates(random);
-    const project = unwrap(computePertProject(estimates));
-    if (project.network.criticalPath.length === SINGLE_PATH_LENGTH) return { estimates, project };
+    const project = computePertProject(estimates);
+    if (project.ok) return { estimates, project: project.value };
+    if (project.error.code !== 'multiple-critical-paths') throw new Error('Генератор сітьового планування зібрав невалідні дані для рушія PERT');
   }
   throw new Error('Генератор PERT не знайшов оцінок з єдиним критичним шляхом');
 }
 
 function pertVariant(random: RandomSource, variantId: string): CpmPertVariant {
   const { estimates, project } = pertEstimatesWithSinglePath(random);
-  const directiveDeadline = roundTo(project.expectedDuration, 0) + randomInt(random, DEADLINE_MARGIN_WEEKS[0], DEADLINE_MARGIN_WEEKS[1]);
+  const directiveDeadline = pickDirectiveDeadline(random, project.expectedDuration, project.sigma);
   const z = unwrap(projectZ(directiveDeadline, project.expectedDuration, project.sigma));
   const probability = unwrap(onTimeProbability(directiveDeadline, project.expectedDuration, project.sigma));
 

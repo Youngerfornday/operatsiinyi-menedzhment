@@ -98,3 +98,48 @@ export function computeNetwork(activities: readonly Activity[]): CpmPertResult<N
 
   return ok({ activities: schedules, projectDuration, criticalPath: schedules.filter((schedule) => schedule.isCritical).map((schedule) => schedule.id) });
 }
+
+/**
+ * Кількість різних критичних шляхів (наскрізних ланцюжків від роботи без критичних попередників до
+ * роботи без критичних наступників, де кожна пара сусідів «зв’язана» — EF попередника дорівнює
+ * ES наступника). Для мережі з однією гілкою критичних робіт результат — 1; якщо дві гілки мають
+ * однакову тривалість (наприклад, обидві сходяться в спільну роботу), критичних шляхів два й більше —
+ * вибір «якого саме» шлях база курсу не визначає (використовується, зокрема, у `computePertProject`
+ * для дисперсії PRJ-06, яка визначена лише для одного критичного шляху).
+ */
+export function countCriticalPaths(activities: readonly Activity[], network: NetworkResult): number {
+  const scheduleById = new Map(network.activities.map((schedule) => [schedule.id, schedule]));
+  const predecessorsById = new Map(activities.map((activity) => [activity.id, activity.predecessors]));
+  const criticalIds = network.activities.filter((schedule) => schedule.isCritical).map((schedule) => schedule.id);
+  const criticalSet = new Set(criticalIds);
+
+  const successorsOf = new Map<string, string[]>(activities.map((activity) => [activity.id, []]));
+  for (const activity of activities) {
+    for (const predecessor of activity.predecessors) {
+      successorsOf.get(predecessor)?.push(activity.id);
+    }
+  }
+
+  const isBinding = (fromId: string, toId: string): boolean => {
+    const from = scheduleById.get(fromId) as ActivitySchedule;
+    const to = scheduleById.get(toId) as ActivitySchedule;
+    return Math.abs(from.earlyFinish - to.earlyStart) < FLOAT_TOLERANCE;
+  };
+  const criticalBindingSuccessors = (id: string): string[] =>
+    (successorsOf.get(id) ?? []).filter((successorId) => criticalSet.has(successorId) && isBinding(id, successorId));
+  const criticalBindingPredecessors = (id: string): string[] =>
+    (predecessorsById.get(id) ?? []).filter((predecessorId) => criticalSet.has(predecessorId) && isBinding(predecessorId, id));
+
+  const memo = new Map<string, number>();
+  function pathsFrom(id: string): number {
+    const cached = memo.get(id);
+    if (cached !== undefined) return cached;
+    const successors = criticalBindingSuccessors(id);
+    const count = successors.length === 0 ? 1 : successors.reduce((sum, successorId) => sum + pathsFrom(successorId), 0);
+    memo.set(id, count);
+    return count;
+  }
+
+  const roots = criticalIds.filter((id) => criticalBindingPredecessors(id).length === 0);
+  return roots.reduce((sum, rootId) => sum + pathsFrom(rootId), 0);
+}

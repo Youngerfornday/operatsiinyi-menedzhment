@@ -11,7 +11,8 @@ export type CpmPertErrorCode =
   | 'cycle-detected'
   | 'non-positive-duration'
   | 'invalid-pert-estimates'
-  | 'non-positive-sigma';
+  | 'non-positive-sigma'
+  | 'multiple-critical-paths';
 
 export interface CpmPertError {
   readonly code: CpmPertErrorCode;
@@ -26,6 +27,7 @@ export const CPM_PERT_ERROR_MESSAGES: Readonly<Record<CpmPertErrorCode, string>>
   'non-positive-duration': 'Тривалість роботи має бути більшою за нуль.',
   'invalid-pert-estimates': 'Оцінки PERT мають задовольняти o ≤ m ≤ p, усі більші за нуль.',
   'non-positive-sigma': 'Стандартне відхилення критичного шляху має бути більшим за нуль.',
+  'multiple-critical-paths': 'Мережа має кілька критичних шляхів однакової тривалості — база не визначає, дисперсію якого з них рахувати.',
 };
 
 export function fail(code: CpmPertErrorCode): { readonly ok: false; readonly error: CpmPertError } {

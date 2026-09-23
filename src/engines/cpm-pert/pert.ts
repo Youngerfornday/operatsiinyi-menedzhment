@@ -1,6 +1,6 @@
 import { ok } from '../shared/result';
 import { roundTo } from '../shared/number-format';
-import { computeNetwork } from './network';
+import { computeNetwork, countCriticalPaths } from './network';
 import { fail, type CpmPertResult } from './errors';
 import type { PertActivityResult, PertEstimate, PertProjectResult } from './types';
 
@@ -42,7 +42,10 @@ function validateEstimate(estimate: PertEstimate): boolean {
 /**
  * Проект методом PERT: критичний шлях визначають за очікуваними часами te робіт (стандартна практика —
  * te використовують як тривалість роботи для CPM під невизначеністю), дисперсію проекту рахують лише
- * за роботами цього критичного шляху (PRJ-06).
+ * за роботами цього критичного шляху (PRJ-06). PRJ-06 визначена для ОДНОГО критичного шляху: якщо
+ * мережа має кілька критичних шляхів однакової тривалості (наприклад, дві гілки сходяться з рівною
+ * сумою te), база курсу не визначає правила вибору між ними чи підсумовування їхніх дисперсій — це
+ * `multiple-critical-paths`, контентна межа методу, а не тиха відмова.
  */
 export function computePertProject(estimates: readonly PertEstimate[]): CpmPertResult<PertProjectResult> {
   if (estimates.length === 0) return fail('empty-activities');
@@ -54,8 +57,10 @@ export function computePertProject(estimates: readonly PertEstimate[]): CpmPertR
     variance: activityVariance(estimate.optimistic, estimate.pessimistic),
   }));
 
-  const network = computeNetwork(estimates.map((estimate) => ({ id: estimate.id, duration: expectedTime(estimate.optimistic, estimate.mostLikely, estimate.pessimistic), predecessors: estimate.predecessors })));
+  const networkActivities = estimates.map((estimate) => ({ id: estimate.id, duration: expectedTime(estimate.optimistic, estimate.mostLikely, estimate.pessimistic), predecessors: estimate.predecessors }));
+  const network = computeNetwork(networkActivities);
   if (!network.ok) return network;
+  if (countCriticalPaths(networkActivities, network.value) > 1) return fail('multiple-critical-paths');
 
   const varianceById = new Map(activities.map((activity) => [activity.id, activity.variance]));
   const variance = network.value.criticalPath.reduce((sum, id) => sum + (varianceById.get(id) ?? 0), 0);
