@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { computeCpm } from './network';
-import { createRgrVariant, createRgrVariantForNumber } from './variant';
+import { createRgrVariant, createRgrVariantForDigits } from './variant';
 
-function assertSolvable(variant: ReturnType<typeof createRgrVariantForNumber>): void {
+function assertSolvable(variant: ReturnType<typeof createRgrVariantForDigits>): void {
   expect(variant.stage1.baselineMonthlyDemand).toBeGreaterThan(0);
   expect(variant.stage2.demandHistory).toHaveLength(9);
   expect(variant.stage2.weightedWeights.reduce((sum, weight) => sum + weight, 0)).toBeCloseTo(1, 10);
@@ -14,37 +14,42 @@ function assertSolvable(variant: ReturnType<typeof createRgrVariantForNumber>): 
   expect(variant.stage4.capability.lowerSpecLimit).toBeLessThan(variant.stage4.capability.upperSpecLimit);
 }
 
-describe('createRgrVariantForNumber', () => {
-  it('той самий номер варіанта дає той самий варіант (детермінізм)', () => {
-    const first = createRgrVariantForNumber(42);
-    const second = createRgrVariantForNumber(42);
+describe('createRgrVariantForDigits', () => {
+  it('той самий номер дає той самий варіант (детермінізм)', () => {
+    const first = createRgrVariantForDigits('20401267');
+    const second = createRgrVariantForDigits('20401267');
 
     expect(second).toEqual(first);
   });
 
-  it('різні номери варіантів дають різні варіанти', () => {
-    const first = createRgrVariantForNumber(1);
-    const second = createRgrVariantForNumber(2);
+  it('різні номери дають різні варіанти', () => {
+    const first = createRgrVariantForDigits('20401267');
+    const second = createRgrVariantForDigits('20401268');
 
     expect(second).not.toEqual(first);
   });
 
-  it('усі 100 номерів варіантів (1..100) дають розв’язні узгоджені дані', () => {
-    for (let variantNumber = 1; variantNumber <= 100; variantNumber += 1) {
-      assertSolvable(createRgrVariantForNumber(variantNumber));
-    }
+  it('номери з однаковими двома останніми цифрами дають різні варіанти (весь номер визначає дані)', () => {
+    const first = createRgrVariantForDigits('1112345');
+    const second = createRgrVariantForDigits('9998745');
+
+    expect(first).not.toEqual(second);
   });
 });
 
 describe('createRgrVariant', () => {
-  it('номер залікової книжки → Result з варіантом, узгодженим за останніми двома цифрами', () => {
+  it('номер залікової книжки → Result з варіантом, детермінованим за УСІМ номером', () => {
     const result = createRgrVariant('20401267');
 
     expect(result.ok).toBe(true);
-    if (result.ok) {
-      expect(result.value.variantNumber).toBe(67);
-      expect(result.value).toEqual(createRgrVariantForNumber(67));
-    }
+    if (result.ok) expect(result.value).toEqual(createRgrVariantForDigits('20401267'));
+  });
+
+  it('розбивка пробілами/дефісами не змінює отриманий варіант', () => {
+    const withSeparators = createRgrVariant('20-40 1267');
+    const withoutSeparators = createRgrVariant('20401267');
+
+    expect(withSeparators).toEqual(withoutSeparators);
   });
 
   it('некоректний номер — Result з помилкою, варіант не рахується', () => {
@@ -61,5 +66,12 @@ describe('createRgrVariant', () => {
       expect(result.ok).toBe(true);
       if (result.ok) assertSolvable(result.value);
     }
+  });
+
+  it('1000 номерів з однаковими двома останніми цифрами дають переважно різні варіанти (раніше — завжди однаковий)', () => {
+    const variants = Array.from({ length: 1000 }, (_, index) => createRgrVariant(`${1_000_000 + index * 41}67`));
+    const distinctVariantNumbers = new Set(variants.map((result) => (result.ok ? result.value.variantNumber : null)));
+
+    expect(distinctVariantNumbers.size).toBeGreaterThan(950);
   });
 });

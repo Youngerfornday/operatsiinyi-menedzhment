@@ -1,9 +1,23 @@
+import { createSeededRandom } from '../shared/random';
 import { err, ok, type Result } from '../shared/result';
 
 /**
- * Номер залікової книжки → номер варіанта РГР. За умовою `companyCriteria` course.yaml варіант
- * визначається останніми двома цифрами номера: студенти з однаковими двома останніми цифрами
- * отримують той самий варіант (навмисно — це саме та ознака, за якою викладач ловить копії).
+ * Номер залікової книжки → варіант РГР (`content/course.yaml` → `grading.caseProject.companyCriteria`).
+ *
+ * Правило нормалізації:
+ * - Допустимі символи — лише цифри 0–9. У номера залікової книжки цього факультету немає літерної
+ *   серії, тож будь-яка літера (кирилична чи латинська) — завжди помилка формату; регістр тут не
+ *   впливає на нічого, бо літер не буває взагалі. Якщо серія колись з'явиться в номерах — це єдине
+ *   місце, де її додавати до правила.
+ * - Роздільники — пробіл (зокрема нерозривний, `\s` його покриває) і дефіс: вирізаються перед
+ *   перевіркою, тож «2040-1267», «2040 1267» і «20401267» — той самий номер.
+ * - Порожній ввід і ввід коротший за 2 цифри — явна помилка формату, а не тихий нуль.
+ * - Провідні нулі не відкидаються: номер лишається рядком цифр, а не числом.
+ *
+ * Варіант обчислюється детермінованим хешем УСЬОГО нормалізованого номера — не лише двох останніх
+ * цифр, як було раніше (`seedForGradebookNumber`). Той самий номер завжди дає той самий варіант;
+ * різні номери — з дуже високою ймовірністю різні варіанти, навіть коли їхні останні дві цифри
+ * збігаються (властивісні тести: `gradebook.test.ts`, `variant.test.ts`, `solvability.test.ts`).
  */
 export type GradebookErrorCode = 'empty' | 'invalid-format' | 'too-short';
 
@@ -21,13 +35,16 @@ export const GRADEBOOK_ERROR_MESSAGES: Readonly<Record<GradebookErrorCode, strin
 /** Нормалізований номер залікової книжки: лише цифри, без роздільників. */
 export interface GradebookNumber {
   readonly digits: string;
-  /** 1..100 — номер варіанта РГР (00 на кінці номера відповідає варіанту 100). */
-  readonly variantNumber: number;
 }
 
-const SEPARATORS = /[\s  -]/g;
+const SEPARATORS = /[\s-]/g;
 const MIN_DIGITS = 2;
-const VARIANT_COUNT = 100;
+/**
+ * Діапазон показового «номера варіанта» — лише зручний ярлик для студента й викладача
+ * (`displayVariantNumber`). Самі вихідні дані варіанта визначає не він, а
+ * `seedForGradebookNumber(digits)`, тож розмір цього діапазону не впливає на розв'язність.
+ */
+const DISPLAY_VARIANT_SPACE = 999_999;
 
 function fail(code: GradebookErrorCode): Result<GradebookNumber, GradebookError> {
   return err({ code, message: GRADEBOOK_ERROR_MESSAGES[code] });
@@ -43,12 +60,20 @@ export function parseGradebookNumber(input: string): Result<GradebookNumber, Gra
   if (!/^\d+$/.test(withoutSeparators)) return fail('invalid-format');
   if (withoutSeparators.length < MIN_DIGITS) return fail('too-short');
 
-  const lastTwo = Number(withoutSeparators.slice(-2));
-  const variantNumber = lastTwo === 0 ? VARIANT_COUNT : lastTwo;
-  return ok({ digits: withoutSeparators, variantNumber });
+  return ok({ digits: withoutSeparators });
 }
 
-/** Ключ детермінованого зерна рушія — лише номер варіанта, а не весь номер книжки. */
-export function seedForVariant(variantNumber: number): string {
-  return `rgr-variant:${variantNumber}`;
+/** Ключ детермінованого зерна рушія — УВЕСЬ нормалізований номер залікової книжки. */
+export function seedForGradebookNumber(digits: string): string {
+  return `rgr-variant:${digits}`;
+}
+
+/**
+ * Показовий номер варіанта (1..999 999) для інтерфейсу — похідний від усього номера залікової
+ * книжки через окреме зерно (`rgr-display:`), тому не споживає випадковість, яку
+ * `seedForGradebookNumber` віддає генерації самих даних варіанта.
+ */
+export function displayVariantNumber(digits: string): number {
+  const random = createSeededRandom(`rgr-display:${digits}`);
+  return 1 + Math.floor(random.next() * DISPLAY_VARIANT_SPACE);
 }
