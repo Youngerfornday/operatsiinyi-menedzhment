@@ -1,5 +1,6 @@
 {
-  "$comment": "Резервна копія курсу в GitHub Releases. Збирається локально (потрібен Docker): tools/moodle/build-mbz.sh --no-control, далі gh release upload course-backup-2026-09 operatsiinyi-menedzhment.mbz --clobber; після кожного перезавантаження оновіть bytes, sha256 і builtAt.",
+  "$comment": "Резервна копія курсу в GitHub Releases. published: false — для «Операційного менеджменту» .mbz ще не зібрано (потрібен Docker), тому посилання не потрапляє в маніфест. Як зібрати: tools/moodle/build-mbz.sh --no-control, далі gh release upload <tag> operatsiinyi-menedzhment.mbz --clobber; потім оновіть bytes, sha256, builtAt і поставте published: true.",
+  "published": false,
   "tag": "course-backup-2026-09",
   "asset": "operatsiinyi-menedzhment.mbz",
   "url": "https://github.com/Youngerfornday/operatsiinyi-menedzhment/releases/download/course-backup-2026-09/operatsiinyi-menedzhment.mbz",

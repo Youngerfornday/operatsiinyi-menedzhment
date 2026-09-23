@@ -259,7 +259,7 @@ async function writeBundle(
 /** Пакети «Модуль N — усі матеріали» і «Курс повністю» плюс посилання на резервну копію в Releases. */
 export async function bundlesStep(ctx: StepContext, items: readonly DownloadItem[]): Promise<DownloadItem[]> {
   const { course, backup } = ctx.sources;
-  const backupEntry = backupItem(backup);
+  const backupEntry = backup === undefined ? undefined : backupItem(backup);
   const ordered = orderItems(course, items);
   const modules = course.modules.filter((module) => bundleMembers(ordered, module.id).length > 0);
   const moduleBundles = await Promise.all(
@@ -274,5 +274,5 @@ export async function bundlesStep(ctx: StepContext, items: readonly DownloadItem
     courseMembers.length === 0
       ? []
       : [courseBundleItem(await writeBundle(ctx, 'course/operatsiinyi-menedzhment.zip', COURSE_BUNDLE_TITLE, courseMembers, backupEntry))];
-  return [...moduleBundles, ...courseBundle, backupEntry];
+  return [...moduleBundles, ...courseBundle, ...(backupEntry ? [backupEntry] : [])];
 }

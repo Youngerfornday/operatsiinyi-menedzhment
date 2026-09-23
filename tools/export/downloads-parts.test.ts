@@ -198,7 +198,9 @@ describe('джерела й перевірка каталогу', () => {
     expect(latestDate(['2026-09-16', '2026-09-17', '2026-01-02']).toISOString()).toBe('2026-09-17T00:00:00.000Z');
     expect(() => latestDate([])).toThrow('Немає жодної дати');
     const sources = await loadDownloadSources(ROOT);
-    expect(sources.date.getTime()).toBeGreaterThanOrEqual(new Date(`${sources.backup.builtAt}T00:00:00Z`).getTime());
+    if (sources.backup) {
+      expect(sources.date.getTime()).toBeGreaterThanOrEqual(new Date(`${sources.backup.builtAt}T00:00:00Z`).getTime());
+    }
     expect(sources.practicals.every((practical) => sources.course.practicals.some((entry) => entry.id === practical.id))).toBe(true);
   });
 

@@ -23,7 +23,9 @@ describe.skipIf(!generated)('згенеровані матеріали public/do
     const { manifest, issues } = await checkDownloadsDir(DOWNLOADS);
     expect(issues).toEqual([]);
     expect(manifest?.items.some((item) => item.kind === 'lecture')).toBe(true);
-    expect(manifest?.items.some((item) => item.kind === 'backup' && item.url?.endsWith('.mbz'))).toBe(true);
+    // Резервна копія потрапляє в маніфест лише коли зібрана: course-backup.json має published: true.
+    const backup = manifest?.items.filter((item) => item.kind === 'backup') ?? [];
+    expect(backup.every((item) => item.url?.endsWith('.mbz'))).toBe(true);
   });
 
   test.skipIf(!hasPoppler)('PDF лекцій і практичних: A4, теги, кирилиця шрифтом сайту', async () => {
