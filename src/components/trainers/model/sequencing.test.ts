@@ -17,15 +17,16 @@ function variant(overrides: Partial<SequencingVariant> = {}): SequencingVariant 
     answers: [
       { id: 'avg-flow', label: 'Середній час проходження', unit: 'дн.', expected: 5, tolerance: 0.15 },
       { id: 'avg-lateness', label: 'Середнє запізнення', unit: 'дн.', expected: 2, tolerance: 0.15 },
+      { id: 'utilization', label: 'Завантаження', unit: '%', expected: 50, tolerance: 0.15 },
     ],
     solution: ['крок 1'],
     ...overrides,
   };
 }
 
-function answerWithOrder(order: readonly string[], avgFlow = '5', avgLateness = '2'): SequencingAnswer {
+function answerWithOrder(order: readonly string[], avgFlow = '5', avgLateness = '2', utilization = '50'): SequencingAnswer {
   const orderMap = Object.fromEntries(order.map((id, index) => [`position-${index}`, id]));
-  return { order: orderMap, avgFlow, avgLateness };
+  return { order: orderMap, avgFlow, avgLateness, utilization };
 }
 
 describe('checkSequencingTask', () => {
@@ -53,11 +54,26 @@ describe('checkSequencingTask', () => {
   });
 
   it('відсутні позиції черги — Result err із field відповідних позицій', () => {
-    const answer: SequencingAnswer = { order: { 'position-0': 'b' }, avgFlow: '5', avgLateness: '2' };
+    const answer: SequencingAnswer = { order: { 'position-0': 'b' }, avgFlow: '5', avgLateness: '2', utilization: '50' };
     const result = checkSequencingTask(variant(), answer);
     expect(result.ok).toBe(false);
     if (result.ok) return;
     expect(result.error.map((issue) => issue.field)).toEqual(['position-1', 'position-2']);
+  });
+
+  it('одна робота на двох позиціях — Result err із field повторної позиції', () => {
+    const result = checkSequencingTask(variant(), answerWithOrder(['b', 'b', 'c']));
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+    expect(result.error.map((issue) => issue.field)).toEqual(['position-1']);
+  });
+
+  it('завантаження поза допуском — solved false, частина «utilization» некоректна', () => {
+    const result = checkSequencingTask(variant(), answerWithOrder(['b', 'a', 'c'], '5', '2', '45'));
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value.solved).toBe(false);
+    expect(result.value.parts.find((part) => part.id === 'utilization')).toMatchObject({ correct: false });
   });
 
   it('порожня відповідь (EMPTY_SEQUENCING_ANSWER) — усі позиції відсутні', () => {
@@ -87,9 +103,9 @@ describe('toSequencingTaskChoices', () => {
     expect(toSequencingTaskChoices(TASKS)).toEqual([{ method: 'spt' }, { method: 'edd' }]);
   });
 
-  it('фільтрує задачі сусідніх тренажерів практичної (включно з fcfs), не кидаючи помилку', () => {
-    const withFcfs: readonly CalculationTask[] = [...TASKS, { ...TASKS[0]!, id: 'fcfs', method: 'fcfs' }];
-    expect(toSequencingTaskChoices(withFcfs)).toEqual([{ method: 'spt' }, { method: 'edd' }]);
+  it('бере й FCFS (правило з лекції теми 6), фільтруючи задачі сусідніх тренажерів і формулу завантаження', () => {
+    const withFcfs: readonly CalculationTask[] = [...TASKS, { ...TASKS[0]!, id: 'fcfs', method: 'fcfs' }, { ...TASKS[0]!, id: 'utilization', method: 'utilization' }];
+    expect(toSequencingTaskChoices(withFcfs)).toEqual([{ method: 'spt' }, { method: 'edd' }, { method: 'fcfs' }]);
   });
 });
 

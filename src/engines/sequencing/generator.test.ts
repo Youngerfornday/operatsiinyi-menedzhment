@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { createSeededRandom } from '../shared/random';
+import { roundTo } from '../shared/number-format';
 import { sequenceEdd, sequenceFcfs, sequenceSpt } from './calculations';
 import { createSequencingVariant, type SequencingTaskChoice } from './generator';
 import type { SequencingMethod, SequencingSummary } from './types';
@@ -54,12 +55,21 @@ describe('createSequencingVariant', () => {
     }
   });
 
-  it('answers містить рівно два поля з очікуваними id', () => {
+  it('answers містить три поля: середній час проходження, середнє запізнення і завантаження (SCH-04)', () => {
     const variant = createSequencingVariant(createSeededRandom('answers:1'), ALL_TASKS);
-    expect(variant.answers.map((field) => field.id)).toEqual(['avg-flow', 'avg-lateness']);
+    expect(variant.answers.map((field) => field.id)).toEqual(['avg-flow', 'avg-lateness', 'utilization']);
   });
 
-  it('expected-значення independently узгоджуються з незалежним викликом sequence* на тих самих jobs', () => {
+  it('за обраним правилом запізнюється хоча б одна робота — середнє запізнення не вироджується в 0', () => {
+    for (const method of ALL_METHODS) {
+      for (let seed = 0; seed < 200; seed += 1) {
+        const variant = createSequencingVariant(createSeededRandom(`late:${method}:${seed}`), [{ method }]);
+        expect(variant.answers.find((field) => field.id === 'avg-lateness')!.expected).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it('очікувані значення узгоджуються з незалежним викликом sequence* на тих самих jobs', () => {
     for (const method of ALL_METHODS) {
       for (let seed = 0; seed < 15; seed += 1) {
         const variant = createSequencingVariant(createSeededRandom(`check:${method}:${seed}`), [{ method }]);
@@ -70,6 +80,8 @@ describe('createSequencingVariant', () => {
         const avgLateness = variant.answers.find((field) => field.id === 'avg-lateness')!;
         expect(avgFlow.expected).toBeCloseTo(recomputed.value.averageFlowTime, 1);
         expect(avgLateness.expected).toBeCloseTo(recomputed.value.averageLateness, 1);
+        const utilization = variant.answers.find((field) => field.id === 'utilization')!;
+        expect(utilization.expected).toBe(roundTo(recomputed.value.utilization, 1));
         expect(variant.expectedOrder).toEqual(recomputed.value.order.map((job) => job.id));
       }
     }

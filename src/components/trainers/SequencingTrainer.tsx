@@ -1,7 +1,7 @@
 /**
  * React-острів тренажера черговості (client:only): «Задача» на каркасі TaskShell + useTrainerTask.
- * Кожен варіант — випадково обраний метод із `content/practicals/p06.yaml` → `trainer.tasks` (SPT чи
- * EDD) — той самий список ділять тренажери EOQ і MRP цієї практичної, тому пул фільтрує лише відомі
+ * Кожен варіант — випадково обраний метод із `content/practicals/p06.yaml` → `trainer.tasks` (FCFS, SPT
+ * чи EDD) — той самий список ділять тренажери EOQ і MRP цієї практичної, тому пул фільтрує лише відомі
  * рушію методи; дані, правильний порядок і очікувана відповідь генеруються рушієм
  * `src/engines/sequencing`. На відміну від тренажера продуктивності, студент обирає ще й порядок
  * виконання робіт — по одному `SelectField` на кожну позицію черги.
@@ -9,7 +9,7 @@
 import { BADGE_ACTIVITY_IDS } from '../../engines/gamification';
 import { createSequencingVariant, type SequencingVariant } from '../../engines/sequencing';
 import type { CalculationTask } from '../../content/schemas/practical';
-import { checkSequencingTask, EMPTY_SEQUENCING_ANSWER, findCalculationTask, sequencePositionIds, toSequencingTaskChoices, type SequencingAnswer } from './model/sequencing';
+import { checkSequencingTask, EMPTY_SEQUENCING_ANSWER, findCalculationTask, sequencePositionIds, toSequencingTaskChoices, UTILIZATION_METHOD, type SequencingAnswer } from './model/sequencing';
 import { trainerStatusText } from './model/xp-text';
 import { NumberField, SelectField } from './ui/fields';
 import { SourceNotes } from './ui/parts';
@@ -22,6 +22,18 @@ export interface SequencingTrainerProps {
 
 const ACTIVITY_ID: string = BADGE_ACTIVITY_IDS.sequencing;
 
+/**
+ * Помилка позиції черги, поки вона ще актуальна: `setAnswer` знімає помилки лише за ключем `order`,
+ * а не за id позиції, тож «не обрано» ховаємо, щойно роботу обрано, а «повтор» — щойно повтору немає.
+ */
+function positionError(error: string | undefined, order: Readonly<Record<string, string>>, positionId: string): string | undefined {
+  if (!error) return undefined;
+  const value = order[positionId];
+  if (!value) return error;
+  const isRepeated = Object.entries(order).some(([id, other]) => id !== positionId && other === value);
+  return isRepeated ? error : undefined;
+}
+
 export function SequencingTrainer({ tasks }: SequencingTrainerProps) {
   const pool = toSequencingTaskChoices(tasks);
   const state = useTrainerTask<SequencingVariant, SequencingAnswer>({
@@ -32,6 +44,8 @@ export function SequencingTrainer({ tasks }: SequencingTrainerProps) {
   });
   const { variant } = state;
   const spec = findCalculationTask(tasks, variant.method);
+  const utilizationSpec = findCalculationTask(tasks, UTILIZATION_METHOD);
+  const sourceTasks = [spec, utilizationSpec].filter((task): task is CalculationTask => task !== undefined);
   const status = trainerStatusText(state.statusState.state, ACTIVITY_ID);
   const positions = sequencePositionIds(variant.jobs.length);
   const jobOptions = [{ value: '', label: '— оберіть —' }, ...variant.jobs.map((job) => ({ value: job.id, label: job.label }))];
@@ -49,11 +63,11 @@ export function SequencingTrainer({ tasks }: SequencingTrainerProps) {
       fabula={
         <>
           <p>{variant.prompt}</p>
-          {spec && (
-            <p className="formula-line" data-typography="off">
-              {spec.formula}
+          {sourceTasks.map((task) => (
+            <p key={task.id} className="formula-line" data-typography="off">
+              {task.formula}
             </p>
-          )}
+          ))}
           <dl className="tfigures">
             {variant.jobs.map((job) => (
               <div key={job.id}>
@@ -62,7 +76,7 @@ export function SequencingTrainer({ tasks }: SequencingTrainerProps) {
               </div>
             ))}
           </dl>
-          {spec && <SourceNotes heading="Формула і джерело" items={[{ item: spec.ref, text: spec.title }]} />}
+          {sourceTasks.length > 0 && <SourceNotes heading="Формули і джерела" items={sourceTasks.map((task) => ({ item: task.ref, text: task.title }))} />}
         </>
       }
       fields={
@@ -75,6 +89,7 @@ export function SequencingTrainer({ tasks }: SequencingTrainerProps) {
               label={`Позиція ${index + 1} черги`}
               value={state.answer.order[positionId] ?? ''}
               options={jobOptions}
+              error={positionError(state.errors[positionId], state.answer.order, positionId)}
               onChange={(value) => state.setAnswer({ order: { ...state.answer.order, [positionId]: value } })}
             />
           ))}
@@ -97,6 +112,16 @@ export function SequencingTrainer({ tasks }: SequencingTrainerProps) {
             error={state.errors['avg-lateness']}
             hint="Кому й крапку приймає однаково: 2,5 або 2.5."
             placeholder="наприклад, 3,2"
+          />
+          <NumberField
+            id="sequencing-utilization"
+            name="utilization"
+            label="Завантаження, %"
+            value={state.answer.utilization}
+            onChange={(value) => state.setAnswer({ utilization: value })}
+            error={state.errors.utilization}
+            hint="Кому й крапку приймає однаково: 41,5 або 41.5."
+            placeholder="наприклад, 41,5"
           />
         </>
       }
