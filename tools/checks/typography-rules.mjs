@@ -34,20 +34,14 @@ function maskKeepingLines(text) {
 }
 
 /**
- * JSX-тег → крапки, але рядкові значення атрибутів (title="…") лишаються для перевірки.
- * Маскування крапкою, а не пробілом — той самий прийом, що й maskKeepingLines для коду й виразів:
- * інакше пробіли маскування зливаються із сусіднім реальним пробілом навколо тире (наприклад,
- * `<Term id="…">Текст</Term> — …`) і лінт бачить хибне «зайве» тире там, де в джерелі один пробіл.
+ * JSX-тег вирізається з прози повністю (крім переносів рядків), без жодної заміни: будь-яка заміна
+ * лишає слід біля сусіднього тексту. Пробіли зливалися з реальним пробілом («…</Term> — …» давало хибне
+ * «зайве» тире), а непробільний символ ховав справжні знахідки поруч із тегом (діапазон
+ * «<strong>2020-2026</strong>» переставав бути діапазоном). Рядкові значення атрибутів (title="…")
+ * перевіряються окремо — див. attributeFindings.
  */
-function blankTagKeepingAttributeValues(tag) {
-  let result = '';
-  let last = 0;
-  for (const match of tag.matchAll(JSX_ATTRIBUTE_VALUE)) {
-    const valueStart = match.index + 2;
-    result += maskKeepingLines(tag.slice(last, valueStart)) + match[1];
-    last = valueStart + match[1].length;
-  }
-  return result + maskKeepingLines(tag.slice(last));
+function stripTagKeepingLines(tag) {
+  return tag.replace(/[^\n]/g, '');
 }
 
 /** Порівнює рядок з нормалізованим; повертає знахідку або null. */
@@ -58,19 +52,37 @@ function compareLine(line, index, options) {
   return expected === line ? null : { line: index + 1, actual: trimmed, expected: expected.trim() };
 }
 
-/**
- * Прозова частина MDX без frontmatter, коду, ESM-рядків, JSX-тегів і виразів у фігурних дужках.
- * Вирізане замінюється пробілами, щоб номери рядків збігалися з файлом.
- * @param {string} source
- */
-export function proseOfMdx(source) {
+/** MDX без frontmatter, коду й ESM-рядків; довжина й номери рядків збігаються з файлом. */
+function maskNonProse(source) {
   return source
     .replace(FRONTMATTER, blankKeepingLines)
     .replace(FENCE, blankKeepingLines)
     .replace(INLINE_CODE, maskKeepingLines)
-    .replace(ESM_LINE, blankKeepingLines)
-    .replace(JSX_TAG, blankTagKeepingAttributeValues)
-    .replace(EXPRESSION, maskKeepingLines);
+    .replace(ESM_LINE, blankKeepingLines);
+}
+
+/**
+ * Прозова частина MDX без frontmatter, коду, ESM-рядків, JSX-тегів і виразів у фігурних дужках.
+ * Номери рядків збігаються з файлом (переноси рядків зберігаються).
+ * @param {string} source
+ */
+export function proseOfMdx(source) {
+  return maskNonProse(source).replace(JSX_TAG, stripTagKeepingLines).replace(EXPRESSION, maskKeepingLines);
+}
+
+/** Рядкові значення атрибутів JSX-тегів (title="…", caption="…") — кожне як окремий текст зі своїм рядком. */
+function attributeFindings(source, options) {
+  const masked = maskNonProse(source);
+  /** @type {Finding[]} */
+  const findings = [];
+  for (const tag of masked.matchAll(JSX_TAG)) {
+    for (const attribute of tag[0].matchAll(JSX_ATTRIBUTE_VALUE)) {
+      const line = masked.slice(0, tag.index + attribute.index).split('\n').length - 1;
+      const finding = compareLine(attribute[1], line, options);
+      if (finding) findings.push(finding);
+    }
+  }
+  return findings;
 }
 
 /**
@@ -83,9 +95,10 @@ export function lintMdx(source, options = {}) {
     .split('\n')
     .map((line, index) => compareLine(line, index, options))
     .filter((finding) => finding !== null);
+  const tagFindings = attributeFindings(source, options);
   const frontmatter = FRONTMATTER.exec(source);
   const yamlFindings = frontmatter ? lintYaml(frontmatter[1], options).map((f) => ({ ...f, line: f.line + 1 })) : [];
-  return [...yamlFindings, ...bodyFindings].sort((a, b) => a.line - b.line);
+  return [...yamlFindings, ...bodyFindings, ...tagFindings].sort((a, b) => a.line - b.line);
 }
 
 /**
