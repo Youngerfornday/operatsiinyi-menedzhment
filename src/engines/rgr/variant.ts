@@ -1,6 +1,6 @@
 import { createSeededRandom } from '../shared/random';
 import { ok, type Result } from '../shared/result';
-import { displayVariantNumber, type GradebookError, parseGradebookNumber, seedForGradebookNumber } from './gradebook';
+import { normalizeGradebookDigits, type GradebookError, parseGradebookNumber, seedForGradebookNumber } from './gradebook';
 import { createStage1 } from './stage1';
 import { createStage2 } from './stage2';
 import { createStage3 } from './stage3';
@@ -19,7 +19,7 @@ export function createRgrVariantForDigits(digits: string): RgrVariant {
   const stage2 = createStage2(random, stage1);
   const stage3 = createStage3(random, stage1);
   const stage4 = createStage4(random, stage1);
-  return { variantNumber: displayVariantNumber(digits), stage1, stage2, stage3, stage4 };
+  return { digits: normalizeGradebookDigits(digits), stage1, stage2, stage3, stage4 };
 }
 
 /** Номер залікової книжки → повний варіант РГР. Помилки формату — `Result` українською. */

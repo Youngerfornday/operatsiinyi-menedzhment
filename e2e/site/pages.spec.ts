@@ -32,7 +32,7 @@ test('РГР: номер залікової → детермінований в�
   const input = page.getByLabel('Номер залікової книжки');
   await input.fill('20-40-1267');
   await page.getByRole('button', { name: 'Показати варіант' }).click();
-  await expect(page.getByRole('heading', { level: 3, name: 'Варіант 654969' })).toBeFocused();
+  await expect(page.getByRole('heading', { level: 3, name: 'Варіант для залікової книжки № 20401267' })).toBeFocused();
   await expect(page.locator('.rgr-stage')).toHaveCount(4);
   await expectNoSeriousAxeViolations(page);
 

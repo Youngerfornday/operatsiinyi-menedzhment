@@ -6,7 +6,6 @@
 export { computeCpm, createNetwork, type CpmActivityResult } from './network';
 export {
   GRADEBOOK_ERROR_MESSAGES,
-  displayVariantNumber,
   parseGradebookNumber,
   seedForGradebookNumber,
   type GradebookError,

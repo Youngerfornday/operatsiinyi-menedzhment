@@ -14,6 +14,12 @@ function assertSolvable(variant: ReturnType<typeof createRgrVariantForDigits>): 
   expect(variant.stage4.capability.lowerSpecLimit).toBeLessThan(variant.stage4.capability.upperSpecLimit);
 }
 
+/** JSON усіх чотирьох етапів — для порівняння самих даних варіанта, а не лише ярлика. */
+function stageDataPayload(variant: ReturnType<typeof createRgrVariantForDigits>): string {
+  const { stage1, stage2, stage3, stage4 } = variant;
+  return JSON.stringify({ stage1, stage2, stage3, stage4 });
+}
+
 describe('createRgrVariantForDigits', () => {
   it('той самий номер дає той самий варіант (детермінізм)', () => {
     const first = createRgrVariantForDigits('20401267');
@@ -35,6 +41,13 @@ describe('createRgrVariantForDigits', () => {
 
     expect(first).not.toEqual(second);
   });
+
+  it('ведучі нулі не впливають на дані варіанта', () => {
+    const withLeadingZeros = createRgrVariantForDigits('0020401267');
+    const withoutLeadingZeros = createRgrVariantForDigits('20401267');
+
+    expect(withLeadingZeros).toEqual(withoutLeadingZeros);
+  });
 });
 
 describe('createRgrVariant', () => {
@@ -53,7 +66,7 @@ describe('createRgrVariant', () => {
   });
 
   it('некоректний номер — Result з помилкою, варіант не рахується', () => {
-    const result = createRgrVariant('абв');
+    const result = createRgrVariant('абвг');
 
     expect(result).toEqual({ ok: false, error: { code: 'invalid-format', message: expect.any(String) } });
   });
@@ -68,10 +81,10 @@ describe('createRgrVariant', () => {
     }
   });
 
-  it('1000 номерів з однаковими двома останніми цифрами дають переважно різні варіанти (раніше — завжди однаковий)', () => {
+  it('1000 номерів з однаковими двома останніми цифрами дають переважно різні дані варіанта (раніше — завжди однакові)', () => {
     const variants = Array.from({ length: 1000 }, (_, index) => createRgrVariant(`${1_000_000 + index * 41}67`));
-    const distinctVariantNumbers = new Set(variants.map((result) => (result.ok ? result.value.variantNumber : null)));
+    const distinctPayloads = new Set(variants.map((result) => (result.ok ? stageDataPayload(result.value) : null)));
 
-    expect(distinctVariantNumbers.size).toBeGreaterThan(950);
+    expect(distinctPayloads.size).toBeGreaterThan(950);
   });
 });

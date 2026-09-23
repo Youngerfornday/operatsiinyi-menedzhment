@@ -93,13 +93,13 @@ export function RgrVariantExplorer({ stageTitles }: RgrVariantExplorerProps) {
         <div className="rgr-result">
           <div className="rgr-result-head no-print">
             <h3 className="h4" tabIndex={-1} ref={headingRef}>
-              Варіант {variant.variantNumber}
+              Варіант для залікової книжки № {variant.digits}
             </h3>
             <button type="button" className="btn btn-ghost" onClick={() => window.print()}>
               Надрукувати
             </button>
           </div>
-          <p className="print-only rgr-print-title">Варіант {variant.variantNumber}</p>
+          <p className="print-only rgr-print-title">Варіант для залікової книжки № {variant.digits}</p>
 
           {stageSections(variant).map(([key, sections], index) => (
             <section className="rgr-stage" aria-labelledby={`rgr-stage-${key}`} key={key}>
