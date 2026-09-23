@@ -94,6 +94,14 @@ describe('lintMdx', () => {
     expect(prose).not.toContain('Formula');
     expect(prose).toContain('Кворум - S');
   });
+
+  it('does not flag a real single space before an em dash right after a closing JSX tag', () => {
+    // Регресія: blankTagKeepingAttributeValues раніше маскував тег пробілами, які зливалися із
+    // сусіднім реальним пробілом перед тире («…</Term> — …») і лінт бачив хибне «зайве» тире там,
+    // де в джерелі був рівно один пробіл. Маскування крапкою (як для коду й виразів) це усуває.
+    const termSource = '<Term id="operations-system">Операційна система</Term> — повна система.';
+    expect(lintMdx(termSource)).toEqual([]);
+  });
 });
 
 describe('formatFindings', () => {
