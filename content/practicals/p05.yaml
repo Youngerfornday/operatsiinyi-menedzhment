@@ -104,7 +104,7 @@ trainer:
     - id: aggregate-plan
       method: aggregate-plan-costs
       title: 'Агрегатний план: погоня за попитом і рівномірне виробництво'
-      formula: 'Витрати = Регулярний час + Найм + Звільнення + Зберігання запасу + Дефіцит'
+      formula: 'Витрати = Регулярний час + Понаднормовий час + Найм + Звільнення + Зберігання запасу + Дефіцит'
       ref:
         source: 'Heizer J., Render B., Munson C. Operations Management, 2016'
         locator: 'розділ 13 «Aggregate Planning and S&OP», підрозділ «Methods for Aggregate Planning», порівняння планів за витратами (AGG-03)'
