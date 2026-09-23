@@ -1,6 +1,6 @@
 ---
 import Agenda from '../components/site/Agenda.astro';
-import { CALCULATOR_TRAINERS } from '../components/trainers/catalog';
+import { homeTrainerCards } from '../components/trainers/catalog';
 import Icon from '../components/site/Icon.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { loadCourseData } from '../lib/course-data';
@@ -25,7 +25,7 @@ const facts = [
 ];
 
 /** Картки тренажерів — з каталогу (src/components/trainers/catalog.ts): ті самі назви, шляхи й формули, що на сторінках тренажерів. */
-const trainers = CALCULATOR_TRAINERS;
+const trainers = homeTrainerCards();
 ---
 
 <BaseLayout title={`${course.title} — онлайн-курс ${course.institutionShort}`} description={description} current="course">

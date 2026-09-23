@@ -68,6 +68,28 @@ export const MATRIX_TRAINER = {
 /** Тренажери, що живуть на сторінці практичної (а не на власній сторінці `trenazhery/<slug>/`). */
 export const PRACTICAL_TRAINERS: readonly PracticalTrainer[] = [PRODUCTIVITY_TRAINER, MATRIX_TRAINER];
 
+export interface HomeTrainerCard {
+  readonly key: string;
+  readonly path: string;
+  readonly icon: string;
+  readonly title: string;
+  readonly text: string;
+  readonly formula: string;
+}
+
+/**
+ * Картки тренажерів для головної. Тренажер може жити і на власній сторінці, і всередині практичної —
+ * для читача це однаково тренажер, тому головна показує обидва види; практичний потрапляє сюди,
+ * лише коли його практичну опубліковано.
+ */
+export function homeTrainerCards(): readonly HomeTrainerCard[] {
+  const standalone = CALCULATOR_TRAINERS.map(({ key, path, icon, title, text, formula }) => ({ key, path, icon, title, text, formula }));
+  const onPracticals = PRACTICAL_TRAINERS.filter((trainer) => PUBLISHED_PRACTICALS.includes(trainer.practicalId)).map(
+    ({ registryId, path, icon, title, text, formula }) => ({ key: registryId, path, icon, title, text, formula }),
+  );
+  return [...standalone, ...onPracticals];
+}
+
 /** Людські назви тренажерів з реєстру course.yaml. */
 export const TRAINER_KIND_LABELS: Readonly<Record<string, string>> = {
   productivity: 'розрахункові задачі',

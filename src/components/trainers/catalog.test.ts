@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { createEmptyProgress } from '../../engines/progress';
-import { CALCULATOR_TRAINERS, MATRIX_TRAINER, PRACTICAL_TRAINERS, PRODUCTIVITY_TRAINER, PUBLISHED_PRACTICALS, practicalLabel, practicalPath, publishedTrainer, topicTrainerActivityIds, trainerKindLabel } from './catalog';
+import { CALCULATOR_TRAINERS, homeTrainerCards, MATRIX_TRAINER, PRACTICAL_TRAINERS, PRODUCTIVITY_TRAINER, PUBLISHED_PRACTICALS, practicalLabel, practicalPath, publishedTrainer, topicTrainerActivityIds, trainerKindLabel } from './catalog';
 import { practicumNote, practicumProgress } from './practicum-progress';
 
 const PRACTICALS = [
@@ -61,5 +61,18 @@ describe('practicumProgress', () => {
     const full = practicumProgress(one, ['p02-matching-matrix']);
     expect(full).toEqual({ state: 'done', done: 1, total: 1 });
     expect(full && practicumNote(full)).toBeUndefined();
+  });
+});
+
+describe('homeTrainerCards', () => {
+  it('показує тренажер опублікованої практичної, а не лише власні сторінки', () => {
+    const cards = homeTrainerCards();
+    expect(cards.length).toBeGreaterThan(0);
+    expect(cards.map((card) => card.key)).toContain('productivity');
+    expect(cards.every((card) => card.path !== '' && card.title !== '')).toBe(true);
+  });
+
+  it('не показує тренажер неопублікованої практичної', () => {
+    expect(homeTrainerCards().map((card) => card.key)).not.toContain('priorities-matrix');
   });
 });
