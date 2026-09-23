@@ -10,7 +10,9 @@ import { EoqTrainer } from './EoqTrainer';
 import { FacilityLocationTrainer } from './FacilityLocationTrainer';
 import { ForecastingTrainer } from './ForecastingTrainer';
 import { LineBalancingTrainer } from './LineBalancingTrainer';
+import { LittleLawTrainer } from './LittleLawTrainer';
 import { MrpTrainer } from './MrpTrainer';
+import { ProductionCycleTrainer } from './ProductionCycleTrainer';
 import { ProductivityTrainer } from './ProductivityTrainer';
 import { SequencingTrainer } from './SequencingTrainer';
 import { WorkMeasurementTrainer } from './WorkMeasurementTrainer';
@@ -21,6 +23,8 @@ type TrainerComponent = ComponentType<{ readonly tasks: readonly CalculationTask
 /** ID реєстру (`practicals[].trainers` у course.yaml) → острів тренажера. */
 export const CALCULATION_TRAINER_COMPONENTS: Readonly<Record<string, TrainerComponent>> = {
   productivity: ProductivityTrainer,
+  'little-law': LittleLawTrainer,
+  'production-cycle': ProductionCycleTrainer,
   'facility-location': FacilityLocationTrainer,
   'line-balancing': LineBalancingTrainer,
   'work-measurement': WorkMeasurementTrainer,
