@@ -25,7 +25,7 @@ function scheduleOf(activities: ReturnType<typeof computeNetwork>, id: string) {
 }
 
 describe('computeNetwork (PRJ-01..04, PRJ-09)', () => {
-  it('рахує тривалість проекту й критичний шлях запуску лінії пакування — 18 тижнів, A-C-E-F-G', () => {
+  it('рахує тривалість проєкту й критичний шлях запуску лінії пакування — 18 тижнів, A-C-E-F-G', () => {
     const result = computeNetwork(LECTURE_ACTIVITIES);
 
     expect(result.ok && result.value.projectDuration).toBe(18);

@@ -21,7 +21,7 @@ function variant(overrides: Partial<CpmPertVariant> = {}): CpmPertVariant {
     prompt: 'Тест',
     given: [],
     answers: [
-      { id: 'duration', label: 'Тривалість проекту', unit: 'тижнів', expected: 18, tolerance: 0 },
+      { id: 'duration', label: 'Тривалість проєкту', unit: 'тижнів', expected: 18, tolerance: 0 },
       { id: 'float', label: 'Резерв роботи B', unit: 'тижнів', expected: 2, tolerance: 0 },
     ],
     solution: ['крок 1'],
@@ -46,7 +46,7 @@ describe('checkCpmPertTask', () => {
     expect(result).toMatchObject({ ok: true, value: { solved: true } });
   });
 
-  it('неправильна тривалість проекту — solved false', () => {
+  it('неправильна тривалість проєкту — solved false', () => {
     const result = checkCpmPertTask(variant(), { duration: '16', float: '2' });
     expect(result.ok).toBe(true);
     if (!result.ok) return;

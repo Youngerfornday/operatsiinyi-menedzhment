@@ -11,7 +11,7 @@ describe('createCpmPertVariant', () => {
     expect(first).toEqual(second);
   });
 
-  it('cpm-critical-path: тривалість проекту невід’ємна, є повний і вільний резерв роботи B', () => {
+  it('cpm-critical-path: тривалість проєкту невід’ємна, є повний і вільний резерв роботи B', () => {
     const variant = createCpmPertVariant(createSeededRandom('cpm-pert:2'), [{ method: 'cpm-critical-path' }]);
 
     expect(variant.method).toBe('cpm-critical-path');

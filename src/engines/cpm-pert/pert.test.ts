@@ -37,7 +37,7 @@ describe('computePertProject', () => {
     expect(result.ok && result.value.network.criticalPath).toEqual(['A', 'C', 'E', 'F', 'G']);
   });
 
-  it('рахує дисперсію проекту лише за роботами критичного шляху — σ² ≈ 2,111', () => {
+  it('рахує дисперсію проєкту лише за роботами критичного шляху — σ² ≈ 2,111', () => {
     const result = computePertProject(LECTURE_ESTIMATES);
 
     expect(result.ok && result.value.variance).toBeCloseTo(2.111, 3);

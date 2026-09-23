@@ -15,7 +15,7 @@ export interface ActivitySchedule {
   readonly lateFinish: number;
   /** Повний резерв: LS − ES (PRJ-03). */
   readonly totalFloat: number;
-  /** Вільний резерв: min(ES наступників) − EF, для кінцевої роботи — тривалість проекту − EF (PRJ-09). */
+  /** Вільний резерв: min(ES наступників) − EF, для кінцевої роботи — тривалість проєкту − EF (PRJ-09). */
   readonly freeFloat: number;
   /** Резерв 0 (PRJ-04). */
   readonly isCritical: boolean;
@@ -46,9 +46,9 @@ export interface PertActivityResult {
 export interface PertProjectResult {
   readonly activities: readonly PertActivityResult[];
   readonly network: NetworkResult;
-  /** Очікувана тривалість проекту — сума te робіт критичного шляху (TE). */
+  /** Очікувана тривалість проєкту — сума te робіт критичного шляху (TE). */
   readonly expectedDuration: number;
-  /** Дисперсія проекту — сума дисперсій лише робіт критичного шляху. */
+  /** Дисперсія проєкту — сума дисперсій лише робіт критичного шляху. */
   readonly variance: number;
   readonly sigma: number;
 }
