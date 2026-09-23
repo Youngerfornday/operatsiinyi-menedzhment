@@ -91,7 +91,9 @@ const ALPHA_SET = [0.1, 0.2, 0.3, 0.4] as const;
 function exponentialSmoothingVariant(random: RandomSource, variantId: string): ForecastingVariant {
   const alpha = pickOne(ALPHA_SET, random);
   const previousForecast = 10 * randomInt(random, 10, 20);
-  const previousActual = previousForecast + 10 * randomInt(random, -3, 3);
+  // Відхилення факту від прогнозу ненульове: при Dt−1 = Ft−1 відповідь дорівнювала б даному Ft−1.
+  const errorTens = randomInt(random, 1, 3) * (random.next() < 0.5 ? -1 : 1);
+  const previousActual = previousForecast + 10 * errorTens;
   const expected = roundTo(unwrap(exponentialSmoothingForecast(previousForecast, previousActual, alpha)), 2);
   const given: ForecastingGivenItem[] = [
     { label: 'Прогноз попереднього періоду (Ft−1)', value: `${formatNumber(previousForecast)} од.` },
@@ -138,7 +140,7 @@ function mseVariant(random: RandomSource, variantId: string): ForecastingVariant
   const expected = roundTo(unwrap(meanSquaredError(actuals, forecasts)), 2);
   const answers: ForecastingAnswerField[] = [{ id: 'mse', label: 'Середньоквадратична похибка (MSE)', unit: 'од.²', expected, tolerance: 0.5 }];
   const terms = actuals.map((actual, index) => `(${formatNumber(actual)} − ${formatNumber(forecasts[index]!)})²`).join(' + ');
-  const solution = [`MSE = (${terms}) / ${actuals.length} = ${formatNumber(expected, { maximumFractionDigits: 2 })} од.²`];
+  const solution = [`MSE = (${terms}) / ${actuals.length} = ${formatNumber(expected, { maximumFractionDigits: 2 })} од.².`];
   return { variantId, method: 'forecast-mse', prompt: `Середньоквадратична похибка прогнозу (FC-05) за ${HISTORY_LENGTH} періодів.`, given: historyGiven(actuals, forecasts), answers, solution };
 }
 

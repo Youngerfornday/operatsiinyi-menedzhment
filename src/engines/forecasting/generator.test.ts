@@ -107,4 +107,12 @@ describe('createForecastingVariant', () => {
       );
     }
   });
+
+  it('forecast-exponential-smoothing: фактичний попит ніколи не збігається з попереднім прогнозом (інакше відповідь тривіальна)', () => {
+    for (let seed = 0; seed < 300; seed += 1) {
+      const variant = createForecastingVariant(createSeededRandom(`es:${seed}`), [{ method: 'forecast-exponential-smoothing' }]);
+      const [previousForecast, previousActual] = extractNumbers(variant.given.slice(0, 2));
+      expect(previousActual).not.toBe(previousForecast);
+    }
+  });
 });
