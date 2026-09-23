@@ -29,6 +29,16 @@ describe('createCpmPertVariant', () => {
     expect(probabilityField && probabilityField.expected).toBeLessThanOrEqual(100);
   });
 
+  it('pert-probability: критичний шлях за te завжди один (п’ять робіт), бо дисперсію сумують лише по ньому (PRJ-06)', () => {
+    for (let seed = 0; seed < 1000; seed += 1) {
+      const variant = createCpmPertVariant(createSeededRandom(`cpm-pert:single-path:${seed}`), [{ method: 'pert-probability' }]);
+      const pathLine = variant.solution.find((line) => line.startsWith('Критичний шлях за te:'));
+      const path = pathLine?.match(/te: ([A-G–]+),/)?.[1] ?? '';
+
+      expect(path.split('–')).toHaveLength(5);
+    }
+  });
+
   it('кидає виняток на порожній пул задач', () => {
     expect(() => createCpmPertVariant(createSeededRandom('cpm-pert:4'), [])).toThrow();
   });

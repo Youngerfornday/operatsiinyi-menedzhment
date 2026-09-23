@@ -8,7 +8,7 @@ import { pickOne, randomInt, type RandomSource } from '../shared/random';
 import { formatNumber, formatPercent, roundTo } from '../shared/number-format';
 import { computeNetwork } from './network';
 import { computePertProject, onTimeProbability, projectZ } from './pert';
-import type { Activity, CpmPertAnswerField, CpmPertGivenItem, CpmPertMethod, CpmPertVariant, PertEstimate } from './types';
+import type { Activity, CpmPertAnswerField, CpmPertGivenItem, CpmPertMethod, CpmPertVariant, PertEstimate, PertProjectResult } from './types';
 
 /** Опис роботи наскрізного прикладу теми 7: код, назва, попередники (без тривалості — її генерують). */
 const TOPOLOGY: readonly { readonly id: string; readonly title: string; readonly predecessors: readonly string[] }[] = [
@@ -59,14 +59,37 @@ function cpmVariant(random: RandomSource, variantId: string): CpmPertVariant {
 
 const DEADLINE_MARGIN_WEEKS: readonly [number, number] = [1, 4];
 
-function pertVariant(random: RandomSource, variantId: string): CpmPertVariant {
-  const estimates: PertEstimate[] = TOPOLOGY.map((row) => {
+/** Скільки разів перетягувати оцінки, поки гілки за te не розійдуться; на практиці вистачає однієї-двох спроб. */
+const MAX_PERT_DRAWS = 50;
+
+function drawPertEstimates(random: RandomSource): PertEstimate[] {
+  return TOPOLOGY.map((row) => {
     const mostLikely = randomInt(random, 2, 8);
     const optimistic = mostLikely - randomInt(random, 1, Math.min(2, mostLikely - 1) || 1);
     const pessimistic = mostLikely + randomInt(random, 1, 3);
     return { id: row.id, optimistic: Math.max(1, optimistic), mostLikely, pessimistic, predecessors: row.predecessors };
   });
-  const project = unwrap(computePertProject(estimates));
+}
+
+/** Кожна гілка мережі (A–B–D–F–G чи A–C–E–F–G) має п’ять робіт; більше критичних робіт — дві гілки рівні. */
+const SINGLE_PATH_LENGTH = 5;
+
+/**
+ * Оцінки з рівно одним критичним шляхом за te. Коли обидві гілки мають однакову очікувану тривалість,
+ * критичних шляхів два, а PRJ-06 визначає дисперсію проекту лише для одного критичного шляху; правила
+ * вибору між рівними шляхами база не містить, тож такий варіант студентові не показуємо.
+ */
+function pertEstimatesWithSinglePath(random: RandomSource): { readonly estimates: PertEstimate[]; readonly project: PertProjectResult } {
+  for (let attempt = 0; attempt < MAX_PERT_DRAWS; attempt += 1) {
+    const estimates = drawPertEstimates(random);
+    const project = unwrap(computePertProject(estimates));
+    if (project.network.criticalPath.length === SINGLE_PATH_LENGTH) return { estimates, project };
+  }
+  throw new Error('Генератор PERT не знайшов оцінок з єдиним критичним шляхом');
+}
+
+function pertVariant(random: RandomSource, variantId: string): CpmPertVariant {
+  const { estimates, project } = pertEstimatesWithSinglePath(random);
   const directiveDeadline = roundTo(project.expectedDuration, 0) + randomInt(random, DEADLINE_MARGIN_WEEKS[0], DEADLINE_MARGIN_WEEKS[1]);
   const z = unwrap(projectZ(directiveDeadline, project.expectedDuration, project.sigma));
   const probability = unwrap(onTimeProbability(directiveDeadline, project.expectedDuration, project.sigma));
