@@ -124,7 +124,7 @@ export function ProgressCode({ state, client }: Props) {
           <textarea
             className="input code-area"
             id="code-in"
-            placeholder="KUP1.…"
+            placeholder="OM1.…"
             rows={4}
             value={input}
             aria-invalid={error ? true : undefined}

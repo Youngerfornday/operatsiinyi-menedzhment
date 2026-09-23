@@ -74,8 +74,8 @@ describe('структура архіву й README', () => {
     const twin = { ...lecture.files[0]!, id: 'twin' };
     const summary = { materials: [lecture], files: [{ material: lecture, file: lecture.files[0]! }, { material: lecture, file: twin }], bytes: 0 };
     expect(archiveEntries(summary).map((e) => e.path)).toEqual([
-      'Модуль 1/Тема 01/Лекція 1. Корпорація і операційний менеджмент.pdf',
-      'Модуль 1/Тема 01/Лекція 1. Корпорація і операційний менеджмент (2).pdf',
+      'Модуль 1/Тема 01/Лекція 1. Операційний менеджмент як різновид функціонального менеджменту.pdf',
+      'Модуль 1/Тема 01/Лекція 1. Операційний менеджмент як різновид функціонального менеджменту (2).pdf',
     ]);
   });
 
