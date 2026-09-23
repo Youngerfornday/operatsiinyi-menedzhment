@@ -22,18 +22,7 @@ sources:
     language: en
     url: https://openlibrary.org/isbn/9780134163512
     checkedAt: '2026-09-23'
-    note: 'Джерело методу вагових коефіцієнтів (LOC-01) і методу центру ваги (LOC-02): розділ 8 «Location Strategies».'
-
-  - id: hevko-2017
-    type: book
-    title: 'Операційний (виробничий) менеджмент: конспект лекцій'
-    authors: [Гевко І. Б.]
-    publisher: ТНТУ імені Івана Пулюя
-    year: 2017
-    language: uk
-    url: https://elartu.tntu.edu.ua/handle/lib/21300
-    checkedAt: '2026-09-23'
-    note: 'Джерело мінімальної кількості робочих станцій (LB-01): тема 4 «Стратегія процесів», п. 4.5, с. 48.'
+    note: 'Джерело методу вагових коефіцієнтів (LOC-01), методу центру ваги (LOC-02) і правила найбільшої кількості наступних завдань (LB-05): розділ 8 «Location Strategies», розділ 9 «Layout Strategies».'
 
   - id: kapinos-babii-2013
     type: book
@@ -74,10 +63,10 @@ trainer:
       title: Балансування потокової лінії за тактом
       formula: 'Такт = Доступний час / Попит; Nmin = ⌈Σtᵢ / C⌉; Ефективність = Σtᵢ / (N · C) · 100 %'
       ref:
-        source: 'Гевко І. Операційний менеджмент, 2017'
-        locator: 'тема 4 «Стратегія процесів», п. 4.5 «Основні види компонування обладнання, технологій та процесів», с. 48, теоретичний мінімум кількості робочих місць (LB-01)'
+        source: 'Heizer J., Render B., Munson C. Operations Management, 2016'
+        locator: 'розділ 9 «Layout Strategies», підрозділ «Assembly-Line Balancing», евристика «most following tasks» (LB-05)'
         checkedAt: '2026-09-23'
-        url: https://elartu.tntu.edu.ua/handle/lib/21300
+        url: https://openlibrary.org/isbn/9780134163512
 
     - id: time-standard
       method: time-standard
