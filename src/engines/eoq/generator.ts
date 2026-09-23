@@ -1,6 +1,6 @@
 /**
  * Генератор варіантів тренажера EOQ: для кожного методу з `content/practicals/p06.yaml`
- * (`trainer.eoq.tasks`) будує один відтворюваний варіант — дані підбираються так, щоб очікувана
+ * (`trainer.tasks`) будує один відтворюваний варіант — дані підбираються так, щоб очікувана
  * відповідь виходила охайним числом лише після округлення (як у продавця продуктивності), а не
  * форсуванням «рівних» вхідних даних; водночас відповідь завжди рахує сам рушій формул
  * (`calculations.ts`), тож очікуване значення узгоджене з тим, що бачить студент.
@@ -145,7 +145,7 @@ export interface EoqTaskChoice {
   readonly method: EoqMethod;
 }
 
-/** Один випадковий варіант з переданого пулу методів (`content/practicals/p06.yaml` → `trainer.eoq.tasks`). */
+/** Один випадковий варіант з переданого пулу методів (`content/practicals/p06.yaml` → `trainer.tasks`). */
 export function createEoqVariant(random: RandomSource, tasks: readonly EoqTaskChoice[]): EoqVariant {
   if (tasks.length === 0) throw new Error('Пул задач тренажера EOQ порожній');
   const variantId = `eqv-${Math.floor(random.next() * 1e9).toString(36)}`;

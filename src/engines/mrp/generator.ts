@@ -58,7 +58,7 @@ export function createMrpVariant(random: RandomSource): MrpVariant {
   const mpsQuantity = 10 * randomInt(random, 5, 20);
   const duePeriod = leadTimeA + Math.max(leadTimeB + leadTimeD, leadTimeC) + randomInt(random, 2, 6);
 
-  // Прохід 1: онHand = 0 усюди, щоб дізнатися «сирі» брутто-потреби зверху вниз (при нульовому запасі
+  // Прохід 1: onHand = 0 усюди, щоб дізнатися «сирі» брутто-потреби зверху вниз (при нульовому запасі
   // планове замовлення дорівнює брутто-потребі на кожному рівні, тож цей прохід і дає ці числа).
   const zeroItem = (id: MrpBomItem['id'], title: string, quantityPerParent: number, leadTime: number): MrpBomItem => ({
     id,
@@ -96,11 +96,12 @@ export function createMrpVariant(random: RandomSource): MrpVariant {
 
   const given: MrpGivenItem[] = [
     { label: 'Потреба в А за MPS', value: `${formatNumber(mpsQuantity)} шт.` },
-    { label: 'Тиждень потреби (А)', value: `${formatNumber(duePeriod)} тижд.` },
+    { label: 'Тиждень потреби (А)', value: `тиждень ${formatNumber(duePeriod)}` },
     ...itemGiven('А', input.a, false),
     ...itemGiven('B (на 1 од. А)', input.b, true),
     ...itemGiven('C (на 1 од. А)', input.c, true),
     ...itemGiven('D (на 1 од. B)', input.d, true),
+    { label: 'Заплановані надходження й резервування', value: 'немає на жодному рівні' },
     { label: 'Розмір партії', value: 'на всіх рівнях — «партія за партією» (MRP-03)' },
   ];
 
@@ -119,16 +120,16 @@ export function createMrpVariant(random: RandomSource): MrpVariant {
   ];
 
   const solution: readonly string[] = [
-    `Рівень 0 (А): брутто-потреба = MPS = ${formatNumber(mpsQuantity)} шт. Нетто = ${formatNumber(mpsQuantity)} − ${formatNumber(resultA!.onHand)} = ${formatNumber(resultA!.netRequirement)} шт. Планове замовлення А = ${formatNumber(resultA!.plannedOrder)} шт. Запуск: ${formatNumber(duePeriod)} − ${formatNumber(resultA!.leadTime)} = ${formatNumber(resultA!.releasePeriod)} тижд.`,
-    `Рівень 1 (B): брутто-потреба = планове замовлення А × норма B/А = ${formatNumber(resultA!.plannedOrder)} × ${formatNumber(quantityBA)} = ${formatNumber(resultB!.grossRequirement)} шт. Нетто = ${formatNumber(resultB!.grossRequirement)} − ${formatNumber(resultB!.onHand)} = ${formatNumber(resultB!.netRequirement)} шт. Планове замовлення B = ${formatNumber(resultB!.plannedOrder)} шт. Запуск: ${formatNumber(resultA!.releasePeriod)} − ${formatNumber(resultB!.leadTime)} = ${formatNumber(resultB!.releasePeriod)} тижд.`,
-    `Рівень 1 (C): брутто-потреба = планове замовлення А × норма C/А = ${formatNumber(resultA!.plannedOrder)} × ${formatNumber(quantityCA)} = ${formatNumber(resultC!.grossRequirement)} шт. Нетто = ${formatNumber(resultC!.grossRequirement)} − ${formatNumber(resultC!.onHand)} = ${formatNumber(resultC!.netRequirement)} шт. Планове замовлення C = ${formatNumber(resultC!.plannedOrder)} шт. Запуск: ${formatNumber(resultA!.releasePeriod)} − ${formatNumber(resultC!.leadTime)} = ${formatNumber(resultC!.releasePeriod)} тижд.`,
-    `Рівень 2 (D, дочірній вузла B): брутто-потреба = планове замовлення B × норма D/B = ${formatNumber(resultB!.plannedOrder)} × ${formatNumber(quantityDB)} = ${formatNumber(resultD!.grossRequirement)} шт. Нетто = ${formatNumber(resultD!.grossRequirement)} − ${formatNumber(resultD!.onHand)} = ${formatNumber(resultD!.netRequirement)} шт. Планове замовлення D = ${formatNumber(resultD!.plannedOrder)} шт. Запуск: ${formatNumber(resultB!.releasePeriod)} − ${formatNumber(resultD!.leadTime)} = ${formatNumber(resultD!.releasePeriod)} тижд.`,
+    `Рівень 0 (А): брутто-потреба = MPS = ${formatNumber(mpsQuantity)} шт. Нетто = ${formatNumber(mpsQuantity)} − ${formatNumber(resultA!.onHand)} = ${formatNumber(resultA!.netRequirement)} шт. Планове замовлення А = ${formatNumber(resultA!.plannedOrder)} шт. Запуск на тижні ${formatNumber(duePeriod)} − ${formatNumber(resultA!.leadTime)} = ${formatNumber(resultA!.releasePeriod)}`,
+    `Рівень 1 (B): брутто-потреба = планове замовлення А × норма B/А = ${formatNumber(resultA!.plannedOrder)} × ${formatNumber(quantityBA)} = ${formatNumber(resultB!.grossRequirement)} шт. Нетто = ${formatNumber(resultB!.grossRequirement)} − ${formatNumber(resultB!.onHand)} = ${formatNumber(resultB!.netRequirement)} шт. Планове замовлення B = ${formatNumber(resultB!.plannedOrder)} шт. Запуск на тижні ${formatNumber(resultA!.releasePeriod)} − ${formatNumber(resultB!.leadTime)} = ${formatNumber(resultB!.releasePeriod)}`,
+    `Рівень 1 (C): брутто-потреба = планове замовлення А × норма C/А = ${formatNumber(resultA!.plannedOrder)} × ${formatNumber(quantityCA)} = ${formatNumber(resultC!.grossRequirement)} шт. Нетто = ${formatNumber(resultC!.grossRequirement)} − ${formatNumber(resultC!.onHand)} = ${formatNumber(resultC!.netRequirement)} шт. Планове замовлення C = ${formatNumber(resultC!.plannedOrder)} шт. Запуск на тижні ${formatNumber(resultA!.releasePeriod)} − ${formatNumber(resultC!.leadTime)} = ${formatNumber(resultC!.releasePeriod)}`,
+    `Рівень 2 (D, дочірній вузла B): брутто-потреба = планове замовлення B × норма D/B = ${formatNumber(resultB!.plannedOrder)} × ${formatNumber(quantityDB)} = ${formatNumber(resultD!.grossRequirement)} шт. Нетто = ${formatNumber(resultD!.grossRequirement)} − ${formatNumber(resultD!.onHand)} = ${formatNumber(resultD!.netRequirement)} шт. Планове замовлення D = ${formatNumber(resultD!.plannedOrder)} шт. Запуск на тижні ${formatNumber(resultB!.releasePeriod)} − ${formatNumber(resultD!.leadTime)} = ${formatNumber(resultD!.releasePeriod)}`,
   ];
 
   return {
     variantId,
     method: 'bom-explosion',
-    prompt: 'Виконайте розвертання специфікації виробу: визначте брутто- і нетто-потребу на кожному рівні та період запуску кожного замовлення (MRP-01, MRP-02, MRP-03).',
+    prompt: 'Виконайте розгортання специфікації виробу: визначте брутто- і нетто-потребу на кожному рівні та період запуску кожного замовлення (MRP-01, MRP-02, MRP-03).',
     given,
     answers,
     solution,

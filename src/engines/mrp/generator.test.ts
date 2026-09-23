@@ -63,14 +63,19 @@ describe('createMrpVariant', () => {
     }
   });
 
-  it('усі періоди запуску невід’ємні за побудовою генератора (duePeriod підібрано так, щоб уникнути «запізнілого» запуску)', () => {
+  it('усі періоди запуску не раніші за тиждень 1 (duePeriod підібрано так, щоб запуск не виходив за горизонт планування)', () => {
     for (let seed = 0; seed < 100; seed += 1) {
       const variant = createMrpVariant(createSeededRandom(`p06:mrp:nonneg:${seed}`));
       for (const id of ['a-release', 'b-release', 'c-release', 'd-release']) {
         const field = variant.answers.find((answer) => answer.id === id)!;
-        expect(field.expected).toBeGreaterThanOrEqual(0);
+        expect(field.expected).toBeGreaterThanOrEqual(1);
       }
     }
+  });
+
+  it('умова прямо каже, що запланованих надходжень і резервувань немає (MRP-02 у повній формі)', () => {
+    const variant = createMrpVariant(createSeededRandom('p06:mrp:receipts'));
+    expect(variant.given.find((item) => item.label === 'Заплановані надходження й резервування')?.value).toBe('немає на жодному рівні');
   });
 
   it('солюшн має по одному кроку на кожен рівень специфікації (А, B, C, D)', () => {
