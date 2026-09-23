@@ -110,7 +110,7 @@ const trainers = CALCULATOR_TRAINERS;
     <div class="section-head">
       <h2 class="h2" id="agenda-title">Маршрутна карта</h2>
       <p class="muted">
-        {typo(`${modules.length} ${pluralUk(modules.length, { one: 'модуль', few: 'модулі', many: 'модулів', other: 'модуля' })} і ${topics.length} ${pluralUk(topics.length, { one: 'тема', few: 'теми', many: 'тем', other: 'теми' })}. Кожна тема — лонгрід зі схемою, формулою і розібраним прикладом, кейсом і самоперевіркою; за нею тренувальний тест.`)}
+        {typo(`${pluralUk(modules.length, { one: 'модуль', few: 'модулі', many: 'модулів', other: 'модуля' })} і ${pluralUk(topics.length, { one: 'тема', few: 'теми', many: 'тем', other: 'теми' })}. Кожна тема — лонгрід зі схемою, формулою і розібраним прикладом, кейсом і самоперевіркою; за нею тренувальний тест.`)}
       </p>
     </div>
     <Agenda modules={modules} />
