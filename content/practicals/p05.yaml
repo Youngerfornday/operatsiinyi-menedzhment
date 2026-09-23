@@ -1,0 +1,127 @@
+# Дані тренажерів практичної 5. Реєстр (мета, результати, рубрика, ПРН, дані статистики) — у course.yaml.
+# Формули — лише з docs/research/formula-baseline.md (коди FC-01…FC-06, AGG-01…AGG-03).
+# Два тренажери на одну практичну: прогнозування (forecast-*) й агрегатне планування
+# (aggregate-plan-costs) — острови src/components/trainers/ForecastingTrainer.tsx і
+# AggregatePlanningTrainer.tsx самі відбирають зі списку tasks лише методи свого рушія.
+id: p05
+title: Прогнозування попиту та агрегатне планування
+intro: >-
+  У тренажері два розділи. У першому розрахуйте прогноз попиту трьома методами (проста ковзна середня,
+  зважена ковзна середня, експоненційне згладжування) і оцініть його точність через MAD, MSE і MAPE.
+  У другому складіть агрегатний план на шість періодів за стратегією погоні за попитом і за стратегією
+  рівномірного виробництва та порівняйте їх за сумарними витратами. Кожен варіант генерує нові дані;
+  перевірка одразу показує повний розв’язок за формулою. XP нараховується лише за перший правильно
+  розв’язаний варіант кожного типу задачі — до 60 XP за розділ прогнозування і до 60 XP за розділ
+  агрегатного планування.
+status: review
+updatedAt: '2026-09-23'
+sources:
+  - id: hevko-2017
+    type: book
+    title: 'Операційний (виробничий) менеджмент: конспект лекцій'
+    authors: [Гевко І. Б.]
+    publisher: ТНТУ імені Івана Пулюя
+    year: 2017
+    language: uk
+    url: https://elartu.tntu.edu.ua/handle/lib/21300
+    checkedAt: '2026-09-23'
+    note: 'Джерело методів часових рядів прогнозування й середнього абсолютного відхилення (FC-01–FC-04): тема 9 «Прогнозування в операційному менеджменті», п. 9.3 «Методи часових серій», с. 95–96.'
+
+  - id: heizer-render-munson-2016
+    type: book
+    title: 'Operations Management: Sustainability and Supply Chain Management'
+    authors: [Heizer J., Render B., Munson C.]
+    publisher: Pearson
+    year: 2016
+    language: en
+    url: https://openlibrary.org/isbn/9780134163512
+    checkedAt: '2026-09-23'
+    note: 'Джерело середньоквадратичної похибки та похибки у відсотках (FC-05, FC-06): розділ 4 «Forecasting», підрозділ «Measuring Forecast Error». Джерело порівняння агрегатних планів за сумарними витратами (AGG-03): розділ 13 «Aggregate Planning and S&OP», підрозділ «Methods for Aggregate Planning».'
+
+trainer:
+  kind: calculation-tasks
+  tasks:
+    - id: moving-average
+      method: forecast-moving-average
+      title: Проста ковзна середня
+      formula: 'Ft = (Dt−1 + Dt−2 + … + Dt−n) / n'
+      ref:
+        source: 'Гевко І. Операційний менеджмент, 2017'
+        locator: 'тема 9 «Прогнозування в операційному менеджменті», п. 9.3 «Методи часових серій», с. 95, змінна середня (FC-01)'
+        checkedAt: '2026-09-23'
+        url: https://elartu.tntu.edu.ua/handle/lib/21300
+
+    - id: weighted-moving-average
+      method: forecast-weighted-moving-average
+      title: Зважена ковзна середня
+      formula: 'Ft = Σ (wi · Dt−i), Σwi = 1'
+      ref:
+        source: 'Гевко І. Операційний менеджмент, 2017'
+        locator: 'тема 9 «Прогнозування в операційному менеджменті», п. 9.3 «Методи часових серій», с. 95, зважена змінна середня (FC-02)'
+        checkedAt: '2026-09-23'
+        url: https://elartu.tntu.edu.ua/handle/lib/21300
+
+    - id: exponential-smoothing
+      method: forecast-exponential-smoothing
+      title: Експоненційне згладжування
+      formula: 'Ft = Ft−1 + α · (Dt−1 − Ft−1)'
+      ref:
+        source: 'Гевко І. Операційний менеджмент, 2017'
+        locator: 'тема 9 «Прогнозування в операційному менеджменті», п. 9.3 «Методи часових серій», с. 96, експоненційне згладжування (FC-03)'
+        checkedAt: '2026-09-23'
+        url: https://elartu.tntu.edu.ua/handle/lib/21300
+
+    - id: mad
+      method: forecast-mad
+      title: Середнє абсолютне відхилення (MAD)
+      formula: 'MAD = (1/n) · Σ |Dt − Ft|'
+      ref:
+        source: 'Гевко І. Операційний менеджмент, 2017'
+        locator: 'тема 9 «Прогнозування в операційному менеджменті», п. 9.3 «Методи часових серій», с. 96, середнє абсолютне відхилення (САВ) (FC-04)'
+        checkedAt: '2026-09-23'
+        url: https://elartu.tntu.edu.ua/handle/lib/21300
+
+    - id: mse
+      method: forecast-mse
+      title: Середньоквадратична похибка (MSE)
+      formula: 'MSE = (1/n) · Σ (Dt − Ft)²'
+      ref:
+        source: 'Heizer J., Render B., Munson C. Operations Management, 2016'
+        locator: 'розділ 4 «Forecasting», підрозділ «Measuring Forecast Error», MSE (FC-05)'
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9780134163512
+
+    - id: mape
+      method: forecast-mape
+      title: Середня абсолютна похибка у відсотках (MAPE)
+      formula: 'MAPE = (100/n) · Σ (|Dt − Ft| / Dt)'
+      ref:
+        source: 'Heizer J., Render B., Munson C. Operations Management, 2016'
+        locator: 'розділ 4 «Forecasting», підрозділ «Measuring Forecast Error», MAPE (FC-06)'
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9780134163512
+
+    - id: aggregate-plan
+      method: aggregate-plan-costs
+      title: 'Агрегатний план: погоня за попитом і рівномірне виробництво'
+      formula: 'Витрати = Регулярний час + Найм + Звільнення + Зберігання запасу + Дефіцит'
+      ref:
+        source: 'Heizer J., Render B., Munson C. Operations Management, 2016'
+        locator: 'розділ 13 «Aggregate Planning and S&OP», підрозділ «Methods for Aggregate Planning», порівняння планів за витратами (AGG-03)'
+        checkedAt: '2026-09-23'
+        url: https://openlibrary.org/isbn/9780134163512
+
+  essay:
+    prompt: >-
+      Поясніть, чому надто велике значення константи згладжування (α) робить прогноз експоненційного
+      згладжування нестійким, і чому вибір методу прогнозування чи стратегії агрегатного плану має
+      спиратися на розраховані показники (MAD, MSE, MAPE або сумарні витрати), а не на інтуїцію.
+      Спирайтеся на власні розрахунки з обох розділів тренажера.
+    maxWords: 300
+    expectations:
+      - 'Пояснено механізм нестійкості: при α, близькому до 1, прогноз майже повторює останнє фактичне значення й різко реагує на випадкові коливання попиту, замість згладжувати їх.'
+      - 'Наведено конкретне порівняння показників точності (MAD, MSE або MAPE) чи сумарних витрат двох стратегій із власного розрахунку тренажера, яке обґрунтовує вибір методу чи стратегії.'
+      - 'Пояснення посилається на розрахунки з обох розділів тренажера, а не переказує самі лише визначення прогнозування чи агрегатного планування.'
+    hints:
+      - 'Порівняйте прогноз при малому й великому α на тих самих даних: більше α сильніше «стрибає» за останнім фактичним значенням, тому й нестійкіше реагує на випадковий викид попиту.'
+      - 'Перегляньте розділ лекції «Агрегатне планування» — приклад із витратами найму й звільнення проти витрат зберігання запасу для того самого ряду попиту.'

@@ -3,6 +3,8 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import MatrixReference from '../../components/practicals/MatrixReference.astro';
 import MatrixSections from '../../components/practicals/MatrixSections.astro';
 import { calculationConditionNote, matrixConditionNote, practicalSections, practicalXpChip } from '../../components/practicals/view';
+import { AggregatePlanningTrainer } from '../../components/trainers/AggregatePlanningTrainer';
+import { ForecastingTrainer } from '../../components/trainers/ForecastingTrainer';
 import { ProductivityTrainer } from '../../components/trainers/ProductivityTrainer';
 import { practicalLabel } from '../../components/trainers/catalog';
 import Crumbs from '../../components/site/Crumbs.astro';
@@ -175,17 +177,48 @@ const essayNote =
           trainer.kind === 'calculation-tasks' ? (
             <section class="prac-section" id="trenazher" aria-labelledby="trenazher-title">
               <h2 id="trenazher-title">Тренажер: розрахункові задачі</h2>
-              <ProductivityTrainer client:only="react" tasks={trainer.tasks}>
-                <div slot="fallback" class="quiz-pending" aria-busy="true">
-                  <div class="card">
-                    <Icon name="clock" size="lg" />
-                    <div>
-                      <p class="h3">Тренажер завантажується</p>
-                      <p class="muted">{typo('Дані генеруються у вашому браузері. Якщо цей напис не зникає, увімкніть JavaScript.')}</p>
+              {
+                practical.id === 'p05' ? (
+                  <>
+                    <h3 class="h4" id="trenazher-forecasting">Прогнозування попиту</h3>
+                    <ForecastingTrainer client:only="react" tasks={trainer.tasks}>
+                      <div slot="fallback" class="quiz-pending" aria-busy="true">
+                        <div class="card">
+                          <Icon name="clock" size="lg" />
+                          <div>
+                            <p class="h3">Тренажер завантажується</p>
+                            <p class="muted">{typo('Дані генеруються у вашому браузері. Якщо цей напис не зникає, увімкніть JavaScript.')}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </ForecastingTrainer>
+                    <h3 class="h4" id="trenazher-aggregate-planning">Агрегатне планування</h3>
+                    <AggregatePlanningTrainer client:only="react" tasks={trainer.tasks}>
+                      <div slot="fallback" class="quiz-pending" aria-busy="true">
+                        <div class="card">
+                          <Icon name="clock" size="lg" />
+                          <div>
+                            <p class="h3">Тренажер завантажується</p>
+                            <p class="muted">{typo('Дані генеруються у вашому браузері. Якщо цей напис не зникає, увімкніть JavaScript.')}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </AggregatePlanningTrainer>
+                  </>
+                ) : (
+                  <ProductivityTrainer client:only="react" tasks={trainer.tasks}>
+                    <div slot="fallback" class="quiz-pending" aria-busy="true">
+                      <div class="card">
+                        <Icon name="clock" size="lg" />
+                        <div>
+                          <p class="h3">Тренажер завантажується</p>
+                          <p class="muted">{typo('Дані генеруються у вашому браузері. Якщо цей напис не зникає, увімкніть JavaScript.')}</p>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </ProductivityTrainer>
+                  </ProductivityTrainer>
+                )
+              }
             </section>
           ) : null
         }

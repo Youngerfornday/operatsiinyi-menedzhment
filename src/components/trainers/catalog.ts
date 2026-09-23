@@ -29,7 +29,7 @@ export interface CalculatorTrainer {
 export const CALCULATOR_TRAINERS: readonly CalculatorTrainer[] = [];
 
 /** Практичні, сторінки яких уже опубліковано (`praktychni/pNN/`). */
-export const PUBLISHED_PRACTICALS: readonly string[] = ['p01', 'p02'];
+export const PUBLISHED_PRACTICALS: readonly string[] = ['p01', 'p02', 'p05'];
 
 export interface PracticalTrainer {
   readonly practicalId: string;
@@ -65,8 +65,30 @@ export const MATRIX_TRAINER = {
   formula: 'Не менше 90 % зіставлень — 2 бали',
 } as const satisfies PracticalTrainer;
 
+export const FORECASTING_TRAINER = {
+  practicalId: 'p05',
+  registryId: 'forecasting',
+  activityId: BADGE_ACTIVITY_IDS.forecasting,
+  path: 'praktychni/p05/#trenazher-forecasting',
+  icon: 'flag',
+  title: 'Прогнозування попиту',
+  text: 'Розрахуйте прогноз попиту простою й зваженою ковзною середньою та експоненційним згладжуванням, оцініть точність через MAD, MSE і MAPE. Кожен варіант — нові дані, перевірка одразу показує повний розв’язок.',
+  formula: 'До 60 XP — по одному разу за кожен тип задачі',
+} as const satisfies PracticalTrainer;
+
+export const AGGREGATE_PLANNING_TRAINER = {
+  practicalId: 'p05',
+  registryId: 'aggregate-planning',
+  activityId: BADGE_ACTIVITY_IDS.aggregatePlanning,
+  path: 'praktychni/p05/#trenazher-aggregate-planning',
+  icon: 'list',
+  title: 'Агрегатне планування',
+  text: 'Складіть агрегатний план на шість періодів за стратегією погоні за попитом і за стратегією рівномірного виробництва та порівняйте їх за сумарними витратами (регулярна оплата, найм, звільнення, зберігання запасу, дефіцит).',
+  formula: 'До 60 XP — за правильно розв’язаний варіант',
+} as const satisfies PracticalTrainer;
+
 /** Тренажери, що живуть на сторінці практичної (а не на власній сторінці `trenazhery/<slug>/`). */
-export const PRACTICAL_TRAINERS: readonly PracticalTrainer[] = [PRODUCTIVITY_TRAINER, MATRIX_TRAINER];
+export const PRACTICAL_TRAINERS: readonly PracticalTrainer[] = [PRODUCTIVITY_TRAINER, MATRIX_TRAINER, FORECASTING_TRAINER, AGGREGATE_PLANNING_TRAINER];
 
 export interface HomeTrainerCard {
   readonly key: string;
@@ -94,6 +116,8 @@ export function homeTrainerCards(): readonly HomeTrainerCard[] {
 export const TRAINER_KIND_LABELS: Readonly<Record<string, string>> = {
   productivity: 'розрахункові задачі',
   'priorities-matrix': 'матриця зіставлення',
+  forecasting: 'розрахункові задачі',
+  'aggregate-planning': 'розрахункові задачі',
 };
 
 export function trainerKindLabel(registryId: string): string {
