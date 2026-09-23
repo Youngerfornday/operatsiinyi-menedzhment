@@ -6,8 +6,8 @@
  *
  * Практична p05 поєднує в одному `trainer.tasks` методи ДВОХ рушіїв (прогнозування й агрегатне
  * планування — `src/components/trainers/model/aggregate-planning.ts`), тому на відміну від
- * `model/productivity.ts` (єдиний рушій на файл, невідомий метод — помилка контенту) тут невідомий
- * методу цього рушія просто відфільтровується: він призначений іншому тренажеру практичної.
+ * `model/productivity.ts` (єдиний рушій на файл, невідомий метод — помилка контенту) тут метод,
+ * невідомий цьому рушію, просто відфільтровується: він призначений іншому тренажеру практичної.
  */
 import type { Result } from '../../../engines/shared/result';
 import type { ForecastingMethod, ForecastingTaskChoice, ForecastingVariant } from '../../../engines/forecasting';

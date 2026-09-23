@@ -94,9 +94,9 @@ if (result.ok) { store.save(result.value.state); announce(eventOutcomeText(resul
    `tools/export/scorm/app/<kind>-entry.tsx` (за зразком `matrix-entry.tsx`).
 
 Активності цієї дисципліни вже зарезервовано в `BADGE_ACTIVITY_IDS`, тренажерів під них ще не написано:
-`little-law`, `production-cycle`, `line-balancing`, `forecasting`, `eoq`, `mrp`,
-`aggregate-planning`, `sequencing`, `cpm-pert`, `control-charts`, `process-capability`.
-`productivity` (перший калькулятор дисципліни) описано нижче.
+`little-law`, `production-cycle`, `line-balancing`, `eoq`, `mrp`,
+`sequencing`, `cpm-pert`, `control-charts`, `process-capability`.
+`productivity` (перший калькулятор дисципліни), `forecasting`, `aggregate-planning` описано нижче.
 
 ## `productivity/` — калькулятор продуктивності операційної системи
 
@@ -123,6 +123,22 @@ const check = checkProductivityTask(variant, { p1: '2,5', p2: '3' });     // mod
 - React-острів `ProductivityTrainer.tsx` на каркасі `ui/TaskShell.tsx` + `ui/use-trainer-task.ts` — це і є
   контракт «Як додати тренажер» вище, застосований уперше; наступні 11 калькуляторів повторюють ту саму
   форму (свій `src/engines/<name>/`, свій `model/<name>.ts`, свій React-острів, свій варіант схеми).
+
+## `forecasting/`, `aggregate-planning/` — прогнозування й агрегатне планування (практична 5)
+
+Обидва тренажери практичної 5 ділять `content/practicals/p05.yaml` → `trainer.tasks`; кожен острів
+фільтрує собі відомі методи (`toForecastingTaskChoices` / `toAggregatePlanningTaskChoices`,
+`src/components/trainers/model/*.ts`) і мовчки пропускає чужі — як у практичних 3 і 4.
+
+- `forecasting/` — проста й зважена ковзна середня (FC-01, FC-02; ваги впорядковано від найдавнішого
+  періоду до найближчого, найбільша — в останнього), експоненційне згладжування (FC-03, один крок від
+  заданого Ft−1; `exponentialSmoothingSeries` відтворює ряд лекції від F1 = D1), MAD, MSE, MAPE (FC-04…06,
+  MAPE у відсотках, за тими самими періодами, де є прогноз).
+- `aggregate-planning/` — стратегії погоні й рівномірного виробництва (AGG-01, AGG-02) через штат =
+  випуск / продуктивність і сумарні витрати плану (AGG-03, `evaluatePlan`) — тим самим методом, що й
+  приклади лекції теми 6 (1 060 000 і 995 000 г.о.). Від’ємний залишок запасу — відкладений попит, за який
+  щоперіоду нараховується ставка дефіциту; умова варіанта називає це правило прямо. Понаднормового часу
+  рушій не рахує (див. `ponytail:` у `calculations.ts`).
 
 ## `matrix/` — тренажер-матриця практичних
 
