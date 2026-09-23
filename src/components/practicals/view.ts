@@ -2,6 +2,7 @@
  * Розкладка сторінки практичної за видом тренажера: розділи змісту, чип XP у шапці й речення про
  * обсяг тренажера в умові. Чисті функції — сторінка лише підставляє числа зі свого файлу даних.
  */
+import { pluralUk } from '../../lib/plural';
 
 export type PracticalTrainerKind = 'matching-matrix' | 'calculation-tasks';
 
@@ -52,6 +53,8 @@ export function matrixConditionNote({ features, models, cells, rubricTitle }: Ma
   return `У тренажері — ${features} ознак × ${models} моделі = ${cells} формулювань. Перша спроба навчальна, оцінюється друга: бал за критерієм «${rubricTitle}» рубрики нижче.`;
 }
 
+const TASK_TYPE_FORMS = { one: 'тип задачі', few: 'типи задач', many: 'типів задач', other: 'типу задачі' } as const;
+
 export function calculationConditionNote(taskCount: number): string {
-  return `У тренажері — ${taskCount} типів задач за формулами нижче. Кожен варіант дає нові дані; перевірка одразу показує повний розв’язок. Спроб необмежено, бал за критерієм рубрики визначає викладач за поданим розв’язком.`;
+  return `У тренажері — ${pluralUk(taskCount, TASK_TYPE_FORMS)} за формулами нижче. Кожен варіант дає нові дані; перевірка одразу показує повний розв’язок. Спроб необмежено, бал за критерієм рубрики визначає викладач за поданим розв’язком.`;
 }

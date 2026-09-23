@@ -29,7 +29,7 @@ export interface CalculatorTrainer {
 export const CALCULATOR_TRAINERS: readonly CalculatorTrainer[] = [];
 
 /** Практичні, сторінки яких уже опубліковано (`praktychni/pNN/`). */
-export const PUBLISHED_PRACTICALS: readonly string[] = ['p01', 'p02'];
+export const PUBLISHED_PRACTICALS: readonly string[] = ['p01', 'p02', 'p04'];
 
 export interface PracticalTrainer {
   readonly practicalId: string;
@@ -65,8 +65,47 @@ export const MATRIX_TRAINER = {
   formula: 'Не менше 90 % зіставлень — 2 бали',
 } as const satisfies PracticalTrainer;
 
+export const FACILITY_LOCATION_TRAINER = {
+  practicalId: 'p04',
+  registryId: 'facility-location',
+  activityId: BADGE_ACTIVITY_IDS.facilityLocation,
+  path: 'praktychni/p04/#trenazher-facility-location',
+  icon: 'target',
+  title: 'Вибір місця розташування',
+  text: 'Оберіть майданчик методом вагових коефіцієнтів і перевірте результат методом центру ваги. Кожен варіант — нові дані, перевірка одразу показує повний розв’язок.',
+  formula: 'До 60 XP — по одному разу за кожен метод',
+} as const satisfies PracticalTrainer;
+
+export const LINE_BALANCING_TRAINER = {
+  practicalId: 'p04',
+  registryId: 'line-balancing',
+  activityId: BADGE_ACTIVITY_IDS.lineBalancing,
+  path: 'praktychni/p04/#trenazher-line-balancing',
+  icon: 'layers',
+  title: 'Балансування потокової лінії',
+  text: 'Визначте такт лінії, мінімальну й фактичну кількість робочих станцій та ефективність балансування за правилом найбільшої кількості наступних завдань.',
+  formula: 'До 60 XP — за правильно розв’язаний варіант',
+} as const satisfies PracticalTrainer;
+
+export const WORK_MEASUREMENT_TRAINER = {
+  practicalId: 'p04',
+  registryId: 'work-measurement',
+  activityId: BADGE_ACTIVITY_IDS.workMeasurement,
+  path: 'praktychni/p04/#trenazher-work-measurement',
+  icon: 'clock',
+  title: 'Нормування праці',
+  text: 'За хронометражними даними розрахуйте штучний і штучно-калькуляційний час та норму виробітку за зміну.',
+  formula: 'До 60 XP — за правильно розв’язаний варіант',
+} as const satisfies PracticalTrainer;
+
 /** Тренажери, що живуть на сторінці практичної (а не на власній сторінці `trenazhery/<slug>/`). */
-export const PRACTICAL_TRAINERS: readonly PracticalTrainer[] = [PRODUCTIVITY_TRAINER, MATRIX_TRAINER];
+export const PRACTICAL_TRAINERS: readonly PracticalTrainer[] = [
+  PRODUCTIVITY_TRAINER,
+  MATRIX_TRAINER,
+  FACILITY_LOCATION_TRAINER,
+  LINE_BALANCING_TRAINER,
+  WORK_MEASUREMENT_TRAINER,
+];
 
 export interface HomeTrainerCard {
   readonly key: string;
@@ -94,6 +133,9 @@ export function homeTrainerCards(): readonly HomeTrainerCard[] {
 export const TRAINER_KIND_LABELS: Readonly<Record<string, string>> = {
   productivity: 'розрахункові задачі',
   'priorities-matrix': 'матриця зіставлення',
+  'facility-location': 'розрахункові задачі',
+  'line-balancing': 'розрахункові задачі',
+  'work-measurement': 'розрахункові задачі',
 };
 
 export function trainerKindLabel(registryId: string): string {

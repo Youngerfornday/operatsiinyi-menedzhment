@@ -3,7 +3,10 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import MatrixReference from '../../components/practicals/MatrixReference.astro';
 import MatrixSections from '../../components/practicals/MatrixSections.astro';
 import { calculationConditionNote, matrixConditionNote, practicalSections, practicalXpChip } from '../../components/practicals/view';
+import { FacilityLocationTrainer } from '../../components/trainers/FacilityLocationTrainer';
+import { LineBalancingTrainer } from '../../components/trainers/LineBalancingTrainer';
 import { ProductivityTrainer } from '../../components/trainers/ProductivityTrainer';
+import { WorkMeasurementTrainer } from '../../components/trainers/WorkMeasurementTrainer';
 import { practicalLabel } from '../../components/trainers/catalog';
 import Crumbs from '../../components/site/Crumbs.astro';
 import Icon from '../../components/site/Icon.astro';
@@ -175,17 +178,60 @@ const essayNote =
           trainer.kind === 'calculation-tasks' ? (
             <section class="prac-section" id="trenazher" aria-labelledby="trenazher-title">
               <h2 id="trenazher-title">Тренажер: розрахункові задачі</h2>
-              <ProductivityTrainer client:only="react" tasks={trainer.tasks}>
-                <div slot="fallback" class="quiz-pending" aria-busy="true">
-                  <div class="card">
-                    <Icon name="clock" size="lg" />
-                    <div>
-                      <p class="h3">Тренажер завантажується</p>
-                      <p class="muted">{typo('Дані генеруються у вашому браузері. Якщо цей напис не зникає, увімкніть JavaScript.')}</p>
+              {
+                practical.id === 'p04' ? (
+                  <>
+                    <h3 class="h4" id="trenazher-facility-location">Вибір місця розташування</h3>
+                    <FacilityLocationTrainer client:only="react" tasks={trainer.tasks}>
+                      <div slot="fallback" class="quiz-pending" aria-busy="true">
+                        <div class="card">
+                          <Icon name="clock" size="lg" />
+                          <div>
+                            <p class="h3">Тренажер завантажується</p>
+                            <p class="muted">{typo('Дані генеруються у вашому браузері. Якщо цей напис не зникає, увімкніть JavaScript.')}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </FacilityLocationTrainer>
+                    <h3 class="h4" id="trenazher-line-balancing">Балансування потокової лінії</h3>
+                    <LineBalancingTrainer client:only="react" tasks={trainer.tasks}>
+                      <div slot="fallback" class="quiz-pending" aria-busy="true">
+                        <div class="card">
+                          <Icon name="clock" size="lg" />
+                          <div>
+                            <p class="h3">Тренажер завантажується</p>
+                            <p class="muted">{typo('Дані генеруються у вашому браузері. Якщо цей напис не зникає, увімкніть JavaScript.')}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </LineBalancingTrainer>
+                    <h3 class="h4" id="trenazher-work-measurement">Нормування праці</h3>
+                    <WorkMeasurementTrainer client:only="react" tasks={trainer.tasks}>
+                      <div slot="fallback" class="quiz-pending" aria-busy="true">
+                        <div class="card">
+                          <Icon name="clock" size="lg" />
+                          <div>
+                            <p class="h3">Тренажер завантажується</p>
+                            <p class="muted">{typo('Дані генеруються у вашому браузері. Якщо цей напис не зникає, увімкніть JavaScript.')}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </WorkMeasurementTrainer>
+                  </>
+                ) : (
+                  <ProductivityTrainer client:only="react" tasks={trainer.tasks}>
+                    <div slot="fallback" class="quiz-pending" aria-busy="true">
+                      <div class="card">
+                        <Icon name="clock" size="lg" />
+                        <div>
+                          <p class="h3">Тренажер завантажується</p>
+                          <p class="muted">{typo('Дані генеруються у вашому браузері. Якщо цей напис не зникає, увімкніть JavaScript.')}</p>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </ProductivityTrainer>
+                  </ProductivityTrainer>
+                )
+              }
             </section>
           ) : null
         }

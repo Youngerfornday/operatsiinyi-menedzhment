@@ -70,7 +70,7 @@ if (result.ok) { store.save(result.value.state); announce(eventOutcomeText(resul
   майстер зміни → начальник дільниці → начальник виробництва → директор з операцій. ID мають збігатися з
   `src/lib/player-levels.ts` (статичні заготовки гідруються за `data-level-id`) — цей файл лежить поза `src/engines`
   і оновлюється окремо. `levelProgress(xp)` повертає дані для метра.
-- `BADGES` — 13 бейджів із предикатами над станом: по одному на кожен ID з `BADGE_ACTIVITY_IDS` (тренажери цієї
+- `BADGES` — 15 бейджів із предикатами над станом: по одному на кожен ID з `BADGE_ACTIVITY_IDS` (тренажери цієї
   дисципліни, див. нижче) плюс «Уважний читач» (п'ять прочитаних тем, не прив'язаний до тренажера). Тренажери
   мають надсилати події `trainer-completed` з `activityId` із `BADGE_ACTIVITY_IDS`.
 - Тексти: `formatXp`, `xpGainText`, `nextLevelText`, `levelPositionText`, `badgesEarnedText`, `newBadgesText`, `eventOutcomeText`.
@@ -94,9 +94,9 @@ if (result.ok) { store.save(result.value.state); announce(eventOutcomeText(resul
    `tools/export/scorm/app/<kind>-entry.tsx` (за зразком `matrix-entry.tsx`).
 
 Активності цієї дисципліни вже зарезервовано в `BADGE_ACTIVITY_IDS`, тренажерів під них ще не написано:
-`little-law`, `production-cycle`, `line-balancing`, `forecasting`, `eoq`, `mrp`,
+`little-law`, `production-cycle`, `forecasting`, `eoq`, `mrp`,
 `aggregate-planning`, `sequencing`, `cpm-pert`, `control-charts`, `process-capability`.
-`productivity` (перший калькулятор дисципліни) описано нижче.
+`productivity`, `facility-location`, `line-balancing`, `work-measurement` описано нижче.
 
 ## `productivity/` — калькулятор продуктивності операційної системи
 
@@ -123,6 +123,29 @@ const check = checkProductivityTask(variant, { p1: '2,5', p2: '3' });     // mod
 - React-острів `ProductivityTrainer.tsx` на каркасі `ui/TaskShell.tsx` + `ui/use-trainer-task.ts` — це і є
   контракт «Як додати тренажер» вище, застосований уперше; наступні 11 калькуляторів повторюють ту саму
   форму (свій `src/engines/<name>/`, свій `model/<name>.ts`, свій React-острів, свій варіант схеми).
+
+## `facility-location/`, `line-balancing/`, `work-measurement/` — проектування операційної системи (практична 4)
+
+Три тренажери практичної 4 ділять один контентний файл — `content/practicals/p04.yaml` →
+`trainer.tasks` (`kind: calculation-tasks`), — бо схема контенту (`src/content/schemas/practical.ts`)
+дозволяє лише один `trainer` на файл практичної. Кожен острів фільтрує собі лише відомі йому методи
+через `.filter()` (`toFacilityLocationTaskChoices` / `toLineBalancingTaskChoices` /
+`toWorkMeasurementTaskChoices`, `src/components/trainers/model/*.ts`) і мовчки ігнорує чужі — на
+відміну від `toProductivityTaskChoices`, який кидає помилку на невідомий метод, бо володіє файлом
+практичної одноосібно. Порожній результат фільтра для власного пулу — і так упіймає `createXVariant`
+(«Пул задач … порожній»).
+
+- `facility-location/` — метод вагових коефіцієнтів (LOC-01, `factorRatingScore`) і метод центру ваги
+  (LOC-02, `centerOfGravity`); `createFacilityLocationVariant` обирає один із двох методів на варіант.
+- `line-balancing/` — такт (CAP-05, `taktTime`), мінімальна кількість станцій (LB-01, `minimumStations`),
+  закріплення операцій за станціями (LB-05, `assignStationsSequential` — для простого послідовного
+  ланцюга без розгалужень правило «найбільша кількість наступних завдань» зводиться до жадібного
+  заповнення станцій у незмінному порядку, що дослівно відтворює приклад лекції), ефективність, втрати
+  на простій і абсолютний час простою (LB-02..04). Генератор підбирає такт і попит так, щоб такт завжди
+  виходив цілим числом секунд (`cleanTaktInputs`, через НСД із 60).
+- `work-measurement/` — ланцюжок WM-01 → WM-02 → WM-03 → WM-04: оперативний, штучний і
+  штучно-калькуляційний час і норма виробітку (`outputRate` округлює вниз — дробового виробу
+  наприкінці зміни не існує).
 
 ## `matrix/` — тренажер-матриця практичних
 
