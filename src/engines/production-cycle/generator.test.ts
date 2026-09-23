@@ -26,6 +26,20 @@ function operationsFromGiven(variant: ReturnType<typeof createProductionCycleVar
 }
 
 describe('createProductionCycleVariant', () => {
+  it('у розв’язку для операції з кількома робочими місцями видно ділення ti/Ci («8/2»)', () => {
+    let checked = 0;
+    for (let seed = 0; seed < 200; seed += 1) {
+      const variant = createProductionCycleVariant(createSeededRandom(`ci:${seed}`), TASKS);
+      const operations = operationsFromGiven(variant);
+      const multi = operations.filter((operation) => operation.workplaces > 1);
+      if (multi.length === 0) continue;
+      checked += 1;
+      const sumLine = variant.solution[0]!;
+      for (const operation of multi) expect(sumLine).toContain(`${operation.time}/${operation.workplaces}`);
+    }
+    expect(checked).toBeGreaterThan(0);
+  });
+
   it('той самий seed дає той самий варіант', () => {
     const first = createProductionCycleVariant(createSeededRandom('p03:1'), TASKS);
     const second = createProductionCycleVariant(createSeededRandom('p03:1'), TASKS);

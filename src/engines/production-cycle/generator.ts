@@ -39,6 +39,11 @@ function operationRateLabel(operation: CycleOperation): string {
   return `${formatNumber(operation.time)} хв${operation.workplaces > 1 ? `, ${operation.workplaces} робочих місця` : ''}`;
 }
 
+/** Доданок Σ(ti/Ci) у розв’язку: «8/2», якщо робочих місць кілька, інакше просто норма часу. */
+function rateTerm(operation: CycleOperation): string {
+  return operation.workplaces > 1 ? `${formatNumber(operation.time)}/${formatNumber(operation.workplaces)}` : formatNumber(operation.time);
+}
+
 export interface ProductionCycleTaskChoice {
   readonly method: ProductionCycleMethod;
 }
@@ -79,7 +84,7 @@ export function createProductionCycleVariant(random: RandomSource, tasks: readon
   }
 
   const solution = [
-    `Сума норм часу операцій: Σ(ti/Ci) = ${rates.map((rate) => formatNumber(rate)).join(' + ')} = ${formatNumber(sum)} хв; найтриваліша операція max(ti/Ci) = ${formatNumber(max)} хв.`,
+    `Сума норм часу операцій: Σ(ti/Ci) = ${operations.map(rateTerm).join(' + ')} = ${formatNumber(sum)} хв; найтриваліша операція max(ti/Ci) = ${formatNumber(max)} хв.`,
     `Послідовний рух (PC-01): Tпосл = n · Σ(ti/Ci) = ${formatNumber(batchSize)} · ${formatNumber(sum)} = ${formatNumber(times.sequential)} хв.`,
     `Паралельний рух (PC-02): Tпар = p · Σ(ti/Ci) + (n − p) · max(ti/Ci) = ${formatNumber(transferBatch)} · ${formatNumber(sum)} + ${formatNumber(batchSize - transferBatch)} · ${formatNumber(max)} = ${formatNumber(times.parallel)} хв.`,
     `Суми мінімумів суміжних операцій для PC-03: ${minSumSteps.join('; ')}; разом ${formatNumber(minTotal)} хв.`,
