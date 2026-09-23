@@ -10,7 +10,7 @@ const thresholds = {
 
 export default defineConfig({
   test: {
-    include: ['src/**/*.test.ts', 'tools/checks/**/*.test.mjs', 'tools/export/**/*.test.ts'],
+    include: ['src/**/*.test.ts', 'tools/checks/**/*.test.mjs', 'tools/export/**/*.test.ts', 'tools/moodle/**/*.test.mjs'],
     environment: 'node',
     coverage: {
       provider: 'v8',

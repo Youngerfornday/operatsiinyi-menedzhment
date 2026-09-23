@@ -10,7 +10,7 @@
  *   --course <файл>      реєстр курсу (типово content/course.yaml)
  *   --artifacts <кат.>   каталог з questions-*.xml, glossary-*.xml, manifest.json, books/ і scorm/ (scorm.json)
  *   --out <файл>         куди писати план (типово <artifacts>/plan.json)
- *   --shortname <код>    коротке ім'я курсу в копії (типово KU-KURS)
+ *   --shortname <код>    коротке ім'я курсу в копії (типово OM-KURS)
  *   --start <YYYY-MM-DD> понеділок першого навчального тижня для дат закриття тестів
  *   --site <URL>         адреса живого сайту (типово з astro.config.mjs)
  * Усе, чого ще немає в контенті, потрапляє у warnings плану, а не зупиняє збірку.
@@ -48,7 +48,7 @@ import {
 
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const SCHEMA_VERSION = 1;
-const DEFAULT_SHORTNAME = 'KU-KURS';
+const DEFAULT_SHORTNAME = 'OM-KURS';
 const BANK_NAME = 'Банк питань курсу';
 const GLOSSARY_NAME = 'Глосарій курсу';
 /** SCORM-тренажери: окрема категорія журналу з вагою 0 — бал видно, підсумок курсу не змінюється. */
@@ -234,7 +234,7 @@ function finalQuizActivity({ grading, kind, pools, start, calendar, warnings }) 
 
 function caseProjectActivity({ grading, warnings }) {
   const points = grading.categories.find((category) => category.id === 'case-project')?.pointsPerItem ?? 12;
-  const name = `Кейс-проєкт «${grading.caseProject.title}»`;
+  const name = grading.caseProject.title;
   return {
     type: 'assign',
     ref: 'assign:case',
@@ -243,13 +243,17 @@ function caseProjectActivity({ grading, warnings }) {
     grade: points,
     rubric: {
       name: `Рубрика: ${name}`,
-      description: 'Критерії оцінювання кейс-проєкту з реєстру курсу.',
+      description: 'Критерії оцінювання з реєстру курсу.',
       criteria: rubricCriteria(grading.caseProject.rubric, warnings, name),
     },
   };
 }
 
-function gradebookPlan(grading, refs) {
+/**
+ * Категорії журналу з вагами. Категорія, для якої в курсі немає елементів (присутність на лекціях),
+ * отримує ручні оцінки — по одній на кожен item з реєстру, щоб її вага не випадала з підсумку 100.
+ */
+export function gradebookPlan(grading, refs) {
   const byCategory = {
     practicals: refs.filter((ref) => ref.startsWith('assign:p')),
     'module-tests': refs.filter((ref) => ref.startsWith('quiz:m')),
@@ -258,13 +262,19 @@ function gradebookPlan(grading, refs) {
   };
   const trainers = refs.filter((ref) => ref.startsWith('scorm:'));
   return grading.categories
-    .map((category) => ({
-      name: category.title,
-      weight: category.items * category.pointsPerItem,
-      refs: byCategory[category.id] ?? [],
-    }))
-    .filter((category) => category.refs.length > 0)
-    .concat(trainers.length > 0 ? [{ name: TRAINERS_CATEGORY, weight: 0, refs: trainers }] : []);
+    .map((category) => {
+      const categoryRefs = byCategory[category.id] ?? [];
+      const manualItems =
+        categoryRefs.length > 0
+          ? []
+          : Array.from({ length: category.items }, (_, index) => ({
+              name: `${category.title} — модуль ${index + 1}`,
+              max: category.pointsPerItem,
+            }));
+      return { name: category.title, weight: category.items * category.pointsPerItem, refs: categoryRefs, manualItems };
+    })
+    .filter((category) => category.refs.length > 0 || category.manualItems.length > 0)
+    .concat(trainers.length > 0 ? [{ name: TRAINERS_CATEGORY, weight: 0, refs: trainers, manualItems: [] }] : []);
 }
 
 export function buildPlan({ course, exportManifest, booksManifest, scormIndex = null, site, shortname, start }) {

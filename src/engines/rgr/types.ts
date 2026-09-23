@@ -144,8 +144,13 @@ export interface Stage4Data {
 }
 
 export interface RgrVariant {
-  /** 1..100 — за останніми двома цифрами номера залікової книжки (00 → 100). */
-  readonly variantNumber: number;
+  /**
+   * Нормалізований номер залікової книжки (лише цифри, без ведучих нулів), за яким детерміновано
+   * побудовано цей варіант (`gradebook.ts` → `seedForGradebookNumber`). Показується студенту й
+   * викладачу як ідентифікатор варіанта — окремого «показового номера варіанта» немає, бо він лише
+   * створював враження меншого простору варіантів, ніж є насправді.
+   */
+  readonly digits: string;
   readonly stage1: Stage1Data;
   readonly stage2: Stage2Data;
   readonly stage3: Stage3Data;

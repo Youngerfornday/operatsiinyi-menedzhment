@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="fig-t05-1" class="scheme" viewBox="0 0 900 220" role="img" aria-labelledby="fig-t05-1-title fig-t05-1-desc" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
-  <title id="fig-t05-1-title">Рисунок 1. Послідовність проектних рішень операційної системи</title>
+  <title id="fig-t05-1-title">Рисунок 1. Послідовність проєктних рішень операційної системи</title>
   <desc id="fig-t05-1-desc">Горизонтальний ланцюжок із п'яти блоків зліва направо: стратегія продукту й процесу, вибір місця розташування, планування приміщення й обладнання, балансування лінії, нормування праці. Стрілки ведуть послідовно зліва направо, третій блок — планування приміщення — виділено карміновим. Під ланцюжком підпис про те, що кожен крок звужує простір рішень для наступного.</desc>
   <style>
     #fig-t05-1 .box { fill: var(--surface, #ffffff); stroke: var(--ink, #0f1c2e); stroke-width: 1.25; }

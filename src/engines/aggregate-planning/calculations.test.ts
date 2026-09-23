@@ -43,7 +43,7 @@ describe('levelStrategyWorkforce (AGG-02)', () => {
 });
 
 describe('evaluatePlan (AGG-03)', () => {
-  it('стратегія погоні — 1 060 000 г.о., як у WorkedExample AGG-01 лекції', () => {
+  it('стратегія погоні — 1 060 000 грн, як у WorkedExample AGG-01 лекції', () => {
     // Arrange
     const workforce = chaseStrategyWorkforce(DEMAND, PRODUCTIVITY);
     if (!workforce.ok) throw new Error('unexpected error');
@@ -68,7 +68,7 @@ describe('evaluatePlan (AGG-03)', () => {
     });
   });
 
-  it('стратегія рівномірного виробництва — 995 000 г.о., як у WorkedExample AGG-02 лекції', () => {
+  it('стратегія рівномірного виробництва — 995 000 грн, як у WorkedExample AGG-02 лекції', () => {
     // Arrange
     const workforce = levelStrategyWorkforce(DEMAND, PRODUCTIVITY);
     if (!workforce.ok) throw new Error('unexpected error');

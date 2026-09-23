@@ -4,8 +4,15 @@
  * Чистий TypeScript без DOM і React — для React-острова сайту.
  */
 export { computeCpm, createNetwork, type CpmActivityResult } from './network';
-export { GRADEBOOK_ERROR_MESSAGES, parseGradebookNumber, seedForVariant, type GradebookError, type GradebookErrorCode, type GradebookNumber } from './gradebook';
-export { createRgrVariant, createRgrVariantForNumber } from './variant';
+export {
+  GRADEBOOK_ERROR_MESSAGES,
+  parseGradebookNumber,
+  seedForGradebookNumber,
+  type GradebookError,
+  type GradebookErrorCode,
+  type GradebookNumber,
+} from './gradebook';
+export { createRgrVariant, createRgrVariantForDigits } from './variant';
 export type {
   BomItem,
   CapabilityData,
