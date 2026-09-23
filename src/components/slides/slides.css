@@ -32,7 +32,9 @@
 .slide-box { container-type: inline-size; position: relative; display: grid; min-width: 0; aspect-ratio: 16 / 9; background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: var(--r-2); box-shadow: var(--shadow-2); }
 .slide-box:focus { outline: none; }
 .slide-box:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
-.slide { position: relative; min-width: 0; display: grid; grid-template-rows: auto 1fr auto auto; gap: 1.3cqi; padding: 3cqi 4.6cqi 1.8cqi; font-size: 2.15cqi; line-height: 1.36; }
+/* grid-template-columns обов'язковий: без нього неявна колонка сідає під max-content дітей (довгий підпис ПРН,
+   формула, буліт) і розпирає слайд ширше за .slide-box на вузьких екранах — саме так ловиться горизонтальний скрол. */
+.slide { position: relative; min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr auto auto; gap: 1.3cqi; padding: 3cqi 4.6cqi 1.8cqi; font-size: 2.15cqi; line-height: 1.36; }
 .slide-head { display: grid; gap: 0.6cqi; padding-bottom: 1.1cqi; border-bottom: 1px solid var(--rule); }
 .slide-kicker { font-size: 1.15cqi; font-weight: 650; letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--ink-3); font-variant-numeric: tabular-nums; }
 .slide-title { font-size: 3.2cqi; font-weight: 700; font-variation-settings: "wdth" 90; line-height: 1.12; letter-spacing: var(--tracking-title); text-wrap: balance; }
