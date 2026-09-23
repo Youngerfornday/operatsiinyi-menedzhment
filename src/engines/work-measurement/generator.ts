@@ -17,16 +17,57 @@ function unwrap<T>(result: { readonly ok: true; readonly value: T } | { readonly
 const SHIFT_FUND_CHOICES = [420, 450, 480] as const;
 const min3 = (value: number): string => formatNumber(value, { maximumFractionDigits: 3 });
 
+/** Скільки разів перетягувати дані, поки норма виробітку не стане стійкою до округлення Тшт.к (відсів ≈ 4%). */
+const MAX_DRAWS = 50;
+
+interface TimeStandardInputs {
+  readonly mainTime: number;
+  readonly auxTime: number;
+  readonly servicePercent: number;
+  readonly restPercent: number;
+  readonly setupTime: number;
+  readonly batchSize: number;
+  readonly shiftFund: number;
+}
+
+function drawInputs(random: RandomSource): TimeStandardInputs {
+  return {
+    mainTime: randomInt(random, 20, 60) / 10,
+    auxTime: randomInt(random, 2, 15) / 10,
+    servicePercent: randomInt(random, 2, 6),
+    restPercent: randomInt(random, 4, 10),
+    setupTime: randomInt(random, 2, 6) * 5,
+    batchSize: randomInt(random, 2, 8) * 10,
+    shiftFund: pickOne(SHIFT_FUND_CHOICES, random),
+  };
+}
+
+function pieceRateOf(inputs: TimeStandardInputs): number {
+  const operative = unwrap(operativeTime(inputs.mainTime, inputs.auxTime));
+  const piece = unwrap(pieceTime(operative, inputs.servicePercent / 100, inputs.restPercent / 100));
+  return unwrap(pieceRateTime(piece, inputs.setupTime, inputs.batchSize));
+}
+
+/**
+ * Норма виробітку перевіряється без допуску, тож вона не має залежати від того, чи округлив студент
+ * Тшт.к до сотих (як у лекції: 4,63) або тисячних перед діленням змінного фонду.
+ */
+function isOutputRobust(inputs: TimeStandardInputs): boolean {
+  const pieceRate = pieceRateOf(inputs);
+  const exact = unwrap(outputRate(inputs.shiftFund, pieceRate));
+  return [100, 1000].every((scale) => unwrap(outputRate(inputs.shiftFund, Math.round(pieceRate * scale) / scale)) === exact);
+}
+
+function drawRobustInputs(random: RandomSource): TimeStandardInputs {
+  let inputs = drawInputs(random);
+  for (let draw = 1; draw < MAX_DRAWS && !isOutputRobust(inputs); draw += 1) inputs = drawInputs(random);
+  return inputs;
+}
+
 function timeStandardVariant(random: RandomSource, variantId: string): WorkMeasurementVariant {
-  const mainTime = randomInt(random, 20, 60) / 10;
-  const auxTime = randomInt(random, 2, 15) / 10;
-  const servicePercent = randomInt(random, 2, 6);
-  const restPercent = randomInt(random, 4, 10);
+  const { mainTime, auxTime, servicePercent, restPercent, setupTime, batchSize, shiftFund } = drawRobustInputs(random);
   const serviceShare = servicePercent / 100;
   const restShare = restPercent / 100;
-  const setupTime = randomInt(random, 2, 6) * 5;
-  const batchSize = randomInt(random, 2, 8) * 10;
-  const shiftFund = pickOne(SHIFT_FUND_CHOICES, random);
 
   const operative = unwrap(operativeTime(mainTime, auxTime));
   const piece = unwrap(pieceTime(operative, serviceShare, restShare));

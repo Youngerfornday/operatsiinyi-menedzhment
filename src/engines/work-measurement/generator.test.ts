@@ -54,4 +54,15 @@ describe('createWorkMeasurementVariant', () => {
       expect(Number.isInteger(output)).toBe(true);
     }
   });
+
+  it('норма виробітку не змінюється, якщо студент округлив Тшт.к до сотих чи тисячних, як у лекції (4,63)', () => {
+    for (let seed = 0; seed < 1000; seed += 1) {
+      const variant = createWorkMeasurementVariant(createSeededRandom(`wm-robust:${seed}`), TASKS);
+      const shiftFund = extractGivenNumbers(variant.given)[6] as number;
+      const pieceRate = variant.answers[1]!.expected;
+      const output = variant.answers[2]!.expected;
+      expect(Math.floor(shiftFund / (Math.round(pieceRate * 100) / 100))).toBe(output);
+      expect(Math.floor(shiftFund / (Math.round(pieceRate * 1000) / 1000))).toBe(output);
+    }
+  });
 });
