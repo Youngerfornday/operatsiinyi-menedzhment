@@ -87,6 +87,13 @@ describe('lintMdx', () => {
     expect(strict.find((f) => f.line === 18)?.expected).toContain('в 2023 р.');
   });
 
+  it('does not flag a false extra space when a JSX tag is immediately followed by an em dash', () => {
+    // <Term>…</Term> — визначення: тег між словом і тире раніше блокувався пробілами, і лінт
+    // бачив хибний «зайвий» пробіл перед тире, якого автор не писав (регрес до maskKeepingLines).
+    const withTermBeforeDash = '<Term id="x">Термін</Term> — визначення.';
+    expect(lintMdx(withTermBeforeDash)).toEqual([]);
+  });
+
   it('masks removed regions without shifting line numbers', () => {
     const prose = proseOfMdx(source);
     expect(prose.split('\n')).toHaveLength(source.split('\n').length);
