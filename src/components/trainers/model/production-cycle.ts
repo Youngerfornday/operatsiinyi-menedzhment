@@ -3,6 +3,10 @@
  * (`ProductionCycleVariant.answers` — послідовний, паралельний, паралельно-послідовний рух) окремі
  * частини `TaskCheck` через спільний `checkNumberPart`/`combineParts` (ui/parts.tsx), і зіставлення
  * варіанта з формулою та джерелом із `content/practicals/p03.yaml`.
+ *
+ * `content/practicals/p03.yaml` містить задачі двох тренажерів практичної в одному списку
+ * `trainer.tasks` (закон Літтла й тривалість виробничого циклу) — кожен острів фільтрує собі лише
+ * відомі йому методи, а не кидає помилку на чужі: список свідомо спільний для practicals[].trainers.
  */
 import type { Result } from '../../../engines/shared/result';
 import type { ProductionCycleMethod, ProductionCycleVariant } from '../../../engines/production-cycle';
@@ -21,12 +25,9 @@ export interface ProductionCycleTaskChoice {
   readonly method: ProductionCycleMethod;
 }
 
-/** Пул задач для генератора з контенту практичної; невідомий `method` — помилка контенту, а не тиха відмова. */
+/** Пул задач для генератора: лише ті задачі контенту, чий метод відомий цьому рушію. */
 export function toProductionCycleTaskChoices(tasks: readonly CalculationTask[]): readonly ProductionCycleTaskChoice[] {
-  return tasks.map((task) => {
-    if (!isProductionCycleMethod(task.method)) throw new Error(`Задача «${task.id}»: невідомий метод «${task.method}» для рушія тривалості циклу`);
-    return { method: task.method };
-  });
+  return tasks.filter((task): task is CalculationTask & { method: ProductionCycleMethod } => isProductionCycleMethod(task.method)).map((task) => ({ method: task.method }));
 }
 
 export type ProductionCycleAnswer = Readonly<Record<string, string>>;

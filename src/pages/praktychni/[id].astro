@@ -3,7 +3,9 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import MatrixReference from '../../components/practicals/MatrixReference.astro';
 import MatrixSections from '../../components/practicals/MatrixSections.astro';
 import { calculationConditionNote, matrixConditionNote, practicalSections, practicalXpChip } from '../../components/practicals/view';
-import { calculationTrainerSections } from '../../components/trainers/calculation-registry';
+import { LittleLawTrainer } from '../../components/trainers/LittleLawTrainer';
+import { ProductionCycleTrainer } from '../../components/trainers/ProductionCycleTrainer';
+import { ProductivityTrainer } from '../../components/trainers/ProductivityTrainer';
 import { practicalLabel } from '../../components/trainers/catalog';
 import Crumbs from '../../components/site/Crumbs.astro';
 import Icon from '../../components/site/Icon.astro';
@@ -82,11 +84,7 @@ const totalPoints = rubricTotal(practical.rubric);
 const pointColumns = [...new Set(practical.rubric.flatMap((criterion) => criterion.levels.map((level) => level.points)))].sort((a, b) => b - a);
 const maxCriterionPoints = Math.max(...practical.rubric.map((criterion) => criterion.points));
 const outcomes = practical.prn.map((id) => ({ id, code: outcomeLabel(course, id), statement: course.learningOutcomes.find((outcome) => outcome.id === id)?.statement ?? '' }));
-const calcSections = trainer.kind === 'calculation-tasks' ? calculationTrainerSections(practical.trainers, trainer.tasks) : [];
-const toc = practicalSections(
-  trainer.kind,
-  trainer.kind === 'calculation-tasks' ? calcSections.map(({ entry }) => ({ id: `trenazher-${entry.registryId}`, label: entry.heading })) : undefined,
-);
+const toc = practicalSections(trainer.kind);
 const conditionNote =
   matrixData !== null && trainer.kind === 'matching-matrix'
     ? matrixConditionNote({ features: trainer.features.length, models: trainer.models.length, cells: matrixData.cellCount, rubricTitle: matrixData.rubric.title })
@@ -124,7 +122,7 @@ const essayNote =
           <span>{practicalTopics.map((topic, index) => (<>{index > 0 && ', '}<a href={url(`temy/${topic.slug}/`)}>Тема {topic.number}</a></>))}</span>
         </span>
         <span><Icon name="clock" />{hoursLabel}</span>
-        <span class="chip chip-xp">{practicalXpChip(trainer.kind, calcSections.length)}</span>
+        <span class="chip chip-xp">{practicalXpChip(trainer.kind)}</span>
         <span>
           ПРН
           <span class="chips">{outcomes.map((outcome) => <span class="chip chip-prn">{outcome.code}</span>)}</span>
@@ -176,14 +174,39 @@ const essayNote =
         }
 
         {
-          trainer.kind === 'calculation-tasks' &&
-            calcSections.map(({ entry, tasks }) => {
-              const Trainer = entry.Component;
-              const sectionId = `trenazher-${entry.registryId}`;
-              return (
-                <section class="prac-section" id={sectionId} aria-labelledby={`${sectionId}-title`}>
-                  <h2 id={`${sectionId}-title`}>{entry.heading}</h2>
-                  <Trainer client:only="react" tasks={tasks}>
+          trainer.kind === 'calculation-tasks' ? (
+            <section class="prac-section" id="trenazher" aria-labelledby="trenazher-title">
+              <h2 id="trenazher-title">Тренажер: розрахункові задачі</h2>
+              {
+                practical.id === 'p03' ? (
+                  <>
+                    <h3 class="h4" id="trenazher-little-law">Закон Літтла</h3>
+                    <LittleLawTrainer client:only="react" tasks={trainer.tasks}>
+                      <div slot="fallback" class="quiz-pending" aria-busy="true">
+                        <div class="card">
+                          <Icon name="clock" size="lg" />
+                          <div>
+                            <p class="h3">Тренажер завантажується</p>
+                            <p class="muted">{typo('Дані генеруються у вашому браузері. Якщо цей напис не зникає, увімкніть JavaScript.')}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </LittleLawTrainer>
+                    <h3 class="h4" id="trenazher-production-cycle">Тривалість виробничого циклу</h3>
+                    <ProductionCycleTrainer client:only="react" tasks={trainer.tasks}>
+                      <div slot="fallback" class="quiz-pending" aria-busy="true">
+                        <div class="card">
+                          <Icon name="clock" size="lg" />
+                          <div>
+                            <p class="h3">Тренажер завантажується</p>
+                            <p class="muted">{typo('Дані генеруються у вашому браузері. Якщо цей напис не зникає, увімкніть JavaScript.')}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </ProductionCycleTrainer>
+                  </>
+                ) : (
+                  <ProductivityTrainer client:only="react" tasks={trainer.tasks}>
                     <div slot="fallback" class="quiz-pending" aria-busy="true">
                       <div class="card">
                         <Icon name="clock" size="lg" />
@@ -193,10 +216,11 @@ const essayNote =
                         </div>
                       </div>
                     </div>
-                  </Trainer>
-                </section>
-              );
-            })
+                  </ProductivityTrainer>
+                )
+              }
+            </section>
+          ) : null
         }
 
         <section class="prac-section essay" id="ese" aria-labelledby="ese-title">
@@ -336,8 +360,8 @@ const essayNote =
                 </>
               ) : (
                 <>
-                  <dt>{calcSections.length > 1 ? 'Тренажери' : 'Тренажер'}</dt>
-                  <dd>до {60 * Math.max(1, calcSections.length)} XP за варіанти задач</dd>
+                  <dt>Тренажер</dt>
+                  <dd>до 60 XP за варіанти задачі</dd>
                   <dt>Спроби</dt>
                   <dd>варіантів необмежено, XP — за новий правильний</dd>
                 </>

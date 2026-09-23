@@ -3,6 +3,10 @@
  * частина `TaskCheck` через спільний `checkNumberPart` (ui/parts.tsx), і зіставлення варіанта з формулою
  * та джерелом із `content/practicals/p03.yaml` (потрібне лише для показу — рушій рахунку про схему
  * контенту не знає).
+ *
+ * `content/practicals/p03.yaml` містить задачі двох тренажерів практичної в одному списку
+ * `trainer.tasks` (закон Літтла й тривалість виробничого циклу) — кожен острів фільтрує собі лише
+ * відомі йому методи, а не кидає помилку на чужі: список свідомо спільний для practicals[].trainers.
  */
 import type { Result } from '../../../engines/shared/result';
 import type { LittleLawMethod, LittleLawUnknown, LittleLawVariant } from '../../../engines/little-law';
@@ -31,14 +35,11 @@ export interface LittleLawTaskChoice {
   readonly unknown: LittleLawUnknown;
 }
 
-/** Пул задач для генератора з контенту практичної; невідомий `method`/`resource` — помилка контенту. */
+/** Пул задач для генератора: лише ті задачі контенту, чий метод і шукана величина відомі цьому рушію. */
 export function toLittleLawTaskChoices(tasks: readonly CalculationTask[]): readonly LittleLawTaskChoice[] {
-  return tasks.map((task) => {
-    if (!isLittleLawMethod(task.method)) throw new Error(`Задача «${task.id}»: невідомий метод «${task.method}» для рушія закону Літтла`);
-    if (!task.resource || !isLittleLawUnknown(task.resource)) {
-      throw new Error(`Задача «${task.id}»: невідома шукана величина «${task.resource}» для закону Літтла`);
-    }
-    return { method: task.method, unknown: task.resource };
+  return tasks.flatMap((task) => {
+    if (!isLittleLawMethod(task.method) || !task.resource || !isLittleLawUnknown(task.resource)) return [];
+    return [{ method: task.method, unknown: task.resource }];
   });
 }
 

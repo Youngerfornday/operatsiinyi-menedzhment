@@ -65,18 +65,25 @@ describe('toLittleLawTaskChoices', () => {
     ]);
   });
 
-  it('кидає помилку на невідомий рушію метод', () => {
-    const broken: readonly CalculationTask[] = [{ ...TASKS[0]!, method: 'production-cycle' }];
-    expect(() => toLittleLawTaskChoices(broken)).toThrow(/невідомий метод/);
+  it('відфільтровує задачі чужого тренажера (спільний trainer.tasks практичної p03)', () => {
+    const mixed: readonly CalculationTask[] = [
+      ...TASKS,
+      { id: 'production-cycle', method: 'production-cycle', title: 'Цикл', formula: 'f', ref: { source: 's', locator: 'l (PC-01)', checkedAt: '2026-09-23' } },
+    ];
+    expect(toLittleLawTaskChoices(mixed)).toEqual([
+      { method: 'little-law', unknown: 'time' },
+      { method: 'little-law', unknown: 'wip' },
+      { method: 'little-law', unknown: 'throughput' },
+    ]);
   });
 
-  it('кидає помилку на невідому шукану величину', () => {
+  it('відфільтровує задачу з невідомою шуканою величиною, не кидаючи помилку', () => {
     const broken: readonly CalculationTask[] = [{ ...TASKS[0]!, resource: 'unknown-thing' }];
-    expect(() => toLittleLawTaskChoices(broken)).toThrow(/невідома шукана величина/);
+    expect(toLittleLawTaskChoices(broken)).toEqual([]);
   });
 
-  it('кидає помилку, якщо resource взагалі не задано', () => {
+  it('відфільтровує задачу без resource, не кидаючи помилку', () => {
     const { resource: _resource, ...withoutResource } = TASKS[0]!;
-    expect(() => toLittleLawTaskChoices([withoutResource as CalculationTask])).toThrow(/невідома шукана величина/);
+    expect(toLittleLawTaskChoices([withoutResource as CalculationTask])).toEqual([]);
   });
 });

@@ -60,8 +60,11 @@ describe('toProductionCycleTaskChoices', () => {
     expect(toProductionCycleTaskChoices(TASKS)).toEqual([{ method: 'production-cycle' }]);
   });
 
-  it('кидає помилку на невідомий рушію метод', () => {
-    const broken: readonly CalculationTask[] = [{ ...TASKS[0]!, method: 'little-law' }];
-    expect(() => toProductionCycleTaskChoices(broken)).toThrow(/невідомий метод/);
+  it('відфільтровує задачі чужого тренажера (спільний trainer.tasks практичної p03), не кидаючи помилку', () => {
+    const mixed: readonly CalculationTask[] = [
+      { id: 'little-law-time', method: 'little-law', resource: 'time', title: 'W', formula: 'f', ref: { source: 's', locator: 'l (CAP-04)', checkedAt: '2026-09-23' } },
+      ...TASKS,
+    ];
+    expect(toProductionCycleTaskChoices(mixed)).toEqual([{ method: 'production-cycle' }]);
   });
 });
