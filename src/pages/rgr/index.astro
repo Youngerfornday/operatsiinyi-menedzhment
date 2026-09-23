@@ -1,0 +1,147 @@
+---
+import Crumbs from '../../components/site/Crumbs.astro';
+import Formula from '../../components/topic/Formula.astro';
+import { RgrVariantExplorer } from '../../components/rgr/RgrVariantExplorer';
+import { rubricTotal } from '../../content/schemas/course-practicals';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { loadCourseData } from '../../lib/course-data';
+import { pluralUk } from '../../lib/plural';
+import { typo } from '../../lib/typography';
+import { url } from '../../lib/url';
+import '../../styles/topic.css';
+import '../../components/rgr/rgr.css';
+
+/**
+ * Методичні вказівки до РГР «Операційний план дільниці підприємства» (course.yaml →
+ * grading.caseProject) і генератор індивідуального варіанта за номером залікової книжки
+ * (`src/engines/rgr`). caseProject більше ніде на сайті не рендериться — це єдина сторінка.
+ */
+const { course } = await loadCourseData();
+const { caseProject } = course.grading;
+const totalPoints = rubricTotal(caseProject.rubric);
+const pointColumns = [...new Set(caseProject.rubric.flatMap((criterion) => criterion.levels.map((level) => level.points)))].sort((a, b) => b - a);
+
+const stageDeadlines = new Map(
+  course.calendar.schedule.flatMap((entry) =>
+    entry.activities.filter((activity): activity is Extract<typeof activity, { type: 'case-project' }> => activity.type === 'case-project').map((activity) => [activity.stage, entry.week] as const),
+  ),
+);
+
+const STAGE_FORMULAS: Readonly<Record<string, ReadonlyArray<{ code: string; label: string; body: string }>>> = {
+  'rgr-plan': [
+    { code: 'FC-01', label: 'Проста ковзна середня', body: 'Ft = (Dt−1 + Dt−2 + … + Dt−n) / n' },
+    { code: 'FC-03', label: 'Експоненційне згладжування', body: 'Ft = Ft−1 + α · (Dt−1 − Ft−1)' },
+    { code: 'FC-06', label: 'Середня абсолютна похибка у % (MAPE)', body: 'MAPE = (100/n) · Σ (|Dt − Ft| / Dt)' },
+    { code: 'CAP-01', label: 'Коефіцієнт використання потужності', body: 'Використання = Фактичний випуск / Проєктна потужність · 100%' },
+    { code: 'AGG-03', label: 'Сумарні витрати агрегатного плану', body: 'Витрати = Регулярний час + Понаднормовий час + Найм + Звільнення + Зберігання запасу + Дефіцит' },
+  ],
+  'rgr-operations': [
+    { code: 'EOQ-01', label: 'Економічний розмір замовлення', body: 'Q* = √(2DS / H)' },
+    { code: 'EOQ-03', label: 'Точка замовлення', body: 'ROP = d̄ · L' },
+    { code: 'EOQ-04', label: 'Страховий запас', body: 'SS = z · σ_dLT' },
+    { code: 'MRP-02', label: 'Нетто-потреба', body: 'Нетто = Брутто + Резервування − (Наявний запас + Заплановані надходження)' },
+    { code: 'PRJ-03', label: 'Резерв часу операції', body: 'Резерв = LS − ES = LF − EF' },
+    { code: 'PRJ-04', label: 'Критичний шлях', body: 'найдовший за тривалістю шлях мережі; сума резервів його операцій = 0' },
+  ],
+  'rgr-quality': [
+    { code: 'QC-01', label: 'Контрольна карта X̄-R', body: 'UCLx̄ = X̿ + A2·R̄; LCLx̄ = X̿ − A2·R̄; UCLR = D4·R̄; LCLR = D3·R̄' },
+    { code: 'QC-04', label: 'Індекс відтворюваності процесу Cp', body: 'Cp = (USL − LSL) / (6σ)' },
+    { code: 'QC-05', label: 'Індекс придатності процесу Cpk', body: 'Cpk = min[(USL − μ)/(3σ); (μ − LSL)/(3σ)]' },
+    { code: 'PROD-01', label: 'Часткова продуктивність', body: 'Продуктивність = Випуск / Витрати одного ресурсу' },
+    { code: 'PROD-03', label: 'Індекс зміни продуктивності', body: 'I = Продуктивність поточного періоду / Продуктивність базового періоду · 100%' },
+  ],
+};
+
+const stageTitles = caseProject.stages.map((stage) => stage.title) as [string, string, string, string];
+const description = typo(`${caseProject.title}: мета, чотири етапи, рубрика на ${totalPoints} балів і генератор індивідуального варіанта за номером залікової книжки.`);
+---
+
+<BaseLayout title={`${caseProject.title} — ${course.title}`} description={description} current="rgr">
+  <div class="container" data-rgr-page>
+    <Crumbs items={[{ label: 'Курс', href: url() }, { label: 'РГР' }]} />
+    <header class="topic-head">
+      <h1 class="h1">{typo(caseProject.title)}</h1>
+      <p class="lede">{typo(caseProject.goal)}</p>
+    </header>
+
+    <section aria-labelledby="rgr-criteria-title">
+      <h2 id="rgr-criteria-title">Вимоги до варіанта й підприємства</h2>
+      <ul class="rgr-list">
+        {caseProject.companyCriteria.map((criterion) => <li>{typo(criterion)}</li>)}
+      </ul>
+    </section>
+
+    <section aria-labelledby="rgr-stages-title">
+      <h2 id="rgr-stages-title">Етапи роботи</h2>
+      {
+        caseProject.stages.map((stage, index) => {
+          const week = stageDeadlines.get(stage.id);
+          const formulas = STAGE_FORMULAS[stage.id] ?? [];
+          return (
+            <article class="rgr-stage-doc" aria-labelledby={`rgr-stage-doc-${stage.id}`}>
+              <h3 id={`rgr-stage-doc-${stage.id}`}>
+                {typo(stage.title)}
+                {week !== undefined && <span class="chip">тиждень {week}</span>}
+              </h3>
+              <p>{typo(stage.deliverable)}</p>
+              {formulas.length > 0 && (
+                <div class="rgr-formula-grid">
+                  {formulas.map((formula) => (
+                    <Formula code={formula.code} label={formula.label}>
+                      {formula.body}
+                    </Formula>
+                  ))}
+                </div>
+              )}
+              {index === 0 && <p class="faint small">Формул на цьому етапі немає — потрібні опис і класифікація операційної системи з джерелами.</p>}
+            </article>
+          );
+        })
+      }
+    </section>
+
+    <section aria-labelledby="rubryka-title">
+      <h2 id="rubryka-title">Рубрика оцінювання</h2>
+      <div class="rubric-wrap" tabindex="0" role="region" aria-labelledby="rubryka-title">
+        <table class="rubric">
+          <caption>{typo(`${caseProject.rubric.length} критеріїв, разом ${pluralUk(totalPoints, { one: 'бал', few: 'бали', many: 'балів', other: 'бала' })}. Формат рубрики — як у Moodle.`)}</caption>
+          <thead>
+            <tr>
+              <th scope="col">Етап</th>
+              <th scope="col">Критерій</th>
+              {pointColumns.map((points) => <th scope="col">{points}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {caseProject.rubric.map((criterion) => {
+              const stage = caseProject.stages.find((candidate) => candidate.id === criterion.stage);
+              return (
+                <tr>
+                  <th scope="row">{stage ? typo(stage.title.replace(/^Етап \d+\.\s*/, '')) : criterion.stage}</th>
+                  <td>
+                    {typo(criterion.title)}
+                    <span class="num"> (до {criterion.points})</span>
+                  </td>
+                  {pointColumns.map((points) => {
+                    const level = criterion.levels.find((candidate) => candidate.points === points);
+                    return <td>{level ? typo(level.description) : '—'}</td>;
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section aria-labelledby="rgr-variant-title">
+      <h2 id="rgr-variant-title">Ваш варіант</h2>
+      <p>
+        {typo(
+          'Уведіть номер залікової книжки: варіант визначається за двома останніми цифрами, тож у студентів з однаковим закінченням номера буде однаковий варіант — до захисту такі роботи разом не приймаються.',
+        )}
+      </p>
+      <RgrVariantExplorer client:only="react" stageTitles={stageTitles} />
+    </section>
+  </div>
+</BaseLayout>
