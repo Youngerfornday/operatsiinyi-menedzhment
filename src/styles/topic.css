@@ -16,7 +16,7 @@
 .topic-facts .chips { display: inline-flex; margin-left: 0.3rem; }
 
 .layout { display: grid; grid-template-columns: minmax(0, 1fr) 17rem; gap: var(--s-9); padding-top: var(--s-7); align-items: start; }
-.read { max-width: var(--measure); font-size: var(--text-read); line-height: var(--leading-read); counter-reset: section; }
+.read { max-width: var(--measure); font-size: var(--text-read); line-height: var(--leading-read); counter-reset: section; overflow-wrap: break-word; }
 .read > * + * { margin-top: var(--s-5); }
 .read h2 { font-size: var(--text-xl); font-weight: 650; font-variation-settings: "wdth" 92; line-height: 1.2; letter-spacing: var(--tracking-title); margin-top: var(--s-8); scroll-margin-top: 5.5rem; text-wrap: balance; }
 .read h2:not(.h2-plain) { counter-increment: section; }
@@ -29,6 +29,8 @@
 .read li + li { margin-top: var(--s-2); }
 .read li::marker { color: var(--ink-3); }
 .read blockquote { padding-left: var(--s-4); border-left: 1px solid var(--line-strong); color: var(--ink-2); font-style: italic; }
+.read .table-scroll { max-width: 100%; overflow-x: auto; }
+.read .table-scroll:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 .read table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
 .read th, .read td { text-align: left; padding: 0.5rem var(--s-3); border-bottom: 1px solid var(--line); vertical-align: top; }
 .read th { color: var(--ink-2); font-weight: 650; background: var(--bg-sunken); }
@@ -176,7 +178,7 @@
 .pending-facts b { display: block; font-size: var(--text-lg); font-weight: 700; font-variation-settings: "wdth" 90; font-variant-numeric: tabular-nums; color: var(--ink); }
 
 @media (max-width: 960px) {
-  .layout { grid-template-columns: 1fr; gap: var(--s-6); }
+  .layout { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); }
   .side { position: static; order: -1; }
   .side .toc { display: none; }
   .side .toc-toggle { display: block; }

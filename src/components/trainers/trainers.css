@@ -37,6 +37,7 @@ a.tool:hover { box-shadow: var(--shadow-2); transform: translateY(-2px); border-
 .prac-main { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-8); }
 .prac-section { min-width: 0; }
 .prac-section > h2 { font-size: var(--text-xl); font-weight: 650; font-variation-settings: "wdth" 92; letter-spacing: var(--tracking-title); margin-bottom: var(--s-4); scroll-margin-top: 5.5rem; text-wrap: balance; }
+.prac-trainer > h3 { scroll-margin-top: 5.5rem; }
 .prac-section > h2 .n { color: var(--ink-3); font-weight: 500; margin-right: 0.35rem; font-variant-numeric: tabular-nums; }
 .prac-section > p, .prac-section > ul, .prac-section > ol { max-width: var(--measure); }
 .prac-section > * + * { margin-top: var(--s-4); }

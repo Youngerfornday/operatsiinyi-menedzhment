@@ -7,6 +7,7 @@ import SelfCheck from './SelfCheck.astro';
 import SourceList from './SourceList.astro';
 import SrsTask from './SrsTask.astro';
 import StandardRef from './StandardRef.astro';
+import Table from './Table.astro';
 import Term from './Term.astro';
 import WorkedExample from './WorkedExample.astro';
 
@@ -22,5 +23,6 @@ export const mdxComponents = {
   SrsTask,
   StandardRef,
   Term,
+  table: Table,
   WorkedExample,
 };

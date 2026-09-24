@@ -3,7 +3,7 @@
  * ділять один `trainer.tasks`; кожен бере з нього лише свої методи. Один тренажер — без підзаголовка,
  * кілька — кожен під своїм h3, а «Варіант N» у TaskShell опускається до h4.
  */
-import type { ComponentType } from 'react';
+import { type ComponentType, useEffect } from 'react';
 import type { CalculationTask } from '../../content/schemas/practical';
 import { AggregatePlanningTrainer } from './AggregatePlanningTrainer';
 import { ControlChartsTrainer } from './ControlChartsTrainer';
@@ -51,7 +51,19 @@ export interface PracticalCalculationTrainersProps {
   readonly trainers: readonly PracticalTrainerHeading[];
 }
 
+/**
+ * Острів client:only з'являється після того, як браузер уже спробував перейти до #якоря, тому посилання
+ * каталогу «praktychni/p04/#trenazher-line-balancing» відкривали сторінку згори. Прокручуємо самі.
+ */
+function useScrollToHashTarget(): void {
+  useEffect(() => {
+    const id = decodeURIComponent(window.location.hash.slice(1));
+    if (id.startsWith('trenazher-')) document.getElementById(id)?.scrollIntoView();
+  }, []);
+}
+
 export function PracticalCalculationTrainers({ tasks, trainers }: PracticalCalculationTrainersProps) {
+  useScrollToHashTarget();
   const [single] = trainers;
   if (trainers.length === 1 && single) {
     const Trainer = componentFor(single.registryId);

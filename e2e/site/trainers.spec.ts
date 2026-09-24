@@ -209,3 +209,12 @@ test.describe('практичні з розрахунковими задачам
     });
   }
 });
+
+test.describe('посилання каталогу на конкретний тренажер практичної', () => {
+  for (const trainer of PRACTICAL_TRAINERS.filter((item) => PUBLISHED_PRACTICALS.includes(item.practicalId) && item.path.includes('#trenazher-'))) {
+    test(`${trainer.path}: сторінка прокручується до тренажера, що рендериться в браузері`, async ({ page }) => {
+      await page.goto(trainer.path);
+      await expect(page.locator(`#${trainer.path.split('#')[1]}`)).toBeInViewport();
+    });
+  }
+});
