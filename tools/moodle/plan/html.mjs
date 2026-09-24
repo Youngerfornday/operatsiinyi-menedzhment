@@ -24,6 +24,14 @@ export function table(headers, rows) {
   return `<table class="generaltable">${head}<tbody>${body}</tbody></table>`;
 }
 
+const POINT_FORMS = { one: 'бал', few: 'бали', many: 'балів', other: 'бала' };
+const pointsPlural = new Intl.PluralRules('uk');
+
+/** «1 бал», «3 бали», «5 балів». */
+export function pointsLabel(count) {
+  return `${count} ${POINT_FORMS[pointsPlural.select(count)] ?? POINT_FORMS.other}`;
+}
+
 export function paragraph(textValue) {
   return `<p>${escapeHtml(textValue)}</p>`;
 }
@@ -89,32 +97,32 @@ export function practicalIntroHtml(practical, site, points) {
     list(practical.results.map(escapeHtml)),
     heading('Завдання'),
     list(practical.tasks.map(escapeHtml), true),
-    paragraph(`Максимум ${points} бали. Роботу оцінюють за рубрикою — критерії відкриті нижче.`),
+    paragraph(`Максимум ${pointsLabel(points)}. Роботу оцінюють за рубрикою — критерії відкриті нижче.`),
     trainers.length === 0
       ? ''
-      : `<p>Тренажери до роботи — на сайті курсу: ${siteLink(site, 'praktykumy/', 'практикуми')}.</p>`,
+      : `<p>Тренажери до роботи — на сайті курсу: ${siteLink(site, `praktychni/${practical.id}/`, 'сторінка практичної')}.</p>`,
   ]
     .filter((part) => part !== '')
     .join('\n');
 }
 
-/** Умова кейс-проєкту: мета, критерії вибору компанії, етапи. */
+/** Умова індивідуальної роботи курсу (РГР): мета, вимоги, етапи. */
 export function caseProjectIntroHtml(caseProject, points) {
   const stages = caseProject.stages.map((stage) => `<strong>${escapeHtml(stage.title)}.</strong> ${escapeHtml(stage.deliverable)}`);
   return [
     paragraph(caseProject.goal),
-    heading('Вимоги до компанії'),
+    heading('Вимоги до роботи'),
     list(caseProject.companyCriteria.map(escapeHtml)),
     heading('Етапи'),
     list(stages),
-    paragraph(`Максимум ${points} балів. Роботу оцінюють за рубрикою — критерії відкриті нижче.`),
+    paragraph(`Максимум ${pointsLabel(points)}. Роботу оцінюють за рубрикою — критерії відкриті нижче.`),
   ].join('\n');
 }
 
 /** Опис тесту: скільки питань, скільки часу, коли відкриються правильні відповіді. */
 export function quizIntroHtml({ questions, minutes, attempts, points, scope, closeNote }) {
   return [
-    paragraph(`${scope} ${questions} питань, ${minutes} хв, спроб: ${attempts}. Максимум ${points} балів.`),
+    paragraph(`${scope} ${questions} питань, ${minutes} хв, спроб: ${attempts}. Максимум ${pointsLabel(points)}.`),
     paragraph('Питання добираються випадково з банку курсу, тому набір у кожного свій.'),
     paragraph('Бали видно одразу після спроби; правильні відповіді й пояснення відкриваються після закриття тесту.'),
     closeNote === undefined ? '' : paragraph(closeNote),

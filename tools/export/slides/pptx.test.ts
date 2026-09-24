@@ -86,16 +86,18 @@ describe('buildPresentation', () => {
     const sources = SourcesFileSchema.parse(parse(await readFile(join(ROOT, 'content/modules/m1/t01/sources.yaml'), 'utf8')));
     const deck = await buildPresentation(file, course, sources, { rootDir: ROOT, topicDir: join(ROOT, 'content/modules/m1/t01'), date: '2026-09-17', figureRenderer: renderStub });
     const entries = readZip(deck);
-    expect(entries.filter((entry) => /^ppt\/slides\/slide\d+\.xml$/u.test(entry.path))).toHaveLength(28);
+    const slideCount = file.slides.length;
+    const toyotaSlide = file.slides.findIndex((slide) => slide.id === 's02-case-toyota') + 1;
+    expect(entries.filter((entry) => /^ppt\/slides\/slide\d+\.xml$/u.test(entry.path))).toHaveLength(slideCount);
     expect(readZipText(deck, 'ppt/slides/slide1.xml')).toMatch(/Операційний[\s\u00a0]менеджмент як різновид функціонального менеджменту/u);
     expect(readZipText(deck, 'ppt/slides/slide1.xml')).not.toContain('Джерела');
     expect(readZipText(deck, 'ppt/slides/slide3.xml')).not.toContain('Джерела');
-    expect(readZipText(deck, 'ppt/slides/slide8.xml')).toContain('Toyota Production System');
+    expect(readZipText(deck, `ppt/slides/slide${toyotaSlide}.xml`)).toContain('Toyota Production System');
     expect(readZipText(deck, 'ppt/notesSlides/notesSlide1.xml')).toContain('Вступ до курсу через одне питання');
     // Титульний слайд джерел не має; рядок «Джерела» перевіряємо на слайді кейсу.
-    expect(readZipText(deck, 'ppt/notesSlides/notesSlide8.xml')).toContain('Джерела');
+    expect(readZipText(deck, `ppt/notesSlides/notesSlide${toyotaSlide}.xml`)).toContain('Джерела');
     expect(readZipText(deck, 'ppt/notesSlides/notesSlide1.xml')).toContain('знаменник');
-    expect(readZipText(deck, 'ppt/slides/slide28.xml')).toContain('Підсумок теми');
+    expect(readZipText(deck, `ppt/slides/slide${slideCount}.xml`)).toContain('Підсумок теми');
     const sourceMap = new Map(sources.sources.map((source) => [source.id, source]));
     file.slides.forEach((slideData, index) => {
       const slideNumber = index + 1;
@@ -126,7 +128,7 @@ describe('buildPresentation', () => {
     expect(media.some((entry) => Buffer.compare(Buffer.from(entry.data), readFileSync(join(ROOT, 'design/assets/logo-cpnu-uk.png'))) === 0)).toBe(true);
     expect(media.some((entry) => Buffer.compare(Buffer.from(entry.data), readFileSync(join(ROOT, 'design/assets/logo-cpnu-uk-white.png'))) === 0)).toBe(true);
     expect(media.length).toBeGreaterThanOrEqual(3);
-    for (let index = 1; index <= 28; index += 1) expectShapesWithinSlide(readZipText(deck, `ppt/slides/slide${index}.xml`));
+    for (let index = 1; index <= slideCount; index += 1) expectShapesWithinSlide(readZipText(deck, `ppt/slides/slide${index}.xml`));
     const core = readZipText(deck, 'docProps/core.xml');
     expect(core).toContain('<dcterms:created xsi:type="dcterms:W3CDTF">2026-09-17T00:00:00Z</dcterms:created>');
     expect(core).toContain('<dc:creator>Курс «Операційний менеджмент»</dc:creator>');

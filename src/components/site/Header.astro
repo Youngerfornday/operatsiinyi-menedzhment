@@ -1,4 +1,5 @@
 ---
+import { INITIAL_LEVEL, formatXp } from '../../lib/player-levels';
 import { CABINET_PATH, NAV_ITEMS, PROFILE_PATH, type NavId } from '../../lib/site-nav';
 import { url } from '../../lib/url';
 import Icon from './Icon.astro';
@@ -103,7 +104,7 @@ const logoDark = url('brand/logo-cpnu-uk-white.png');
     </div>
     <div class="menu-section">
       <h3>Ваш рівень</h3>
-      <p class="small" data-player-summary>Акціонер · 0 XP. Прогрес зберігається у вашому браузері.</p>
+      <p class="small" data-player-summary>{INITIAL_LEVEL.title} · {formatXp(0)}. Прогрес зберігається у вашому браузері.</p>
       <a class="btn btn-secondary btn-sm menu-profile" href={url(PROFILE_PATH)}>Відкрити профіль</a>
     </div>
     <p class="menu-foot">{institution}</p>

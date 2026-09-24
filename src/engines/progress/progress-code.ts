@@ -2,7 +2,7 @@ import { MAX_SERIALIZED_PROGRESS_LENGTH, deserializeProgress } from './codec';
 import { ProgressStateSchema, type ProgressState } from './state';
 
 /** Код прогресу: префікс формату + base64url(JSON стану). */
-export const PROGRESS_CODE_PREFIX = 'KUP1.';
+export const PROGRESS_CODE_PREFIX = 'OM1.';
 
 /** Base64 збільшує розмір на третину; межа перевіряється до декодування. */
 export const MAX_PROGRESS_CODE_LENGTH = PROGRESS_CODE_PREFIX.length + Math.ceil((MAX_SERIALIZED_PROGRESS_LENGTH * 4) / 3);

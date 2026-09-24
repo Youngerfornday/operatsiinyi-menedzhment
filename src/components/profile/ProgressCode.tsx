@@ -4,6 +4,7 @@
  */
 import { useState } from 'react';
 import { formatXp } from '../../engines/gamification';
+import { INITIAL_LEVEL } from '../../lib/player-levels';
 import {
   PROGRESS_CODE_ERROR_MESSAGES,
   PROGRESS_CODE_EXPORT_ERROR_MESSAGES,
@@ -73,7 +74,7 @@ export function ProgressCode({ state, client }: Props) {
       }
     } else {
       client.reset();
-      setNotice('Прогрес скинуто. Ви знову «Акціонер» із 0 XP.');
+      setNotice(`Прогрес скинуто. Ви знову «${INITIAL_LEVEL.title}» із 0 XP.`);
       toast('Прогрес скинуто');
     }
     setPending(null);
@@ -124,7 +125,7 @@ export function ProgressCode({ state, client }: Props) {
           <textarea
             className="input code-area"
             id="code-in"
-            placeholder="KUP1.…"
+            placeholder="OM1.…"
             rows={4}
             value={input}
             aria-invalid={error ? true : undefined}

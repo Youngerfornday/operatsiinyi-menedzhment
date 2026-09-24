@@ -17,6 +17,8 @@ import { readZip } from './unzip.ts';
 const DOWNLOADS = fileURLToPath(new URL('../../public/downloads/', import.meta.url));
 const generated = existsSync(join(DOWNLOADS, 'manifest.json'));
 const hasPoppler = spawnSync('pdftotext', ['-v']).error === undefined;
+// poppler обходить кожен PDF синхронно; під паралельним навантаженням повного прогону 5 с за замовчуванням замало.
+const POPPLER_TIMEOUT_MS = 60_000;
 
 describe.skipIf(!generated)('згенеровані матеріали public/downloads', () => {
   test('маніфест валідний, файли на місці, розміри збігаються', async () => {
@@ -44,7 +46,7 @@ describe.skipIf(!generated)('згенеровані матеріали public/do
       expect(text).toContain('Чернігівська політехніка');
       expect(execFileSync('pdffonts', [file], { encoding: 'utf8' })).toContain('OpenSans');
     }
-  });
+  }, POPPLER_TIMEOUT_MS);
 
   test.skipIf(!hasPoppler)('презентації: PDF слайдів із кирилицею шрифтом сайту і PPTX-архів на кожну тему', async () => {
     const { manifest } = await checkDownloadsDir(DOWNLOADS);
@@ -60,7 +62,7 @@ describe.skipIf(!generated)('згенеровані матеріали public/do
       const entries = readZip(await readFile(join(DOWNLOADS, pptx?.path?.replace(/^downloads\//, '') ?? ''))).map((entry) => entry.path);
       expect(entries).toContain('ppt/presentation.xml');
     }
-  });
+  }, POPPLER_TIMEOUT_MS);
 
   test('DOCX: таблиці годин і балів, усі ПРН у робочій програмі', async () => {
     const course = await loadCourse();

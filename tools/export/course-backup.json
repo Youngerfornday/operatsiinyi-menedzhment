@@ -1,11 +1,11 @@
 {
-  "$comment": "Резервна копія курсу в GitHub Releases. published: false — для «Операційного менеджменту» .mbz ще не зібрано (потрібен Docker), тому посилання не потрапляє в маніфест. Як зібрати: tools/moodle/build-mbz.sh --no-control, далі gh release upload <tag> operatsiinyi-menedzhment.mbz --clobber; потім оновіть bytes, sha256, builtAt і поставте published: true.",
-  "published": false,
+  "$comment": "Резервна копія курсу в GitHub Releases — ПУБЛІЧНИЙ варіант (build-mbz.sh --no-control): підсумковий тест без питань, контрольний банк сюди не потрапляє. Варіант із контрольним банком лежить лише в релізі приватного репозиторію operatsiinyi-menedzhment-control. Після перезбирання: gh release upload <tag> operatsiinyi-menedzhment.mbz --clobber, оновіть bytes, sha256, builtAt.",
+  "published": true,
   "tag": "course-backup-2026-09",
   "asset": "operatsiinyi-menedzhment.mbz",
   "url": "https://github.com/Youngerfornday/operatsiinyi-menedzhment/releases/download/course-backup-2026-09/operatsiinyi-menedzhment.mbz",
-  "bytes": 98841,
-  "sha256": "91926f5f05c2e52a97cef3cefc2812894e9511efbaa805289e7fe8373a869298",
+  "bytes": 1839631,
+  "sha256": "db7e0a817ee6aaceb9669df52109114fb7be460a86cfe65cae456533906d5297",
   "moodle": "5.2.2",
-  "builtAt": "2026-09-17"
+  "builtAt": "2026-09-24"
 }

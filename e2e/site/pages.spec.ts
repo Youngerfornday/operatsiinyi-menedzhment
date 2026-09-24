@@ -5,12 +5,12 @@ const PAGES = [
   { name: 'головна', path: '', heading: 'Операційний менеджмент' },
   { name: 'модуль', path: 'moduli/m1/', heading: /Теоретичні основи організації та регулювання операційної діяльності/ },
   { name: 'тема опублікована', path: 'temy/operatsiinyi-menedzhment-yak-funktsiia/', heading: /Операційний менеджмент як різновид функціонального менеджменту/ },
-  { name: 'тема-заглушка', path: 'temy/operatsiina-diialnist-resursy-protsesy/', heading: /Операційна діяльність — ресурси, процеси та результати/ },
+  { name: 'тема 4 опублікована', path: 'temy/operatsiina-diialnist-resursy-protsesy/', heading: /Операційна діяльність — ресурси, процеси та результати/ },
   { name: 'усі теми', path: 'temy/', heading: 'Теми курсу' },
   { name: 'вітрина компонентів', path: 'rozrobka/komponenty/', heading: 'Вітрина компонентів' },
   { name: 'список тестів', path: 'testy/', heading: 'Тренувальні тести' },
   { name: 'тест теми 1 (фікстурний банк)', path: 'testy/operatsiinyi-menedzhment-yak-funktsiia/', heading: /Тренувальний тест · Тема 1/ },
-  { name: 'тест-заглушка', path: 'testy/operatsiina-diialnist-resursy-protsesy/', heading: /Тренувальний тест · Тема 4/ },
+  { name: 'тест теми 4', path: 'testy/operatsiina-diialnist-resursy-protsesy/', heading: /Тренувальний тест · Тема 4/ },
   { name: 'профіль', path: 'profil/', heading: 'Стажист дільниці' },
   { name: 'РГР', path: 'rgr/', heading: /Операційний план дільниці підприємства/ },
 ] as const;
@@ -27,12 +27,12 @@ for (const item of PAGES) {
   });
 }
 
-test('РГР: номер залікової → варіант за двома останніми цифрами; помилка формату оголошується', async ({ page }) => {
+test('РГР: номер залікової → детермінований варіант за всім номером; помилка формату оголошується', async ({ page }) => {
   await page.goto('rgr/');
   const input = page.getByLabel('Номер залікової книжки');
   await input.fill('20-40-1267');
   await page.getByRole('button', { name: 'Показати варіант' }).click();
-  await expect(page.getByRole('heading', { level: 3, name: 'Варіант 67' })).toBeFocused();
+  await expect(page.getByRole('heading', { level: 3, name: 'Варіант для залікової книжки № 20401267' })).toBeFocused();
   await expect(page.locator('.rgr-stage')).toHaveCount(4);
   await expectNoSeriousAxeViolations(page);
 
@@ -45,11 +45,11 @@ test('РГР: номер залікової → варіант за двома �
 test('головна: лічильники з реєстру, маршрутна карта з 2 модулів і 8 тем, маршрут 0 із 8', async ({ page }) => {
   await page.goto('');
   const facts = page.locator('dl[aria-label="Обсяг курсу"] dd');
-  await expect(facts).toHaveText(['4', '12', '8', '120']);
-  await expect(page.locator('[data-agenda] [data-module]')).toHaveCount(4);
-  await expect(page.locator('[data-agenda] a.topic')).toHaveCount(12);
+  await expect(facts).toHaveText(['2', '8', '7', '180']);
+  await expect(page.locator('[data-agenda] [data-module]')).toHaveCount(2);
+  await expect(page.locator('[data-agenda] a.topic')).toHaveCount(8);
   await expect(page.locator('[data-route-label]')).toHaveText('0 із 8 тем');
-  await expect(page.locator('[data-route-cells] i')).toHaveCount(12);
+  await expect(page.locator('[data-route-cells] i')).toHaveCount(8);
   await expect(page.locator('[data-continue-label]')).toHaveText('Почати: Тема 1');
   await expect(page.locator('[data-player-chip]')).toHaveAttribute('data-xp', '0');
 });
@@ -74,14 +74,6 @@ test('тема 1 опублікована: лекція зі змістом, ч�
   await expect(cta).toHaveText(/Пройти тренувальний тест/);
   await cta.click();
   await expect(page).toHaveURL(/testy\/operatsiinyi-menedzhment-yak-funktsiia\/$/);
-});
-
-test('тема без лекції: сторінка «Тема готується» з анотацією, а не 404', async ({ page }) => {
-  const response = await page.goto('temy/operatsiina-diialnist-resursy-protsesy/');
-  expect(response?.status()).toBe(200);
-  await expect(page.getByText('Тема готується')).toBeVisible();
-  await expect(page.locator('[data-topic-pending]')).toContainText('партій');
-  await expect(page.getByRole('navigation', { name: 'Сусідні теми' }).getByRole('link')).toHaveCount(2);
 });
 
 test('SEO: canonical, OG-теги й зображення курсу', async ({ page, request }) => {

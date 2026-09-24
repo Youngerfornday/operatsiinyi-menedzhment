@@ -73,7 +73,7 @@ describe('withIntegrityCheck', () => {
 
   it('fails with a clear message when course.yaml itself is invalid', async () => {
     // Arrange
-    tempRoot = mkdtempSync(join(tmpdir(), 'ku-loader-'));
+    tempRoot = mkdtempSync(join(tmpdir(), 'content-loader-'));
     mkdirSync(join(tempRoot, 'content'));
     writeFileSync(join(tempRoot, 'content', 'course.yaml'), 'schemaVersion: 2\n');
     const loader = withIntegrityCheck(innerLoader(), () => []);

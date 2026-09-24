@@ -75,9 +75,9 @@ test.describe('шапка на десктопі', () => {
 
 test('вітрина: підказка терміна відкривається кнопкою і закривається Esc; самоперевірка відкриває розбір', async ({ page }) => {
   await page.goto('rozrobka/komponenty/');
-  const term = page.locator('button.term[data-term="corporation"]').first();
+  const term = page.locator('button.term[data-term="operations-system"]').first();
   await term.click();
-  const pop = page.locator('#pop-corporation');
+  const pop = page.locator('#pop-operations-system');
   await expect(pop).toBeVisible();
   await expect(term).toHaveAttribute('aria-expanded', 'true');
   await page.keyboard.press('Escape');
