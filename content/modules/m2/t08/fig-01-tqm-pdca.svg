@@ -40,7 +40,7 @@
   <text class="exam-t" x="106" y="225" text-anchor="middle">4. Дій</text>
   <text class="s" x="106" y="245" text-anchor="middle">усунь причину розбіжності</text>
 
-  <circle class="hub" cx="340" cy="230" r="56"/>
+  <circle class="hub" cx="340" cy="230" r="66"/>
   <text class="hub-t" x="340" y="226" text-anchor="middle">Постійне</text>
   <text class="hub-t" x="340" y="242" text-anchor="middle">поліпшення якості</text>
 
@@ -48,7 +48,7 @@
   <path class="arrow" marker-end="url(#fig-t08-1-arr)" d="M540 263 C 500 310, 470 340, 420 372"/>
   <path class="arrow" marker-end="url(#fig-t08-1-arr)" d="M260 372 C 210 340, 180 310, 150 265"/>
   <path class="arrow exam" marker-end="url(#fig-t08-1-arr)" d="M140 195 C 180 140, 210 110, 262 86"/>
-  <text class="lbl" x="200" y="130" text-anchor="middle">новий, вищий виток спіралі</text>
+  <text class="lbl" x="184" y="112" text-anchor="end">новий, вищий виток спіралі</text>
 
   <circle class="refc" cx="250" cy="20" r="11"/><text class="refn" x="250" y="24">1</text>
   <circle class="refc" cx="484" cy="197" r="11"/><text class="refn" x="484" y="201">2</text>
