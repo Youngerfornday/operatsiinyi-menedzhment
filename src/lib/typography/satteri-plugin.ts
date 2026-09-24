@@ -39,7 +39,7 @@ function classify(node: HastNode, ctx: HastVisitorContext): Ancestry {
 }
 
 export const typographyPlugin = defineHastPlugin({
-  name: 'ku-typography',
+  name: 'uk-typography',
   text(node, ctx) {
     const { skip, heading } = classify(node, ctx);
     if (skip) return;

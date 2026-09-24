@@ -29,7 +29,7 @@ test('рендерить усі слайди теми 1, показує один
   await expect(page.getByRole('heading', { level: 1, name: /Операційний менеджмент як різновид функціонального менеджменту/ })).toBeVisible();
   await expect(page.locator('[data-slide]')).toHaveCount(COUNT);
   expect(COUNT).toBeGreaterThanOrEqual(22);
-  expect(COUNT).toBeLessThanOrEqual(28);
+  expect(COUNT).toBeLessThanOrEqual(30);
   await expect(active(page)).toHaveCount(1);
   await expect(active(page)).toHaveAttribute('data-slide-type', 'title');
   await expect(page.locator('[data-slide]:visible')).toHaveCount(1);

@@ -13,7 +13,7 @@ function input(overrides: Partial<CatalogInput> = {}): CatalogInput {
   return {
     course,
     lectures: [{ id: 't01', updatedAt: '2026-09-15' }],
-    glossaries: [{ topic: 't01', terms: ['Корпорація', 'Агент', 'Принципал', 'Агентські витрати', 'Стейкхолдер'] }],
+    glossaries: [{ topic: 't01', terms: ['Операційна система', 'Ресурс', 'Продуктивність', 'Вхід', 'Вихід'] }],
     questions: e2eBankQuestions(),
     practicalFiles: [{ id: 'p01', updatedAt: '2026-09-17' }],
     manifest: null,
@@ -54,8 +54,8 @@ describe('buildCatalog без маніфесту', () => {
 
   it('глосарій теми з кількістю термінів і пошуком за терміном', () => {
     const glossary = byId(catalog.materials, 'glossary-t01');
-    expect(glossary.subtitle).toBe('5 термінів: Корпорація, Агент, Принципал, Агентські витрати…');
-    expect(byId(catalog.materials, 'lecture-t01').searchText).toContain('агентські витрати');
+    expect(glossary.subtitle).toBe('5 термінів: Операційна система, Ресурс, Продуктивність, Вхід…');
+    expect(byId(catalog.materials, 'lecture-t01').searchText).toContain('операційна система');
   });
 
   it('практичні з реєстру: з файлом тренажера — опубліковані, без — «готується»; посилання лише для опублікованих', () => {

@@ -37,11 +37,11 @@ export async function answerCurrentCorrectly(page: Page): Promise<string> {
   const stem = (await current.locator('.q-stem').first().innerText()).replace(/\s+/g, ' ');
 
   if (title.includes('одиночний вибір')) {
-    await answerChoice(page, ['Власники передають управління найманим менеджерам']);
+    await answerChoice(page, ['Дії, унаслідок яких організація дає продукт зовнішньому споживачеві']);
     return 'multichoice';
   }
   if (title.includes('множинний вибір')) {
-    await answerChoice(page, ['Незалежні директори в раді', 'Винагорода, прив’язана до результату']);
+    await answerChoice(page, ['Часткова продуктивність', 'Багатофакторна продуктивність']);
     return 'multichoice-multi';
   }
   if (title.includes('правда чи неправда')) {
@@ -49,30 +49,30 @@ export async function answerCurrentCorrectly(page: Page): Promise<string> {
     return 'truefalse';
   }
   if (title.includes('відповідність')) {
-    await current.locator('.match-row', { hasText: 'Акціонер' }).locator('select').selectOption({ label: 'Принципал' });
-    await current.locator('.match-row', { hasText: 'Менеджер' }).locator('select').selectOption({ label: 'Агент' });
+    await current.locator('.match-row', { hasText: 'Вхід' }).locator('select').selectOption({ label: 'Ресурси' });
+    await current.locator('.match-row', { hasText: 'Вихід' }).locator('select').selectOption({ label: 'Продукція чи послуга' });
     return 'matching';
   }
   if (title.includes('числова відповідь')) {
-    await current.getByLabel('Відповідь').fill('15');
+    await current.getByLabel('Відповідь').fill('30');
     return 'numerical';
   }
   if (title.includes('розрахунок')) {
-    const match = /Усього акцій ([\d\s  ,]+), у менеджменту ([\d\s  ,]+)\./.exec(stem);
+    const match = /За зміну випущено ([\d\s  ,]+) виробів за ([\d\s  ,]+) годин\./.exec(stem);
     if (!match) throw new Error(`Не розібрано стовбур calculated: ${stem}`);
     const n = parseUkNumber(match[1] ?? '0');
     const m = parseUkNumber(match[2] ?? '0');
-    await current.getByLabel('Відповідь').fill(((m / n) * 100).toFixed(4).replace('.', ','));
+    await current.getByLabel('Відповідь').fill((n / m).toFixed(4).replace('.', ','));
     return 'calculated';
   }
   if (title.includes('заповнення пропусків')) {
-    await current.getByLabel('Пропуск 1').selectOption({ label: 'принципал' });
-    await current.getByLabel('Пропуск 2').selectOption({ label: 'агент' });
+    await current.getByLabel('Пропуск 1').selectOption({ label: 'ресурси' });
+    await current.getByLabel('Пропуск 2').selectOption({ label: 'продукцію чи послугу' });
     return 'ddwtos';
   }
   if (title.includes('кейс із пропусками')) {
-    await current.getByLabel('Частина 1').selectOption({ label: 'агентським конфліктом другого типу' });
-    await current.getByLabel('Частина 2').fill('60');
+    await current.getByLabel('Частина 1').selectOption({ label: 'частковою продуктивністю' });
+    await current.getByLabel('Частина 2').fill('2');
     return 'multianswer';
   }
   throw new Error(`Невідомий тип питання: ${title}`);

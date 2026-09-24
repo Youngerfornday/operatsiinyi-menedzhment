@@ -22,7 +22,7 @@ import type { Material } from './types';
 const catalog = buildCatalog({
   course: CourseSchema.parse(loadCourse()),
   lectures: [{ id: 't01', updatedAt: '2026-09-15' }],
-  glossaries: [{ topic: 't01', terms: ['Корпорація'] }],
+  glossaries: [{ topic: 't01', terms: ['Операційна система'] }],
   questions: e2eBankQuestions(),
   practicalFiles: [{ id: 'p01' }],
   manifest: fixtureManifest(),
