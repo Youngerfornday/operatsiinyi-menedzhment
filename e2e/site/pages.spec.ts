@@ -27,6 +27,21 @@ for (const item of PAGES) {
   });
 }
 
+test('усі лекції й практичні на телефоні 390 px: без горизонтального скролу (широкі таблиці прокручуються всередині)', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  const paths: string[] = [];
+  for (const [index, pattern] of [['temy/', /\/temy\/[a-z0-9-]+\/$/], ['praktychni/', /\/praktychni\/p\d+\/$/]] as const) {
+    await page.goto(index);
+    const hrefs = await page.locator('main a[href]').evaluateAll((links) => links.map((link) => link.getAttribute('href') ?? ''));
+    paths.push(...new Set(hrefs.filter((href) => pattern.test(href))));
+  }
+  expect(paths.length).toBeGreaterThanOrEqual(15);
+  for (const path of paths) {
+    await page.goto(path);
+    await expectNoHorizontalScroll(page);
+  }
+});
+
 test('РГР: номер залікової → детермінований варіант за всім номером; помилка формату оголошується', async ({ page }) => {
   await page.goto('rgr/');
   const input = page.getByLabel('Номер залікової книжки');

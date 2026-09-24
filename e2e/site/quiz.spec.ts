@@ -83,6 +83,24 @@ test.describe('тренувальний тест теми 1 (фікстурни�
     await expectNoHorizontalScroll(page);
     await expectNoSeriousAxeViolations(page);
   });
+
+  test('відповідність: довгий варіант у списку не розпирає сторінку ширше за екран', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(QUIZ_PATH);
+    await expect(quiz(page)).toBeVisible();
+    for (let index = 0; index < QUIZ_QUESTIONS; index += 1) {
+      await page.locator('.cells .cell').nth(index).click();
+      if ((await card(page).locator('.q-title').innerText()).includes('відповідність')) break;
+    }
+    const select = card(page).locator('.match-row select').first();
+    // Банк теми 4 має варіанти довжиною з речення; select за замовчуванням широкий, як найдовший варіант.
+    await select.evaluate((element) => {
+      const option = document.createElement('option');
+      option.textContent = 'Безперервний рух предметів праці між операціями без пролежування й очікування на наступному робочому місці';
+      element.append(option);
+    });
+    await expectNoHorizontalScroll(page);
+  });
 });
 
 test.describe('клавіатура', () => {

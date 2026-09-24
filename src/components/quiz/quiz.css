@@ -37,6 +37,8 @@
 .match-list { display: grid; gap: var(--s-3); margin-top: var(--s-5); }
 .match-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(12rem, 1fr); gap: var(--s-3); align-items: center; padding: var(--s-3) var(--s-4); border: 1px solid var(--line-strong); border-radius: var(--r-2); background: var(--surface); }
 .match-prompt { font-weight: 600; font-size: var(--text-sm); }
+/* select за замовчуванням широкий, як найдовший варіант; без цього довга відповідь розпирає сторінку на телефоні */
+.match-row .select { width: 100%; min-width: 0; }
 .match-review .match-row[data-state="ok"] { border-color: var(--ok); background: var(--ok-soft); }
 .match-review .match-row[data-state="err"] { border-color: var(--err); background: var(--err-soft); }
 .match-answer { display: grid; grid-template-columns: auto 1fr; gap: 0.25rem var(--s-2); align-items: start; font-size: var(--text-sm); }
@@ -128,7 +130,7 @@
   .q-actions { flex-direction: column; align-items: stretch; }
   .q-actions .right { justify-content: stretch; }
   .q-actions .right .btn { flex: 1; }
-  .match-row { grid-template-columns: 1fr; }
+  .match-row { grid-template-columns: minmax(0, 1fr); }
   .summary-counts { grid-template-columns: repeat(2, auto); }
   .quiz-pending .card { grid-template-columns: 1fr; }
   .quiz-pending .card .icon-lg { display: none; }

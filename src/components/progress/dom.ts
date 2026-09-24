@@ -1,8 +1,9 @@
 /** Дрібні DOM-помічники гідрації: іконки зі спрайта, знак стану теми, безпечний текст. */
+import { iconHref } from '../site/icon-href';
 import { TOPIC_STATE_LABELS, type TopicVisualState } from './derive';
 
 export function iconSvg(name: string, className = 'icon'): string {
-  return `<svg class="${className}" aria-hidden="true" focusable="false"><use href="#i-${name}"></use></svg>`;
+  return `<svg class="${className}" aria-hidden="true" focusable="false"><use href="${iconHref(name)}"></use></svg>`;
 }
 
 const MARK_ICON: Readonly<Record<TopicVisualState, string | null>> = { done: 'check', doing: 'play', todo: null };
