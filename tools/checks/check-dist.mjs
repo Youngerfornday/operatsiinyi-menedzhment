@@ -30,7 +30,8 @@ function listRepoFiles() {
     });
     return output
       .split('\0')
-      .filter((file) => file !== '' && !file.split('/').includes('node_modules'))
+      // Запис зі слешем у кінці — вкладений git-репозиторій (наприклад, worktree агента): у нього своя перевірка.
+      .filter((file) => file !== '' && !file.endsWith('/') && !file.split('/').includes('node_modules'))
       .map((file) => resolve(ROOT, file));
   } catch (error) {
     console.warn(`git недоступний (${error.message}); сканую робочий каталог повністю, крім node_modules.`);
