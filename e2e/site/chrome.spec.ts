@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { expectNoHorizontalScroll } from './helpers';
 
 test.describe('перемикач теми', () => {
   test('перемикає data-theme і зберігає вибір у localStorage під ключем om:v1:theme; без мерехтіння після перезавантаження', async ({ page }) => {
@@ -92,4 +93,42 @@ test('вітрина: підказка терміна відкривається
 
   await page.locator('[data-demo-toast]').click();
   await expect(page.locator('#toast')).toHaveAttribute('data-show', '');
+});
+
+test('шапка на ширинах 1024–1920 px: пункти меню, перемикач ролі й чип гравця не накладаються, чип в один рядок', async ({ page }) => {
+  const problems: string[] = [];
+  for (const width of [1024, 1152, 1280, 1296, 1344, 1400, 1440, 1536, 1600, 1920]) {
+    await page.setViewportSize({ width, height: 800 });
+    await page.goto('');
+    const found = await page.evaluate(() => {
+      const items = [...document.querySelectorAll<HTMLElement>('.topbar-in > *, .topbar-actions > *, .nav > *')].filter((item) => item.getBoundingClientRect().width > 0);
+      const hits: string[] = [];
+      items.forEach((first, index) => {
+        for (const second of items.slice(index + 1)) {
+          if (first.contains(second) || second.contains(first)) continue;
+          const a = first.getBoundingClientRect();
+          const b = second.getBoundingClientRect();
+          if (Math.min(a.right, b.right) - Math.max(a.left, b.left) > 1 && Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 1) hits.push(`«${first.textContent?.trim()}» × «${second.textContent?.trim()}»`);
+        }
+      });
+      const chip = document.querySelector('.topbar-actions > .me');
+      if (chip && chip.getBoundingClientRect().height > 48) hits.push('чип гравця переноситься на два рядки');
+      return hits;
+    });
+    problems.push(...found.map((hit) => `${width}px: ${hit}`));
+  }
+  expect(problems).toEqual([]);
+});
+
+test('великий шрифт у налаштуваннях браузера (24 px): шапка й головна без накладань і горизонтального скролу', async ({ page }) => {
+  const cdp = await page.context().newCDPSession(page);
+  await cdp.send('Page.setFontSizes', { fontSizes: { standard: 24 } });
+  for (const width of [390, 700, 1024, 1600]) {
+    await page.setViewportSize({ width, height: 800 });
+    await page.goto('');
+    const header = page.locator('.topbar-in');
+    const { scrollWidth, clientWidth } = await header.evaluate((element) => ({ scrollWidth: element.scrollWidth, clientWidth: element.clientWidth }));
+    expect(scrollWidth, `шапка на ${width}px`).toBeLessThanOrEqual(clientWidth + 1);
+    await expectNoHorizontalScroll(page);
+  }
 });

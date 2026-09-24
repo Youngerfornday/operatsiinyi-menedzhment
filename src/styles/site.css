@@ -2,7 +2,7 @@
 
 /* ---- Шапка ---- */
 .topbar { position: sticky; top: 0; z-index: var(--z-sticky); background: color-mix(in srgb, var(--bg) 86%, transparent); backdrop-filter: saturate(160%) blur(14px); -webkit-backdrop-filter: saturate(160%) blur(14px); border-bottom: 1px solid var(--line); }
-.topbar-in { display: flex; align-items: center; gap: var(--s-5); min-height: 4rem; max-width: 86rem; }
+.topbar-in { display: flex; align-items: center; gap: var(--s-5); min-height: 4rem; max-width: 94rem; }
 .brand { display: flex; align-items: center; gap: var(--s-3); color: var(--ink); text-decoration: none; flex: none; }
 .brand:hover { color: var(--ink); }
 .brand-logo { width: 4.25rem; height: 2.56rem; object-fit: contain; flex: none; }
@@ -38,7 +38,7 @@
 .menu-btn { display: none; }
 
 /* Чип гравця: поки статичний, гідрується рушієм прогресу */
-.me { display: inline-flex; align-items: center; gap: var(--s-2); padding: var(--s-1) var(--s-3) var(--s-1) var(--s-1); border: 1px solid var(--line); border-radius: var(--r-pill); background: var(--surface); text-decoration: none; color: var(--ink); font-size: var(--text-sm); }
+.me { display: inline-flex; align-items: center; gap: var(--s-2); padding: var(--s-1) var(--s-3) var(--s-1) var(--s-1); border: 1px solid var(--line); border-radius: var(--r-pill); background: var(--surface); text-decoration: none; color: var(--ink); font-size: var(--text-sm); white-space: nowrap; }
 a.me:hover { border-color: var(--line-strong); color: var(--ink); }
 .me-hex { width: 1.75rem; height: 1.75rem; color: var(--badge-fill); }
 .me-level { font-weight: 600; }
@@ -82,17 +82,21 @@ a.me:hover { border-color: var(--line-strong); color: var(--ink); }
 @media (max-width: 760px) { .footer-in { grid-template-columns: 1fr; } }
 
 /* ---- Адаптив шапки ---- */
-@media (max-width: 1360px) { .brand-sub { display: none; } }
-@media (max-width: 1280px) {
+/* Пороги шапки — в em, щоб масштабувалися разом зі шрифтом, який користувач задав у браузері (розміри елементів у rem).
+   Шапці з меню й підзаголовком бренду потрібно ~92rem, без підзаголовка — ~84rem; ширину перевіряє e2e chrome.spec.ts. */
+@media (max-width: 94em) { .brand-sub { display: none; } }
+@media (max-width: 86em) {
   .nav { display: none; }
   .menu-btn { display: inline-grid; }
 }
-@media (max-width: 1024px) { .topbar-actions > .seg { display: none; } }
-@media (max-width: 560px) {
-  .topbar-in { gap: var(--s-3); min-height: 3.5rem; }
-  .brand-text { display: none; }
+@media (max-width: 64em) { .topbar-actions > .seg { display: none; } }
+@media (max-width: 46em) {
   .topbar-actions > .me { padding: 0.2rem; }
   .topbar-actions > .me .me-level, .topbar-actions > .me .me-xp { display: none; }
+}
+@media (max-width: 35em) {
+  .topbar-in { gap: var(--s-3); min-height: 3.5rem; }
+  .brand-text { display: none; }
   .brand-logo { width: 3.5rem; height: 2.1rem; }
   .topbar-actions .search-btn { display: none; }
 }
