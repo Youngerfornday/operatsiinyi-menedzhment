@@ -41,8 +41,8 @@
 
   <text class="s" x="573" y="76" text-anchor="middle">λ</text>
   <path class="arrow" marker-end="url(#fig-t03-4-arr)" d="M530 90 L616 90"/>
-  <text class="lbl" x="636" y="118" text-anchor="end">той самий темп</text>
-  <text class="lbl" x="636" y="134" text-anchor="end">у стійкому стані</text>
+  <text class="lbl" x="624" y="118" text-anchor="end">той самий темп</text>
+  <text class="lbl" x="624" y="134" text-anchor="end">у стійкому стані</text>
 
   <path class="arrow" d="M114 196 L526 196" marker-start="url(#fig-t03-4-arr)" marker-end="url(#fig-t03-4-arr)"/>
   <text class="t" x="320" y="224" text-anchor="middle">W — середній час перебування однієї одиниці в системі</text>

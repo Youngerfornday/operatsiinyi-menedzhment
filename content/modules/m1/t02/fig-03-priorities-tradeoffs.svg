@@ -16,10 +16,10 @@
     #fig-t02-3 .refn.exam-n { fill: var(--err-ink, #8f1d14); }
   </style>
 
-  <path class="diag" d="M320 50 L520 210"/>
-  <path class="diag" d="M520 210 L320 370"/>
-  <path class="diag" d="M320 370 L120 210"/>
-  <path class="diag" d="M120 210 L320 50"/>
+  <path class="diag" d="M357.5 80 L482.5 180"/>
+  <path class="diag" d="M482.5 240 L357.5 340"/>
+  <path class="diag" d="M282.5 340 L157.5 240"/>
+  <path class="diag" d="M157.5 180 L282.5 80"/>
 
   <text class="lbl" x="320" y="204" text-anchor="middle">Жодна система не займає</text>
   <text class="lbl" x="320" y="220" text-anchor="middle">всі чотири кути одразу</text>

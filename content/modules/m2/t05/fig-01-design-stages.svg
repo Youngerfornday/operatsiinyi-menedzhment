@@ -1,17 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" id="fig-t05-1" class="scheme" viewBox="0 0 900 220" role="img" aria-labelledby="fig-t05-1-title fig-t05-1-desc" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" id="fig-t05-1" class="scheme" viewBox="0 0 696 156" role="img" aria-labelledby="fig-t05-1-title fig-t05-1-desc" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
   <title id="fig-t05-1-title">Рисунок 1. Послідовність проєктних рішень операційної системи</title>
   <desc id="fig-t05-1-desc">Горизонтальний ланцюжок із п'яти блоків зліва направо: стратегія продукту й процесу, вибір місця розташування, планування приміщення й обладнання, балансування лінії, нормування праці. Стрілки ведуть послідовно зліва направо, третій блок — планування приміщення — виділено карміновим. Під ланцюжком підпис про те, що кожен крок звужує простір рішень для наступного.</desc>
   <style>
     #fig-t05-1 .box { fill: var(--surface, #ffffff); stroke: var(--ink, #0f1c2e); stroke-width: 1.25; }
     #fig-t05-1 .t { fill: var(--ink, #0f1c2e); font-size: 13.5px; font-weight: 650; }
-    #fig-t05-1 .s { fill: var(--ink-2, #445570); font-size: 11px; }
+    #fig-t05-1 .s { fill: var(--ink-2, #445570); font-size: 11.5px; }
     #fig-t05-1 .lbl { fill: var(--ink-2, #445570); font-size: 12px; }
     #fig-t05-1 .arrow { stroke: var(--ink-2, #445570); stroke-width: 1.25; fill: none; }
     #fig-t05-1 .arrow-head { fill: var(--ink-2, #445570); }
     #fig-t05-1 .refc { fill: var(--surface, #ffffff); stroke: var(--ink, #0f1c2e); stroke-width: 1.25; }
     #fig-t05-1 .refn { fill: var(--ink, #0f1c2e); font-size: 11.5px; font-weight: 700; text-anchor: middle; }
     #fig-t05-1 .exam { stroke: var(--err, #b42318); }
-    #fig-t05-1 .exam-t { fill: var(--err-ink, #8f1d14); font-size: 11px; font-weight: 600; }
+    #fig-t05-1 .exam-t { fill: var(--err-ink, #8f1d14); font-size: 12px; font-weight: 600; }
     #fig-t05-1 .refc.exam { stroke: var(--err, #b42318); }
     #fig-t05-1 .refn.exam-n { fill: var(--err-ink, #8f1d14); }
   </style>
@@ -22,38 +22,38 @@
     </marker>
   </defs>
 
-  <rect class="box" x="15" y="90" width="150" height="90" rx="6"/>
-  <text class="t" x="90" y="128" text-anchor="middle">Стратегія</text>
-  <text class="s" x="90" y="146" text-anchor="middle">продукту й процесу</text>
-  <text class="s" x="90" y="162" text-anchor="middle">(тема 2)</text>
+  <rect class="box" x="10" y="24" width="118" height="92" rx="6"/>
+  <text class="t" x="69" y="60" text-anchor="middle">Стратегія</text>
+  <text class="s" x="69" y="80" text-anchor="middle">продукту й процесу</text>
+  <text class="s" x="69" y="98" text-anchor="middle">(тема 2)</text>
 
-  <rect class="box" x="195" y="90" width="150" height="90" rx="6"/>
-  <text class="t" x="270" y="128" text-anchor="middle">Вибір місця</text>
-  <text class="s" x="270" y="146" text-anchor="middle">розташування</text>
+  <rect class="box" x="149" y="24" width="118" height="92" rx="6"/>
+  <text class="t" x="208" y="66" text-anchor="middle">Вибір місця</text>
+  <text class="s" x="208" y="86" text-anchor="middle">розташування</text>
 
-  <rect class="box exam" x="375" y="90" width="150" height="90" rx="6"/>
-  <text class="exam-t" x="450" y="122" text-anchor="middle">Планування</text>
-  <text class="exam-t" x="450" y="138" text-anchor="middle">приміщення</text>
-  <text class="exam-t" x="450" y="154" text-anchor="middle">й обладнання</text>
+  <rect class="box exam" x="288" y="24" width="118" height="92" rx="6"/>
+  <text class="exam-t" x="347" y="58" text-anchor="middle">Планування</text>
+  <text class="exam-t" x="347" y="76" text-anchor="middle">приміщення</text>
+  <text class="exam-t" x="347" y="94" text-anchor="middle">й обладнання</text>
 
-  <rect class="box" x="555" y="90" width="150" height="90" rx="6"/>
-  <text class="t" x="630" y="128" text-anchor="middle">Балансування</text>
-  <text class="s" x="630" y="146" text-anchor="middle">потокової лінії</text>
+  <rect class="box" x="427" y="24" width="118" height="92" rx="6"/>
+  <text class="t" x="486" y="66" text-anchor="middle">Балансування</text>
+  <text class="s" x="486" y="86" text-anchor="middle">потокової лінії</text>
 
-  <rect class="box" x="735" y="90" width="150" height="90" rx="6"/>
-  <text class="t" x="810" y="128" text-anchor="middle">Нормування</text>
-  <text class="s" x="810" y="146" text-anchor="middle">праці</text>
+  <rect class="box" x="566" y="24" width="118" height="92" rx="6"/>
+  <text class="t" x="625" y="66" text-anchor="middle">Нормування</text>
+  <text class="s" x="625" y="86" text-anchor="middle">праці</text>
 
-  <path class="arrow" marker-end="url(#fig-t05-1-arr)" d="M165 135 L191 135"/>
-  <path class="arrow" marker-end="url(#fig-t05-1-arr)" d="M345 135 L371 135"/>
-  <path class="arrow" marker-end="url(#fig-t05-1-arr)" d="M525 135 L551 135"/>
-  <path class="arrow" marker-end="url(#fig-t05-1-arr)" d="M705 135 L731 135"/>
+  <path class="arrow" marker-end="url(#fig-t05-1-arr)" d="M128 70 L145 70"/>
+  <path class="arrow" marker-end="url(#fig-t05-1-arr)" d="M267 70 L284 70"/>
+  <path class="arrow" marker-end="url(#fig-t05-1-arr)" d="M406 70 L423 70"/>
+  <path class="arrow" marker-end="url(#fig-t05-1-arr)" d="M545 70 L562 70"/>
 
-  <text class="lbl" x="450" y="205" text-anchor="middle">кожен крок звужує простір рішень для наступного</text>
+  <text class="lbl" x="348" y="142" text-anchor="middle">кожен крок звужує простір рішень для наступного</text>
 
-  <circle class="refc" cx="15" cy="90" r="11"/><text class="refn" x="15" y="94">1</text>
-  <circle class="refc" cx="195" cy="90" r="11"/><text class="refn" x="195" y="94">2</text>
-  <circle class="refc exam" cx="375" cy="90" r="11"/><text class="refn exam-n" x="375" y="94">3</text>
-  <circle class="refc" cx="555" cy="90" r="11"/><text class="refn" x="555" y="94">4</text>
-  <circle class="refc" cx="735" cy="90" r="11"/><text class="refn" x="735" y="94">5</text>
+  <circle class="refc" cx="10" cy="24" r="11"/><text class="refn" x="10" y="28">1</text>
+  <circle class="refc" cx="149" cy="24" r="11"/><text class="refn" x="149" y="28">2</text>
+  <circle class="refc exam" cx="288" cy="24" r="11"/><text class="refn exam-n" x="288" y="28">3</text>
+  <circle class="refc" cx="427" cy="24" r="11"/><text class="refn" x="427" y="28">4</text>
+  <circle class="refc" cx="566" cy="24" r="11"/><text class="refn" x="566" y="28">5</text>
 </svg>

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" id="fig-t01-2" class="scheme" viewBox="0 0 640 352" role="img" aria-labelledby="fig-t01-2-title fig-t01-2-desc" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" id="fig-t01-2" class="scheme" viewBox="0 0 640 372" role="img" aria-labelledby="fig-t01-2-title fig-t01-2-desc" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
   <title id="fig-t01-2-title">Рисунок 2. Модель «вхід — перетворення — вихід»</title>
   <desc id="fig-t01-2-desc">Три блоки в один ряд усередині пунктирної рамки, яка позначає межу операційної системи. Ліворуч — вхід: матеріали, люди, обладнання, енергія, інформація, а у сфері послуг ще й сам клієнт та його власність. Посередині — процес перетворення: послідовність операцій, які змінюють предмет праці. Праворуч — вихід: основний результат, тобто готова продукція, змінений стан клієнта або його власності, і другорядний — матеріальні залишки, тепло та інформація. Суцільні стрілки ведуть зліва направо. Від виходу карміновою пунктирною стрілкою повертається зворотний зв’язок до блоку перетворення: результат вимірюють і за ним коригують процес. Над рамкою підписано зовнішнє середовище, з якого надходять ресурси й куди йде результат; підпис під рамкою нагадує, що різниця між вартістю виходу й вартістю входу є доданою вартістю.</desc>
   <style>
@@ -26,7 +26,7 @@
 
   <text class="lbl" x="320" y="20" text-anchor="middle">Зовнішнє середовище: ринок ресурсів, ринок збуту, держава</text>
 
-  <rect class="frame" x="12" y="34" width="616" height="212" rx="10"/>
+  <rect class="frame" x="12" y="34" width="616" height="232" rx="10"/>
   <text class="lbl" x="24" y="52">межа операційної системи</text>
 
   <rect class="box box-owner" x="28" y="76" width="168" height="112" rx="6"/>
@@ -52,14 +52,14 @@
   <path class="arrow" marker-end="url(#fig-t01-2-arr)" d="M196 132 L232 132"/>
   <path class="arrow" marker-end="url(#fig-t01-2-arr)" d="M404 132 L440 132"/>
   <path class="arrow exam" marker-end="url(#fig-t01-2-arr)" stroke-dasharray="4 3" d="M528 188 C 528 224, 320 224, 320 190"/>
-  <text class="exam-t" x="424" y="240" text-anchor="middle">зворотний зв’язок: вимір результату коригує процес</text>
+  <text class="exam-t" x="440" y="251" text-anchor="middle">зворотний зв’язок: вимір результату коригує процес</text>
 
-  <text class="lbl" x="320" y="278" text-anchor="middle">Вартість виходу мінус вартість входів — додана вартість, створена перетворенням.</text>
-  <text class="lbl" x="320" y="300" text-anchor="middle">Операція, за яку споживач не готовий платити, доданої вартості не створює.</text>
+  <text class="lbl" x="320" y="298" text-anchor="middle">Вартість виходу мінус вартість входів — додана вартість, створена перетворенням.</text>
+  <text class="lbl" x="320" y="320" text-anchor="middle">Операція, за яку споживач не готовий платити, доданої вартості не створює.</text>
 
   <circle class="refc" cx="28" cy="76" r="11"/><text class="refn" x="28" y="80">1</text>
   <circle class="refc" cx="236" cy="76" r="11"/><text class="refn" x="236" y="80">2</text>
   <circle class="refc" cx="612" cy="76" r="11"/><text class="refn" x="612" y="80">3</text>
-  <circle class="refc exam" cx="320" cy="224" r="11"/><text class="refn exam-n" x="320" y="228">4</text>
-  <circle class="refc" cx="28" cy="278" r="11"/><text class="refn" x="28" y="282">5</text>
+  <circle class="refc exam" cx="260" cy="247" r="11"/><text class="refn exam-n" x="260" y="251">4</text>
+  <circle class="refc" cx="28" cy="298" r="11"/><text class="refn" x="28" y="302">5</text>
 </svg>
